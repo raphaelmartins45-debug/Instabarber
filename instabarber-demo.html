@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InstaBarber — Demonstração</title>
+<style>
+:root{
+  --ink:#12100e; --ink2:#3d3a36; --muted:#8a847c;
+  --paper:#f7f5f1; --card:#ffffff; --line:#e6e1d8;
+  --gold:#f5a623; --gold-d:#c9821a; --gold-l:#fdf3e3;
+  --green:#1f8a5f; --green-l:#e8f5ef;
+  --amber:#c9821a; --amber-l:#fdf3e3;
+  --red:#c0392b; --red-l:#fbeceb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--paper); color:var(--ink); -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 80px}
+
+/* ---------- top bar ---------- */
+.topbar{
+  background:var(--ink); color:#fff; padding:14px 0; position:sticky; top:0; z-index:50;
+  border-bottom:3px solid var(--gold);
+}
+.topbar .inner{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px;font-size:17px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.brand small{display:block;font-weight:400;font-size:10px;letter-spacing:2.4px;color:#9b968e;margin-top:2px}
+.demo-tag{
+  background:rgba(245,166,35,.16); color:var(--gold); border:1px solid rgba(245,166,35,.45);
+  font-size:10.5px; letter-spacing:1.6px; font-weight:700; padding:4px 10px; border-radius:20px;
+}
+nav.tabs{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+nav.tabs button{
+  background:transparent;border:0;color:#b9b3aa;font:inherit;font-size:13.5px;font-weight:600;
+  padding:9px 15px;border-radius:9px;cursor:pointer;transition:.15s;
+}
+nav.tabs button:hover{background:rgba(255,255,255,.07);color:#fff}
+nav.tabs button.on{background:var(--gold);color:var(--ink)}
+
+/* ---------- shop header ---------- */
+.shophead{
+  display:flex;align-items:center;gap:16px;padding:26px 0 20px;flex-wrap:wrap;
+}
+.avatar{
+  width:56px;height:56px;border-radius:16px;background:linear-gradient(140deg,var(--gold),var(--gold-d));
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:21px;color:var(--ink);
+  flex:0 0 auto;
+}
+.shophead h1{font-size:22px;font-weight:800;letter-spacing:-.3px}
+.shophead .sub{font-size:13px;color:var(--muted);margin-top:3px}
+.pill{
+  font-size:11px;font-weight:700;letter-spacing:.6px;padding:4px 10px;border-radius:20px;
+  background:var(--green-l);color:var(--green);border:1px solid #cfe9dd;
+}
+
+/* ---------- generic ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px}
+.card h2{font-size:16px;font-weight:800;letter-spacing:-.2px;margin-bottom:4px}
+.card .hint{font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g2{grid-template-columns:1.35fr 1fr}
+@media(max-width:900px){.g3,.g4,.g2{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.g3,.g4,.g2{grid-template-columns:1fr}}
+
+/* ---------- kpis ---------- */
+.kpi{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;position:relative;overflow:hidden;
+}
+.kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.kpi.red::after{background:var(--red)}
+.kpi.green::after{background:var(--green)}
+.kpi .lab{font-size:11px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-size:30px;font-weight:800;letter-spacing:-1px;margin-top:8px;line-height:1}
+.kpi .foot{font-size:12px;color:var(--ink2);margin-top:8px}
+.kpi .foot b{color:var(--green)}
+
+/* ---------- radar list ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.chip{
+  border:1px solid var(--line);background:#fff;border-radius:22px;padding:7px 14px;font:inherit;
+  font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink2);transition:.15s;
+}
+.chip:hover{border-color:var(--gold)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip .n{opacity:.6;margin-left:5px;font-weight:700}
+.search{
+  margin-left:auto;border:1px solid var(--line);border-radius:10px;padding:9px 13px;font:inherit;
+  font-size:13px;min-width:200px;background:#fff;
+}
+.search:focus{outline:2px solid var(--gold);outline-offset:-1px;border-color:var(--gold)}
+
+table{width:100%;border-collapse:collapse}
+th{
+  text-align:left;font-size:10.5px;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);
+  padding:10px 10px;border-bottom:2px solid var(--line);font-weight:700;white-space:nowrap;
+}
+td{padding:13px 10px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:middle}
+tbody tr{cursor:pointer;transition:.12s}
+tbody tr:hover{background:#faf8f4}
+.who{display:flex;align-items:center;gap:11px}
+.who .ini{
+  width:34px;height:34px;border-radius:50%;background:var(--gold-l);color:var(--gold-d);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12.5px;flex:0 0 auto;
+}
+.who .nm{font-weight:700}
+.who .pp{font-size:11.5px;color:var(--muted);margin-top:1px}
+.tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.tag.ativo{background:var(--green-l);color:var(--green)}
+.tag.risco{background:var(--amber-l);color:var(--amber)}
+.tag.sumido{background:var(--red-l);color:var(--red)}
+.money{font-variant-numeric:tabular-nums;font-weight:700}
+.dim{color:var(--muted);font-size:12.5px}
+
+/* ---------- client detail ---------- */
+.back{
+  background:none;border:0;font:inherit;font-size:13px;font-weight:700;color:var(--gold-d);
+  cursor:pointer;padding:0 0 16px;display:flex;align-items:center;gap:6px;
+}
+.client-head{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.client-head .big{
+  width:64px;height:64px;border-radius:50%;background:var(--gold);display:flex;align-items:center;
+  justify-content:center;font-weight:800;font-size:22px;color:var(--ink);
+}
+.client-head h2{font-size:21px;font-weight:800}
+.client-head .meta{font-size:13px;color:var(--muted);margin-top:4px}
+.stat-row{display:flex;gap:26px;flex-wrap:wrap;margin:6px 0 4px}
+.stat .l{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stat .v{font-size:17px;font-weight:800;margin-top:4px}
+.timeline{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+.visit{
+  border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:12px;background:#fdfcfa;min-width:98px;
+}
+.visit .d{font-weight:700}
+.visit .s{color:var(--muted);margin-top:3px}
+
+/* ---------- message box ---------- */
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 16px}
+.btn{
+  border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 15px;font:inherit;
+  font-size:13px;font-weight:700;cursor:pointer;transition:.15s;color:var(--ink);
+}
+.btn:hover{border-color:var(--gold);background:var(--gold-l)}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.primary:hover{background:#000;border-color:#000}
+.btn.wa{background:#25D366;color:#fff;border-color:#25D366}
+.btn.wa:hover{background:#1eb257;border-color:#1eb257}
+.msgbox{
+  background:#f2f6f4;border:1px solid #d9e6e0;border-radius:14px;padding:16px;
+  font-size:13.5px;line-height:1.6;white-space:pre-wrap;position:relative;
+}
+.msgbox .lbl{
+  position:absolute;top:-10px;left:14px;background:#fff;padding:2px 9px;border-radius:8px;
+  font-size:10.5px;font-weight:800;letter-spacing:1.2px;color:var(--muted);border:1px solid var(--line);
+}
+.sent{
+  background:var(--green-l);border:1px solid #cfe9dd;color:#1a6b4a;border-radius:11px;padding:11px 14px;
+  font-size:13px;font-weight:600;margin-top:12px;
+}
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(120%);
+  background:var(--ink);color:#fff;padding:13px 20px;border-radius:12px;font-size:13.5px;font-weight:600;
+  box-shadow:0 12px 34px rgba(0,0,0,.22);transition:.28s;z-index:99;max-width:92vw;
+}
+.toast.on{transform:translateX(-50%) translateY(0)}
+
+/* ---------- agenda ---------- */
+.agenda-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.days{display:flex;gap:6px;flex-wrap:wrap}
+.day{
+  border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 13px;cursor:pointer;
+  text-align:center;font:inherit;min-width:78px;transition:.15s;
+}
+.day:hover{border-color:var(--gold)}
+.day.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.day .w{font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;opacity:.65;font-weight:700}
+.day .n{font-size:17px;font-weight:800;margin-top:3px}
+
+.appt{display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.appt:last-child{border-bottom:0}
+.appt .time{
+  font-variant-numeric:tabular-nums;font-weight:800;font-size:14.5px;min-width:62px;padding-top:2px;
+}
+.appt .bar{width:3px;border-radius:3px;background:var(--gold);align-self:stretch;min-height:44px}
+.appt .info{flex:1}
+.appt .info .t{font-weight:700;font-size:14px}
+.appt .info .s{font-size:12.5px;color:var(--muted);margin-top:4px}
+.appt .amt{font-weight:800;font-variant-numeric:tabular-nums}
+.remind{
+  border:1px solid var(--gold);background:var(--gold-l);color:var(--gold-d);border-radius:9px;
+  padding:7px 11px;font:inherit;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap;
+  transition:.15s;flex:0 0 auto;
+}
+.remind:hover{background:var(--gold);color:var(--ink)}
+.remind.sent{background:var(--green-l);border-color:#cfe9dd;color:var(--green);cursor:default}
+.remind.sent:hover{background:var(--green-l);color:var(--green)}
+
+/* ---------- public page ---------- */
+.phonewrap{display:flex;justify-content:center;width:100%;padding:6px 0 4px}
+.phone{
+  width:100%;max-width:400px;background:#fff;border:1px solid var(--line);border-radius:26px;
+  overflow:hidden;box-shadow:0 16px 44px rgba(0,0,0,.07);
+}
+.phone .cover{
+  height:172px;position:relative;overflow:hidden;
+  background:
+    linear-gradient(180deg, rgba(14,12,10,.42) 0%, rgba(14,12,10,.88) 100%),
+    repeating-linear-gradient(115deg,
+      #1c1815 0px, #1c1815 24px,
+      #f5a623 24px, #f5a623 44px,
+      #2a241f 44px, #2a241f 68px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+}
+.phone .cover::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 125%, rgba(245,166,35,.32), transparent 62%);
+}
+.phone .cover .pole{
+  position:relative;z-index:2;width:40px;height:40px;border-radius:50%;
+  border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;
+  font-size:20px;line-height:1;background:rgba(14,12,10,.55);
+}
+.phone .cover .txt{
+  position:relative;z-index:2;color:#fff;font-weight:800;font-size:12.5px;
+  letter-spacing:3.6px;text-transform:uppercase;
+}
+.phone .cover .txt2{position:relative;z-index:2;color:var(--gold);font-size:10.5px;letter-spacing:1.6px;font-weight:600}
+.wa-num{text-align:center;font-size:11.5px;color:var(--muted);margin-top:9px;font-weight:600}
+.phone .body{padding:0 20px 24px;margin-top:-34px}
+.phone .logo{
+  width:68px;height:68px;border-radius:20px;background:var(--ink);color:var(--gold);display:flex;
+  align-items:center;justify-content:center;font-weight:800;font-size:24px;border:4px solid #fff;
+}
+.phone h3{font-size:20px;font-weight:800;margin-top:12px}
+.phone .sub{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+.svc{
+  display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);
+}
+.svc:last-child{border-bottom:0}
+.svc .nm{font-weight:700;font-size:13.5px}
+.svc .du{font-size:11.5px;color:var(--muted);margin-top:3px}
+.svc .pr{font-weight:800;font-variant-numeric:tabular-nums;font-size:13.5px}
+.social{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.sc{font-size:11.5px;font-weight:700;padding:7px 12px;border-radius:9px;background:var(--paper);border:1px solid var(--line);color:var(--ink2)}
+
+/* ---------- selos de fidelização ---------- */
+.stamps{display:inline-flex;gap:3px;margin-left:9px;vertical-align:middle;flex-wrap:wrap}
+.st{
+  width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;border:1.5px dashed #d8cfc0;background:#fff;color:#c9c2b6;
+  flex:0 0 auto;line-height:1;
+}
+.st.on{background:var(--gold);border:1.5px solid var(--gold);border-style:solid;color:var(--ink)}
+.stamps.sm .st{width:14px;height:14px;font-size:8px}
+@media(max-width:560px){.st{width:15px;height:15px;font-size:8px}.stamps{gap:2px;margin-left:7px}}
+.hname{display:flex;align-items:center;flex-wrap:wrap;gap:2px}
+.hname .hn{font-weight:700;font-size:13.5px}
+
+.loyal-card{
+  background:#faf8f4;border:1px solid var(--line);border-radius:14px;padding:15px;margin-top:4px;
+}
+.loyal-card .stamps{margin-left:0;display:flex;gap:6px}
+.loyal-card .st{width:28px;height:28px;font-size:12px;border-width:2px}
+.loyal-legend{
+  display:flex;justify-content:space-between;align-items:center;margin-top:12px;
+  font-size:12px;font-weight:700;color:var(--ink2);
+}
+.loyal-legend .loyal-goal{color:var(--muted);font-weight:600}
+@media(max-width:560px){.loyal-card .st{width:25px;height:25px;font-size:11px}}
+
+.bignote{
+  background:var(--gold-l);border:1px solid #f0dcb4;border-radius:13px;padding:15px;
+  font-size:13px;line-height:1.6;margin-bottom:18px;
+}
+.bignote b{color:var(--gold-d)}
+.section-title{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:22px 0 8px}
+.hide{display:none}
+
+/* ---------- gestao ---------- */
+.bars{display:flex;align-items:flex-end;gap:14px;height:190px;padding:8px 4px 0}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar-col .amt{font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums}
+.bar-col .bar{
+  width:100%;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,var(--gold),var(--gold-d));
+  transition:.4s;min-height:6px;
+}
+.bar-col .bar.off{background:linear-gradient(180deg,#ded8cd,#cfc8bb)}
+.bar-col .mo{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
+table.ledger td{padding:9px 10px;font-size:13px;border-bottom:1px solid var(--line)}
+table.ledger tr.total td{font-weight:800;border-top:2px solid var(--ink);border-bottom:0;font-size:13.5px}
+table.ledger tr.gap td{border:0;height:8px;padding:0}
+.money.neg{color:var(--red)}
+.kpi-list{display:flex;flex-direction:column;gap:2px}
+.krow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.krow:last-child{border-bottom:0}
+.krow .k{color:var(--ink2)}
+.krow .v{font-weight:800;font-variant-numeric:tabular-nums}
+.krow .v.good{color:var(--green)}
+.krow .v.bad{color:var(--red)}
+.occ{display:flex;flex-direction:column;gap:10px}
+.orow{display:flex;align-items:center;gap:12px}
+.orow .d{min-width:76px;font-size:12.5px;font-weight:700}
+.orow .track{flex:1;height:22px;background:#f1ede5;border-radius:6px;overflow:hidden}
+.orow .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold),var(--gold-d));transition:.4s}
+.orow .fill.low{background:linear-gradient(90deg,#e8b9b3,#c0392b)}
+.orow .p{min-width:44px;text-align:right;font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- home ---------- */
+.hero{
+  background:linear-gradient(120deg,var(--ink) 0%,#241f19 100%);border-radius:18px;padding:24px 26px;
+  color:#fff;position:relative;overflow:hidden;margin-bottom:18px;
+}
+.hero::after{content:"";position:absolute;right:-60px;top:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.2),transparent 68%)}
+.hero .hx{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:800}
+.hero .ht{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-top:9px;position:relative;z-index:2}
+.hero .hs{font-size:13px;color:#9b968e;margin-top:6px;position:relative;z-index:2}
+
+.dayrow{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.daybox{
+  flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;position:relative;overflow:hidden;
+}
+.daybox::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.daybox.g::after{background:var(--green)}
+.daybox.r::after{background:var(--red)}
+.daybox .dl{font-size:10.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted)}
+.daybox .dv{font-size:27px;font-weight:800;letter-spacing:-.9px;margin-top:8px;line-height:1}
+.daybox .df{font-size:12px;color:var(--ink2);margin-top:8px}
+.daybox .df b{color:var(--green)}
+.daybox .df .warn{color:var(--red);font-weight:700}
+
+.home-list{margin-top:4px}
+.hrow{
+  display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);
+}
+.hrow:last-child{border-bottom:0}
+.hrow .hhr{
+  font-variant-numeric:tabular-nums;font-weight:800;font-size:14px;min-width:56px;color:var(--ink);
+}
+.hrow .hbar{width:3px;align-self:stretch;min-height:38px;border-radius:3px;background:var(--gold)}
+.hrow .hbar.done{background:var(--green)}
+.hrow .hinfo{flex:1}
+.hrow .hinfo .hn{font-weight:700;font-size:13.5px}
+.hrow .hinfo .hs2{font-size:12px;color:var(--muted);margin-top:3px}
+.hrow .hval{font-weight:800;font-variant-numeric:tabular-nums;font-size:13.5px}
+
+.bill{
+  display:flex;align-items:center;gap:13px;padding:12px 14px;border-radius:12px;margin-bottom:9px;
+  background:#fdf3e3;border:1px solid #f0dcb4;
+}
+.bill.due{background:#fbeceb;border-color:#f0cdc9}
+.bill .bi{
+  width:34px;height:34px;border-radius:10px;background:#fff;display:flex;align-items:center;
+  justify-content:center;font-size:16px;flex:0 0 auto;border:1px solid var(--line);
+}
+.bill .bd{flex:1}
+.bill .bdn{font-weight:700;font-size:13.5px}
+.bill .bdd{font-size:11.5px;color:var(--muted);margin-top:3px}
+.bill .bv{font-weight:800;font-variant-numeric:tabular-nums;font-size:13.5px;white-space:nowrap}
+.empty{
+  text-align:center;padding:22px;color:var(--muted);font-size:13px;background:#faf8f4;border-radius:12px;border:1px dashed var(--line);
+}
+.bigbtn{
+  display:block;width:100%;text-align:center;background:var(--ink);color:#fff;font-weight:800;font-size:14px;
+  padding:15px;border-radius:13px;text-decoration:none;margin-top:16px;transition:.15s;
+}
+.bigbtn:hover{background:#000}
+.loyal{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.stamp{
+  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;border:1.5px dashed #d6cdbd;color:#c3bdb3;background:#fff;
+}
+.stamp.on{background:var(--gold);border:1.5px solid var(--gold);color:var(--ink);border-style:solid}
+
+/* ---------- iphone frame ---------- */
+.iphone{
+  width:392px;margin:0 auto;background:#1a1714;border-radius:52px;padding:14px 13px 18px;
+  box-shadow:0 26px 70px rgba(0,0,0,.28), inset 0 0 0 2px #2e2822;position:relative;
+}
+.iphone::before{
+  content:"";position:absolute;left:50%;transform:translateX(-50%);top:14px;width:118px;height:24px;
+  background:#1a1714;border-radius:0 0 16px 16px;z-index:6;
+}
+.iphone::after{
+  content:"";position:absolute;left:-3px;top:150px;width:3px;height:56px;background:#2e2822;border-radius:2px 0 0 2px;
+  box-shadow:0 78px 0 #2e2822, 0 156px 0 #2e2822;
+}
+.iphone .screen{
+  background:#fff;border-radius:40px;overflow:hidden;position:relative;
+}
+.statusbar{
+  display:flex;justify-content:space-between;align-items:center;padding:12px 22px 6px;
+  font-size:11.5px;font-weight:800;color:var(--ink);
+}
+.statusbar .ic{display:flex;gap:4px;align-items:center;font-size:10px;letter-spacing:1px}
+.notch{
+  position:absolute;left:50%;transform:translateX(-50%);top:0;width:104px;height:22px;
+  background:#1a1714;border-radius:0 0 13px 13px;z-index:5;
+}
+.screen .cover{
+  height:150px;position:relative;overflow:hidden;
+  background:
+    linear-gradient(180deg, rgba(14,12,10,.42) 0%, rgba(14,12,10,.88) 100%),
+    repeating-linear-gradient(115deg,
+      #1c1815 0px, #1c1815 22px,
+      #f5a623 22px, #f5a623 40px,
+      #2a241f 40px, #2a241f 62px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+}
+.screen .cover::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 125%, rgba(245,166,35,.32), transparent 62%)}
+.screen .cover .pole{
+  position:relative;z-index:2;width:38px;height:38px;border-radius:50%;border:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(14,12,10,.55);
+}
+.screen .cover .ct{position:relative;z-index:2;color:#fff;font-weight:800;font-size:12px;letter-spacing:3.2px;text-transform:uppercase}
+.screen .cover .cs{position:relative;z-index:2;color:var(--gold);font-size:10px;letter-spacing:1.4px;font-weight:600}
+.screen .sbody{padding:0 18px 20px;margin-top:-24px;position:relative;z-index:3}
+.screen .slogo{
+  width:60px;height:60px;border-radius:18px;background:var(--ink);color:var(--gold);display:flex;
+  align-items:center;justify-content:center;font-weight:800;font-size:21px;border:4px solid #fff;
+}
+.screen h3{font-size:18px;font-weight:800;margin-top:11px}
+.screen .ssub{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.5}
+.cbtn{
+  display:flex;align-items:center;gap:13px;width:100%;border-radius:14px;padding:15px 16px;
+  font:inherit;font-size:13.5px;font-weight:800;text-decoration:none;margin-top:10px;transition:.15s;
+  border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;text-align:left;
+}
+.cbtn:hover{border-color:var(--gold);background:var(--gold-l);transform:translateY(-1px)}
+.cbtn .cb-ic{
+  width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex:0 0 auto;background:var(--gold-l);color:var(--gold-d);
+}
+.cbtn .cb-l{flex:1;display:flex;flex-direction:column;gap:3px}
+.cbtn .cb-t{font-size:13.5px;font-weight:800;line-height:1.2}
+.cbtn .cb-s{font-size:10.5px;font-weight:500;color:var(--muted);line-height:1.3}
+.cbtn .cb-arrow{color:var(--muted);font-size:15px}
+.cbtn.pri{background:var(--ink);border-color:var(--ink);color:#fff}
+.cbtn.pri:hover{background:#000;border-color:#000}
+.cbtn.pri .cb-ic{background:var(--gold);color:var(--ink)}
+.cbtn.pri .cb-s{color:#9b968e}
+.cbtn.pri .cb-arrow{color:var(--gold)}
+.cbtn.wa2{background:#25D366;border-color:#25D366;color:#fff}
+.cbtn.wa2:hover{background:#1eb257;border-color:#1eb257}
+.cbtn.wa2 .cb-ic{background:rgba(255,255,255,.22);color:#fff}
+.cbtn.wa2 .cb-s{color:rgba(255,255,255,.85)}
+.cbtn.wa2 .cb-arrow{color:#fff}
+.cbtn.gm{background:#fff;border-color:#e6e1d8}
+.cbtn.gm .cb-ic{background:#f1ede5;color:#c9821a}
+
+/* ---------- novo cliente bar ---------- */
+.newbar{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(120deg,var(--ink) 0%,#241f19 100%);
+  border-radius:16px;padding:18px 22px;margin-bottom:18px;position:relative;overflow:hidden;
+}
+.newbar::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.22),transparent 68%)}
+.newbar .nb-t{color:#fff;font-weight:800;font-size:15.5px;position:relative;z-index:2}
+.newbar .nb-s{color:#9b968e;font-size:12.5px;margin-top:3px;position:relative;z-index:2}
+.nb-btn{
+  margin-left:auto;background:var(--gold);color:var(--ink);font-weight:800;font-size:13.5px;
+  padding:12px 22px;border-radius:11px;text-decoration:none;position:relative;z-index:2;
+  box-shadow:0 6px 18px rgba(245,166,35,.28);transition:.15s;white-space:nowrap;
+}
+.nb-btn:hover{background:#ffb733;transform:translateY(-1px)}
+
+/* ---------- forms ---------- */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){.fgrid{grid-template-columns:1fr}}
+.fld label{display:block;font-size:11px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.fld input,.fld select,.fld textarea{
+  width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 13px;font:inherit;font-size:14px;
+  background:#fff;color:var(--ink);
+}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:2px solid var(--gold);outline-offset:-1px;border-color:var(--gold)}
+.fld .req{color:var(--red)}
+
+/* ---------- financeiro ---------- */
+.goalbox{
+  background:linear-gradient(120deg,var(--ink) 0%,#241f19 100%);border-radius:16px;padding:22px;
+  color:#fff;position:relative;overflow:hidden;
+}
+.goalbox::after{content:"";position:absolute;right:-50px;bottom:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.2),transparent 68%)}
+.goalbox .gt{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);font-weight:800}
+.goalbox .gv{font-size:34px;font-weight:800;letter-spacing:-1.2px;margin:8px 0 4px}
+.goalbox .gs{font-size:12.5px;color:#9b968e;position:relative;z-index:2}
+.goalbox .prog{height:9px;border-radius:6px;background:rgba(255,255,255,.14);margin-top:16px;overflow:hidden;position:relative;z-index:2}
+.goalbox .prog i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold),#ffc65c)}
+.goalbox .gm{display:flex;justify-content:space-between;font-size:11.5px;color:#9b968e;margin-top:9px;position:relative;z-index:2}
+
+table.launch{width:100%;border-collapse:collapse}
+table.launch th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:9px 8px;border-bottom:2px solid var(--line);text-align:left;font-weight:800}
+table.launch td{padding:10px 8px;border-bottom:1px solid var(--line);font-size:13px}
+table.launch .del{
+  background:none;border:0;color:var(--muted);cursor:pointer;font:inherit;font-size:15px;line-height:1;padding:2px 6px;
+}
+table.launch .del:hover{color:var(--red)}
+.launchform{
+  display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,0.9fr) minmax(0,1.1fr);gap:10px;
+  margin-top:16px;align-items:stretch;
+}
+.launchform input{
+  width:100%;min-width:0;border:1px solid var(--line);border-radius:10px;padding:12px 12px;
+  font:inherit;font-size:13.5px;background:#fff;color:var(--ink);height:44px;
+}
+.launchform input[type="date"]{font-size:12.5px;padding:12px 9px}
+.launchform input:focus{outline:2px solid var(--gold);outline-offset:-1px;border-color:var(--gold)}
+.launchform button{
+  grid-column:1 / -1;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;
+  padding:13px 18px;font:inherit;font-size:13.5px;font-weight:800;cursor:pointer;height:44px;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.launchform button:hover{background:#000}
+@media(max-width:560px){
+  .launchform{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .launchform input:first-child{grid-column:1 / -1}
+}
+.sumrow{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.sumrow:last-child{border-bottom:0}
+.sumrow.big{border-top:2px solid var(--ink);border-bottom:0;font-weight:800;font-size:15px;padding-top:13px}
+.sumrow .neg{color:var(--red);font-weight:800}
+.sumrow .pos{color:var(--green);font-weight:800}
+
+/* ---------- gerenciar agenda ---------- */
+.proftabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.ptab{
+  border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 18px;font:inherit;
+  font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:9px;transition:.15s;
+}
+.ptab:hover{border-color:var(--gold)}
+.ptab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ptab .av{
+  width:26px;height:26px;border-radius:50%;background:var(--gold-l);color:var(--gold-d);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;
+}
+.ptab.on .av{background:var(--gold);color:var(--ink)}
+.dash4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+@media(max-width:900px){.dash4{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.dash4{grid-template-columns:1fr}}
+.tile{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;position:relative;overflow:hidden}
+.tile::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.tile.g::after{background:var(--green)}
+.tile.r::after{background:var(--red)}
+.tile .tl{font-size:10.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted)}
+.tile .tv{font-size:26px;font-weight:800;letter-spacing:-.8px;margin-top:8px;line-height:1}
+.tile .tf{font-size:12px;color:var(--ink2);margin-top:8px}
+.tile .tf b{color:var(--green)}
+.tile .tf .warn{color:var(--red);font-weight:700}
+.goalbar{margin-top:14px}
+.goalbar .track{height:10px;border-radius:6px;background:#f1ede5;overflow:hidden}
+.goalbar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold),var(--gold-d));transition:.4s}
+.goalbar .lbl2{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:7px;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>InstaBarber<small>by Performa LAB</small></span>
+    </div>
+    <span class="demo-tag">DEMONSTRAÇÃO · DADOS FICTÍCIOS</span>
+    <nav class="tabs">
+      <button class="on" data-tab="home">Home</button>
+      <button data-tab="radar">Gestão de Clientes</button>
+      <button data-tab="gerir">Gerenciar Agenda</button>
+      <button data-tab="financeiro">Financeiro</button>
+      <button data-tab="pagina">Página pública</button>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="shophead">
+    <div class="avatar">BE</div>
+    <div>
+      <h1>Barbearia Exemplo</h1>
+      <div class="sub">Rua da Demo, 12 · Viseu · Terça a sábado, 09:00–19:30</div>
+    </div>
+    <span class="pill">● Sistema ativo</span>
+  </div>
+
+  <!-- ================= HOME ================= -->
+  <section id="tab-home">
+
+    <div class="hero">
+      <div class="hx">Bom dia, Carlos</div>
+      <div class="ht">Terça-feira, 13 de outubro</div>
+      <div class="hs">Tens 7 marcações hoje e 2 contas para pagar. Faltam 1.320 € para o objetivo do mês.</div>
+    </div>
+
+    <div class="dayrow">
+      <div class="daybox g">
+        <div class="dl">Faturado hoje</div>
+        <div class="dv" id="h-fat">51 €</div>
+        <div class="df">3 serviços concluídos</div>
+      </div>
+      <div class="daybox">
+        <div class="dl">Previsão do dia</div>
+        <div class="dv" id="h-prev">110 €</div>
+        <div class="df">com as 4 marcações por atender</div>
+      </div>
+      <div class="daybox">
+        <div class="dl">Faturado no mês</div>
+        <div class="dv">4.180 €</div>
+        <div class="df"><b>76%</b> do objetivo de 5.500 €</div>
+      </div>
+      <div class="daybox r">
+        <div class="dl">Falta para o objetivo</div>
+        <div class="dv">1.320 €</div>
+        <div class="df"><span class="warn">13 dias úteis restantes</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Agendamentos de hoje</h2>
+      <div class="hint">Resumo rápido do dia. Abre a agenda completa para editar ou criar marcações.</div>
+      <div class="home-list" id="h-appts"></div>
+      <a class="bigbtn" href="#" id="go-agenda">Ver agenda completa</a>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Contas a pagar</h2>
+        <div class="hint">Lançadas no Financeiro com vencimento para esta data.</div>
+        <div id="h-bills"></div>
+      </div>
+
+      <div class="card">
+        <h2>Últimos clientes atendidos</h2>
+        <div class="hint">Cada selo é um serviço feito. Ao completar 10, o cliente ganha um corte grátis.</div>
+        <div class="home-list" id="h-recent"></div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Precisam de atenção</h2>
+        <div class="hint">Clientes sumidos há mais tempo — a reativação pode trazer receita esta semana.</div>
+        <div class="home-list" id="h-attention"></div>
+        <a class="bigbtn" href="#" id="go-radar" style="background:#fff;color:var(--ink);border:1px solid var(--line)">Abrir Gestão de Clientes</a>
+      </div>
+
+      <div class="card">
+        <h2>Aniversários do mês</h2>
+        <div class="hint">Boa desculpa para uma mensagem e um corte com desconto.</div>
+        <div class="home-list" id="h-bdays"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RADAR ================= -->
+  <section id="tab-radar" class="hide">
+
+    <div class="grid g4" style="margin-bottom:18px">
+      <div class="kpi red">
+        <div class="lab">Clientes sumidos</div>
+        <div class="val">42</div>
+        <div class="foot">Há mais de 50 dias sem visitar</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">Em risco</div>
+        <div class="val">17</div>
+        <div class="foot">Entre 38 e 49 dias</div>
+      </div>
+      <div class="kpi green">
+        <div class="lab">Faturação a recuperar</div>
+        <div class="val">630€</div>
+        <div class="foot">Estimativa para os próximos 30 dias</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">Ticket médio</div>
+        <div class="val">15,20€</div>
+        <div class="foot"><b>+4,1%</b> vs. mês anterior</div>
+      </div>
+    </div>
+
+    <div class="newbar">
+      <div>
+        <div class="nb-t">Clientes da barbearia</div>
+        <div class="nb-s">Registados e com histórico no sistema</div>
+      </div>
+      <a class="nb-btn" href="instabarber-novo-cliente.html">+ Novo Cliente</a>
+    </div>
+
+    <div class="card">
+      <h2>Quem não voltou</h2>
+      <div class="hint">Clica num cliente para ver a ficha e a mensagem pronta. O sistema marca como sumido quem passou o dobro da frequência habitual.</div>
+
+      <div class="filters">
+        <button class="chip on" data-f="sumido">Sumidos <span class="n">42</span></button>
+        <button class="chip" data-f="risco">Em risco <span class="n">17</span></button>
+        <button class="chip" data-f="ativo">Ativos <span class="n">31</span></button>
+        <button class="chip" data-f="todos">Todos</button>
+        <input class="search" id="q" type="search" placeholder="Buscar cliente...">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th><th>Estado</th><th>Última visita</th><th>Dias sem vir</th><th>Frequência</th><th style="text-align:right">Vale</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Resultado dos últimos 30 dias</h2>
+      <div class="hint">Como o painel mostra valor ao dono — não gráficos soltos, mas dinheiro.</div>
+      <div class="grid g3">
+        <div><div class="lab" style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px">MENSAGENS ENVIADAS</div><div style="font-size:26px;font-weight:800;margin-top:7px">64</div></div>
+        <div><div class="lab" style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px">RESPONDERAM</div><div style="font-size:26px;font-weight:800;margin-top:7px">19 <span style="font-size:13px;color:var(--green);font-weight:700">29,7%</span></div></div>
+        <div><div class="lab" style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px">VOLTARAM À BARBEARIA</div><div style="font-size:26px;font-weight:800;margin-top:7px">11 <span style="font-size:13px;color:var(--green);font-weight:700">17,2%</span></div></div>
+      </div>
+      <div class="sent" style="margin-top:16px">Receita recuperada: 167,20€ em 30 dias — mais que o plano Pro (39€/mês).</div>
+    </div>
+  </section>
+
+  <!-- ================= CLIENT DETAIL ================= -->
+  <section id="tab-cliente" class="hide">
+    <button class="back" id="back">← Voltar ao radar</button>
+
+    <div class="card">
+      <div class="client-head">
+        <div class="big" id="c-ini">JM</div>
+        <div>
+          <h2 id="c-nome">João Martins</h2>
+          <div class="meta" id="c-meta">35 anos · aniversário 14 de novembro</div>
+        </div>
+        <span class="tag sumido" id="c-tag" style="margin-left:auto">Sumido</span>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><div class="l">Última visita</div><div class="v" id="c-ult">12 de agosto</div></div>
+        <div class="stat"><div class="l">Dias sem vir</div><div class="v" id="c-dias">62</div></div>
+        <div class="stat"><div class="l">Frequência habitual</div><div class="v" id="c-freq">24 dias</div></div>
+        <div class="stat"><div class="l">Ticket médio</div><div class="v" id="c-ticket">16,00€</div></div>
+        <div class="stat"><div class="l">Visitas totais</div><div class="v" id="c-vis">19</div></div>
+        <div class="stat"><div class="l">Valor gerado</div><div class="v" id="c-valor">304,00€</div></div>
+      </div>
+
+      <div class="section-title">Histórico de visitas</div>
+      <div class="timeline" id="c-hist"></div>
+    </div>
+
+    <div class="card">
+      <h2>Ações de reativação</h2>
+      <div class="hint">A mensagem é escrita pela IA no tom do barbeiro. Ele revê, ajusta e envia pelo próprio WhatsApp.</div>
+
+      <div class="actions">
+        <button class="btn primary" data-msg="reativar">Mensagem de reativação</button>
+        <button class="btn" data-msg="aniversario">Parabéns / aniversário</button>
+        <button class="btn" data-msg="lembrete">Lembrete de corte</button>
+      </div>
+
+      <div class="msgbox" id="msgbox">
+        <span class="lbl" id="msg-lbl">REATIVAÇÃO</span>
+        <span id="msg-text"></span>
+      </div>
+
+      <div class="actions" style="margin-top:14px">
+        <button class="btn wa" id="send">Enviar pelo WhatsApp</button>
+        <button class="btn" id="copy">Copiar texto</button>
+      </div>
+      <div id="sent-feedback"></div>
+    </div>
+  </section>
+
+  <!-- ================= AGENDA ================= -->
+  <section id="tab-agenda" class="hide">
+    <div class="card">
+      <h2>Agenda</h2>
+      <div class="hint">A demo abre no próximo dia útil com marcações já preenchidas — é isto que faz um sistema parecer real.</div>
+
+      <div class="agenda-head">
+        <div class="days" id="days"></div>
+      </div>
+
+      <div id="appts"></div>
+
+      <div class="grid g3" style="margin-top:20px">
+        <div class="kpi"><div class="lab">Marcações hoje</div><div class="val" id="a-count">7</div><div class="foot">3 serviços encaixados</div></div>
+        <div class="kpi green"><div class="lab">Faturação do dia</div><div class="val" id="a-rev">118€</div><div class="foot">Meta diária: 200€</div></div>
+        <div class="kpi"><div class="lab">Taxa de ocupação</div><div class="val" id="a-occ">68%</div><div class="foot">Sábado chega a 94%</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GERENCIAR AGENDA ================= -->
+  <section id="tab-gerir" class="hide">
+    <div class="card" style="padding-bottom:18px">
+      <h2>Gerenciar Agenda</h2>
+      <div class="hint">Agenda do dia e desempenho de cada profissional. Os objetivos vêm do painel Financeiro.</div>
+      <div class="proftabs" id="proftabs"></div>
+    </div>
+
+    <div class="dash4" id="gerir-tiles"></div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2 id="gerir-h">Agenda do dia — Carlos</h2>
+        <div class="hint" id="gerir-sub">Terça, 13 de outubro</div>
+        <div id="gerir-appts"></div>
+      </div>
+
+      <div class="card">
+        <h2>Progresso para o objetivo</h2>
+        <div class="hint">Quanto falta para fechar o mês.</div>
+        <div id="gerir-goals"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINANCEIRO ================= -->
+  <section id="tab-financeiro" class="hide">
+
+    <div class="grid g2" style="margin-bottom:18px">
+      <div class="goalbox">
+        <div class="gt">Objetivo de faturação do mês</div>
+        <div class="gv" id="goal-total-display">5.500 €</div>
+        <div class="gs" id="goal-sub">Faturado até hoje: 4.180 € · falta 1.320 €</div>
+        <div class="prog"><i id="goal-bar" style="width:76%"></i></div>
+        <div class="gm"><span>0 €</span><span id="goal-pct">76% do objetivo</span></div>
+      </div>
+
+      <div class="card" style="margin-bottom:0">
+        <h2>Definir objetivo</h2>
+        <div class="hint">Mensal da barbearia e individual de cada profissional.</div>
+        <div class="fgrid">
+          <div class="fld">
+            <label>Objetivo da barbearia (mês)</label>
+            <input id="goal-shop" type="number" value="5500" step="100">
+          </div>
+          <div class="fld">
+            <label>Mês de referência</label>
+            <select id="goal-month">
+              <option>Outubro 2026</option>
+              <option>Novembro 2026</option>
+              <option>Dezembro 2026</option>
+            </select>
+          </div>
+        </div>
+        <div class="fgrid" style="margin-top:14px" id="pro-goals"></div>
+        <button class="btn primary" id="save-goal" style="margin-top:16px">Guardar objetivos</button>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Custos fixos do mês</h2>
+        <div class="hint">Despesas que se repetem, com a data de pagamento.</div>
+        <table class="launch">
+          <thead><tr><th>Descrição</th><th>Valor</th><th>Vencimento</th><th></th></tr></thead>
+          <tbody id="fix-rows"></tbody>
+        </table>
+        <div class="launchform">
+          <input id="fix-desc" placeholder="Ex.: Renda da loja">
+          <input id="fix-val" type="number" placeholder="Valor €" step="0.01">
+          <input id="fix-date" type="date">
+          <button id="fix-add">Lançar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Despesas</h2>
+        <div class="hint">Gastos pontuais, com a data em que aconteceram.</div>
+        <table class="launch">
+          <thead><tr><th>Descrição</th><th>Valor</th><th>Data</th><th></th></tr></thead>
+          <tbody id="exp-rows"></tbody>
+        </table>
+        <div class="launchform">
+          <input id="exp-desc" placeholder="Ex.: Máquina de corte">
+          <input id="exp-val" type="number" placeholder="Valor €" step="0.01">
+          <input id="exp-date" type="date">
+          <button id="exp-add">Lançar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Resumo do mês</h2>
+      <div class="hint">Atualiza automaticamente com tudo o que lançares acima.</div>
+      <div id="fin-summary"></div>
+    </div>
+  </section>
+
+  <!-- ================= GESTAO ================= -->
+  <section id="tab-gestao" class="hide">
+
+    <div class="grid g4" style="margin-bottom:18px">
+      <div class="kpi green">
+        <div class="lab">Faturação do mês</div>
+        <div class="val">4.180€</div>
+        <div class="foot"><b>+6,8%</b> vs. setembro</div>
+      </div>
+      <div class="kpi red">
+        <div class="lab">Despesas do mês</div>
+        <div class="val">2.264€</div>
+        <div class="foot">Fixas 1.690€ · variáveis 574€</div>
+      </div>
+      <div class="kpi green">
+        <div class="lab">Lucro do mês</div>
+        <div class="val">1.916€</div>
+        <div class="foot">Margem de <b>45,8%</b></div>
+      </div>
+      <div class="kpi">
+        <div class="lab">Ticket médio</div>
+        <div class="val">15,20€</div>
+        <div class="foot"><b>+4,1%</b> vs. mês anterior</div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Receita dos últimos 6 meses</h2>
+        <div class="hint">O barbeiro vê se está a crescer ou a estagnar — sem folhas de Excel.</div>
+        <div class="bars" id="bars"></div>
+      </div>
+
+      <div class="card">
+        <h2>Resumo do mês</h2>
+        <div class="hint">Entradas, saídas e o que sobra.</div>
+        <table class="ledger">
+          <tbody>
+            <tr><td>Serviços de barbearia</td><td class="money">3.960€</td></tr>
+            <tr><td>Produtos (pomadas, óleos)</td><td class="money">220€</td></tr>
+            <tr class="total"><td>Total de receita</td><td class="money">4.180€</td></tr>
+            <tr class="gap"><td colspan="2"></td></tr>
+            <tr><td>Renda da loja</td><td class="money neg">650€</td></tr>
+            <tr><td>Salário do Rui</td><td class="money neg">820€</td></tr>
+            <tr><td>Produtos e consumíveis</td><td class="money neg">340€</td></tr>
+            <tr><td>Energia, água e net</td><td class="money neg">120€</td></tr>
+            <tr><td>Marketing e Instagram</td><td class="money neg">180€</td></tr>
+            <tr><td>InstaBarber</td><td class="money neg">39€</td></tr>
+            <tr><td>Contabilidade</td><td class="money neg">115€</td></tr>
+            <tr class="total"><td>Total de despesas</td><td class="money neg">2.264€</td></tr>
+          </tbody>
+        </table>
+        <div class="sent" style="margin-top:16px">Resultado do mês: 1.916€ de lucro. O InstaBarber representa 1,7% das despesas.</div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Serviços mais rentáveis</h2>
+        <div class="hint">Quantidade e receita por serviço, para decidir preços e promoções.</div>
+        <table>
+          <thead><tr><th>Serviço</th><th>Feitos</th><th>Receita</th><th style="text-align:right">Peso</th></tr></thead>
+          <tbody id="svc-rows"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Indicadores do negócio</h2>
+        <div class="hint">Os números que dizem se o mês foi bom ou mau.</div>
+        <div class="kpi-list" id="kpi-list"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Ocupação por dia da semana</h2>
+      <div class="hint">Onde está o tempo morto — e onde vale a pena lançar uma promoção.</div>
+      <div class="occ" id="occ"></div>
+      <div class="sent" style="margin-top:16px">Terça e quarta ficam abaixo de 45%. Uma promoção de 20% nesses dias pode trazer 380€ de receita extra por mês.</div>
+    </div>
+  </section>
+
+  <!-- ================= PAGINA PUBLICA ================= -->
+  <section id="tab-pagina" class="hide">
+    <div class="card">
+      <h2>Página pública</h2>
+      <div class="hint">O link que vai na bio do Instagram e o QR colado no balcão. Mesmo conteúdo, um só lugar para o barbeiro atualizar.</div>
+
+      <div class="iphone">
+      <div class="screen">
+      <div class="notch"></div>
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="ic">▮▮▮ ᯤ ▰</span>
+      </div>
+      <div class="cover">
+        <div class="pole">✂</div>
+        <div class="ct">Barbearia Exemplo</div>
+        <div class="cs">Viseu · desde 2018</div>
+      </div>
+      <div class="sbody">
+        <div class="slogo">BE</div>
+        <h3>Barbearia Exemplo</h3>
+        <div class="ssub">Cortes clássicos e modernos desde 2018 · Viseu<br>Avaliação Google: 4,8 ★ (213 avaliações)</div>
+
+        <a class="cbtn pri" href="instabarber-servicos.html">
+          <span class="cb-ic">✂</span>
+          <span class="cb-l"><span class="cb-t">Conheça os serviços</span><span class="cb-s">4 serviços · preços e duração</span></span>
+          <span class="cb-arrow">›</span>
+        </a>
+
+        <a class="cbtn" href="instabarber-marcar.html">
+          <span class="cb-ic">📅</span>
+          <span class="cb-l"><span class="cb-t">Fazer marcação</span><span class="cb-s">Escolhe serviço, dia e hora</span></span>
+          <span class="cb-arrow">›</span>
+        </a>
+
+        <a class="cbtn wa2" href="https://wa.me/351920503604?text=Ol%C3%A1!%20Vi%20o%20vosso%20perfil%20e%20queria%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener">
+          <span class="cb-ic">💬</span>
+          <span class="cb-l"><span class="cb-t">Chamar no WhatsApp</span><span class="cb-s">Resposta mais rápida das 8h às 19h</span></span>
+          <span class="cb-arrow">›</span>
+        </a>
+
+        <a class="cbtn" href="tel:+351920503604">
+          <span class="cb-ic">📞</span>
+          <span class="cb-l"><span class="cb-t">Fazer uma chamada</span><span class="cb-s">+351 920 503 604</span></span>
+          <span class="cb-arrow">›</span>
+        </a>
+
+        <a class="cbtn" href="#" id="loyal-btn">
+          <span class="cb-ic">⭐</span>
+          <span class="cb-l"><span class="cb-t">Ver pontos acumulados</span><span class="cb-s">Cartão de visitas · 7 de 10</span></span>
+          <span class="cb-arrow">›</span>
+        </a>
+
+        <a class="cbtn gm" href="https://www.google.com/maps/search/?api=1&query=Barbearia+Exemplo+Viseu" target="_blank" rel="noopener">
+          <span class="cb-ic">★</span>
+          <span class="cb-l"><span class="cb-t">Avaliar no Google</span><span class="cb-s">Ajuda a barbearia a aparecer nas buscas</span></span>
+          <span class="cb-arrow">›</span>
+        </a>
+      </div>
+      </div>
+      </div>
+
+      <!-- Cartão de fidelização (cliente) -->
+      <div id="loyal-panel" class="hide" style="margin-top:22px">
+        <div class="iphone">
+        <div class="screen">
+        <div class="notch"></div>
+        <div class="statusbar"><span>9:41</span><span class="ic">▮▮▮ ᯤ ▰</span></div>
+        <div class="cover" style="height:120px">
+          <div class="pole">⭐</div>
+          <div class="ct">Os teus pontos</div>
+          <div class="cs">Cartão de visitas · Barbearia Exemplo</div>
+        </div>
+        <div class="sbody">
+          <div class="slogo">BE</div>
+          <h3>João Martins</h3>
+          <div class="ssub">7 serviços concluídos · membro desde janeiro de 2024</div>
+
+          <div class="section-title">Cartão de visitas</div>
+          <div class="loyal-card">
+            <div id="loyal-stamps"></div>
+            <div class="loyal-legend">
+              <span id="loyal-count">7 selos completos</span>
+              <span class="loyal-goal">Meta: 10</span>
+            </div>
+          </div>
+          <div class="notice ok" style="margin-top:16px"><b>Faltam 3 selos</b> para ganhares um corte grátis.</div>
+
+          <div class="section-title">Benefícios ativos</div>
+          <div class="svc"><div><div class="nm">Terça e quarta com 20%</div><div class="du">Dias com menos movimento · válido neste mês</div></div><div class="pr">−20%</div></div>
+          <div class="svc"><div><div class="nm">Corte de aniversário grátis</div><div class="du">Durante o mês do teu aniversário</div></div><div class="pr">Grátis</div></div>
+
+          <div class="section-title">Histórico recente</div>
+          <div class="svc"><div><div class="nm">Corte + barba</div><div class="du">há 12 dias · com Carlos</div></div><div class="pr">22€</div></div>
+          <div class="svc"><div><div class="nm">Corte masculino</div><div class="du">há 36 dias · com Carlos</div></div><div class="pr">15€</div></div>
+
+          <a class="cbtn pri" href="instabarber-marcar.html" style="margin-top:16px">
+            <span class="cb-ic">📅</span>
+            <span class="cb-l"><span class="cb-t">Usar os meus pontos</span><span class="cb-s">Marcar agora</span></span>
+            <span class="cb-arrow">›</span>
+          </a>
+          <button class="cbtn" id="loyal-back" style="margin-top:8px">
+            <span class="cb-ic">←</span>
+            <span class="cb-l"><span class="cb-t">Voltar ao perfil</span></span>
+            <span class="cb-arrow">›</span>
+          </button>
+        </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Lista de serviços (cliente) -->
+      <div id="svc-panel" class="hide" style="margin-top:22px">
+        <div class="iphone">
+        <div class="screen">
+        <div class="notch"></div>
+        <div class="statusbar"><span>9:41</span><span class="ic">▮▮▮ ᯤ ▰</span></div>
+        <div class="cover" style="height:120px">
+          <div class="pole">✂</div>
+          <div class="ct">Serviços</div>
+          <div class="cs">Barbearia Exemplo · Viseu</div>
+        </div>
+        <div class="sbody">
+          <div class="slogo">BE</div>
+          <h3>O que fazemos</h3>
+          <div class="ssub">Preços e duração de cada serviço. Marcação online disponível.</div>
+
+          <div class="svc"><div><div class="nm">Corte masculino</div><div class="du">40 min · máquina e tesoura</div></div><div class="pr">15€</div></div>
+          <div class="svc"><div><div class="nm">Corte + barba</div><div class="du">60 min · o serviço completo</div></div><div class="pr">22€</div></div>
+          <div class="svc"><div><div class="nm">Barba desenhada</div><div class="du">25 min · navalha e toalha quente</div></div><div class="pr">10€</div></div>
+          <div class="svc"><div><div class="nm">Corte infantil</div><div class="du">30 min · até aos 12 anos</div></div><div class="pr">12€</div></div>
+
+          <div class="notice" style="margin-top:16px"><b>Terça e quarta:</b> 20% de desconto nos cortes marcados online.</div>
+
+          <a class="cbtn pri" href="instabarber-marcar.html" style="margin-top:4px">
+            <span class="cb-ic">📅</span>
+            <span class="cb-l"><span class="cb-t">Fazer marcação</span><span class="cb-s">Escolhe serviço, dia e hora</span></span>
+            <span class="cb-arrow">›</span>
+          </a>
+          <button class="cbtn" id="svc-back" style="margin-top:8px">
+            <span class="cb-ic">←</span>
+            <span class="cb-l"><span class="cb-t">Voltar ao perfil</span></span>
+            <span class="cb-arrow">›</span>
+          </button>
+        </div>
+        </div>
+        </div>
+      </div>
+      </div>
+      </div>
+
+      <div class="bignote" style="margin-top:22px">
+        <b>Nota para a demonstração:</b> o nome da barbearia, o logótipo e os valores são fictícios. Esta é uma maquete funcional do sistema — serve para mostrar como o painel, a agenda e a página funcionariam no negócio do cliente.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- dados fictícios ---------------- */
+const CLIENTS = [
+  {n:"João Martins",      i:"JM", ph:"912 345 678", age:35, bday:"14 de novembro", st:"sumido", last:"12 de agosto",     dias:62, freq:24, ticket:"16,00", vis:19, valor:"304,00", pref:"Corte + barba"},
+  {n:"Miguel Sousa",      i:"MS", ph:"934 112 907", age:41, bday:"3 de março",     st:"sumido", last:"2 de agosto",      dias:72, freq:28, ticket:"15,00", vis:24, valor:"360,00", pref:"Corte masculino"},
+  {n:"Ricardo Alves",     i:"RA", ph:"927 664 210", age:29, bday:"22 de dezembro", st:"sumido", last:"20 de agosto",     dias:54, freq:21, ticket:"18,00", vis:12, valor:"216,00", pref:"Corte + barba"},
+  {n:"André Dias",        i:"AD", ph:"963 208 554", age:38, bday:"7 de julho",     st:"sumido", last:"8 de agosto",      dias:66, freq:30, ticket:"14,00", vis:16, valor:"224,00", pref:"Corte masculino"},
+  {n:"Pedro Nunes",       i:"PN", ph:"915 771 043", age:52, bday:"19 de janeiro",  st:"sumido", last:"1 de agosto",      dias:73, freq:35, ticket:"13,00", vis:31, valor:"403,00", pref:"Corte simples"},
+  {n:"Hugo Ferreira",     i:"HF", ph:"932 559 188", age:33, bday:"28 de setembro", st:"risco",  last:"5 de setembro",    dias:38, freq:26, ticket:"17,00", vis:14, valor:"238,00", pref:"Corte + barba"},
+  {n:"Bruno Costa",       i:"BC", ph:"966 340 712", age:27, bday:"11 de maio",     st:"risco",  last:"9 de setembro",    dias:34, freq:21, ticket:"15,00", vis:9,  valor:"135,00", pref:"Corte masculino"},
+  {n:"Tiago Ramos",       i:"TR", ph:"918 226 390", age:44, bday:"2 de fevereiro", st:"risco",  last:"3 de setembro",    dias:40, freq:28, ticket:"19,00", vis:22, valor:"418,00", pref:"Corte + barba"},
+  {n:"Nuno Lopes",        i:"NL", ph:"925 883 461", age:31, bday:"16 de agosto",   st:"ativo",  last:"6 de outubro",     dias:7,  freq:22, ticket:"15,00", vis:11, valor:"165,00", pref:"Corte masculino"},
+  {n:"Carlos Pereira",    i:"CP", ph:"939 447 025", age:47, bday:"30 de junho",    st:"ativo",  last:"3 de outubro",     dias:10, freq:24, ticket:"16,00", vis:28, valor:"448,00", pref:"Corte + barba"},
+  {n:"Fábio Teixeira",    i:"FT", ph:"961 019 774", age:24, bday:"9 de abril",     st:"ativo",  last:"9 de outubro",     dias:4,  freq:18, ticket:"14,00", vis:8,  valor:"112,00", pref:"Corte masculino"},
+  {n:"Vasco Antunes",     i:"VA", ph:"914 662 801", age:36, bday:"25 de outubro",  st:"sumido", last:"14 de agosto",     dias:60, freq:25, ticket:"16,00", vis:17, valor:"272,00", pref:"Corte + barba"}
+];
+
+const MSGS = {
+  reativar: (c) =>
+`Olá ${c.n.split(" ")[0]}! Tudo bem? 👋
+Aqui é o Carlos, da Barbearia Exemplo. Reparei que já passa de ${c.dias} dias desde o teu último corte — normalmente vens a cada ${c.freq} dias, por isso quis saber como estás.
+
+Se quiseres, tenho horário livre esta semana e faço-te o de sempre. Queres que te reserve um lugar?
+
+Responde só com o dia que te dá mais jeito. 👍`,
+  aniversario: (c) =>
+`Olá ${c.n.split(" ")[0]}! Feliz aniversário! 🎂
+Aqui é o Carlos, da Barbearia Exemplo. Como estás de parabéns, o próximo corte é por minha conta — é a minha forma de agradecer a tua preferência ao longo destes anos.
+
+Válido durante este mês. Queres que marque?`,
+  lembrete: (c) =>
+`Olá ${c.n.split(" ")[0]}! Já está na altura do teu ${c.pref.toLowerCase()} 💈
+Faz ${c.dias} dias desde a última visita e normalmente vens a cada ${c.freq}.
+
+Tenho vaga amanhã às 18:30 e quinta às 11:00. Alguma serve?`
+};
+
+const APPTS = {
+  base: [
+    {t:"09:00", c:"Nuno Lopes",     s:"Corte masculino",  a:"15€", bar:"Carlos"},
+    {t:"09:45", c:"Fábio Teixeira", s:"Corte masculino",  a:"14€", bar:"Carlos"},
+    {t:"10:30", c:"—",              s:"Livre",            a:"",    bar:""},
+    {t:"11:15", c:"Carlos Pereira", s:"Corte + barba",    a:"22€", bar:"Carlos"},
+    {t:"12:15", c:"—",              s:"Livre",            a:"",    bar:""},
+    {t:"14:00", c:"Hugo Ferreira",  s:"Corte + barba",    a:"22€", bar:"Rui"},
+    {t:"15:00", c:"Duarte Melo",    s:"Barba desenhada",  a:"10€", bar:"Rui"},
+    {t:"15:45", c:"Simão Rocha",    s:"Corte masculino",  a:"15€", bar:"Carlos"},
+    {t:"16:30", c:"—",              s:"Livre",            a:"",    bar:""},
+    {t:"17:15", c:"Emanuel Gil",    s:"Corte infantil",   a:"12€", bar:"Rui"},
+    {t:"18:00", c:"Tiago Ramos",    s:"Corte + barba",    a:"22€", bar:"Carlos"},
+    {t:"19:00", c:"—",              s:"Livre",            a:"",    bar:""}
+  ]
+};
+
+/* ---------------- estado ---------------- */
+let current = null;
+let filter = "sumido";
+let query = "";
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+/* ---------------- tabs ---------------- */
+$$("nav.tabs button").forEach(b => b.onclick = () => {
+  const t = b.dataset.tab;
+  $$("nav.tabs button").forEach(x => x.classList.toggle("on", x === b));
+  $("#tab-home").classList.toggle("hide", t !== "home");
+  $("#tab-radar").classList.toggle("hide", t !== "radar");
+  $("#tab-agenda").classList.toggle("hide", t !== "agenda");
+  $("#tab-gestao").classList.toggle("hide", t !== "gestao");
+  $("#tab-gerir").classList.toggle("hide", t !== "gerir");
+  $("#tab-financeiro").classList.toggle("hide", t !== "financeiro");
+  $("#tab-pagina").classList.toggle("hide", t !== "pagina");
+  $("#tab-cliente").classList.add("hide");
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+/* ---------------- radar ---------------- */
+function renderRows(){
+  const body = $("#rows");
+  let list = CLIENTS.filter(c => filter === "todos" ? true : c.st === filter);
+  if (query.trim()){
+    const q = query.trim().toLowerCase();
+    list = list.filter(c => c.n.toLowerCase().includes(q));
+  }
+  list.sort((a,b) => b.dias - a.dias);
+  body.innerHTML = list.map((c,idx) => `
+    <tr data-idx="${CLIENTS.indexOf(c)}">
+      <td>
+        <div class="who">
+          <div class="ini">${c.i}</div>
+          <div><div class="nm">${c.n}</div><div class="pp">${c.pref}</div></div>
+        </div>
+      </td>
+      <td><span class="tag ${c.st}">${c.st === "sumido" ? "Sumido" : c.st === "risco" ? "Em risco" : "Ativo"}</span></td>
+      <td class="dim">${c.last}</td>
+      <td><b>${c.dias}</b> <span class="dim">dias</span></td>
+      <td class="dim">${c.freq} dias</td>
+      <td style="text-align:right" class="money">${c.ticket}€</td>
+    </tr>`).join("") ||
+    `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:32px">Nenhum cliente neste filtro.</td></tr>`;
+
+  body.querySelectorAll("tr[data-idx]").forEach(tr => tr.onclick = () => openClient(+tr.dataset.idx));
+}
+
+$$(".chip").forEach(ch => ch.onclick = () => {
+  $$(".chip").forEach(x => x.classList.toggle("on", x === ch));
+  filter = ch.dataset.f;
+  renderRows();
+});
+$("#q").oninput = (e) => { query = e.target.value; renderRows(); };
+
+/* ---------------- cliente ---------------- */
+function openClient(idx){
+  current = CLIENTS[idx];
+  const c = current;
+  $("#c-ini").textContent = c.i;
+  $("#c-nome").textContent = c.n;
+  $("#c-meta").textContent = `${c.age} anos · aniversário ${c.bday} · ${c.ph}`;
+  const tg = $("#c-tag");
+  tg.className = "tag " + c.st;
+  tg.textContent = c.st === "sumido" ? "Sumido" : c.st === "risco" ? "Em risco" : "Ativo";
+  $("#c-ult").textContent = c.last;
+  $("#c-dias").textContent = c.dias;
+  $("#c-freq").textContent = c.freq + " dias";
+  $("#c-ticket").textContent = c.ticket + "€";
+  $("#c-vis").textContent = c.vis;
+  $("#c-valor").textContent = c.valor + "€";
+
+  // histórico: simula visitas com intervalo ~freq
+  const step = c.freq;
+  let hist = "";
+  for (let k = 0; k < 6; k++){
+    const ago = c.dias + k * step;
+    hist += `<div class="visit"><div class="d">há ${ago} dias</div><div class="s">${c.pref}</div><div class="s">${c.ticket}€</div></div>`;
+  }
+  $("#c-hist").innerHTML = hist;
+
+  showMsg("reativar");
+  $("#sent-feedback").innerHTML = "";
+  $("#tab-radar").classList.add("hide");
+  $("#tab-cliente").classList.remove("hide");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function showMsg(kind){
+  if (!current) return;
+  const lbls = {reativar:"REATIVAÇÃO", aniversario:"ANIVERSÁRIO", lembrete:"LEMBRETE DE CORTE"};
+  $("#msg-lbl").textContent = lbls[kind];
+  $("#msg-text").textContent = MSGS[kind](current);
+}
+$$("[data-msg]").forEach(b => b.onclick = () => {
+  $$("[data-msg]").forEach(x => x.classList.toggle("primary", x === b));
+  showMsg(b.dataset.msg);
+  $("#sent-feedback").innerHTML = "";
+});
+$("#back").onclick = () => {
+  $("#tab-cliente").classList.add("hide");
+  $("#tab-radar").classList.remove("hide");
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+$("#send").onclick = () => {
+  $("#sent-feedback").innerHTML =
+    `<div class="sent">✓ Mensagem preparada para envio no WhatsApp de ${current.n} (${current.ph}). Na versão final, o envio é feito pela API do WhatsApp Business, com registo no histórico do cliente.</div>`;
+  toast("Mensagem enviada para " + current.n.split(" ")[0]);
+};
+$("#copy").onclick = async () => {
+  try{
+    await navigator.clipboard.writeText($("#msg-text").textContent);
+    toast("Texto copiado");
+  }catch(e){ toast("Selecione o texto e copie manualmente"); }
+};
+
+/* ---------------- agenda ---------------- */
+const DIAS = [
+  {w:"Ter", n:"13"}, {w:"Qua", n:"14"}, {w:"Qui", n:"15"},
+  {w:"Sex", n:"16"}, {w:"Sáb", n:"17"}
+];
+let diaIdx = 0;
+const lembretesEnviados = {};
+
+function renderDays(){
+  $("#days").innerHTML = DIAS.map((d,i) =>
+    `<button class="day ${i===diaIdx?"on":""}" data-i="${i}"><div class="w">${d.w}</div><div class="n">${d.n}</div></button>`
+  ).join("");
+  $$(".day").forEach(b => b.onclick = () => { diaIdx = +b.dataset.i; renderDays(); renderAppts(); });
+}
+
+function renderAppts(){
+  // varia levemente por dia para parecer real
+  const fator = [1, 0.92, 1.08, 1.15, 1.3][diaIdx];
+  const list = APPTS.base.map(a => {
+    if (!a.a) return a;
+    const v = Math.round(parseFloat(a.a) * fator);
+    return {...a, a: v + "€"};
+  });
+  $("#appts").innerHTML = list.map(a => a.a ? `
+    <div class="appt">
+      <div class="time">${a.t}</div>
+      <div class="bar"></div>
+      <div class="info">
+        <div class="t">${a.c}</div>
+        <div class="s">${a.s} · ${a.bar}</div>
+      </div>
+      <div class="amt">${a.a}</div>
+      <button class="remind ${lembretesEnviados[a.t] ? "sent" : ""}" data-t="${a.t}" data-c="${a.c}">
+        ${lembretesEnviados[a.t] ? "✓ Enviado" : "🔔 Lembrete"}
+      </button>
+    </div>` : `
+    <div class="appt" style="opacity:.5">
+      <div class="time">${a.t}</div>
+      <div class="bar" style="background:var(--line)"></div>
+      <div class="info"><div class="t" style="color:var(--muted);font-weight:600">Horário livre</div><div class="s">Disponível para marcação online</div></div>
+      <div class="amt dim">—</div>
+    </div>`).join("");
+
+  const marc = list.filter(a => a.a);
+  const rec = marc.reduce((s,a) => s + parseFloat(a.a), 0);
+  $("#a-count").textContent = marc.length;
+  $("#a-rev").textContent = Math.round(rec) + "€";
+  $("#a-occ").textContent = Math.round(marc.length / list.length * 100) + "%";
+
+  // botões de lembrete
+  $$("#appts .remind").forEach(b => b.onclick = () => {
+    const t = b.dataset.t;
+    if (lembretesEnviados[t]) return;
+    const nome = b.dataset.c.split(" ")[0];
+    const msg = encodeURIComponent(
+      `Olá ${nome}! 😊 Lembramos que tens uma marcação para hoje às ${t}. Estamos ansiosos à vossa espera! `
+    );
+    window.open(`https://wa.me/351920503604?text=${msg}`, "_blank", "noopener");
+    lembretesEnviados[t] = true;
+    b.classList.add("sent");
+    b.textContent = "✓ Enviado";
+    toast("Lembrete enviado para " + nome + " às " + t);
+  });
+}
+
+/* ---------------- gestao ---------------- */
+const MESES = [
+  {m:"Mai", v:3120}, {m:"Jun", v:3480}, {m:"Jul", v:3310},
+  {m:"Ago", v:2960}, {m:"Set", v:3915}, {m:"Out", v:4180}
+];
+
+const SERVICOS = [
+  {n:"Corte masculino", q:148, r:2220},
+  {n:"Corte + barba",   q:64,  r:1408},
+  {n:"Barba desenhada", q:41,  r:410},
+  {n:"Corte infantil",  q:18,  r:216},
+  {n:"Produtos",        q:11,  r:220}
+];
+
+const KPI_ROWS = [
+  ["Faturação média por dia",      "159€",      "good"],
+  ["Receita por hora aberta",      "21,40€",    ""],
+  ["Clientes atendidos no mês",    "275",       "good"],
+  ["Clientes novos no mês",        "23",        "good"],
+  ["Clientes que voltaram",        "11",        "good"],
+  ["Taxa de faltas (no-show)",     "4,2%",      "bad"],
+  ["Ocupação média",               "68%",       ""],
+  ["Ticket médio",                 "15,20€",    "good"]
+];
+
+const OCUPACAO = [
+  {d:"Segunda", p:0},  {d:"Terça", p:38}, {d:"Quarta", p:44},
+  {d:"Quinta", p:62},  {d:"Sexta", p:88}, {d:"Sábado", p:94}
+];
+
+function renderGestao(){
+  const max = Math.max(...MESES.map(x => x.v));
+  $("#bars").innerHTML = MESES.map((x,i) => {
+    const h = Math.round(x.v / max * 100);
+    const last = i === MESES.length - 1;
+    return `<div class="bar-col">
+      <div class="amt">${(x.v/1000).toFixed(1)}k€</div>
+      <div class="bar ${last?"":"off"}" style="height:${h}%"></div>
+      <div class="mo">${x.m}</div>
+    </div>`;
+  }).join("");
+
+  const totQ = SERVICOS.reduce((s,x) => s + x.q, 0);
+  const totR = SERVICOS.reduce((s,x) => s + x.r, 0);
+  $("#svc-rows").innerHTML = SERVICOS.map(x => `
+    <tr>
+      <td><b>${x.n}</b></td>
+      <td class="dim">${x.q}</td>
+      <td class="money">${x.r}€</td>
+      <td style="text-align:right" class="dim">${Math.round(x.r / totR * 100)}%</td>
+    </tr>`).join("");
+
+  $("#kpi-list").innerHTML = KPI_ROWS.map(([k,v,c]) => `
+    <div class="krow"><span class="k">${k}</span><span class="v ${c}">${v}</span></div>`).join("");
+
+  $("#occ").innerHTML = OCUPACAO.map(x => `
+    <div class="orow">
+      <div class="d">${x.d}</div>
+      <div class="track"><div class="fill ${x.p > 0 && x.p < 50 ? "low" : ""}" style="width:${x.p}%"></div></div>
+      <div class="p">${x.p}%</div>
+    </div>`).join("");
+}
+
+/* ---------------- gerenciar agenda ---------------- */
+const PROFS = [
+  { id:"carlos", nome:"Carlos", ini:"CA", objetivo:2600, faturado:2180, dia:118,
+    appts:[
+      {t:"09:00", c:"Nuno Lopes",     s:"Corte masculino", a:15, done:true},
+      {t:"09:45", c:"Fábio Teixeira", s:"Corte masculino", a:14, done:true},
+      {t:"10:30", c:"—",              s:"Livre",           a:0,  done:false},
+      {t:"11:15", c:"Carlos Pereira", s:"Corte + barba",   a:22, done:true},
+      {t:"12:15", c:"—",              s:"Livre",           a:0,  done:false},
+      {t:"15:45", c:"Simão Rocha",    s:"Corte masculino", a:15, done:false},
+      {t:"18:00", c:"Tiago Ramos",    s:"Corte + barba",   a:22, done:false}
+    ]},
+  { id:"rui", nome:"Rui", ini:"RU", objetivo:2000, faturado:1510, dia:86,
+    appts:[
+      {t:"10:00", c:"Emanuel Gil",    s:"Corte infantil",  a:12, done:true},
+      {t:"11:00", c:"—",              s:"Livre",           a:0,  done:false},
+      {t:"14:00", c:"Hugo Ferreira",  s:"Corte + barba",   a:22, done:true},
+      {t:"15:00", c:"Duarte Melo",    s:"Barba desenhada", a:10, done:true},
+      {t:"17:15", c:"Vasco Antunes",  s:"Corte masculino", a:15, done:false},
+      {t:"18:45", c:"—",              s:"Livre",           a:0,  done:false}
+    ]}
+];
+let profIdx = 0;
+
+function renderProfTabs(){
+  $("#proftabs").innerHTML = PROFS.map((p,i) =>
+    `<button class="ptab ${i===profIdx?"on":""}" data-i="${i}">
+       <span class="av">${p.ini}</span>${p.nome}
+     </button>`).join("");
+  $$(".ptab").forEach(b => b.onclick = () => { profIdx = +b.dataset.i; renderGerir(); });
+}
+
+function renderGerir(){
+  renderProfTabs();
+  const p = PROFS[profIdx];
+
+  const previsto = p.appts.reduce((s,a) => s + a.a, 0);
+  const feito    = p.appts.filter(a => a.done).reduce((s,a) => s + a.a, 0);
+  const objDia   = Math.round(p.objetivo / 22);              // ~22 dias úteis
+  const faltaDia = Math.max(0, objDia - p.dia);
+  const faltaMes = Math.max(0, p.objetivo - p.faturado);
+  const pctMes   = Math.round(p.faturado / p.objetivo * 100);
+  const ocup      = Math.round(p.appts.filter(a => a.a).length / p.appts.length * 100);
+
+  $("#gerir-h").textContent = `Agenda do dia — ${p.nome}`;
+  $("#gerir-sub").textContent = "Terça, 13 de outubro · até às 19:30";
+
+  $("#gerir-tiles").innerHTML = `
+    <div class="tile">
+      <div class="tl">Faturado hoje</div>
+      <div class="tv">${p.dia} €</div>
+      <div class="tf">${p.appts.filter(a => a.done).length} serviços concluídos</div>
+    </div>
+    <div class="tile">
+      <div class="tl">Previsão do dia</div>
+      <div class="tv">${previsto} €</div>
+      <div class="tf">${p.appts.filter(a => a.a && !a.done).length} marcações ainda por atender</div>
+    </div>
+    <div class="tile g">
+      <div class="tl">Faturado no mês</div>
+      <div class="tv">${p.faturado} €</div>
+      <div class="tf">${pctMes}% do objetivo de ${p.objetivo} €</div>
+    </div>
+    <div class="tile ${faltaDia > 0 ? "r" : "g"}">
+      <div class="tl">Falta para o objetivo do dia</div>
+      <div class="tv">${faltaDia} €</div>
+      <div class="tf">Meta diária: ${objDia} € ${faltaDia > 0 ? '<span class="warn">· ainda por atingir</span>' : '· atingida'}</div>
+    </div>`;
+
+  $("#gerir-appts").innerHTML = p.appts.map(a => a.a ? `
+    <div class="appt">
+      <div class="time">${a.t}</div>
+      <div class="bar" style="${a.done ? "" : "background:#d9d2c6"}"></div>
+      <div class="info">
+        <div class="t">${a.c} ${a.done ? '<span class="tag ativo" style="margin-left:6px">feito</span>' : '<span class="tag risco" style="margin-left:6px">agendado</span>'}</div>
+        <div class="s">${a.s}</div>
+      </div>
+      <div class="amt">${a.a}€</div>
+    </div>` : `
+    <div class="appt" style="opacity:.5">
+      <div class="time">${a.t}</div>
+      <div class="bar" style="background:var(--line)"></div>
+      <div class="info"><div class="t" style="color:var(--muted);font-weight:600">Horário livre</div><div class="s">Disponível para marcação</div></div>
+      <div class="amt dim">—</div>
+    </div>`).join("");
+
+  $("#gerir-goals").innerHTML = `
+    <div class="goalbar">
+      <div class="track"><div class="fill" style="width:${Math.min(100,pctMes)}%"></div></div>
+      <div class="lbl2"><span>Objetivo do mês</span><span><b>${p.faturado} €</b> de ${p.objetivo} €</span></div>
+    </div>
+    <div class="sumrow" style="margin-top:14px"><span>Falta para fechar o mês</span><span class="neg">${faltaMes} €</span></div>
+    <div class="sumrow"><span>Objetivo diário (22 dias úteis)</span><span>${objDia} €</span></div>
+    <div class="sumrow"><span>Dias úteis restantes no mês</span><span>13 dias</span></div>
+    <div class="sumrow"><span>Precisas por dia daqui em diante</span><span class="neg">${Math.round(faltaMes / 13)} €</span></div>
+    <div class="sumrow"><span>Taxa de ocupação do dia</span><span>${ocup}%</span></div>`;
+}
+
+/* ---------------- financeiro ---------------- */
+const FATURADO_MES = 4180;
+
+let FIXOS = [
+  {d:"Renda da loja",        v:650.00, dt:"2026-10-05"},
+  {d:"Salário do Rui",       v:820.00, dt:"2026-10-05"},
+  {d:"Energia, água e net",  v:120.00, dt:"2026-10-10"},
+  {d:"Contabilidade",        v:115.00, dt:"2026-10-12"},
+  {d:"InstaBarber",          v:39.00,  dt:"2026-10-15"}
+];
+let DESPESAS = [
+  {d:"Produtos e consumíveis", v:210.00, dt:"2026-10-03"},
+  {d:"Lâminas e navalhas",     v:85.00,  dt:"2026-10-07"},
+  {d:"Marketing e Instagram",  v:180.00, dt:"2026-10-09"},
+  {d:"Máquina de corte",       v:99.00,  dt:"2026-10-11"}
+];
+
+const fmtEur = (n) => n.toLocaleString("pt-PT", {minimumFractionDigits:2, maximumFractionDigits:2}) + " €";
+const fmtBR  = (s) => { const [a,m,d] = s.split("-"); return `${d}/${m}/${a}`; };
+
+function renderFinanceiro(){
+  // objetivo
+  const obj = parseFloat($("#goal-shop").value) || 0;
+  const pct = obj > 0 ? Math.min(100, Math.round(FATURADO_MES / obj * 100)) : 0;
+  const falta = Math.max(0, obj - FATURADO_MES);
+  $("#goal-total-display").textContent = obj.toLocaleString("pt-PT") + " €";
+  $("#goal-sub").textContent = `Faturado até hoje: ${FATURADO_MES.toLocaleString("pt-PT")} € · falta ${falta.toLocaleString("pt-PT")} €`;
+  $("#goal-bar").style.width = pct + "%";
+  $("#goal-pct").textContent = pct + "% do objetivo";
+
+  // objetivos por profissional
+  $("#pro-goals").innerHTML = PROFS.map(p => `
+    <div class="fld">
+      <label>Objetivo — ${p.nome}</label>
+      <input type="number" step="100" value="${p.objetivo}" data-prof="${p.id}" class="prof-goal">
+    </div>`).join("");
+
+  // custos fixos
+  $("#fix-rows").innerHTML = FIXOS.map((f,i) => `
+    <tr>
+      <td><b>${f.d}</b></td>
+      <td class="money">${fmtEur(f.v)}</td>
+      <td class="dim">${fmtBR(f.dt)}</td>
+      <td><button class="del" data-k="fix" data-i="${i}">✕</button></td>
+    </tr>`).join("") || `<tr><td colspan="4" class="dim" style="text-align:center;padding:20px">Sem custos fixos lançados.</td></tr>`;
+
+  // despesas
+  $("#exp-rows").innerHTML = DESPESAS.map((f,i) => `
+    <tr>
+      <td><b>${f.d}</b></td>
+      <td class="money">${fmtEur(f.v)}</td>
+      <td class="dim">${fmtBR(f.dt)}</td>
+      <td><button class="del" data-k="exp" data-i="${i}">✕</button></td>
+    </tr>`).join("") || `<tr><td colspan="4" class="dim" style="text-align:center;padding:20px">Sem despesas lançadas.</td></tr>`;
+
+  $$(".del").forEach(b => b.onclick = () => {
+    if (b.dataset.k === "fix") FIXOS.splice(+b.dataset.i, 1);
+    else DESPESAS.splice(+b.dataset.i, 1);
+    renderFinanceiro();
+    toast("Lançamento removido");
+  });
+
+  // resumo
+  const totFix = FIXOS.reduce((s,f) => s + f.v, 0);
+  const totExp = DESPESAS.reduce((s,f) => s + f.v, 0);
+  const totDesp = totFix + totExp;
+  const lucro = FATURADO_MES - totDesp;
+  const margem = FATURADO_MES > 0 ? Math.round(lucro / FATURADO_MES * 100) : 0;
+
+  $("#fin-summary").innerHTML = `
+    <div class="sumrow"><span>Faturação do mês</span><span class="pos">${fmtEur(FATURADO_MES)}</span></div>
+    <div class="sumrow"><span>Custos fixos (${FIXOS.length} lançamentos)</span><span class="neg">− ${fmtEur(totFix)}</span></div>
+    <div class="sumrow"><span>Despesas (${DESPESAS.length} lançamentos)</span><span class="neg">− ${fmtEur(totExp)}</span></div>
+    <div class="sumrow big"><span>Resultado do mês · margem ${margem}%</span><span class="${lucro >= 0 ? "pos" : "neg"}">${fmtEur(lucro)}</span></div>`;
+}
+
+$("#goal-shop").oninput = renderFinanceiro;
+$("#save-goal").onclick = () => {
+  $$(".prof-goal").forEach(inp => {
+    const p = PROFS.find(x => x.id === inp.dataset.prof);
+    if (p) p.objetivo = parseFloat(inp.value) || 0;
+  });
+  renderGerir();
+  renderFinanceiro();
+  toast("Objetivos guardados");
+};
+
+$("#fix-add").onclick = () => {
+  const d = $("#fix-desc").value.trim();
+  const v = parseFloat($("#fix-val").value);
+  const dt = $("#fix-date").value;
+  if (!d || !(v > 0) || !dt) return toast("Preenche descrição, valor e vencimento");
+  FIXOS.push({d, v, dt});
+  $("#fix-desc").value = ""; $("#fix-val").value = ""; $("#fix-date").value = "";
+  renderFinanceiro();
+  toast("Custo fixo lançado");
+};
+
+$("#exp-add").onclick = () => {
+  const d = $("#exp-desc").value.trim();
+  const v = parseFloat($("#exp-val").value);
+  const dt = $("#exp-date").value;
+  if (!d || !(v > 0) || !dt) return toast("Preenche descrição, valor e data");
+  DESPESAS.push({d, v, dt});
+  $("#exp-desc").value = ""; $("#exp-val").value = ""; $("#exp-date").value = "";
+  renderFinanceiro();
+  toast("Despesa lançada");
+};
+
+/* ---------------- home ---------------- */
+const HOJE_APPTS = [
+  {t:"09:00", c:"Nuno Lopes",     s:"Corte masculino", pr:15, prof:"Carlos", done:true},
+  {t:"09:45", c:"Fábio Teixeira", s:"Corte masculino", pr:14, prof:"Carlos", done:true},
+  {t:"10:00", c:"Emanuel Gil",    s:"Corte infantil",  pr:12, prof:"Rui",    done:true},
+  {t:"11:15", c:"Carlos Pereira", s:"Corte + barba",   pr:22, prof:"Carlos", done:false},
+  {t:"14:00", c:"Hugo Ferreira",  s:"Corte + barba",   pr:22, prof:"Rui",    done:false},
+  {t:"15:00", c:"Duarte Melo",    s:"Barba desenhada", pr:10, prof:"Rui",    done:false},
+  {t:"18:00", c:"Tiago Ramos",    s:"Corte + barba",   pr:22, prof:"Carlos", done:false}
+];
+
+const LOYAL = [
+  {n:"Nuno Lopes",     p:9,  s:"Falta 1 corte para o grátis"},
+  {n:"Carlos Pereira", p:10, s:"Corte grátis disponível", ready:true},
+  {n:"Tiago Ramos",    p:8,  s:"Faltam 2 cortes"}
+];
+
+const ANIVERSARIOS = [
+  {n:"Vasco Antunes", d:"25 de outubro", t:"falta 12 dias"},
+  {n:"João Martins",  d:"14 de novembro", t:"falta 32 dias"},
+  {n:"Ana Ribeiro",   d:"30 de outubro", t:"falta 17 dias"}
+];
+
+/* desenha a fila de selos: cheio = serviço feito, vazio = por completar */
+function stamps(p, total = 10, small = false){
+  let out = `<span class="stamps${small ? " sm" : ""}">`;
+  for (let i = 1; i <= total; i++){
+    out += `<span class="st ${i <= p ? "on" : ""}">${i <= p ? "✓" : ""}</span>`;
+  }
+  return out + "</span>";
+}
+
+function renderHome(){
+  // agendamentos
+  const feitos = HOJE_APPTS.filter(a => a.done);
+  const porFazer = HOJE_APPTS.filter(a => !a.done);
+  const fat = feitos.reduce((s,a) => s + a.pr, 0);
+  const prev = HOJE_APPTS.reduce((s,a) => s + a.pr, 0);
+
+  $("#h-fat").textContent = fat + " €";
+  $("#h-prev").textContent = prev + " €";
+
+  $("#h-appts").innerHTML = HOJE_APPTS.map(a => `
+    <div class="hrow">
+      <div class="hhr">${a.t}</div>
+      <div class="hbar ${a.done ? "done" : ""}"></div>
+      <div class="hinfo">
+        <div class="hn">${a.c}</div>
+        <div class="hs2">${a.s} · ${a.prof}</div>
+      </div>
+      <div class="hval">${a.pr}€</div>
+    </div>`).join("");
+
+  // contas a pagar hoje (13/10) — lê do Financeiro
+  const hojeISO = "2026-10-13";
+  const vencendo = [
+    ...FIXOS.filter(f => f.dt === hojeISO).map(f => ({...f, tipo:"Custo fixo"})),
+    ...DESPESAS.filter(f => f.dt === hojeISO).map(f => ({...f, tipo:"Despesa"}))
+  ];
+  // fallback: se nada vence hoje, mostra o próximo vencimento
+  let lista = vencendo;
+  let aviso = "";
+  if (!vencendo.length){
+    const todos = [...FIXOS.map(f => ({...f, tipo:"Custo fixo"})), ...DESPESAS.map(f => ({...f, tipo:"Despesa"}))]
+      .sort((a,b) => a.dt.localeCompare(b.dt));
+    lista = todos.slice(0, 3);
+    aviso = "Nada vence exatamente hoje. Próximos vencimentos:";
+  }
+
+  $("#h-bills").innerHTML = (aviso ? `<div class="notice" style="margin-bottom:12px">${aviso}</div>` : "") +
+    (lista.map(b => {
+      const [a,m,d] = b.dt.split("-");
+      const due = b.dt === hojeISO;
+      return `<div class="bill ${due ? "due" : ""}">
+        <div class="bi">${due ? "⚠" : "🧾"}</div>
+        <div class="bd">
+          <div class="bdn">${b.d}</div>
+          <div class="bdd">${b.tipo} · vence ${d}/${m}</div>
+        </div>
+        <div class="bv">${b.v.toLocaleString("pt-PT",{minimumFractionDigits:2})} €</div>
+      </div>`;
+    }).join("") || `<div class="empty">Sem contas lançadas no Financeiro.</div>`);
+
+  // últimos atendidos — com selos inline ao lado do nome
+  const recentes = LOYAL.sort((a,b) => b.p - a.p);
+  $("#h-recent").innerHTML = recentes.map(l => `
+    <div class="hrow">
+      <div class="hbar done" style="min-height:34px"></div>
+      <div class="hinfo">
+        <div class="hname"><span class="hn">${l.n}</span>${stamps(l.p)}</div>
+        <div class="hs2">${l.s}</div>
+      </div>
+      ${l.ready ? '<span class="tag ativo">Prêmio</span>' : `<span class="hval" style="color:var(--gold-d)">${l.p}/10</span>`}
+    </div>`).join("");
+
+  // atenção
+  const top = [...CLIENTS].sort((a,b) => b.dias - a.dias).slice(0, 4);
+  $("#h-attention").innerHTML = top.map(c => `
+    <div class="hrow" data-cli="${CLIENTS.indexOf(c)}" style="cursor:pointer">
+      <div class="who" style="gap:11px">
+        <div class="ini">${c.i}</div>
+      </div>
+      <div class="hinfo">
+        <div class="hn">${c.n}</div>
+        <div class="hs2">${c.dias} dias sem vir · ${c.pref}</div>
+      </div>
+      <div class="hval" style="color:var(--red)">${c.ticket}€</div>
+    </div>`).join("");
+  $$("#h-attention .hrow").forEach(r => r.onclick = () => {
+    $$("nav.tabs button").forEach(x => x.classList.toggle("on", x.dataset.tab === "radar"));
+    $("#tab-home").classList.add("hide");
+    $("#tab-radar").classList.remove("hide");
+    openClient(+r.dataset.cli);
+  });
+
+  // aniversários
+  $("#h-bdays").innerHTML = ANIVERSARIOS.map(a => `
+    <div class="hrow">
+      <div class="who"><div class="ini">🎂</div></div>
+      <div class="hinfo">
+        <div class="hn">${a.n}</div>
+        <div class="hs2">${a.d} · ${a.t}</div>
+      </div>
+      <div class="hval" style="color:var(--muted);font-size:12.5px">Enviar</div>
+    </div>`).join("");
+}
+
+/* ---------------- toast ---------------- */
+let toastT;
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove("on"), 2600);
+}
+
+/* ---------------- init ---------------- */
+renderHome();
+renderRows();
+renderDays();
+renderAppts();
+renderGestao();
+renderGerir();
+renderFinanceiro();
+
+/* botões da Home */
+$("#go-agenda").onclick = (e) => {
+  e.preventDefault();
+  $$("nav.tabs button").forEach(x => x.classList.remove("on"));
+  $("#tab-home").classList.add("hide");
+  $("#tab-agenda").classList.remove("hide");
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+$("#go-radar").onclick = (e) => {
+  e.preventDefault();
+  $$("nav.tabs button").forEach(x => x.classList.toggle("on", x.dataset.tab === "radar"));
+  $("#tab-home").classList.add("hide");
+  $("#tab-radar").classList.remove("hide");
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+$("#loyal-btn").onclick = (e) => {
+  e.preventDefault();
+  // mesma estética de selos usada no painel do gestor
+  $("#loyal-stamps").innerHTML = stamps(7);
+  $("#loyal-count").textContent = "7 selos completos";
+  $("#loyal-panel").classList.remove("hide");
+  $("#loyal-panel").scrollIntoView({behavior:"smooth", block:"start"});
+};
+$("#loyal-back").onclick = () => {
+  $("#loyal-panel").classList.add("hide");
+};
+</script>
+</body>
+</html>
