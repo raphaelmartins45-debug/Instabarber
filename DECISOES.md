@@ -432,3 +432,8 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 ## D-93 · 22/10/2026 · Título e subtítulo da demonstração
 - Título: «Experimenta aqui um pouco do que o sistema te oferece.»
 - Subtítulo: «Marca uma vaga, traz um cliente de volta e controla o dinheiro todo: é assim que funciona no dia a dia, com a gestão da barbearia na palma da mão.»
+
+## D-94 · 22/10/2026 · «online» e «Percentagens e acertos por barbeiro»
+- Grafia única «online» (o botão passa de «Experimenta on-line já» a «Experimenta online já»; CLAUDE.md §11 e o guia de voz atualizados). Substitui a grafia da D-81.
+- Na lista de funcionalidades, «Comissões e acertos com a equipa» passa a «Percentagens e acertos por barbeiro», para não parecer que a plataforma cobra comissões.
+- Mantidas, por decisão do dono, «100 % feito em Portugal» e «E o que mais ninguém junta».

@@ -140,7 +140,7 @@ Gíria é tempero, não prato. **Nível por omissão: 2 em 5.**
 | Não perca esta oportunidade! | Espreita em instabarber.pt (link na bio). |
 | Os teus clientes vão adorar. | O cliente marca sozinho, à hora que lhe der jeito. |
 | Aumente a sua faturação. | Faturaste bem. Mas quanto sobrou mesmo? |
-| Você pode experimentar grátis. | Experimenta on-line já em instabarber.pt. |
+| Você pode experimentar grátis. | Experimenta online já em instabarber.pt. |
 
 ## 11. Respostas a comentários e mensagens
 
