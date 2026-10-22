@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
+import { SCRIPT_APARENCIA } from "@/lib/design/aparencia";
 import { textos } from "@/lib/i18n/pt-PT";
 import "./globals.css";
 
@@ -15,11 +16,21 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: "#12100E" };
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#09090B" },
+    { media: "(prefers-color-scheme: light)", color: "#FAFAF9" },
+  ],
+};
 
 export default function LayoutRaiz({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-PT">
+    // A aparência (modo e destaque, D-134) entra antes da primeira pintura: o script muda os
+    // atributos do <html> antes de o React hidratar, por isso o aviso de diferença é esperado.
+    <html lang="pt-PT" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_APARENCIA }} />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );

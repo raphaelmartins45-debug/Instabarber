@@ -21,10 +21,11 @@ function AlertDialogContent({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
   return (
     <AlertDialogPrimitive.Portal>
-      <AlertDialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50" />
+      <AlertDialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[rgba(9,9,11,.6)] backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in-0" />
       <AlertDialogPrimitive.Content
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border bg-card p-6 shadow-lg",
+          // No telemóvel, folha inferior (com a margem do «home indicator»); no computador, centrado.
+          "fixed inset-x-0 bottom-0 z-50 grid gap-4 rounded-t-3xl border border-borda-forte bg-popover p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-flutuante data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-8 sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:w-[calc(100%-2rem)] sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:pb-6 sm:data-[state=open]:zoom-in-95 sm:data-[state=open]:slide-in-from-bottom-0",
           className,
         )}
         {...props}

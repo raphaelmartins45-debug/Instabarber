@@ -10,6 +10,7 @@ const config = [
       ".next/",
       "node_modules/",
       "landing/",
+      ".claude/",
       "marketing/",
       "public/",
       "next-env.d.ts",

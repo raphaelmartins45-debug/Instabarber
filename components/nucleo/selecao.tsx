@@ -14,15 +14,12 @@ export function Selecao({
 }) {
   return (
     <div className="grid gap-1.5">
-      <label
-        htmlFor={id}
-        className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase"
-      >
+      <label htmlFor={id} className="rotulo">
         {rotulo}
       </label>
       <select
         id={id}
-        className="h-11 rounded-md border bg-card px-3 text-sm"
+        className="h-11 rounded-md border border-input bg-foreground/[.03] px-3 text-sm text-foreground transition-colors hover:border-foreground/25 focus-visible:border-ring"
         value={valor}
         onChange={(e) => aoMudar(e.target.value)}
       >

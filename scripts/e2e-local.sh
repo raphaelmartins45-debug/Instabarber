@@ -6,7 +6,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 npx supabase db reset >/dev/null
-eval "$(npx supabase status -o env | grep -E '^(API_URL|ANON_KEY|SERVICE_ROLE_KEY|MAILPIT_URL)=')"
+eval "$(scripts/supabase-env.sh)"
 export NEXT_PUBLIC_SUPABASE_URL="$API_URL" NEXT_PUBLIC_SUPABASE_ANON_KEY="$ANON_KEY"
 export SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" MAILPIT_URL ROOT_DOMAIN=localhost
 # Nenhum e-mail real nos ensaios: a rota de contacto tem de falhar com a chave errada (e2e/landing).

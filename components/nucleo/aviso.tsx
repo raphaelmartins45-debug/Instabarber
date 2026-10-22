@@ -7,10 +7,10 @@ export function Aviso({ tipo, children }: { tipo: "erro" | "sucesso"; children: 
     <p
       role={tipo === "erro" ? "alert" : "status"}
       className={cn(
-        "rounded-md border px-3 py-2 text-sm",
+        "flex items-start gap-2 rounded-lg border px-3 py-2.5 text-sm animate-entrada",
         tipo === "erro"
-          ? "border-destructive/30 bg-destructive/5 text-destructive"
-          : "border-sucesso/30 bg-sucesso/5 text-sucesso",
+          ? "border-destructive/30 bg-destructive/10 text-destructive"
+          : "border-sucesso/30 bg-sucesso/10 text-sucesso",
       )}
     >
       {children}

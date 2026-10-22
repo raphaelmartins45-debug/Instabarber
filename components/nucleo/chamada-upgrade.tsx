@@ -20,7 +20,7 @@ export function ChamadaUpgrade({ curta }: { curta?: string }) {
   );
   return (
     <aside
-      className="grid gap-2 rounded-xl border border-destaque/40 bg-accent p-4 text-sm"
+      className="grid gap-2 rounded-2xl border border-[rgba(var(--ac-rgb),.35)] bg-[linear-gradient(180deg,rgba(var(--ac-rgb),.14),rgba(var(--ac-rgb),.03))] p-4 text-sm"
       data-testid="chamada-upgrade"
     >
       <p className="flex items-center gap-2 text-[11px] font-bold tracking-wide uppercase">

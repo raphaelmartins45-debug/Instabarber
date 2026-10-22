@@ -117,7 +117,7 @@ export function PassoServicos() {
             <input
               type="radio"
               value={m}
-              className="size-4 accent-[var(--dourado)]"
+              className="size-4 accent-destaque"
               {...register("servicos.modelo_caixa")}
             />
             {t.modelos[m]}

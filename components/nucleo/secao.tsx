@@ -12,7 +12,7 @@ export function Secao({
 }) {
   return (
     <section className="grid gap-3" aria-labelledby={id}>
-      <h2 id={id} className="text-[15px] font-bold">
+      <h2 id={id} className="text-base font-semibold tracking-tight">
         {titulo}
       </h2>
       {children}

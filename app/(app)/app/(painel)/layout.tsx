@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { corValida, variaveisMarca } from "@/lib/design/cor";
 import { obterContextoEquipa } from "@/lib/equipa/contexto";
 import { enderecoIcone } from "@/lib/inquilino/icones";
 import { obterConfiguracao } from "@/lib/repositorios/painel/barbearia";
@@ -19,6 +20,19 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function LayoutPainel({ children }: { children: ReactNode }) {
-  return children;
+/** O destaque «Marca» usa a cor da capa, ajustada ao contraste mínimo em cada modo (D-134). */
+export default async function LayoutPainel({ children }: { children: ReactNode }) {
+  const { barbearia } = await obterContextoEquipa();
+  const { capa_cor } = await obterConfiguracao(await criarClienteServidor(), barbearia.id);
+  const marca = corValida(capa_cor)
+    ? Object.entries(variaveisMarca(capa_cor))
+        .map(([k, v]) => `${k}:${v}`)
+        .join(";")
+    : null;
+  return (
+    <>
+      {marca ? <style>{`:root{${marca}}`}</style> : null}
+      {children}
+    </>
+  );
 }

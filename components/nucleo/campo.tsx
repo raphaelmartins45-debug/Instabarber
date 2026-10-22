@@ -14,10 +14,7 @@ export function Campo({
   return (
     <div className="grid gap-1.5">
       {/* Etiqueta em maiúsculas pequenas por cima do campo (I.2). */}
-      <Label
-        htmlFor={id}
-        className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase"
-      >
+      <Label htmlFor={id} className="rotulo">
         {rotulo}
       </Label>
       <Input

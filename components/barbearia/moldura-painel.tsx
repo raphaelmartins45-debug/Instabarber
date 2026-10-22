@@ -26,7 +26,10 @@ export function MolduraPainel({
 }) {
   const trocar =
     contexto.barbearias.length > 1 ? (
-      <Link href="/app/escolher" className="text-xs text-white/80 underline underline-offset-4">
+      <Link
+        href="/app/escolher"
+        className="hidden text-xs text-ligacao underline underline-offset-4 sm:inline"
+      >
         {textos.paineis.trocar}
       </Link>
     ) : null;
@@ -39,9 +42,14 @@ export function MolduraPainel({
         camada={`${camada} · ${contexto.barbearia.nome}`}
         vista={vista}
         extra={trocar}
+        comandos={menu}
       />
-      <MenuPainel itens={menu} atual={atual} />
-      <main className="mx-auto grid max-w-6xl gap-6 px-4 pt-6 pb-24 md:pb-6">{children}</main>
+      <div className="flex">
+        <MenuPainel itens={menu} atual={atual} />
+        <main className="mx-auto grid w-full max-w-6xl min-w-0 content-start gap-6 px-4 pt-6 pb-28 md:px-8 md:pb-10">
+          {children}
+        </main>
+      </div>
     </>
   );
 }

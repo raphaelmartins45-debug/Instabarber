@@ -39,6 +39,8 @@ export const contas = (projeto: string) => ({
   // Super_admin do ensaio dos módulos desligados (Fase 6).
   adminModulos: `admin-modulos-${projeto}@teste.instabarber.pt`,
   donoSuspenso: `dono-suspenso-${projeto}@teste.instabarber.pt`,
+  // Super_admin do catálogo de design (redesenho, lote A).
+  adminDesign: `admin-design-${projeto}@teste.instabarber.pt`,
 });
 
 /** Telefones dos clientes de teste, também por projeto. */

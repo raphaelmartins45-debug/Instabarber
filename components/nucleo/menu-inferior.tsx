@@ -24,7 +24,7 @@ export function MenuInferior({ itens, atual }: { itens: ItemMontado[]; atual: st
   return (
     <nav
       aria-label={textos.paineis.menuRotulo}
-      className="fixed inset-x-0 bottom-0 z-40 border-t bg-card md:hidden"
+      className="vidro fixed inset-x-0 bottom-0 z-40 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden"
     >
       {aberto ? (
         <ul className="grid gap-1 border-b p-2">
@@ -49,7 +49,7 @@ export function MenuInferior({ itens, atual }: { itens: ItemMontado[]; atual: st
               onClick={() => setAberto((a) => !a)}
               className={cn(
                 "flex min-h-14 w-full flex-col items-center justify-center gap-0.5 text-[11px]",
-                restoAtivo || aberto ? "font-semibold text-foreground" : "text-muted-foreground",
+                restoAtivo || aberto ? "font-semibold text-foreground" : "text-terciario",
               )}
             >
               <Ellipsis aria-hidden className="size-5" />
@@ -79,7 +79,7 @@ function Entrada({
       <span
         aria-disabled="true"
         title={textos.paineis.upgrade}
-        className={cn(classe, "text-muted-foreground/60")}
+        className={cn(classe, "text-terciario/60")}
       >
         <IconeMenu id={item.id} className="size-5" />
         {item.rotulo}
@@ -93,11 +93,11 @@ function Entrada({
       aria-current={ativo ? "page" : undefined}
       className={cn(
         classe,
-        ativo ? "font-semibold text-foreground" : "text-muted-foreground",
+        ativo ? "font-semibold text-foreground" : "text-terciario",
         horizontal && ativo && "bg-accent",
       )}
     >
-      <IconeMenu id={item.id} className={cn("size-5", ativo && "text-destaque")} />
+      <IconeMenu id={item.id} className={cn("size-5", ativo && "text-ligacao")} />
       {item.rotulo}
     </Link>
   );
