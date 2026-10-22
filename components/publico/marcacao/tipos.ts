@@ -21,4 +21,6 @@ export type BarbeariaMarcacao = {
   janelaDias: number;
   area: string;
   privacidade: string;
+  /** A fila de espera (F.4.1) está ligada. */
+  filaEspera: boolean;
 };

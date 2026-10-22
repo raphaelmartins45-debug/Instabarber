@@ -86,6 +86,8 @@ test("código de acesso de ponta a ponta: errado, certo e expirado", async ({
   // Daqui em diante entra com o telemóvel e a palavra-passe que escolheu.
   await sairDaArea(page);
   await expect(page).toHaveURL(entrada);
+  // O formulário só responde depois de a página ficar interativa.
+  await page.waitForLoadState("networkidle");
   await page.locator("#telefone").fill(semConta);
   await page.locator("#palavra_passe").fill("Cliente-Novo-2026");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();

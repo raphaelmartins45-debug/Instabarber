@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { BotaoMensagem } from "@/components/barbearia/botao-mensagem";
-import { BotaoUpgrade, ChamadaUpgrade } from "@/components/nucleo/chamada-upgrade";
+import { FilaMensagens } from "@/components/barbearia/fila-mensagens";
+import { ChamadaUpgrade } from "@/components/nucleo/chamada-upgrade";
 import { Indicador } from "@/components/nucleo/indicador";
 import { TabelaCartoes } from "@/components/nucleo/tabela-cartoes";
 import { dataCurta } from "@/lib/formatacao/datas";
@@ -9,6 +9,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 import { mensagemParaCliente } from "@/lib/painel/mensagens";
 import { filtrarRadar, type FiltroRadar, type LinhaRadar, type Radar } from "@/lib/painel/radar";
 import { cn } from "@/lib/utils";
+import { CelulaMensagem } from "./celula-mensagem";
 
 const t = textos.clientes;
 const FILTROS: FiltroRadar[] = [
@@ -31,6 +32,7 @@ export function RadarClientes({
   base,
   ficha = base,
   mensagens,
+  lote = false,
   indicadoresRadar,
   pagina,
   assinatura,
@@ -43,13 +45,18 @@ export function RadarClientes({
   /** Endereço das fichas (`${ficha}/${id}`); por omissão, o da lista. */
   ficha?: string;
   mensagens: boolean;
+  /** `envio_lote` (Pro): abrir as mensagens do filtro uma a uma. */
+  lote?: boolean;
   /** `clientes_perdidos`: perdidos e faturação a recuperar. */
   indicadoresRadar: boolean;
   pagina: string;
   assinatura: string;
 }) {
   const linhas = filtrarRadar(radar.linhas, filtro, busca);
-  const comMensagem = linhas.filter((l) => mensagemParaCliente(l, pagina, assinatura));
+  const comMensagem = linhas.flatMap((l) => {
+    const m = mensagemParaCliente(l, pagina, assinatura);
+    return m ? [{ id: l.cliente.id, nome: l.cliente.nome, ...m }] : [];
+  });
   const href = (f: FiltroRadar) =>
     `${base}?filtro=${f}${busca ? `&q=${encodeURIComponent(busca)}` : ""}`;
 
@@ -116,6 +123,13 @@ export function RadarClientes({
         {t.faixa[filtro]}
         {mensagens && filtro !== "todos" ? ` · ${t.destinatarios(comMensagem.length)}` : ""}
       </p>
+      {mensagens && lote && filtro !== "todos" ? (
+        <FilaMensagens
+          key={filtro + busca}
+          itens={comMensagem}
+          titulo={textos.mensagensLote.tituloClientes}
+        />
+      ) : null}
       <TabelaCartoes<LinhaRadar>
         linhas={linhas}
         chave={(l) => l.cliente.id}
@@ -164,29 +178,9 @@ export function RadarClientes({
           {
             id: "mensagem",
             rotulo: t.colunas.mensagem,
-            valor: (l) => {
-              if (!mensagens) return <BotaoUpgrade rotulo={t.mensagem} />;
-              const m = mensagemParaCliente(l, pagina, assinatura);
-              if (m)
-                return (
-                  <BotaoMensagem
-                    ligacao={m.ligacao}
-                    clienteId={l.cliente.id}
-                    tipo={m.tipo}
-                    conteudo={m.conteudo}
-                    rotulo={t.mensagem}
-                  />
-                );
-              return (
-                <span className="text-xs text-muted-foreground">
-                  {l.cliente.nao_contactar
-                    ? t.naoContactar
-                    : !l.contactavel
-                      ? t.semConsentimento
-                      : textos.comum.vazio}
-                </span>
-              );
-            },
+            valor: (l) => (
+              <CelulaMensagem l={l} mensagens={mensagens} pagina={pagina} assinatura={assinatura} />
+            ),
           },
         ]}
       />

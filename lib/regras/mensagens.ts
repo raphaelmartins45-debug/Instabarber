@@ -63,3 +63,32 @@ export function mensagemCliente(d: {
 export function mensagemAniversario(cliente: string, assinatura: string): string {
   return t.aniversario({ nome: primeiroNome(cliente), assinatura });
 }
+
+/** Aviso de vaga a quem está na fila de espera (F.4.1): serviço, horário que abriu e o prazo. */
+export function mensagemFilaVaga(d: {
+  cliente: string;
+  servico: string;
+  inicio: string;
+  barbearia: string;
+}): string {
+  return t.filaVaga({
+    nome: primeiroNome(d.cliente),
+    servico: d.servico,
+    data: dataCurta(d.inicio),
+    hora: horaCurta(d.inicio),
+    barbearia: d.barbearia,
+  });
+}
+
+/** Pedido de avaliação no Google depois do serviço (F.4.13). */
+export function mensagemAvaliacao(cliente: string, ligacao: string, assinatura: string): string {
+  return t.avaliacao({ nome: primeiroNome(cliente), ligacao, assinatura });
+}
+
+/** Dias entre dois pedidos de avaliação ao mesmo cliente (F.4.13). */
+export const DIAS_ENTRE_AVALIACOES = 90;
+
+export function podePedirAvaliacao(ultimoPedido: string | null, agora: Date = new Date()): boolean {
+  if (!ultimoPedido) return true;
+  return agora.getTime() - new Date(ultimoPedido).getTime() >= DIAS_ENTRE_AVALIACOES * 86_400_000;
+}

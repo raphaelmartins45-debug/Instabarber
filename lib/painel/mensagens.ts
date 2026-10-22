@@ -31,3 +31,12 @@ export function mensagemParaCliente(
   });
   return { ligacao: ligacaoWhatsApp(l.cliente.telefone, conteudo), conteudo, tipo };
 }
+
+/** Uma conversa da fila em lote (F.4.10): cliente (mensagens) ou marcação (lembretes). */
+export type ItemLote = {
+  id: string;
+  nome: string;
+  ligacao: string;
+  conteudo: string;
+  tipo: "recuperacao" | "posvenda" | "aniversario" | "lembrete";
+};

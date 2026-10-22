@@ -51,6 +51,7 @@ export default async function ClientesProfissional({
         base={`/app/equipa/${id}/clientes`}
         ficha="/app/clientes"
         mensagens={mensagens}
+        lote={area.grelha.ativas.has("envio_lote")}
         indicadoresRadar={area.grelha.ativas.has("clientes_perdidos")}
         pagina={pagina}
         assinatura={assinatura}

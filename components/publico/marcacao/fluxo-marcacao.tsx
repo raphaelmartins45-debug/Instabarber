@@ -141,6 +141,7 @@ export function FluxoMarcacao({
             profissionalId={barbeiro ?? null}
             hoje={hoje}
             janelaDias={barbearia.janelaDias}
+            filaEspera={barbearia.filaEspera ? { cliente } : undefined}
             aoEscolher={escolherVaga}
           />
         </>

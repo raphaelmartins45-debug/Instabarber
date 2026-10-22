@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { AgendaDia } from "@/components/barbearia/agenda/agenda-dia";
 import { SeletorDia } from "@/components/barbearia/agenda/seletor-dia";
+import { FilaMensagens } from "@/components/barbearia/fila-mensagens";
+import { FilasDoDia } from "@/components/barbearia/filas/filas-do-dia";
 import { PainelGestor } from "@/components/barbearia/painel-gestor";
 import { Button } from "@/components/ui/button";
 import { exigirGestor } from "@/lib/equipa/contexto";
@@ -8,6 +10,8 @@ import { hojeIso } from "@/lib/formatacao/datas";
 import { exigirFuncionalidade, lerGrelha } from "@/lib/funcionalidades/servidor";
 import { textos } from "@/lib/i18n/pt-PT";
 import { agendaDoDia } from "@/lib/painel/agenda";
+import { prepararMensagensAgenda } from "@/lib/painel/mensagens-agenda";
+import { obterConfiguracao } from "@/lib/repositorios/painel/barbearia";
 import { listarOrfas } from "@/lib/repositorios/painel/agenda";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { vertical } from "@/lib/vertical/barbearia";
@@ -27,11 +31,20 @@ export default async function Agenda({
   const { dia: pedido } = await searchParams;
   const dia = pedido && /^\d{4}-\d{2}-\d{2}$/.test(pedido) ? pedido : hoje;
   const bd = await criarClienteServidor();
-  const [agenda, grelha, orfas] = await Promise.all([
+  const [agenda, grelha, orfas, b] = await Promise.all([
     agendaDoDia(bd, contexto.barbearia.id, dia),
     lerGrelha(contexto.barbearia.id),
     listarOrfas(bd, contexto.barbearia.id),
+    obterConfiguracao(bd, contexto.barbearia.id),
   ]);
+  const { avaliacoes, lote } = await prepararMensagensAgenda(
+    bd,
+    contexto.barbearia.id,
+    contexto.barbearia.nome,
+    agenda,
+    grelha.ativas,
+    b.google_avaliacao_url,
+  );
   return (
     <PainelGestor atual="agenda">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -54,11 +67,19 @@ export default async function Agenda({
           {t.orfas(orfas.length)}
         </Link>
       ) : null}
+      <FilaMensagens key={dia} itens={lote} titulo={textos.mensagensLote.tituloLembretes} />
       <AgendaDia
         agenda={agenda}
         barbearia={contexto.barbearia.nome}
         lembretes={grelha.ativas.has("lembretes_marcacao")}
+        avaliacoes={avaliacoes}
         marcar="/app/agenda/marcar"
+      />
+      <FilasDoDia
+        inquilinoId={contexto.barbearia.id}
+        barbearia={contexto.barbearia.nome}
+        dia={dia}
+        qr="/app/agenda/qr"
       />
     </PainelGestor>
   );

@@ -4,8 +4,7 @@ import { dataHora, horaCurta } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { AgendaDia as Agenda } from "@/lib/painel/agenda";
-import { mensagemLembrete } from "@/lib/regras/mensagens";
-import { ligacaoWhatsApp } from "@/lib/regras/whatsapp";
+import { lembreteDe, type MensagemPreparada } from "@/lib/painel/mensagens-agenda";
 import type { MarcacaoDia } from "@/lib/repositorios/painel/agenda";
 import { LinhaMarcacao } from "./linha-marcacao";
 
@@ -16,29 +15,21 @@ export function AgendaDia({
   agenda,
   barbearia,
   lembretes,
+  avaliacoes = {},
   marcar,
 }: {
   agenda: Agenda;
   barbearia: string;
   /** Funcionalidade `lembretes_marcacao` ativa. */
   lembretes: boolean;
+  /** Pedidos de avaliação possíveis, por marcação concluída (F.4.13). */
+  avaliacoes?: Record<string, MensagemPreparada>;
   /** Endereço do formulário de marcação ao balcão. */
   marcar: string;
 }) {
   const agora = new Date();
   const ligacao = (m: MarcacaoDia) =>
-    lembretes && m.telefone && m.cliente
-      ? ligacaoWhatsApp(
-          m.telefone,
-          mensagemLembrete({
-            cliente: m.cliente,
-            servico: m.servico,
-            inicio: m.inicio,
-            barbeiro: m.profissional ?? "",
-            barbearia,
-          }),
-        )
-      : null;
+    lembretes ? (lembreteDe(m, barbearia)?.ligacao ?? null) : null;
 
   return (
     <div className="grid gap-4">
@@ -85,7 +76,13 @@ export function AgendaDia({
               ) : (
                 <ul className="grid gap-2">
                   {c.marcacoes.map((m) => (
-                    <LinhaMarcacao key={m.id} m={m} lembrete={ligacao(m)} agora={agora} />
+                    <LinhaMarcacao
+                      key={m.id}
+                      m={m}
+                      lembrete={ligacao(m)}
+                      avaliacao={avaliacoes[m.id]?.ligacao ?? null}
+                      agora={agora}
+                    />
                   ))}
                 </ul>
               )}

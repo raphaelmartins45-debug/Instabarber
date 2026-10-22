@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Barras } from "@/components/publico/barras";
-import { BlocoEquipa, BlocoLoja, BlocoPromocoes, BlocoServicos } from "@/components/publico/blocos";
+import { BlocoEquipa, BlocoPromocoes, BlocoServicos } from "@/components/publico/blocos";
+import { BlocosReceita } from "@/components/publico/blocos-receita";
 import {
   BlocoContactos,
   BlocoHistoria,
@@ -16,12 +17,12 @@ import { enderecoIcone } from "@/lib/inquilino/icones";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
 import { dadosHairSalon } from "@/lib/publico/dados-estruturados";
 import { textosDaPagina } from "@/lib/publico/lingua";
+import { redesSociais } from "@/lib/publico/redes";
 import { corDoTexto } from "@/lib/regras/contraste";
 import { estaAberta } from "@/lib/regras/horario";
 import { ligacaoWhatsApp } from "@/lib/regras/whatsapp";
 import {
   listarEquipaPublica,
-  listarProdutosPublicos,
   listarPromocoesPublicas,
   listarServicosPublicos,
 } from "@/lib/repositorios/barbearias-publicas";
@@ -61,13 +62,12 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
   const b = await obterBarbeariaDoEndereco((await params).slug);
   if (!b?.id || !b.slug || !b.nome) notFound();
   const bd = await criarClienteServidor();
-  const [{ lingua, t }, { base }, servicos, equipa, produtos, promocoes, principal, origem] =
+  const [{ lingua, t }, { base }, servicos, equipa, promocoes, principal, origem] =
     await Promise.all([
       textosDaPagina(!!b.multilinguagem_ativa),
       lerEndereco(),
       listarServicosPublicos(bd, b.id),
       listarEquipaPublica(bd, b.id),
-      listarProdutosPublicos(bd, b.id),
       listarPromocoesPublicas(bd, b.id),
       origemPrincipal(),
       origemDoPedido(),
@@ -87,30 +87,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
     (lingua === "en" ? s.nome_en : lingua === "fr" ? s.nome_fr : null) || s.nome || "";
   const descricaoServico = (s: (typeof servicos)[number]) =>
     (lingua === "en" ? s.descricao_en : lingua === "fr" ? s.descricao_fr : null) || s.descricao;
-  const redes = [
-    b.instagram
-      ? {
-          rotulo: "Instagram",
-          url: b.instagram.startsWith("http")
-            ? b.instagram
-            : `https://instagram.com/${b.instagram.replace(/^@/, "")}`,
-        }
-      : null,
-    b.facebook
-      ? {
-          rotulo: "Facebook",
-          url: b.facebook.startsWith("http") ? b.facebook : `https://facebook.com/${b.facebook}`,
-        }
-      : null,
-    b.tiktok
-      ? {
-          rotulo: "TikTok",
-          url: b.tiktok.startsWith("http")
-            ? b.tiktok
-            : `https://tiktok.com/@${b.tiktok.replace(/^@/, "")}`,
-        }
-      : null,
-  ].filter((r) => r !== null);
+  const redes = redesSociais(b);
   const json = dadosHairSalon({
     nome: b.nome,
     url: `${origem}${base || "/"}`,
@@ -194,7 +171,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
           }
           estado={estado}
         />
-        <BlocoLoja t={t} produtos={produtos} />
+        <BlocosReceita t={t} inquilinoId={b.id} encomendar={`${base}/loja`} />
         <BlocoContactos t={t} whatsapp={whatsapp} telefone={b.telefone} redes={redes} />
       </main>
       <Rodape

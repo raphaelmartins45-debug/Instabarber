@@ -197,6 +197,10 @@ export const mensagensWhatsApp = {
     `Olá ${d.nome}! Há ${d.dias} dias que não o vemos — o último foi ${d.servico}, a ${d.data}. Temos saudades! Marque quando quiser: ${d.pagina} — ${d.assinatura}`,
   aniversario: (d: { nome: string; assinatura: string }) =>
     `Parabéns, ${d.nome}! Desejamos-lhe um dia muito feliz. Um abraço — ${d.assinatura}`,
+  filaVaga: (d: { nome: string; servico: string; data: string; hora: string; barbearia: string }) =>
+    `Olá ${d.nome}! Abriu uma vaga na ${d.barbearia}: ${d.servico}, ${d.data} às ${d.hora}. Se a quiser, responda a esta mensagem nos próximos 30 minutos. Até já!`,
+  avaliacao: (d: { nome: string; ligacao: string; assinatura: string }) =>
+    `Olá ${d.nome}! Obrigado pela visita. Se gostou, deixe-nos a sua avaliação no Google, ajuda muito: ${d.ligacao} — ${d.assinatura}`,
 } as const;
 
 export const upgrade = {

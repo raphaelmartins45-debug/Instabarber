@@ -9,7 +9,8 @@ export type TipoMensagem =
   | "posvenda"
   | "avaliacao"
   | "loja"
-  | "cartao";
+  | "cartao"
+  | "fila";
 
 export async function registarMensagemAberta(
   bd: ClienteBD,
@@ -36,4 +37,25 @@ export async function registarMensagemAberta(
     criado_por: m.criadoPor,
   });
   return !error;
+}
+
+/** A última mensagem de um tipo por cliente (para a regra dos 90 dias da avaliação, F.4.13). */
+export async function ultimaMensagemPorCliente(
+  bd: ClienteBD,
+  inquilinoId: string,
+  clienteIds: string[],
+  tipo: TipoMensagem,
+): Promise<Map<string, string>> {
+  if (clienteIds.length === 0) return new Map();
+  const { data } = await bd
+    .from("mensagens")
+    .select("cliente_id, criado_em")
+    .eq("inquilino_id", inquilinoId)
+    .eq("tipo", tipo)
+    .in("cliente_id", clienteIds)
+    .order("criado_em", { ascending: false });
+  const ultima = new Map<string, string>();
+  for (const m of data ?? [])
+    if (m.cliente_id && !ultima.has(m.cliente_id)) ultima.set(m.cliente_id, m.criado_em);
+  return ultima;
 }

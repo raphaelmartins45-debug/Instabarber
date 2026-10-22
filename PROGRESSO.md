@@ -26,7 +26,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | 3C | Finanças da Performa LAB | Adiada | — | Como a 3B (D-120) |
 | 4 | Painel da barbearia | Concluída (por confirmar) | 22/10/2026 | Supabase local: **34 testes Playwright** (17 cenários × computador e telemóvel), incluindo o resultado verificável — um dia completo: serviço registado ao balcão, cliente novo marcado na primeira vaga, concluído na agenda (a verde, lembrete wa.me pronto), ficha técnica com nota, comissões e acertos com os dois serviços (32,50 €) e acerto registado (liquidado), despesa no Financeiro, ausência na Gestão do sistema, e o barbeiro a ver a mesma receita na sua folha de acerto sem entrar na Gestão do sistema. Verificado também à mão, no computador e no telemóvel (sem deslocamento lateral): Início, Agenda, Clientes, ficha, Equipa, área do barbeiro, Financeiro (a faturação coincide com a do Início), acertos, as 14 secções da Gestão do sistema, clube (plano, inscrição, «Pago»), cartão oferta com PDF, loja (margem 9,76 € · 3,26 € · 33,4 %, como na F.4.4), O meu plano. **436 testes SQL** (migração 06: cartões oferta, bloqueio por faltas, clube; D-121, D-122); migração 06 aplicada no ensaio. **153 testes Vitest** (classificação, objetivos, acertos, financeiro, loja, ocupação, mensagens, paleta, calendário), mais 5 de integração; typecheck, lint e build sem erros. Ícone e manifesto por barbearia nos painéis (D-123) |
 | 5 | Motor de agenda e cliente | Concluída (por confirmar) | 22/10/2026 | Supabase local: **40 testes Playwright** (20 cenários × computador e telemóvel), incluindo o resultado verificável — marcação completa sem conta pela página pública (serviço, barbeiro, hora, reserva de 10 minutos, dados, confirmação); duas reservas da mesma vaga em simultâneo, uma passa e a outra é recusada («Esta hora acabou de ser ocupada»); cliente de ensaio com duas faltas bloqueado na marcação online («Para marcar, fale com a barbearia.»). Verificado à mão no computador e no telemóvel (sem deslocamento lateral): página pública, marcação com criação de acesso (F.9), área de cliente (selos, próxima marcação, cancelar, histórico, convite, repetir), troca para inglês e francês. **446 testes SQL** (migração 07, D-125; os 54 da agenda continuam a passar); migração 07 aplicada no ensaio; **158 testes Vitest**, mais 5 de integração; typecheck, lint e build sem erros. **Falta:** validar num telemóvel real (pendente 24) |
-| 6 | Mensagens, filas, loja, relatório e módulos desligados | Pendente | — | — |
+| 6 | Mensagens, filas, loja, relatório e módulos desligados | Em curso | — | — |
 | 7 | Publicação | Pendente | — | — |
 | 8 | Operação | Pendente | — | — |
 | 9 | Manuais operacionais (final) | Pendente | — | — |
@@ -80,6 +80,19 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 ## Próximo passo
 
 Fase 5 concluída (por confirmar, pendente 20). Fase 6 (Mensagens, filas, loja, relatório e módulos desligados) em curso, sem esperar (D-120).
+
+### Resumo da Fase 6 (D-120)
+
+**Constrói-se** (F.4.1, F.4.3, F.4.4 lado público, F.4.10, F.4.12, F.4.13, F.5, E.5, D.2, Parte G):
+
+1. Mensagens wa.me que faltam: pedido de avaliação (no máximo um por cliente a cada 90 dias), mensagens em lote a partir do radar e lembretes em lote do dia seguinte (Pro), aviso de vaga da fila e de pedido pronto. Cada clique fica em `mensagens`; quem não tem consentimento não aparece nas listas promocionais.
+2. E-mail de confirmação de marcação pelo Resend (`confirmacao_email`), registado em `mensagens` (canal `email`) e na marcação.
+3. Fila de espera: o cliente entra quando o dia não tem vagas; a barbearia vê a fila ao lado das vagas, avisa por wa.me com prazo de 30 minutos e passa ao seguinte. Fila presencial por QR: página da fila com «Entrar sem registo» e posição e espera estimada atualizadas sozinhas; no painel, chamar, atender e QR para imprimir.
+4. Loja na página pública: carrinho e encomenda com nome, telemóvel e consentimento (`criar_pedido_loja()`); clube e cartões oferta mostrados na página pública (venda e uso continuam ao balcão).
+5. Relatório mensal com os nove blocos, nos dois painéis, recomendações em `lib/regras/recomendacoes.ts` (F.5) e PDF gerado no servidor (`api/relatorios`), com os números do Início e do Financeiro.
+6. Módulos G.4: `lib/pagamentos` e `lib/faturacao` com a interface, os adaptadores «manual» e «simulado» e os modos de emissão; ecrã `/admin/modulos` com interruptor geral e por barbearia, em auditoria; `api/webhooks/pagamentos` responde 404 desligado.
+
+**Não se faz nesta fase:** nenhum fornecedor real de pagamentos ou de faturação (D-05), nenhum envio automático além do e-mail de confirmação, tarefas agendadas (D-16). Publicação: Fase 7.
 
 ### Resumo da Fase 5 (D-120)
 

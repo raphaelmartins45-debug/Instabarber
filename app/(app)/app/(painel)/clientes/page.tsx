@@ -43,6 +43,7 @@ export default async function Clientes({
         busca={q.q ?? ""}
         base="/app/clientes"
         mensagens={mensagens}
+        lote={grelha.ativas.has("envio_lote")}
         indicadoresRadar={grelha.ativas.has("clientes_perdidos")}
         pagina={pagina}
         assinatura={contexto.barbearia.nome}

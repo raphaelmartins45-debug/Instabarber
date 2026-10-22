@@ -9,6 +9,7 @@ import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
 import { textosDaPagina } from "@/lib/publico/lingua";
 import { corDoTexto } from "@/lib/regras/contraste";
 import {
+  funcionalidadesLigadas,
   listarEquipaPublica,
   listarServicosPublicos,
 } from "@/lib/repositorios/barbearias-publicas";
@@ -30,14 +31,17 @@ export default async function Marcar({
   if (!b?.id || !b.slug || !b.nome) notFound();
   const q = await searchParams;
   const bd = await criarClienteServidor();
-  const [{ lingua, t }, { base }, servicos, equipa, principal, sessao] = await Promise.all([
-    textosDaPagina(!!b.multilinguagem_ativa),
-    lerEndereco(),
-    listarServicosPublicos(bd, b.id),
-    listarEquipaPublica(bd, b.id),
-    origemPrincipal(),
-    bd.auth.getUser(),
-  ]);
+  const [{ lingua, t }, { base }, servicos, equipa, principal, sessao, ligadas] = await Promise.all(
+    [
+      textosDaPagina(!!b.multilinguagem_ativa),
+      lerEndereco(),
+      listarServicosPublicos(bd, b.id),
+      listarEquipaPublica(bd, b.id),
+      origemPrincipal(),
+      bd.auth.getUser(),
+      funcionalidadesLigadas(bd, b.id, ["fila_espera"]),
+    ],
+  );
   const ficha = sessao.data.user ? await obterMinhaFicha(bd, b.id, sessao.data.user.id) : null;
   const cor = b.capa_cor ?? "#12100E";
   const local = (pt: string | null, en: string | null, fr: string | null) =>
@@ -63,6 +67,7 @@ export default async function Marcar({
               janelaDias: b.janela_marcacao_dias ?? 60,
               area: `${base}/minha-area`,
               privacidade: `${principal}/privacidade`,
+              filaEspera: ligadas.has("fila_espera"),
             }}
             servicos={servicos.map((s) => ({
               id: s.id ?? "",

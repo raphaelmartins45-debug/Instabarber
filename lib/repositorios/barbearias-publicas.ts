@@ -156,3 +156,35 @@ export async function funcionalidadesLigadas(
   );
   return new Set(r.filter((c): c is string => c !== null));
 }
+
+export type ClubePublico = {
+  id: string;
+  nome: string;
+  precoCent: number;
+  servicos: { servico: string; quantidade: number }[];
+};
+
+/** Planos do clube na página pública (F.4.2): só com a funcionalidade ligada. */
+export async function listarClubesPublicos(
+  bd: ClienteBD,
+  inquilinoId: string,
+): Promise<ClubePublico[]> {
+  const { data, error } = await bd
+    .from("publico_clubes")
+    .select("*")
+    .eq("inquilino_id", inquilinoId)
+    .order("preco_mensal");
+  if (error) falhaDeLeitura("publico_clubes", error);
+  return data.flatMap((c) =>
+    c.id && c.nome && c.preco_mensal !== null
+      ? [
+          {
+            id: c.id,
+            nome: c.nome,
+            precoCent: centimosDeNumeric(c.preco_mensal),
+            servicos: (c.servicos ?? []) as { servico: string; quantidade: number }[],
+          },
+        ]
+      : [],
+  );
+}

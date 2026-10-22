@@ -24,3 +24,24 @@ export const esquemaDadosMarcacao = z.object({
     .union([z.string().min(8, "palavra_passe_curta").max(72), z.literal("")])
     .transform(vazio),
 });
+
+/** Nome, telemóvel e consentimento: fila de espera, fila presencial e encomenda da loja. */
+export const esquemaContactoPublico = esquemaDadosMarcacao.pick({
+  nome: true,
+  telefone: true,
+  consentimento: true,
+});
+
+/** A fila presencial pode criar o acesso logo, como a primeira marcação (F.9). */
+export const esquemaEntradaPresencial = esquemaContactoPublico.extend({
+  servicoId: z.union([z.string().uuid(), z.literal("")]).transform(vazio),
+  palavraPasse: esquemaDadosMarcacao.shape.palavraPasse,
+});
+
+/** Encomenda da loja (F.4.4): o contacto e as linhas; o stock confirma-se na base de dados. */
+export const esquemaEncomenda = esquemaContactoPublico.extend({
+  linhas: z
+    .array(z.object({ produtoId: z.string().uuid(), quantidade: z.number().int().min(1).max(20) }))
+    .min(1, "pedido_vazio")
+    .max(20),
+});

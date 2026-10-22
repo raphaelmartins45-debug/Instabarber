@@ -2,11 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import type { TextosPublicos } from "@/lib/i18n/publico";
-import type {
-  ProdutoPublico,
-  ProfissionalPublico,
-  PromocaoPublica,
-} from "@/lib/repositorios/barbearias-publicas";
+import type { ProfissionalPublico, PromocaoPublica } from "@/lib/repositorios/barbearias-publicas";
 
 // Blocos por baixo da capa (E.6): cada um só aparece com conteúdo e com a funcionalidade ativa.
 
@@ -138,34 +134,6 @@ export function BlocoEquipa({ t, equipa }: { t: TextosPublicos; equipa: Profissi
                 ))}
               </div>
             ) : null}
-          </li>
-        ))}
-      </ul>
-    </Bloco>
-  );
-}
-
-export function BlocoLoja({ t, produtos }: { t: TextosPublicos; produtos: ProdutoPublico[] }) {
-  if (produtos.length === 0) return null;
-  return (
-    <Bloco id="loja" titulo={t.blocos.loja}>
-      <p className="text-sm text-muted-foreground">{t.blocos.lojaNota}</p>
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {produtos.map((p) => (
-          <li key={p.id} className="grid gap-2 rounded-xl border bg-card p-3">
-            {p.fotoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
-              <img
-                src={p.fotoUrl}
-                alt=""
-                loading="lazy"
-                className="aspect-square w-full rounded-md object-cover"
-              />
-            ) : null}
-            <span className="font-semibold">{p.nome}</span>
-            <span className="text-sm">
-              {p.esgotado ? t.blocos.esgotado : formatarDinheiro(p.precoCent)}
-            </span>
           </li>
         ))}
       </ul>

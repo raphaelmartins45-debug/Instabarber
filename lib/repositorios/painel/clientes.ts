@@ -124,3 +124,21 @@ export async function temCreditoClube(
   if (error) falhaDeLeitura("creditos_clube", error);
   return data.some((c) => c.usados < c.quantidade);
 }
+
+/** Os clientes que podem receber mensagens promocionais: consentimento, sem «não contactar» (F.4.10). */
+export async function clientesContactaveis(
+  bd: ClienteBD,
+  inquilinoId: string,
+  ids: string[],
+): Promise<Set<string>> {
+  if (ids.length === 0) return new Set();
+  const { data } = await bd
+    .from("clientes")
+    .select("id")
+    .eq("inquilino_id", inquilinoId)
+    .in("id", ids)
+    .eq("consentimento_mensagens", true)
+    .eq("nao_contactar", false)
+    .is("anonimizado_em", null);
+  return new Set((data ?? []).map((c) => c.id));
+}

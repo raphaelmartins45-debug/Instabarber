@@ -1,11 +1,16 @@
 "use server";
 
 import { z } from "zod";
-import { definirContaCliente } from "@/lib/auth/contas";
-import { ipDoPedido } from "@/lib/inquilino/endereco";
+import { emailConfirmacao } from "@/lib/email/confirmacao-marcacao";
+import { enviarEmail } from "@/lib/email/enviar";
+import { ipDoPedido, paginaPublica } from "@/lib/inquilino/endereco";
+import { criarAcessoDireto } from "@/lib/publico/acesso-direto";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
-import { emailTecnicoCliente } from "@/lib/regras/conta-cliente";
-import { ligarContaCliente } from "@/lib/repositorios/clientes-conta";
+import { linguaPublica } from "@/lib/publico/lingua";
+import {
+  reclamarEmailConfirmacao,
+  registarEmailConfirmacao,
+} from "@/lib/repositorios/email-confirmacao";
 import { consumirLimite, LIMITES_MARCACAO } from "@/lib/repositorios/limites";
 import {
   clienteParaAcessoDireto,
@@ -17,6 +22,7 @@ import {
 } from "@/lib/repositorios/marcacao-publica";
 import { criarClienteServico } from "@/lib/supabase/servico";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import type { ClienteBD } from "@/lib/supabase/tipos";
 import { esquemaDadosMarcacao } from "@/lib/validacao/marcacao";
 
 // Marcação pública (E.4, F.7): a página só mostra; a base de dados decide.
@@ -123,18 +129,28 @@ export async function confirmar(
     convite: d.convite,
   });
   if (!r.ok) return { ok: false, erro: r.motivo };
+  await enviarConfirmacao(bd, b, marcacaoId);
   if (!d.palavraPasse) return { ok: true, acesso: null };
 
-  const cliente = await clienteParaAcessoDireto(servico, marcacaoId);
-  if (!cliente?.direto) return { ok: true, acesso: "codigo" };
-  const email = emailTecnicoCliente(d.telefone, b.id);
-  const conta = await definirContaCliente(servico, {
-    authUserId: null,
-    email,
+  const acesso = await criarAcessoDireto(bd, servico, {
+    inquilinoId: b.id,
+    telefone: d.telefone,
     palavraPasse: d.palavraPasse,
+    cliente: await clienteParaAcessoDireto(servico, marcacaoId),
   });
-  if (!conta.ok) return { ok: true, acesso: "codigo" };
-  await ligarContaCliente(servico, cliente.clienteId, conta.userId);
-  await bd.auth.signInWithPassword({ email, password: d.palavraPasse });
-  return { ok: true, acesso: "criado" };
+  return { ok: true, acesso };
+}
+
+/** E-mail de confirmação (F.4.12), quando a barbearia o tem ligado e o cliente deu e-mail. */
+async function enviarConfirmacao(
+  bd: ClienteBD,
+  b: { slug: string | null; multilinguagem_ativa: boolean | null },
+  marcacaoId: string,
+) {
+  const dados = await reclamarEmailConfirmacao(bd, marcacaoId);
+  if (!dados || !b.slug) return;
+  const lingua = await linguaPublica(!!b.multilinguagem_ativa);
+  const pagina = await paginaPublica(b.slug);
+  const enviado = await enviarEmail(() => emailConfirmacao(dados, lingua, pagina));
+  await registarEmailConfirmacao(bd, marcacaoId, enviado);
 }

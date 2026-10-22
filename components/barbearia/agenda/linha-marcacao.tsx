@@ -4,6 +4,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 import type { MarcacaoDia } from "@/lib/repositorios/painel/agenda";
 import { cn } from "@/lib/utils";
 import { AcoesMarcacao } from "./acoes-marcacao";
+import { BotaoAvaliacao } from "./botao-avaliacao";
 
 const t = textos.agenda;
 
@@ -11,11 +12,14 @@ const t = textos.agenda;
 export function LinhaMarcacao({
   m,
   lembrete,
+  avaliacao = null,
   mostrarProfissional = false,
   agora,
 }: {
   m: MarcacaoDia;
   lembrete: string | null;
+  /** Ligação wa.me do pedido de avaliação, quando é possível pedi-la (F.4.13). */
+  avaliacao?: string | null;
   mostrarProfissional?: boolean;
   agora: Date;
 }) {
@@ -66,6 +70,7 @@ export function LinhaMarcacao({
           podeFaltar={new Date(m.inicio) <= agora}
         />
       ) : null}
+      {concluida && avaliacao ? <BotaoAvaliacao id={m.id} ligacao={avaliacao} /> : null}
     </li>
   );
 }

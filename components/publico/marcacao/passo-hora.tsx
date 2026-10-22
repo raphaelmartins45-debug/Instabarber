@@ -7,6 +7,7 @@ import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import type { TextosPublicos } from "@/lib/i18n/publico";
 import type { VagaPublica } from "@/lib/repositorios/marcacao-publica";
 import { cn } from "@/lib/utils";
+import { EntrarFilaEspera } from "./entrar-fila-espera";
 
 const DIAS_VISIVEIS = 21;
 
@@ -20,6 +21,7 @@ export function PassoHora({
   hoje,
   janelaDias,
   diaInicial,
+  filaEspera,
   aoEscolher,
 }: {
   t: TextosPublicos;
@@ -30,6 +32,8 @@ export function PassoHora({
   hoje: string;
   janelaDias: number;
   diaInicial?: string;
+  /** Com a fila de espera ligada, um dia sem vagas oferece a fila (F.4.1). */
+  filaEspera?: { cliente: { nome: string; telefone: string } | null };
   aoEscolher: (v: VagaPublica) => void;
 }) {
   const dias = Array.from({ length: Math.min(DIAS_VISIVEIS, janelaDias + 1) }, (_, i) =>
@@ -67,7 +71,19 @@ export function PassoHora({
       {vagas === null ? (
         <p className="text-sm text-muted-foreground">{t.marcacao.aCarregar}</p>
       ) : vagas.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t.marcacao.semVagas}</p>
+        <>
+          <p className="text-sm text-muted-foreground">{t.marcacao.semVagas}</p>
+          {filaEspera ? (
+            <EntrarFilaEspera
+              key={dia}
+              t={t}
+              slug={slug}
+              servicoId={servicoId}
+              dia={dia}
+              cliente={filaEspera.cliente}
+            />
+          ) : null}
+        </>
       ) : (
         <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">
           {vagas.map((v) => (

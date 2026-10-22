@@ -30,7 +30,7 @@ Num Postgres 15 ou 16 limpo:
 createdb ib_teste
 for f in testes/00_shim_supabase.sql 01_tabelas.sql 02_funcoes.sql 03_rls.sql \
          04_dados_iniciais.sql testes/05_dados_teste.sql \
-         testes/10_isolamento.sql testes/20_agenda.sql testes/30_regras.sql testes/40_comercial.sql testes/50_financas.sql testes/60_expansao.sql testes/70_admin.sql testes/80_painel.sql testes/90_cliente.sql; do
+         testes/10_isolamento.sql testes/20_agenda.sql testes/30_regras.sql testes/40_comercial.sql testes/50_financas.sql testes/60_expansao.sql testes/70_admin.sql testes/80_painel.sql testes/90_cliente.sql testes/95_mensagens_filas.sql; do
   psql -d ib_teste -v ON_ERROR_STOP=1 -q -f "$f" || break
 done
 ```

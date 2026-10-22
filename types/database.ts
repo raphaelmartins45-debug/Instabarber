@@ -563,6 +563,13 @@ export type Database = {
             referencedColumns: ["inquilino_id", "id"];
           },
           {
+            foreignKeyName: "clube_servicos_inquilino_id_clube_id_fkey";
+            columns: ["inquilino_id", "clube_id"];
+            isOneToOne: false;
+            referencedRelation: "publico_clubes";
+            referencedColumns: ["inquilino_id", "id"];
+          },
+          {
             foreignKeyName: "clube_servicos_inquilino_id_servico_id_fkey";
             columns: ["inquilino_id", "servico_id"];
             isOneToOne: false;
@@ -4061,6 +4068,13 @@ export type Database = {
             referencedRelation: "clubes";
             referencedColumns: ["inquilino_id", "id"];
           },
+          {
+            foreignKeyName: "subscricoes_inquilino_id_clube_id_fkey";
+            columns: ["inquilino_id", "clube_id"];
+            isOneToOne: false;
+            referencedRelation: "publico_clubes";
+            referencedColumns: ["inquilino_id", "id"];
+          },
         ];
       };
       visitas: {
@@ -4380,6 +4394,40 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "leads";
             referencedColumns: ["id"];
+          },
+        ];
+      };
+      publico_clubes: {
+        Row: {
+          id: string | null;
+          inquilino_id: string | null;
+          nome: string | null;
+          preco_mensal: number | null;
+          servicos: Json | null;
+          validade_dias: number | null;
+        };
+        ComputedFields: never;
+        Relationships: [
+          {
+            foreignKeyName: "clubes_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "clubes_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "publico_inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "clubes_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "vencimentos_proximos";
+            referencedColumns: ["inquilino_id"];
           },
         ];
       };
@@ -4859,6 +4907,7 @@ export type Database = {
         Args: { p_contrato: string; p_data: string; p_inicio?: string; p_pdf_assinado: string };
         Returns: undefined;
       };
+      avisar_fila_espera: { Args: { p_entrada: string }; Returns: string };
       calcular_preco: {
         Args: { p_inicio: string; p_inquilino: string; p_servico: string };
         Returns: {
@@ -4959,6 +5008,16 @@ export type Database = {
           posicao: number;
         }[];
       };
+      estado_fila_presencial: {
+        Args: { p_entrada: string };
+        Returns: {
+          estado: string;
+          minutos_a_frente: number;
+          minutos_em_curso: number;
+          posicao: number;
+          profissionais: number;
+        }[];
+      };
       evento_lead: {
         Args: { p_detalhes?: Json; p_lead: string; p_texto: string; p_tipo: string };
         Returns: undefined;
@@ -5010,6 +5069,7 @@ export type Database = {
       };
       pode_criar_acesso_direto: { Args: { p_cliente: string }; Returns: boolean };
       pode_marcar_online: { Args: { p_cliente: string }; Returns: boolean };
+      posicao_fila_espera: { Args: { p_entrada: string }; Returns: number };
       preparar_lembrete_vencimento: {
         Args: { p_canal: string; p_conteudo: string; p_inquilino: string };
         Returns: string;
@@ -5022,6 +5082,23 @@ export type Database = {
         }[];
       };
       proximo_numero_comercial: { Args: { p_serie: string }; Returns: string };
+      reclamar_email_confirmacao: {
+        Args: { p_marcacao: string };
+        Returns: {
+          barbearia: string;
+          barbeiro: string;
+          cancelamento_min: number;
+          cliente: string;
+          dominio: string;
+          email_barbearia: string;
+          fim: string;
+          inicio: string;
+          morada: string;
+          para: string;
+          servico: string;
+          slug: string;
+        }[];
+      };
       registar_auditoria: {
         Args: {
           p_accao: string;
@@ -5040,6 +5117,10 @@ export type Database = {
           p_entidade_id: string;
           p_inquilino: string;
         };
+        Returns: undefined;
+      };
+      registar_email_confirmacao: {
+        Args: { p_enviado: boolean; p_marcacao: string };
         Returns: undefined;
       };
       registar_email_lembrete: { Args: { p_id: string; p_ok: boolean }; Returns: undefined };

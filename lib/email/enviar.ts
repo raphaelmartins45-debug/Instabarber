@@ -10,6 +10,8 @@ export type Email = {
   /** Versão HTML (e-mail timbrado). O texto simples segue sempre como alternativa. */
   html?: string;
   responderPara?: string;
+  /** Ficheiros anexos (por exemplo, o .ics da marcação). */
+  anexos?: { nome: string; conteudo: string }[];
 };
 
 /**
@@ -27,6 +29,14 @@ export async function enviarEmail(montar: () => Email): Promise<boolean> {
       text: email.texto,
       ...(email.html ? { html: email.html } : {}),
       ...(email.responderPara ? { replyTo: email.responderPara } : {}),
+      ...(email.anexos
+        ? {
+            attachments: email.anexos.map((a) => ({
+              filename: a.nome,
+              content: Buffer.from(a.conteudo, "utf-8"),
+            })),
+          }
+        : {}),
     });
     if (error) {
       console.error("email_falhou", error.name);

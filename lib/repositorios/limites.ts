@@ -32,4 +32,6 @@ export async function consumirLimite(
 export const LIMITES_MARCACAO = {
   reservarIp: { maximo: 30, janelaSegundos: 3600 },
   confirmarIp: { maximo: 15, janelaSegundos: 3600 },
+  /** Entradas nas filas e encomendas da loja (F.4.1, F.4.3, F.4.4). */
+  entradaIp: { maximo: 20, janelaSegundos: 3600 },
 } as const;
