@@ -1,0 +1,124 @@
+import {
+  BARBEARIA_A,
+  BARBEARIA_B,
+  contas,
+  PALAVRA_PASSE,
+  PROJETOS,
+  servico,
+  telefones,
+  temSupabase,
+} from "./auxiliares/dados";
+
+// Preparação global do Playwright: duas barbearias e os cinco papéis no Supabase local.
+// Corre numa base acabada de repor (scripts/e2e-local.sh faz o `supabase db reset`).
+
+type Bd = ReturnType<typeof servico>;
+
+async function criarConta(bd: Bd, email: string): Promise<string> {
+  const { data, error } = await bd.auth.admin.createUser({
+    email,
+    password: PALAVRA_PASSE,
+    email_confirm: true,
+  });
+  if (error) throw new Error(`Conta ${email}: ${error.message}`);
+  return data.user.id;
+}
+
+async function inserir(bd: Bd, tabela: string, linhas: object | object[]) {
+  const { data, error } = await bd.from(tabela).insert(linhas).select("id");
+  if (error) throw new Error(`${tabela}: ${error.message}`);
+  return data as { id: string }[];
+}
+
+async function perfil(
+  bd: Bd,
+  userId: string,
+  papel: string,
+  inquilinoId: string | null,
+  email: string,
+) {
+  return (
+    await inserir(bd, "perfis", {
+      user_id: userId,
+      papel,
+      inquilino_id: inquilinoId,
+      email,
+      nome: email,
+    })
+  )[0]!.id;
+}
+
+export default async function semear() {
+  if (!temSupabase) return;
+  const bd = servico();
+
+  await inserir(bd, "inquilinos", [
+    {
+      ...BARBEARIA_A,
+      plano: "pro",
+      profissionais_contratados: 6,
+      estado: "ativo",
+      cidade: "Viseu",
+    },
+    {
+      ...BARBEARIA_B,
+      plano: "basic",
+      profissionais_contratados: 1,
+      estado: "ativo",
+      cidade: "Porto",
+    },
+  ]);
+  for (const b of [BARBEARIA_A, BARBEARIA_B]) {
+    const { error } = await bd.rpc("aplicar_pacote", { p_inquilino: b.id });
+    if (error) throw new Error(`aplicar_pacote: ${error.message}`);
+  }
+
+  for (const projeto of PROJETOS) {
+    const c = contas(projeto);
+    const nomeBarbeiro = projeto === "computador" ? "Carlos" : "Tiago";
+    await perfil(bd, await criarConta(bd, c.admin), "super_admin", null, c.admin);
+    await perfil(bd, await criarConta(bd, c.dono), "proprietario", BARBEARIA_A.id, c.dono);
+
+    const barbeiro = await criarConta(bd, c.barbeiro);
+    const perfilBarbeiro = await perfil(bd, barbeiro, "profissional", BARBEARIA_A.id, c.barbeiro);
+    await inserir(bd, "profissionais", {
+      inquilino_id: BARBEARIA_A.id,
+      perfil_id: perfilBarbeiro,
+      nome: `${nomeBarbeiro} Silva`,
+      nome_apresentado: nomeBarbeiro,
+      email: c.barbeiro,
+    });
+
+    // Uma conta em duas barbearias: gestor da B e barbeiro da A.
+    const duplo = await criarConta(bd, c.duplo);
+    await perfil(bd, duplo, "proprietario", BARBEARIA_B.id, c.duplo);
+    const perfilDuplo = await perfil(bd, duplo, "profissional", BARBEARIA_A.id, c.duplo);
+    await inserir(bd, "profissionais", {
+      inquilino_id: BARBEARIA_A.id,
+      perfil_id: perfilDuplo,
+      nome: `Duplo ${projeto}`,
+      nome_apresentado: "Duplo",
+      email: c.duplo,
+    });
+
+    // Clientes da A: um atendido ao balcão sem conta, outro com conta técnica.
+    const t = telefones(projeto);
+    await inserir(bd, "clientes", {
+      inquilino_id: BARBEARIA_A.id,
+      nome: "Rita Balcão",
+      telefone: `+351${t.semConta}`,
+      origem: "balcao",
+    });
+    const contaCliente = await criarConta(
+      bd,
+      `351${t.comConta}.${BARBEARIA_A.id}@clientes.instabarber.pt`,
+    );
+    await inserir(bd, "clientes", {
+      inquilino_id: BARBEARIA_A.id,
+      nome: "João Conta",
+      telefone: `+351${t.comConta}`,
+      origem: "online",
+      auth_user_id: contaCliente,
+    });
+  }
+}

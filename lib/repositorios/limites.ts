@@ -1,0 +1,25 @@
+import type { ClienteBD } from "@/lib/supabase/tipos";
+
+// Limites de pedidos nas entradas públicas (F.6), contados na base de dados por
+// consumir_limite(). Só a chave de serviço a executa.
+
+export const LIMITES = {
+  pedirCodigoIp: { maximo: 10, janelaSegundos: 3600 },
+  criarAcessoIp: { maximo: 20, janelaSegundos: 3600 },
+  entrarClienteIp: { maximo: 30, janelaSegundos: 3600 },
+} as const;
+
+/** Verdadeiro se o pedido pode seguir. */
+export async function consumirLimite(
+  bdServico: ClienteBD,
+  chave: string,
+  limite: { maximo: number; janelaSegundos: number },
+): Promise<boolean> {
+  const { data, error } = await bdServico.rpc("consumir_limite", {
+    p_chave: chave,
+    p_max: limite.maximo,
+    p_janela: `${limite.janelaSegundos} seconds`,
+  });
+  if (error) throw new Error(`Limite de pedidos falhou: ${error.message}`);
+  return data === true;
+}

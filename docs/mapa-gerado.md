@@ -4,7 +4,21 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Rotas (app/)
 
+- `app/(admin)/admin/(protegido)/page.tsx`
+- `app/(admin)/admin/dois-passos/page.tsx`
+- `app/(app)/app/(painel)/equipa/[id]/page.tsx`
+- `app/(app)/app/(painel)/page.tsx`
+- `app/(app)/app/(painel)/sistema/page.tsx`
+- `app/(app)/app/escolher/page.tsx`
+- `app/(auth)/entrar/confirmar/route.ts`
+- `app/(auth)/entrar/definir/page.tsx`
+- `app/(auth)/entrar/page.tsx`
+- `app/(auth)/entrar/recuperar/page.tsx`
 - `app/(institucional)/route.ts`
+- `app/(publico)/b/[slug]/entrar/page.tsx`
+- `app/(publico)/b/[slug]/minha-area/page.tsx`
+- `app/(publico)/b/[slug]/page.tsx`
+- `app/api/acesso/route.ts`
 - `app/api/contacto/route.ts`
 - `app/api/medicao/route.ts`
 

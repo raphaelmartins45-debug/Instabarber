@@ -523,3 +523,32 @@ O iOS guarda o `apple-touch-icon.png` em cache pelo nome e o atalho continuava c
 - Esta sessão não tem ligação TCP à porta 5432. As migrações e os testes correram pela Management API do Supabase (`POST /v1/projects/<ref>/database/query`), um ficheiro por pedido, sem as linhas `\set`/`\echo` do psql. Uma falha de teste devolve o erro `FALHOU: …` e interrompe o ficheiro (verificado com uma falha propositada). A API não devolve os `NOTICE`: o número de testes de cada ficheiro é o de verificações que ele contém.
 - O histórico de migrações (`supabase_migrations.schema_migrations`) foi preenchido com as quatro versões, para um `supabase db push` futuro só aplicar as migrações novas.
 - Os dados de teste do ficheiro 05 ficam na base de ensaio (o esquema `teste` foi apagado), como no Supabase local.
+
+## D-112 · 22/10/2026 · Endereços e encaminhamento (Fase 2) — técnica
+- O `middleware.ts` segue a L.4 com funções puras em `lib/inquilino/` (testadas): domínio principal (raiz, `www.` e pré-visualizações `*.vercel.app`), `<slug>.<raiz>` e domínio próprio (procurado na vista `publico_inquilinos`, com cache de 5 minutos). Um subdomínio inválido ou reservado (`admin.instabarber.pt`) é tratado como barbearia: dá «Barbearia não encontrada», nunca o domínio principal.
+- `/admin` num endereço de barbearia e qualquer pedido de fora a `/b/…` respondem 404 sem redirecionar (reescrita para uma rota que não existe).
+- No endereço de uma barbearia, `/entrar` é a entrada do **cliente** (`/b/<slug>/entrar`, como na B.4) e a equipa entra em **`/app/entrar`** (o mesmo ecrã de `/entrar` do domínio principal). Assim o «endereço da barbearia + /app» da A.3 funciona tal como está. As ligações dos e-mails de convite e recuperação seguem o mesmo prefixo.
+- O middleware põe em cada pedido `x-ib-slug` e `x-ib-base` e apaga-os se vierem do browser. Só encaminha e renova a sessão; a autorização é do servidor e do RLS.
+- As Server Actions de entrar e sair devolvem o destino e o browser navega para lá (não usam `redirect()`): o redirecionamento de uma Server Action é resolvido pelo próprio servidor pelo host do pedido, e assim o destino passa sempre pelo middleware.
+- Uma funcionalidade inativa responde 404 na rota (`exigirFuncionalidade`), como o `/admin`: o painel não anuncia o que não existe.
+
+## D-113 · 22/10/2026 · Contas, convites e acesso do cliente (Fase 2) — técnica
+- E-mail técnico do cliente: `<telefone sem +>.<inquilino_id>@clientes.instabarber.pt` (B.6). As contas com este domínio nunca entram pela entrada da equipa.
+- Registo do barbeiro (E.3): primeiro a linha em `profissionais` com a sessão do gestor (o RLS e o gatilho do limite de profissionais decidem antes de se criar qualquer conta); depois, com a chave de serviço, o convite e o perfil (`perfis` só aceita escrita do super_admin ou da chave de serviço); por fim a ligação `perfil_id`. Se o convite falhar, a linha é apagada. Se a pessoa já tiver conta de equipa noutra barbearia (encontrada pelo e-mail dos perfis), acrescenta-se o perfil sem enviar convite: entra com a palavra-passe que já tem.
+- «Reenviar convite» aparece 24 horas depois do convite a quem nunca entrou (`lib/regras/convite.ts`); o estado lê-se no Supabase Auth com a chave de serviço (parte da gestão das contas que essa chave cria).
+- Pedidos de acesso: «Enviar código por WhatsApp» abre o wa.me com o código; o pedido só fica «Enviado» depois de «Já enviei» (regra 7, `codigos_acesso.enviado_em`).
+- Limites por IP, contados por `consumir_limite()` (`lib/repositorios/limites.ts`): pedir código 10 por hora (o limite por número, 3 por hora, é da própria função SQL), criar acesso 20 por hora, entrada do cliente 30 por hora. A entrada da equipa usa os limites do Supabase Auth.
+- O registo aberto do Supabase Auth está desligado (`enable_signup = false`): todas as contas nascem no servidor. Palavra-passe com pelo menos 8 caracteres. As ligações de convite e recuperação valem 24 horas (o convite tem de durar o tempo do «Reenviar convite»).
+- Barbearia suspensa: nesta fase o painel trata-a como sem acesso. A ficha e as faturas para regularizar (C.5) chegam com o «O meu plano» (Fase 4), e a mensagem «Temporariamente indisponível» da página pública com a M.4.
+
+## D-114 · 22/10/2026 · Componentes e dependências da Fase 2 — técnica
+- shadcn/ui: `button`, `input`, `label`, `card`. O CLI quis instalar `radix-ui` (pacote agregado, com intervalo `^`) e um pacote `cn`; foram recusados. Ficaram só `@radix-ui/react-slot` 1.3.3 e `@radix-ui/react-label` 2.1.15 (autorizados pela B.3), com versões fixas de julho de 2026.
+- O lockfile da Fase 0 misturava `@tailwindcss/postcss` 4.0.0 com `@tailwindcss/oxide` e `@tailwindcss/node` 4.3.3, e a build falhava («Missing field `negated`»). `overrides` fixa os dois em 4.0.0, a versão da B.3.
+- O `@supabase/ssr` 0.5.2 (B.3) declara os genéricos do supabase-js antigo: os clientes de servidor convertem-se para o `ClienteBD` dos repositórios (é o mesmo objeto).
+- Fonte Inter pelo `next/font/google`, descarregada no build e servida pelo próprio site (D-100).
+- Ensaios de ponta a ponta: `npm run test:e2e:local` repõe o Supabase local, constrói com as chaves locais (e uma chave do Resend inválida, para nenhum e-mail real sair) e corre o Playwright; `e2e/semear.ts` cria duas barbearias e os cinco papéis. Os e-mails do Auth leem-se no Mailpit local.
+
+## D-115 · 22/10/2026 · Auth do projeto de ensaio (Fase 2)
+- Configurado pela Management API: registo aberto desligado, SMTP do Resend (`smtp.resend.com`, remetente `nao-responder@instabarber.pt`, nome «InstaBarber»), TOTP ligado, palavra-passe com 8 caracteres, ligações de 24 horas, modelos de convite e recuperação em português (os mesmos de `supabase/templates/`).
+- Endereços de retorno permitidos: `localhost` e subdomínios locais, e `https://instabarber-*.vercel.app/**` (pré-visualizações da Vercel). O `site_url` fica em `localhost` até haver endereço de ensaio.
+- Conta do super_admin criada no ensaio (`raphaelmartins@instabarber.pt`, perfil `super_admin`), **sem palavra-passe**: define-a por ligação segura (B9) quando houver uma aplicação de ensaio publicada a apontar para este projeto.

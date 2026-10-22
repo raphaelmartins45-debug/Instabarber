@@ -1,5 +1,8 @@
 // Textos visíveis em português de Portugal (base). Nenhum texto fica escrito nos componentes.
 
+import { acesso } from "./pt-PT/acesso";
+import { paineis } from "./pt-PT/paineis";
+
 export const textos = {
   marca: {
     nome: "InstaBarber",
@@ -45,4 +48,6 @@ export const textos = {
       despedida: "Com os melhores cumprimentos,",
     },
   },
+  acesso,
+  paineis,
 } as const;

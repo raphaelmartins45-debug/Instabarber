@@ -3,11 +3,16 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { variavel } from "@/lib/configuracao/ambiente";
 import type { Database } from "@/types/database";
+import type { ClienteBD } from "./tipos";
 
-/** Cliente do servidor com a sessão do utilizador (cookies). Continua sujeito ao RLS. */
-export async function criarClienteServidor() {
+/**
+ * Cliente do servidor com a sessão do utilizador (cookies). Continua sujeito ao RLS.
+ * O @supabase/ssr 0.5.2 (B.3) declara os genéricos do supabase-js antigo: o tipo
+ * converte-se para o ClienteBD dos repositórios, que é o mesmo cliente.
+ */
+export async function criarClienteServidor(): Promise<ClienteBD> {
   const loja = await cookies();
-  return createServerClient<Database>(
+  const cliente = createServerClient<Database>(
     variavel("NEXT_PUBLIC_SUPABASE_URL"),
     variavel("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
     {
@@ -23,4 +28,5 @@ export async function criarClienteServidor() {
       },
     },
   );
+  return cliente as unknown as ClienteBD;
 }

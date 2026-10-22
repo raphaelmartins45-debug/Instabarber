@@ -38,10 +38,18 @@ O dono fala em «página tal». Tradução (confirmar os caminhos reais na fase 
 | «o SEO», «o Google», «o sitemap» | Título e descrição em `landing/index.html`; sitemap e robots (D-105) | `landing/index.html` (title, description, JSON-LD); `app/sitemap.ts`; `app/robots.ts` | — |
 | «as contagens da landing» | Visitas, radar e «Continuar» (D-100) | `app/api/medicao/route.ts` (registos da Vercel até à Fase 3B) | — |
 | «o formulário de adesão» | Pedido de adesão em quatro passos | `app/(adesao)/adesao/` | — |
-| «o admin», «o meu painel» | Painel da Performa LAB | `app/(admin)/admin/` | 1 |
-| «o painel da barbearia», «o gestor» | Painel do gestor | `app/(app)/app/` | 2 |
-| «o painel do barbeiro» | Painel do profissional | `app/(app)/app/equipa/[id]/` | 3 |
+| «a entrada», «o login da equipa», «esqueci-me da palavra-passe» | Entrada da equipa, recuperação, definir palavra-passe por convite | `app/(auth)/entrar/` (ações em `acoes.ts`; ligação dos e-mails em `confirmar/route.ts`); no endereço de uma barbearia a equipa entra em `/app/entrar` (D-112) | — |
+| «os e-mails de convite e de recuperação» | Modelos do Supabase Auth | `supabase/templates/convite.html` e `recuperacao.html` (local, `config.toml`); no ensaio e na produção, *Auth → Email templates* (aplicado pela Management API, D-115) | — |
+| «o admin», «o meu painel» | Painel da Performa LAB | `app/(admin)/admin/(protegido)/` (só com aal2; guarda em `lib/admin/contexto.ts`) | 1 |
+| «a verificação em dois passos», «o 2FA» | Inscrição e código TOTP do super_admin | `app/(admin)/admin/dois-passos/`; `components/admin/formulario-dois-passos.tsx` | 1 |
+| «o painel da barbearia», «o gestor» | Painel do gestor | `app/(app)/app/(painel)/` (Início com «Pedidos de acesso»); contexto em `lib/equipa/contexto.ts` | 2 |
+| «a Gestão do sistema», «registar barbeiro», «reenviar convite» | Equipa e convites (E.3) | `app/(app)/app/(painel)/sistema/` (ações em `acoes.ts`; contas em `lib/auth/contas.ts`) | 2 |
+| «trocar de barbearia» | Escolha para quem tem perfis em várias | `app/(app)/app/escolher/` (cookie `ib_barbearia`) | 2 e 3 |
+| «o painel do barbeiro» | Painel do profissional | `app/(app)/app/(painel)/equipa/[id]/` | 3 |
+| «o menu do painel» | Menus montados pelas funcionalidades (D.3) | `lib/funcionalidades/menus.ts`; verificação no servidor em `lib/funcionalidades/servidor.ts` | 2 e 3 |
+| «o endereço da barbearia», «o subdomínio», «o domínio próprio» | Resolução do inquilino (L.4) | `middleware.ts`, `lib/inquilino/` (`host.ts`, `encaminhar.ts`, `endereco.ts`) | — |
 | «a página da barbearia X», «a página pública» | Página pública | `app/(publico)/b/[slug]/` | 4 |
+| «o código de acesso do cliente», «entrar como cliente» | Telemóvel e palavra-passe; pedir código; criar acesso | `app/(publico)/b/[slug]/entrar/`; `app/api/acesso/route.ts`; `components/cliente/` | 4 |
 | «a marcação», «marcar» | Fluxo de marcação | `app/(publico)/b/[slug]/marcar/` | 4 |
 | «a área do cliente» | Selos, histórico, próxima marcação | `app/(publico)/b/[slug]/minha-area/` | 4 |
 | «o Comercial», «o CRM» | Funil, propostas, contratos | `app/(admin)/admin/comercial/` **confirmar** (Fase 3B) | 1 |
@@ -70,7 +78,8 @@ Cada receita: **onde mexer → como verificar → como desfazer**.
 | Mudar o **esquema** da base de dados (tabela, coluna, função, política) | Primeiro `docs/esquema/` e os testes (regra 3); depois uma migração nova em `supabase/migrations/` (as quatro primeiras são cópias exatas dos ficheiros 01 a 04); `npm run db:types` atualiza `types/database.ts` (gerado, não se edita) | `supabase db reset`, `npm run test:sql` (396 testes) e `typecheck` |
 | **Ler dados** num ecrã novo | Uma função em `lib/repositorios/` que recebe o cliente (`ClienteBD`, de `lib/supabase/tipos.ts`); dinheiro sai em cêntimos (`*_centimos`). Leitura pública só pelas vistas `publico_*` | Teste Vitest do repositório; `integracao.test.ts` contra o Supabase local |
 | Mudar uma **regra da agenda** (vaga, sobreposição, antecedência) | Funções SQL por migração, nunca na interface (CLAUDE.md §3) | Testes SQL da agenda e Playwright de duas reservas em simultâneo |
-| Mudar um **limite de pedidos** | `consumir_limite()` e a sua configuração | Teste de limite |
+| Mudar um **limite de pedidos** | Os números em `lib/repositorios/limites.ts` (`LIMITES`); a contagem é de `consumir_limite()` | Teste de limite |
+| Mudar o **texto dos e-mails do Auth** (convite, recuperação) | `supabase/templates/*.html` e os assuntos em `supabase/config.toml`; depois aplicar ao ensaio e à produção pela Management API (D-115) | Convite de ensaio no Mailpit local (`npm run test:e2e:local`) |
 | Mudar um **texto legal** (termos, privacidade) | A página correspondente e a Parte H. **Pedir parecer** se mudar o sentido | Ligações no rodapé e no formulário |
 | Mudar o **domínio** de uma barbearia | Manual do operador P-10 | Certificado e redirecionamentos |
 | **Corrigir um erro** reportado | Reproduzir; escrever primeiro o teste que falha; corrigir; manter o teste | O teste passa; os outros também |
