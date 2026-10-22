@@ -510,3 +510,9 @@ O iOS guarda o `apple-touch-icon.png` em cache pelo nome e o atalho continuava c
 - `npm run db:types` gera `types/database.ts` e formata-o com o Prettier (o gerador sai sem formatação).
 - Repositórios (`lib/repositorios/`): funções que recebem o cliente do Supabase por parâmetro (`ClienteBD`), devolvem as linhas com os nomes das colunas e trocam o dinheiro por cêntimos inteiros (`preco` → `preco_centimos`). O PostgREST devolve `numeric` como número JSON; `centimosDeNumeric` passa a aceitar número além de texto. Um id que entra num filtro `or()` valida-se com Zod antes.
 - `lib/repositorios/integracao.test.ts` corre os repositórios contra o Supabase local como anónimo, só quando `SUPABASE_TESTE_URL` e `SUPABASE_TESTE_ANON_KEY` estão definidas; sem elas fica saltado e o `npm test` não precisa de base de dados.
+
+## D-110 · 22/10/2026 · PostgreSQL 17 no Supabase local e no ensaio (Fase 1) — técnica
+- O projeto de ensaio que o Supabase criou (`instabarber-ensaio`) usa PostgreSQL 17, e os projetos novos já não escolhem a versão. Como a D-109 previa, o `supabase/config.toml` passa a `major_version = 17`, para o local ser igual ao ensaio. Isto substitui o «PostgreSQL 15» da stack (CLAUDE.md §2) na base de dados.
+- Verificação repetida em 17.11: migrações 01 a 04 aplicadas sem erros, RLS ativo nas 59 tabelas de `public`, 396 testes SQL a passar, `types/database.ts` igual ao gerado em 15.
+- Esse projeto ficou em eu-west-2 (Londres), fora da região da stack (eu-central-1, Frankfurt), e não deixa mudar de região. Não se lhe aplicou nada. O ensaio passa a ser um projeto novo em Frankfurt.
+- O Supabase CLI lê o `.env.local` da raiz: um `SUPABASE_DB_PASSWORD` lá dentro passa a ser usado também na base local e o `npm run db:types` falha («password authentication failed»). A palavra-passe do ensaio fica no `.env.local` como `SUPABASE_ENSAIO_DB_PASSWORD`.
