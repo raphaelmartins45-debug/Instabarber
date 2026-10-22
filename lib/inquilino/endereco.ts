@@ -23,3 +23,10 @@ export async function ipDoPedido(): Promise<string> {
   const h = await headers();
   return h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "desconhecido";
 }
+
+/** Endereço da página pública da barbearia, para as mensagens por wa.me. */
+export async function paginaPublica(slug: string): Promise<string> {
+  const origem = await origemDoPedido();
+  const { slug: doHost } = await lerEndereco();
+  return doHost === slug ? origem : `${origem}/${slug}`;
+}

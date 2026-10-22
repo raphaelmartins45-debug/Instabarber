@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Um indicador numérico do Admin: rótulo pequeno e valor grande. */
+/** Um indicador numérico: rótulo pequeno e valor grande (Admin e painéis da barbearia). */
 export function Indicador({
   rotulo,
   valor,

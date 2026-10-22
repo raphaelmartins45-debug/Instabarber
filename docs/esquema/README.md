@@ -17,6 +17,7 @@ pela mesma ordem, sem os reescrever.
 | `testes/30_regras.sql` | 66 testes de comissões, clube, selos, faltas, loja, acertos, acesso e anonimização |
 | `testes/50_financas.sql` | 76 testes das Finanças da Performa LAB (Parte O): custos, contas a pagar, metas, lembretes de vencimento, vista dos vencimentos e isolamento |
 | `testes/60_expansao.sql` | 7 testes das colunas dormentes de país, fuso, moeda e idioma (Parte P) |
+| `testes/80_painel.sql` | 13 testes do painel da barbearia (Fase 4, D-121): cartões oferta vendidos com código único e usados com validade e saldo verificados |
 | `testes/70_admin.sql` | 16 testes do InstaBarber Admin (Fase 3, D-116): importação de clientes, imagens públicas e auditoria pelo super_admin com dois fatores; catálogo e pacotes legíveis sem conta |
 | `testes/40_comercial.sql` | 112 testes do módulo Comercial (Parte N): NIF, numeração, leads do site, funil, propostas, contratos, convites, isolamento e retenção |
 
@@ -28,7 +29,7 @@ Num Postgres 15 ou 16 limpo:
 createdb ib_teste
 for f in testes/00_shim_supabase.sql 01_tabelas.sql 02_funcoes.sql 03_rls.sql \
          04_dados_iniciais.sql testes/05_dados_teste.sql \
-         testes/10_isolamento.sql testes/20_agenda.sql testes/30_regras.sql testes/40_comercial.sql testes/50_financas.sql testes/60_expansao.sql testes/70_admin.sql; do
+         testes/10_isolamento.sql testes/20_agenda.sql testes/30_regras.sql testes/40_comercial.sql testes/50_financas.sql testes/60_expansao.sql testes/70_admin.sql testes/80_painel.sql; do
   psql -d ib_teste -v ON_ERROR_STOP=1 -q -f "$f" || break
 done
 ```
@@ -44,7 +45,7 @@ corrida falha).
 Validado a 21 de outubro de 2026 em PostgreSQL 16.15: os quatro ficheiros
 aplicam-se de uma vez e os 389 testes passam. A 22 de outubro de 2026 (Fase 1,
 D-108): 396 testes a passar no Supabase local (PostgreSQL 15.19) e no
-PostgreSQL 16.15 com o shim. Fase 3 (D-116): migração 05 e 412 testes a passar no Supabase local (PostgreSQL 17) e no ensaio.
+PostgreSQL 16.15 com o shim. Fase 3 (D-116): migração 05 e 412 testes a passar no Supabase local (PostgreSQL 17) e no ensaio. Fase 4 (D-121): migração 06 e 425 testes a passar no Supabase local.
 
 ## Regras para alterar o esquema
 

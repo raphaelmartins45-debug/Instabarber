@@ -757,6 +757,57 @@ begin
   update public.pedidos_loja set estado = 'levantado', levantado_em = now() where id = pe.id;
 end $$;
 
+-- Cartões oferta (F.4.9): vendidos e pagos ao balcão. O código de oito caracteres gera-se aqui,
+-- único na barbearia; o uso verifica validade e saldo com o cartão bloqueado (D-121).
+create or replace function public.vender_cartao_oferta(
+  p_inquilino uuid, p_valor numeric, p_comprador text, p_beneficiario text default null,
+  p_metodo text default null, p_valido_ate date default null, p_comprador_cliente uuid default null)
+returns uuid language plpgsql security definer set search_path = '' as $$
+declare v_id uuid; v_codigo text; v_alfabeto text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+begin
+  if p_inquilino not in (select public.inquilinos_onde(array['proprietario','profissional'])) then
+    raise exception 'sem_permissao' using errcode = '42501';
+  end if;
+  if not public.funcionalidade_ativa(p_inquilino, 'cartoes_oferta') then
+    raise exception 'indisponivel' using errcode = 'P0001';
+  end if;
+  loop
+    select string_agg(substr(v_alfabeto, 1 + floor(random() * length(v_alfabeto))::integer, 1), '')
+      into v_codigo from generate_series(1, 8);
+    exit when not exists (select 1 from public.cartoes_oferta where inquilino_id = p_inquilino and codigo = v_codigo);
+  end loop;
+  insert into public.cartoes_oferta (inquilino_id, codigo, valor_inicial, comprador_nome, comprador_cliente_id,
+                                     beneficiario_nome, metodo, valido_ate, vendido_por)
+  values (p_inquilino, v_codigo, p_valor, trim(p_comprador), p_comprador_cliente, nullif(trim(p_beneficiario), ''),
+          p_metodo, coalesce(p_valido_ate, public.hoje_lisboa() + interval '1 year')::date, auth.uid())
+  returning id into v_id;
+  return v_id;
+end $$;
+
+create or replace function public.usar_cartao_oferta(
+  p_inquilino uuid, p_codigo text, p_valor numeric, p_marcacao uuid default null)
+returns numeric language plpgsql security definer set search_path = '' as $$
+declare c public.cartoes_oferta%rowtype; v_saldo numeric;
+begin
+  if p_inquilino not in (select public.inquilinos_onde(array['proprietario','profissional'])) then
+    raise exception 'sem_permissao' using errcode = '42501';
+  end if;
+  if p_valor is null or p_valor <= 0 then raise exception 'valor_invalido' using errcode = 'P0001'; end if;
+  select * into c from public.cartoes_oferta
+   where inquilino_id = p_inquilino and codigo = upper(trim(p_codigo)) for update;
+  if not found or c.anulado_em is not null or c.valido_ate < public.hoje_lisboa() then
+    raise exception 'cartao_invalido' using errcode = 'P0001';
+  end if;
+  select c.valor_inicial - coalesce(sum(m.valor), 0) into v_saldo from public.movimentos_cartao m where m.cartao_id = c.id;
+  if v_saldo < p_valor then raise exception 'cartao_saldo' using errcode = 'P0001'; end if;
+  insert into public.movimentos_cartao (inquilino_id, cartao_id, valor, marcacao_id, registado_por)
+  values (p_inquilino, c.id, p_valor, p_marcacao, auth.uid());
+  if p_marcacao is not null then
+    update public.marcacoes set cartao_oferta_id = c.id where id = p_marcacao and inquilino_id = p_inquilino;
+  end if;
+  return v_saldo - p_valor;
+end $$;
+
 -- Formulário de adesão. A rota de servidor aplica o limite por IP e o honeypot;
 -- a mensalidade vem de lib/regras/mensalidade.ts e o administrador revê-a ao aprovar.
 create or replace function public.submeter_pedido_adesao(p jsonb) returns uuid
@@ -1491,7 +1542,9 @@ grant execute on function public.cancelar_minha_marcacao(uuid, text),
   public.levantar_pedido(uuid), public.procurar_cliente_por_telefone(uuid, text),
   public.anonimizar_cliente(uuid), public.aplicar_pacote(uuid), public.eliminar_inquilino(uuid, text),
   public.registar_auditoria_admin(uuid, text, text, uuid, jsonb),
-  public.validar_vaga(uuid, uuid, uuid, timestamptz, boolean, uuid)
+  public.validar_vaga(uuid, uuid, uuid, timestamptz, boolean, uuid),
+  public.vender_cartao_oferta(uuid, numeric, text, text, text, date, uuid),
+  public.usar_cartao_oferta(uuid, text, numeric, uuid)
   to authenticated;
 
 -- Só a chave de serviço (rotas de servidor)

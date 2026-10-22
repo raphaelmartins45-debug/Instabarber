@@ -1,5 +1,5 @@
 import { FormularioPagamento } from "@/components/admin/formulario-pagamento";
-import { Indicador } from "@/components/admin/indicador";
+import { Indicador } from "@/components/nucleo/indicador";
 import { ListasPagamentos } from "@/components/admin/listas-pagamentos";
 import { TabelaCartoes } from "@/components/nucleo/tabela-cartoes";
 import { dataCurta, hojeIso } from "@/lib/formatacao/datas";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Indicador } from "@/components/admin/indicador";
+import { Indicador } from "@/components/nucleo/indicador";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
 import { hojeIso } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";

@@ -2,6 +2,7 @@
 
 import { acesso } from "./pt-PT/acesso";
 import { adesao } from "./pt-PT/adesao";
+import { agenda, inicio, mensagensWhatsApp, upgrade } from "./pt-PT/agenda";
 import { admin } from "./pt-PT/admin";
 import { comum } from "./pt-PT/comum";
 import { legal } from "./pt-PT/legal";
@@ -58,4 +59,8 @@ export const textos = {
   paineis,
   admin,
   adesao,
+  agenda,
+  inicio,
+  mensagensWhatsApp,
+  upgrade,
 } as const;

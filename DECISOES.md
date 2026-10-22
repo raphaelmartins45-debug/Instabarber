@@ -595,3 +595,7 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - A 3B e a 3C ficam para depois da Fase 4 (pendente 3).
 - Ordem do dono, mais tarde no mesmo dia: continuar pelas Fases 5, 6 e 7 sem parar. Quando voltar, pede a lista de pendentes para aprovar. Na Fase 7, o que mexe em produção ou em contas externas (DNS, projeto de Frankfurt, planos pagos) fica preparado e entra na lista.
 
+## D-121 · 22/10/2026 · Cartões oferta na base de dados (Fase 4) — técnica
+- A venda e o uso dos cartões oferta passam por funções SQL (regra 4: o que decide o que se grava vive em SQL): `vender_cartao_oferta()` gera o código de oito caracteres, único na barbearia, sem letras e números confundíveis (I, O, 0, 1), com validade de um ano por omissão; `usar_cartao_oferta()` bloqueia o cartão, recusa anulados, expirados e usos acima do saldo, grava o movimento e liga a marcação.
+- Migração 06, as mesmas funções em `docs/esquema/02_funcoes.sql`, 13 testes em `docs/esquema/testes/80_painel.sql`.
+
