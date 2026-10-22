@@ -63,12 +63,12 @@ export function avisoComercialFase2(p: PedidoContactoFase2): Email {
   };
 }
 
-/** Assinatura dos e-mails comerciais para fora: «Comercial InstaBarber» e o WhatsApp por baixo (D-101). */
+/** Assinatura dos e-mails comerciais para fora: «Comercial InstaBarber» e o número de WhatsApp por baixo, sem rótulo (D-101). */
 function assinaturaComercial(): string[] {
   const telefone = variavelOpcional("TELEFONE_COMERCIAL_TXT");
   return [
     textos.marca.assinaturaComercial,
-    ...(telefone ? [`${textos.marca.rotuloWhatsapp}: ${telefone}`] : []),
+    ...(telefone ? [telefone] : []),
   ];
 }
 

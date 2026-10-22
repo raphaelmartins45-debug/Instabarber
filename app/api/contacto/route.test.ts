@@ -62,7 +62,7 @@ describe("POST /api/contacto · fase 1", () => {
     expect(resposta.replyTo).toBe("comercial@instabarber.pt");
     expect(resposta.text.trimEnd().split("\n").slice(-2)).toEqual([
       "Comercial InstaBarber",
-      "WhatsApp: +351 900 000 000",
+      "+351 900 000 000",
     ]);
   });
 

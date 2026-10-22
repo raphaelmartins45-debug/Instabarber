@@ -475,7 +475,7 @@ Com as versões exatas da B.3, o `npm audit` dava 21 vulnerabilidades (8 altas, 
 - A fonte Inter (I.2) entra com o primeiro ecrã da aplicação (Fase 2/3): na Fase 0 não há nenhuma página React visível.
 
 ## D-101 · 22/10/2026 · E-mail de resposta ao visitante: texto profissional e assinatura comercial
-- Pedido do dono: o e-mail automático que o visitante recebe fica mais profissional e passa a assinar «Comercial InstaBarber», com o número de WhatsApp por baixo. Substitui, só nos e-mails comerciais enviados para fora, a assinatura única «InstaBarber · Performa LAB» da D-44 (que se mantém nos restantes e-mails).
+- Pedido do dono: o e-mail automático que o visitante recebe fica mais profissional e passa a assinar «Comercial InstaBarber», com o número de WhatsApp por baixo, sem o rótulo «WhatsApp:». Substitui, só nos e-mails comerciais enviados para fora, a assinatura única «InstaBarber · Performa LAB» da D-44 (que se mantém nos restantes e-mails).
 - O número vem da variável `TELEFONE_COMERCIAL_TXT` (nunca escrito no código). Se a variável faltar, o e-mail sai na mesma, sem a linha do WhatsApp (não é essencial). **Ação do dono:** juntar `TELEFONE_COMERCIAL_TXT` na Vercel (o valor está no `.env.local`).
 - O `reply-to` da resposta passa a ser o comercial@, para que «responde a este e-mail» chegue à caixa certa.
 - Os avisos internos para o comercial@ não mudam.

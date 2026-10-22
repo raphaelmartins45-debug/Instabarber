@@ -5,7 +5,6 @@ export const textos = {
     nome: "InstaBarber",
     assinatura: "InstaBarber · Performa LAB",
     assinaturaComercial: "Comercial InstaBarber",
-    rotuloWhatsapp: "WhatsApp",
   },
   contacto: {
     campos: {
