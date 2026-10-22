@@ -384,3 +384,6 @@ O topo ganha «Compara os planos» (#planos) ao lado de «Experimentar a demo».
 
 ## D-80 · Ícone e descrição da página (22/10/2026)
 Ícone do separador refeito (barbeiro dourado sobre fundo da marca, a ocupar 90 % da altura): favicon.ico (16, 32 e 48 px), PNG 32, 192 e 512, apple-touch-icon. Descrição para pesquisa: «Agenda, clientes, equipa e financeiro num só sistema, com marcação online e WhatsApp para recuperar clientes. Para barbearias em Portugal. Experimenta a demo.» Acrescentados og:image:alt e as etiquetas twitter:title, description e image. As ligações de partilha apontam para instabarber.pt: a pré-visualização só aparece depois de o domínio estar ligado.
+
+## D-81 · Botão «Experimenta on-line já» (22/10/2026)
+O botão principal do topo passa de «Experimentar a demo» para «Experimenta on-line já» (mesmo destino, #demo). O CTA das publicações no CLAUDE.md §11 e no guia de voz acompanha: «Experimenta on-line já» / «link na bio». As imagens e legendas do Instagram já feitas podem ainda dizer «demo»: rever no novo trabalho de redes.

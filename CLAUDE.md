@@ -208,7 +208,7 @@ O endereço segue a natureza da mensagem, não quem escreve. Assinatura única:
 
 Nas publicações, legendas, bios e vídeos do Instagram **não se menciona a Performa LAB nem «feito em Viseu»**. A marca fala só como InstaBarber (decisão de 21/10/2026, D-67). A assinatura «InstaBarber · Performa LAB» do correio (secção 10) mantém-se.
 
-Também **não aparece «piloto»** («vagas piloto», «barbearias piloto», palavra-chave PILOTO) em nenhuma publicação nem na landing (D-68, D-73). O CTA das publicações é «Experimenta a demo» / «link na bio».
+Também **não aparece «piloto»** («vagas piloto», «barbearias piloto», palavra-chave PILOTO) em nenhuma publicação nem na landing (D-68, D-73). O CTA das publicações é «Experimenta on-line já» / «link na bio».
 A promessa central nas publicações é «tudo o que a barbearia precisa, reunido num só sistema, sem pagar por cada serviço». Não usar «sem pagar por cada mensagem» como mensagem principal.
 
 ## 12 · Tom das legendas
