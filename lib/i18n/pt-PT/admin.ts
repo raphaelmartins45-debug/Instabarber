@@ -59,6 +59,7 @@ export const admin = {
       importacao: "Importação",
       auditoria: "Auditoria",
     },
+    navegacao: "Separadores da ficha",
     separadorDe: (n: number, total: number) => `Separador ${n} de ${total}`,
     anterior: "Anterior",
     seguinte: "Seguinte",
@@ -133,6 +134,10 @@ export const admin = {
       reativar: "Reativar",
       cancelar: "Cancelar barbearia",
       exportar: "Exportar dados (CSV)",
+      exportarCliente: "Exportar um cliente",
+      exportarClienteTexto:
+        "Exporta os dados de um só cliente, a pedido escrito da barbearia. Escreva o telemóvel do cliente:",
+      telemovel: "Telemóvel",
       eliminar: "Eliminar definitivamente",
       apoio: "Vista de apoio",
       confirmarSuspender:

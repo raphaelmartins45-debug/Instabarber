@@ -6,7 +6,7 @@ import { slugValido } from "@/lib/inquilino/host";
 export function slugDoNome(nome: string): string {
   const base = nome
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/&/g, " e ")
     .replace(/[^a-z0-9]+/g, "-")

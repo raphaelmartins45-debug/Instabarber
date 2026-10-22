@@ -42,7 +42,7 @@ export function ConfirmarAcao({
         <AlertDialogFooter>
           <AlertDialogCancel>{textos.comum.cancelar}</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-destructive hover:bg-destructive/90"
+            className={destrutiva ? "bg-destructive hover:bg-destructive/90" : undefined}
             onClick={aoConfirmar}
           >
             {confirmar}

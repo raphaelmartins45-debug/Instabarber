@@ -30,3 +30,15 @@ export async function listarFeriados(
   if (error) falhaDeLeitura("feriados", error);
   return data;
 }
+
+/** Quantos feriados nacionais (inquilino nulo) há carregados num ano (alerta de novembro, C.8). */
+export async function contarFeriadosNacionais(bd: ClienteBD, ano: number): Promise<number> {
+  const { count, error } = await bd
+    .from("feriados")
+    .select("id", { count: "exact", head: true })
+    .is("inquilino_id", null)
+    .gte("data", `${ano}-01-01`)
+    .lte("data", `${ano}-12-31`);
+  if (error) falhaDeLeitura("feriados", error);
+  return count ?? 0;
+}

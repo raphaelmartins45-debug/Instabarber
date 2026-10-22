@@ -21,3 +21,18 @@ export function momentoLocal(instante: Date): { diaSemana: number; hora: string 
 export function dataCurta(instante: Date | string): string {
   return formatInTimeZone(new Date(instante), regiao.fuso, "dd/MM/yyyy");
 }
+
+/** Data e hora no fuso da região: «22/10/2026 14:05». */
+export function dataHora(instante: Date | string): string {
+  return formatInTimeZone(new Date(instante), regiao.fuso, "dd/MM/yyyy HH:mm");
+}
+
+/** Data ISO (AAAA-MM-DD) de hoje no fuso da região, para campos de data. */
+export function hojeIso(agora: Date = new Date()): string {
+  return formatInTimeZone(agora, regiao.fuso, "yyyy-MM-dd");
+}
+
+/** Hora no fuso da região: «14:05». */
+export function horaCurta(instante: Date | string): string {
+  return formatInTimeZone(new Date(instante), regiao.fuso, "HH:mm");
+}

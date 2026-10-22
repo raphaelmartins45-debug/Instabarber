@@ -5,6 +5,8 @@ import type { ContextoEquipa } from "@/lib/equipa/contexto";
 import type { ItemMontado } from "@/lib/funcionalidades/menus";
 import { textos } from "@/lib/i18n/pt-PT";
 import { MenuPainel } from "@/components/nucleo/menu-painel";
+import { horaCurta } from "@/lib/formatacao/datas";
+import { FaixaApoio } from "./faixa-apoio";
 
 /** Cabeçalho, menu e conteúdo dos painéis da barbearia (camadas 2 e 3). */
 export function MolduraPainel({
@@ -30,6 +32,9 @@ export function MolduraPainel({
     ) : null;
   return (
     <>
+      {contexto.apoio ? (
+        <FaixaApoio barbearia={contexto.barbearia.nome} hora={horaCurta(contexto.apoio.expira)} />
+      ) : null}
       <CabecalhoPainel
         camada={`${camada} · ${contexto.barbearia.nome}`}
         vista={vista}

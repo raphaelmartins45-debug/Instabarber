@@ -6,6 +6,9 @@ import { lerEndereco } from "@/lib/inquilino/endereco";
 import { listarMeusPerfis, type MeuPerfil } from "@/lib/repositorios/perfis";
 import { obterProfissionalDoPerfil } from "@/lib/repositorios/profissionais";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
+import type { ClienteBD } from "@/lib/supabase/tipos";
+import { COOKIE_APOIO, lerApoio } from "@/lib/admin/apoio";
+import { obterBarbearia } from "@/lib/repositorios/admin/barbearias";
 
 // Quem está no painel da barbearia (camadas 2 e 3) e em que barbearia. O RLS volta a
 // verificar tudo; isto decide o que se mostra e para onde se encaminha (B.6).
@@ -22,6 +25,8 @@ export type ContextoEquipa = {
   profissionalId: string | null;
   /** Barbearias onde o utilizador tem perfil (para a troca). */
   barbearias: BarbeariaDaEquipa[];
+  /** Vista de apoio do super_admin (só leitura, E.1): até quando vale. */
+  apoio: { expira: string } | null;
 };
 
 export const obterContextoEquipa = cache(async (): Promise<ContextoEquipa> => {
@@ -39,7 +44,11 @@ export const obterContextoEquipa = cache(async (): Promise<ContextoEquipa> => {
       p.papel !== "super_admin" && p.inquilino?.estado === "ativo",
   );
   if (daEquipa.length === 0) {
-    if (perfis.some((p) => p.papel === "super_admin")) redirect("/admin");
+    if (perfis.some((p) => p.papel === "super_admin")) {
+      const apoio = await contextoDeApoio(bd, user.id);
+      if (apoio) return apoio;
+      redirect("/admin");
+    }
     redirect(`${entrada}?erro=sem_acesso`);
   }
 
@@ -68,8 +77,38 @@ export const obterContextoEquipa = cache(async (): Promise<ContextoEquipa> => {
       ? await obterProfissionalDoPerfil(bd, perfilProfissional.id)
       : null,
     barbearias,
+    apoio: null,
   };
 });
+
+/**
+ * Vista de apoio: o super_admin com dois fatores e um apoio em curso vê o painel da barbearia
+ * como o gestor, só para ler. A leitura é do RLS (*_admin_ler); a escrita é recusada.
+ */
+async function contextoDeApoio(bd: ClienteBD, userId: string): Promise<ContextoEquipa | null> {
+  const apoio = lerApoio((await cookies()).get(COOKIE_APOIO)?.value);
+  if (!apoio) return null;
+  const { data } = await bd.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (data?.currentLevel !== "aal2") return null;
+  const b = await obterBarbearia(bd, apoio.inquilino);
+  if (!b) return null;
+  const barbearia = { id: b.id, nome: b.nome, slug: b.slug };
+  return {
+    userId,
+    barbearia,
+    eGestor: true,
+    profissionalId: null,
+    barbearias: [barbearia],
+    apoio: { expira: apoio.expira },
+  };
+}
+
+/** Para as ações que gravam: a vista de apoio é só de leitura. */
+export async function exigirGestorParaEscrever(): Promise<ContextoEquipa> {
+  const contexto = await exigirGestor();
+  if (contexto.apoio) throw new Error("apoio_so_leitura");
+  return contexto;
+}
 
 /** Só o gestor (Gestão do sistema, Início do gestor). O barbeiro vai para a sua área. */
 export async function exigirGestor(): Promise<ContextoEquipa> {

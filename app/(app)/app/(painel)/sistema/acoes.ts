@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { convidarOuEncontrar, reenviarConvite } from "@/lib/auth/contas";
-import { exigirGestor } from "@/lib/equipa/contexto";
+import { exigirGestorParaEscrever } from "@/lib/equipa/contexto";
 import { lerEndereco, origemDoPedido } from "@/lib/inquilino/endereco";
 import {
   contasDosPerfis,
@@ -35,7 +35,7 @@ async function destinoConvite(): Promise<string> {
 }
 
 export async function registarBarbeiro(dados: DadosRegistarBarbeiro): Promise<ResultadoRegisto> {
-  const { barbearia } = await exigirGestor();
+  const { barbearia } = await exigirGestorParaEscrever();
   const v = esquemaRegistarBarbeiro.safeParse(dados);
   if (!v.success) return { ok: false, erro: v.error.issues[0]?.message ?? "generico" };
   const { nome, email, nif } = v.data;
@@ -82,7 +82,7 @@ export async function registarBarbeiro(dados: DadosRegistarBarbeiro): Promise<Re
 }
 
 export async function reenviarConviteBarbeiro(profissionalId: string): Promise<{ ok: boolean }> {
-  const { barbearia } = await exigirGestor();
+  const { barbearia } = await exigirGestorParaEscrever();
   const id = z.string().uuid().safeParse(profissionalId);
   if (!id.success) return { ok: false };
   const bd = await criarClienteServidor();
