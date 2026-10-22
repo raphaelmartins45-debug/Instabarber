@@ -657,3 +657,10 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 ## D-129 · 22/10/2026 · Páginas do cliente com layout de computador — dono
 - O dono testou a marcação no computador e a coluna de telemóvel (460 px, I.3 camada 4) prejudicava a experiência. **Prevalece sobre a I.3:** no telemóvel tudo fica igual (460 px, um passo por ecrã); a partir de 768 px as páginas do cliente alargam.
 - Marcação, loja e área de cliente usam a largura de uma página (`MolduraCliente larga`, até 1024 px): serviços e barbeiros em duas colunas, horas em seis, e um resumo «A sua marcação» fixo à direita (barbearia, serviço, barbeiro, dia e hora, preço); a loja põe o total e os dados fixos ao lado dos produtos; a área de cliente fica em duas colunas. Entrada, fila e páginas de um só cartão alargam até 576 px.
+
+## D-130 · 22/10/2026 · SEO da landing: título, descrição e palavras de pesquisa — dono
+- Título aprovado pelo dono: «Sistema Completo para Gestão de Barbearias | InstaBarber» (56 caracteres, a palavra-chave primeiro e a marca no fim). Descrição (152 caracteres): «Sistema completo para gestão de barbearias em Portugal: marcação online, agenda, clientes, equipa e financeiro num só sítio. Experimenta a demonstração.» As partilhas (Open Graph e Twitter) seguem a mesma mensagem.
+- Linha «Sistema de gestão para barbearias» dentro do H1, por cima do slogan, em letra pequena: a pesquisa encontra-a e o desenho quase não muda.
+- Sem `meta keywords` (o Google ignora-a): as variações de pesquisa vão nos dados estruturados (`alternateName`, `keywords`) e no texto (a primeira resposta das perguntas frequentes diz «programa para barbearias… como uma app»).
+- Dados estruturados: `SoftwareApplication` com os preços (de 24,59 € a 47,97 € por mês, com IVA) e `FAQPage` com as seis perguntas da página. O sitemap passa a levar a data da publicação (`lastmod`).
+- Feito no `main` com autorização do dono (a outra sessão tinha terminado).
