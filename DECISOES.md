@@ -375,3 +375,6 @@ A secção de contacto ganha «Seguir-nos no Instagram» (@instabarberpt, abre e
 
 ## D-77 · Revisão final da landing (22/10/2026)
 Teste completo (desktop 1440 e telemóvel 390): sem erros na consola, sem rolagem lateral, âncoras e formulário a funcionar. Alterações: «Dashboard do dia» passa a «Painel do dia»; o rótulo «Gestor» passa a «Dono»; a comparação ganha a linha «Poupas, por mês» (37,41 €, 448,92 € por ano); o título da página publicada (`landing/publicar`) passa a «InstaBarber · Agenda, clientes e fidelização para barbearias» (melhor para pesquisa e separadores).
+
+## D-78 · Topo da landing com três chamadas (22/10/2026)
+O topo tinha cinco chamadas (três caixas e dois botões) e dois botões com o mesmo verbo para destinos diferentes. Passa a: botão principal «Experimentar a demo» (#demo), secundário «Falar connosco» (#contacto) e ligação «Calcula quanto estás a perder por mês» (#calculadora). Removidas as três caixas de atalhos e o CSS respetivo. «Ver planos» fica no corpo da página.
