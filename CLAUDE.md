@@ -140,7 +140,7 @@ plano**: dizer «a grelha D.3».
 | Pro | 39,00 € / 47,97 € | 390,00 € / 479,70 € | 3 incluídos; +10,00 € (12,30 € com IVA) por mês, ou +100,00 € por ano, a partir do 4.º |
 | Extra: domínio próprio | +5,00 € / +6,15 € | +50,00 € / +61,50 € | Em qualquer plano |
 
-O **preço final** ao cliente é o da coluna «com IVA» e não muda com o regime de IVA da Prestadora. Enquanto ela estiver isenta (art. 53.º do CIVA), o IVA é 0 e o valor sem IVA é igual ao preço final (D-45, `PRESTADORA_REGIME_IVA`).
+O **preço final** ao cliente é o da coluna «com IVA» e não muda com o regime de IVA da Prestadora. Desde 22/10/2026 a Prestadora já não está isenta (D-85): `PRESTADORA_REGIME_IVA=normal`, o IVA a 23 % está incluído no preço final e o valor sem IVA é o preço final ÷ 1,23, arredondado (39,00 € + 8,97 € = 47,97 €). Se o regime mudar outra vez, muda só a variável (D-45).
 
 Só a Performa LAB liga e desliga funcionalidades, no painel de administração.
 A verificação é no servidor e na base de dados, nunca só na interface.

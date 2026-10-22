@@ -59,7 +59,7 @@ PRESTADORA_NIF=999999999
 PRESTADORA_MORADA=xxxxx
 PRESTADORA_QUALIDADE=xxxxx
 PRESTADORA_ASSINANTE=xxxxx
-PRESTADORA_REGIME_IVA=isento             # isento (art. 53.º do CIVA) ou normal (D-45)
+PRESTADORA_REGIME_IVA=normal             # normal (IVA a 23 % incluído) ou isento (art. 53.º do CIVA) (D-45, D-85)
 # Módulos desligados (G.4): só quando forem ativados
 # PAGAMENTOS_FORNECEDOR=…  PAGAMENTOS_CHAVE=…  PAGAMENTOS_SEGREDO_WEBHOOK=…
 
