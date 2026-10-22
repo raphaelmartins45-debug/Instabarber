@@ -482,3 +482,6 @@ Com as versões exatas da B.3, o `npm audit` dava 21 vulnerabilidades (8 altas, 
 
 ## D-102 · 22/10/2026 · E-mail de resposta timbrado
 A resposta ao visitante passa a levar versão HTML (cabeçalho preto com a logo dourada, corpo claro, linha em branco após «Com os melhores cumprimentos,», assinatura «Comercial InstaBarber» e número a negrito, rodapé preto com comercial@instabarber.pt e o Instagram @instabarberpt). Layout em tabelas e estilos em linha (`lib/email/timbrado.ts`); texto do visitante escapado. O texto simples segue como alternativa. A logo é servida de instabarber.pt/marca. Os avisos internos continuam só em texto.
+
+## D-103 · 22/10/2026 · E-mail timbrado fixo em modo escuro
+O Gmail do iPhone em modo escuro inverteu a faixa preta do cabeçalho (logo ilegível). As faixas do e-mail timbrado levam `bgcolor` e um gradiente da mesma cor, mais `color-scheme: light only`, para o desenho ficar igual nos dois modos. Não há como testar o Gmail daqui: confirma-se com um e-mail real.

@@ -16,6 +16,10 @@ const COR = {
 
 const FONTE = "Arial, Helvetica, sans-serif";
 
+// O Gmail (sobretudo no iPhone) inverte as cores em modo escuro e deixava a faixa preta clara, com a logo ilegível.
+// Atributo bgcolor mais um gradiente da mesma cor é o truque que o impede de inverter: o desenho fica igual nos dois modos.
+const fixo = (cor: string) => `bgcolor="${cor}" style="background-color:${cor};background-image:linear-gradient(${cor},${cor});`;
+
 export function escapeHtml(valor: string): string {
   return valor
     .replace(/&/g, "&amp;")
@@ -44,7 +48,7 @@ function paragrafo(texto: string): string {
 
 export function emailTimbrado(d: DadosTimbrado): string {
   const destaque = d.destaque
-    ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px 0;"><tr><td style="background:${COR.creme};border-left:3px solid ${COR.ouro};padding:14px 16px;font-family:${FONTE};font-size:15px;line-height:1.5;color:${COR.texto};"><strong>${escapeHtml(d.destaque.titulo)}</strong>${
+    ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px 0;"><tr><td ${fixo(COR.creme)}border-left:3px solid ${COR.ouro};padding:14px 16px;font-family:${FONTE};font-size:15px;line-height:1.5;color:${COR.texto};"><strong>${escapeHtml(d.destaque.titulo)}</strong>${
         d.destaque.nota
           ? `<br><span style="font-size:13px;color:#6A645B;">${escapeHtml(d.destaque.nota)}</span>`
           : ""
@@ -56,13 +60,13 @@ export function emailTimbrado(d: DadosTimbrado): string {
   const { email, instagramTexto, instagramUrl } = d.rodape;
   return `<!doctype html>
 <html lang="pt-PT">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>${escapeHtml(textos.marca.nome)}</title></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light only"><style>:root{color-scheme:light only;supported-color-schemes:light only;}</style><title>${escapeHtml(textos.marca.nome)}</title></head>
 <body style="margin:0;padding:0;background:${COR.fundo};">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:${COR.fundo};">
 <tr><td align="center" style="padding:24px 12px;">
 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;">
-<tr><td style="background:${COR.tinta};padding:24px 32px;border-bottom:3px solid ${COR.ouro};"><img src="${escapeHtml(d.logoUrl)}" width="170" alt="${escapeHtml(textos.marca.nome)}" style="display:block;border:0;outline:none;height:auto;max-width:170px;font-family:${FONTE};font-size:20px;font-weight:bold;color:${COR.ouro};"></td></tr>
-<tr><td style="background:#FFFFFF;padding:32px 32px 8px 32px;">
+<tr><td ${fixo(COR.tinta)}padding:24px 32px;border-bottom:3px solid ${COR.ouro};"><img src="${escapeHtml(d.logoUrl)}" width="170" alt="${escapeHtml(textos.marca.nome)}" style="display:block;border:0;outline:none;height:auto;max-width:170px;font-family:${FONTE};font-size:20px;font-weight:bold;color:${COR.ouro};"></td></tr>
+<tr><td ${fixo("#FFFFFF")}padding:32px 32px 8px 32px;">
 ${paragrafo(d.saudacao)}
 ${d.paragrafos.map(paragrafo).join("\n")}
 ${destaque}
@@ -70,7 +74,7 @@ ${d.paragrafosFinais.map(paragrafo).join("\n")}
 <p style="margin:24px 0 4px 0;font-family:${FONTE};font-size:15px;line-height:1.6;color:${COR.texto};">${escapeHtml(d.despedida)}</p>
 <p style="margin:16px 0 24px 0;font-family:${FONTE};font-size:15px;line-height:1.6;color:${COR.texto};">${assinatura}</p>
 </td></tr>
-<tr><td style="background:${COR.tinta};padding:20px 32px;font-family:${FONTE};font-size:13px;line-height:1.7;color:${COR.suave};">
+<tr><td ${fixo(COR.tinta)}padding:20px 32px;font-family:${FONTE};font-size:13px;line-height:1.7;color:${COR.suave};">
 <a href="mailto:${escapeHtml(email)}" style="color:${COR.ouro};text-decoration:none;">${escapeHtml(email)}</a><br>
 Instagram: <a href="${escapeHtml(instagramUrl)}" style="color:${COR.ouro};text-decoration:none;">${escapeHtml(instagramTexto)}</a>
 </td></tr>
