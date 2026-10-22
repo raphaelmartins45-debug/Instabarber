@@ -363,3 +363,6 @@ O Pro passa de 2 para 3 profissionais incluídos, sem referência ao gestor em n
 
 ## D-73 · Sem «piloto» também na landing (22/10/2026)
 A palavra «piloto» sai da landing (botão do topo, nota dos preços e texto do contacto), além das publicações (D-68). O botão passa a «Quero experimentar».
+
+## D-74 · «Objetivos» em vez de «metas»; comparação com valor único (22/10/2026)
+Em Portugal diz-se «objetivos», não «metas»: a landing passa a dizer «objetivos» (equipa, grelha de funcionalidades e plano Pro). Na comparação «E se comprasses cada coisa separada?», cada categoria mostra um só valor, o mais alto da referência (agenda 27 €, fidelização 35 €), e o total dá 62 € por mês, contra 24,59 € do Basic. A nota de rodapé deixa de falar do «valor mais baixo». Antes de campanhas, confirmar os valores de mercado e a data de consulta (publicidade comparativa deve ser verificável).
