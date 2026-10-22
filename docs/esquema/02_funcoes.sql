@@ -776,6 +776,19 @@ begin
   return v_codigo;
 end $$;
 
+-- O cartão de selos do próprio cliente (E.4): saldo, selos necessários e o nome do prémio
+-- quando ativo. A página pública não mostra a fidelização; só a área de cliente (D-125).
+create or replace function public.meu_cartao_selos(p_inquilino uuid)
+returns table (selos integer, necessarios integer, premio text)
+language sql stable security definer set search_path = '' as $$
+  select coalesce((select sum(m.quantidade)::integer from public.movimentos_selos m where m.cliente_id = c.id), 0),
+         i.selos_necessarios,
+         case when i.premio_ativo then (select s.nome from public.servicos s where s.id = i.premio_servico_id) end
+    from public.clientes c join public.inquilinos i on i.id = c.inquilino_id
+   where c.inquilino_id = p_inquilino and c.auth_user_id = auth.uid()
+     and public.funcionalidade_ativa(p_inquilino, 'fidelizacao_selos')
+$$;
+
 -- Clube de assinatura (F.4.2): cada ciclo nasce por pagar, com os créditos do plano (e, se o
 -- plano transita crédito, o que ficou por usar no ciclo anterior). A renovação é no mesmo dia do
 -- mês da inscrição (29 a 31 passa ao último dia do mês). Sem tarefas agendadas (D-26): renova-se
@@ -1642,7 +1655,7 @@ grant execute on function public.cancelar_minha_marcacao(uuid, text),
   public.usar_cartao_oferta(uuid, text, numeric, uuid),
   public.marcacao_online_bloqueada(uuid),
   public.inscrever_clube(uuid, uuid, date), public.renovar_subscricao(uuid),
-  public.meu_codigo_convite(uuid)
+  public.meu_codigo_convite(uuid), public.meu_cartao_selos(uuid)
   to authenticated;
 
 -- Só a chave de serviço (rotas de servidor)

@@ -36,5 +36,18 @@ begin
   return v_codigo;
 end $$;
 
-revoke execute on function public.meu_codigo_convite(uuid) from public, anon, authenticated;
-grant execute on function public.meu_codigo_convite(uuid) to authenticated;
+-- O cartão de selos do próprio cliente (E.4): saldo, selos necessários e o nome do prémio
+-- quando ativo. A página pública não mostra a fidelização; só a área de cliente (D-125).
+create or replace function public.meu_cartao_selos(p_inquilino uuid)
+returns table (selos integer, necessarios integer, premio text)
+language sql stable security definer set search_path = '' as $$
+  select coalesce((select sum(m.quantidade)::integer from public.movimentos_selos m where m.cliente_id = c.id), 0),
+         i.selos_necessarios,
+         case when i.premio_ativo then (select s.nome from public.servicos s where s.id = i.premio_servico_id) end
+    from public.clientes c join public.inquilinos i on i.id = c.inquilino_id
+   where c.inquilino_id = p_inquilino and c.auth_user_id = auth.uid()
+     and public.funcionalidade_ativa(p_inquilino, 'fidelizacao_selos')
+$$;
+
+revoke execute on function public.meu_codigo_convite(uuid), public.meu_cartao_selos(uuid) from public, anon, authenticated;
+grant execute on function public.meu_codigo_convite(uuid), public.meu_cartao_selos(uuid) to authenticated;

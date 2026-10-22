@@ -4987,6 +4987,14 @@ export type Database = {
       marcar_contrato_enviado: { Args: { p_contrato: string }; Returns: undefined };
       marcar_falta: { Args: { p_marcacao: string }; Returns: undefined };
       marcar_proposta_enviada: { Args: { p_proposta: string }; Returns: undefined };
+      meu_cartao_selos: {
+        Args: { p_inquilino: string };
+        Returns: {
+          necessarios: number;
+          premio: string;
+          selos: number;
+        }[];
+      };
       meu_codigo_convite: { Args: { p_inquilino: string }; Returns: string };
       meus_clientes: { Args: Record<PropertyKey, never>; Returns: string[] };
       meus_profissionais: { Args: Record<PropertyKey, never>; Returns: string[] };

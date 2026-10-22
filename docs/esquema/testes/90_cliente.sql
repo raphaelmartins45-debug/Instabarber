@@ -39,4 +39,19 @@ select confirmar_reserva((select marcacao_id from r), (select token from r), 'Am
 reset role;
 select teste.ok((select convidado_por = '40000000-0000-0000-0000-000000000001' from clientes where telefone = '+351939000001'),
                 'CLIENTE: quem marca pela primeira vez com o código fica convidado');
+
+-- Cartão de selos: só o do próprio cliente, com o prémio quando ativo.
+insert into movimentos_selos (inquilino_id, cliente_id, tipo, quantidade)
+values ('aaaaaaaa-0000-0000-0000-000000000000', '40000000-0000-0000-0000-000000000001', 'ajuste', 3);
+update inquilinos set premio_ativo = true, premio_servico_id = '30000000-0000-0000-0000-000000000002'
+ where id = 'aaaaaaaa-0000-0000-0000-000000000000';
+select teste.como('10000000-0000-0000-0000-000000000007');
+select teste.ok((select selos = 3 and necessarios = 10 and premio = 'Barba'
+                   from meu_cartao_selos('aaaaaaaa-0000-0000-0000-000000000000')),
+                'CLIENTE: o cartão de selos traz o saldo, os necessários e o prémio');
+select teste.ok((select count(*) = 0 from meu_cartao_selos('bbbbbbbb-0000-0000-0000-000000000000')),
+                'CLIENTE: noutra barbearia não há cartão');
+select teste.como('10000000-0000-0000-0000-000000000003');
+select teste.ok((select count(*) = 0 from meu_cartao_selos('aaaaaaaa-0000-0000-0000-000000000000')),
+                'CLIENTE: um barbeiro não lê cartões de clientes por aqui');
 rollback;
