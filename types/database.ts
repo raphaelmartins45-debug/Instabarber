@@ -5011,6 +5011,16 @@ export type Database = {
         };
         Returns: undefined;
       };
+      registar_auditoria_admin: {
+        Args: {
+          p_accao: string;
+          p_detalhes: Json;
+          p_entidade: string;
+          p_entidade_id: string;
+          p_inquilino: string;
+        };
+        Returns: undefined;
+      };
       registar_email_lembrete: { Args: { p_id: string; p_ok: boolean }; Returns: undefined };
       registar_evento_lead: {
         Args: {

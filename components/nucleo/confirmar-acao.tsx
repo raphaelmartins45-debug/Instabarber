@@ -14,20 +14,23 @@ import {
 import { textos } from "@/lib/i18n/pt-PT";
 
 /**
- * Ação destrutiva (suspender, cancelar, apagar…): nunca fica a um toque, pede confirmação
- * explícita (I.3.1). O gatilho é o botão que se passa como filho.
+ * Ação que pede confirmação explícita (I.3.1): as destrutivas (suspender, cancelar, apagar…)
+ * nunca ficam a um toque. O gatilho é o botão que se passa como filho.
  */
 export function ConfirmarAcao({
   titulo,
   descricao,
   confirmar,
   aoConfirmar,
+  destrutiva = true,
   children,
 }: {
   titulo: string;
   descricao: string;
   confirmar: string;
   aoConfirmar: () => void;
+  /** Falso para confirmações que não apagam nem retiram nada (ex.: aprovar). */
+  destrutiva?: boolean;
   children: ReactNode;
 }) {
   return (

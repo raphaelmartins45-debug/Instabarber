@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { centimosDeNumeric, centimosDeTexto, formatarDinheiro, numericDeCentimos } from "./dinheiro";
+import {
+  centimosDeNumeric,
+  centimosDeTexto,
+  formatarDinheiro,
+  numericDeCentimos,
+} from "./dinheiro";
 
 const espaco = " ";
 

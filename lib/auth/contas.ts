@@ -86,3 +86,55 @@ export async function definirContaCliente(
   if (error || !data.user) return { ok: false, fraca: error?.code === "weak_password" };
   return { ok: true, userId: data.user.id };
 }
+
+export type ContaComLigacao = { ok: true; userId: string; ligacao: string | null } | { ok: false };
+
+/**
+ * Cria a conta (sem enviar e-mail) e devolve a ligação segura para definir a palavra-passe,
+ * para seguir no e-mail de boas-vindas (D.8.2). Se a conta já existir, devolve-a sem ligação.
+ */
+export async function contaComLigacaoDeConvite(
+  servico: ClienteBD,
+  dados: { email: string; destino: string },
+  procurarExistente: (email: string) => Promise<string | null>,
+): Promise<ContaComLigacao> {
+  const { data, error } = await servico.auth.admin.generateLink({
+    type: "invite",
+    email: dados.email,
+    options: { redirectTo: dados.destino },
+  });
+  if (!error && data.user) {
+    const ligacao = `${dados.destino}?token_hash=${encodeURIComponent(data.properties.hashed_token)}&type=invite`;
+    return { ok: true, userId: data.user.id, ligacao };
+  }
+  if (error?.code === "email_exists" || error?.status === 422) {
+    const existente = await procurarExistente(dados.email);
+    return existente ? { ok: true, userId: existente, ligacao: null } : { ok: false };
+  }
+  return { ok: false };
+}
+
+/** Apaga as contas que ficaram sem uso depois de eliminar uma barbearia (E.1, P-18). */
+export async function apagarContas(servico: ClienteBD, userIds: string[]): Promise<number> {
+  let apagadas = 0;
+  for (const id of userIds) {
+    const { error } = await servico.auth.admin.deleteUser(id);
+    if (!error) apagadas++;
+  }
+  return apagadas;
+}
+
+/** Ligação segura (tipo recuperação) para quem já tem conta: reenvio das boas-vindas. */
+export async function ligacaoDeRecuperacao(
+  servico: ClienteBD,
+  email: string,
+  destino: string,
+): Promise<string | null> {
+  const { data, error } = await servico.auth.admin.generateLink({
+    type: "recovery",
+    email,
+    options: { redirectTo: destino },
+  });
+  if (error) return null;
+  return `${destino}?token_hash=${encodeURIComponent(data.properties.hashed_token)}&type=recovery`;
+}

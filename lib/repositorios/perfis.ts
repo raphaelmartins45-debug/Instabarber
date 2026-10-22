@@ -87,3 +87,32 @@ export async function contasDosPerfis(
   if (error) falhaDeLeitura("perfis", error);
   return new Map(data.map((p) => [p.id, p.user_id]));
 }
+
+/** Perfil de proprietário de uma barbearia nova (o super_admin escreve perfis). */
+export async function criarPerfilProprietario(
+  bd: ClienteBD,
+  dados: { userId: string; inquilinoId: string; nome: string; email: string },
+): Promise<boolean> {
+  const { error } = await bd.from("perfis").insert({
+    user_id: dados.userId,
+    inquilino_id: dados.inquilinoId,
+    papel: "proprietario",
+    nome: dados.nome,
+    email: dados.email,
+  });
+  return !error;
+}
+
+/** Proprietários de uma barbearia (nome e e-mail), para a ficha do Admin. */
+export async function listarProprietarios(
+  bd: ClienteBD,
+  inquilinoId: string,
+): Promise<{ id: string; nome: string | null; email: string | null }[]> {
+  const { data, error } = await bd
+    .from("perfis")
+    .select("id, nome, email")
+    .eq("inquilino_id", inquilinoId)
+    .eq("papel", "proprietario");
+  if (error) falhaDeLeitura("perfis", error);
+  return data;
+}

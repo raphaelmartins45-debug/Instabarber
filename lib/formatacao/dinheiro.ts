@@ -42,3 +42,11 @@ export function centimosDeTexto(texto: string): number | null {
   const [, euros = "0", decimais = ""] = partes;
   return Number(euros) * 100 + Number(decimais.padEnd(2, "0"));
 }
+
+/**
+ * Cêntimos → número para uma coluna numeric(10,2) via PostgREST (os tipos gerados pedem number).
+ * A divisão de um inteiro por 100 serializa sempre com no máximo duas casas («19.99»).
+ */
+export function numericParaGravar(centimos: number): number {
+  return Number(numericDeCentimos(centimos));
+}
