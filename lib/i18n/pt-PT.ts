@@ -6,9 +6,11 @@ import { agenda, inicio, mensagensWhatsApp, upgrade } from "./pt-PT/agenda";
 import { admin } from "./pt-PT/admin";
 import { clientes } from "./pt-PT/clientes";
 import { comum } from "./pt-PT/comum";
+import { financeiro, plano } from "./pt-PT/financeiro";
 import { legal } from "./pt-PT/legal";
 import { loja } from "./pt-PT/loja";
 import { paineis } from "./pt-PT/paineis";
+import { profissional } from "./pt-PT/profissional";
 import { sistema } from "./pt-PT/sistema";
 
 export const textos = {
@@ -70,4 +72,7 @@ export const textos = {
   clientes,
   loja,
   sistema,
+  profissional,
+  financeiro,
+  plano,
 } as const;

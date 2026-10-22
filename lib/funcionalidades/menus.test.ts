@@ -28,6 +28,7 @@ describe("montarMenu", () => {
       ["inicio", "ativo"],
       ["agenda", "ativo"],
       ["metas", "upgrade"],
+      ["perfil", "ativo"],
     ]);
   });
 

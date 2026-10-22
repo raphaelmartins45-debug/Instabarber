@@ -70,3 +70,10 @@ export function ticketMedio(valoresCent: readonly number[]): number {
   if (valoresCent.length === 0) return 0;
   return Math.round(valoresCent.reduce((a, b) => a + b, 0) / valoresCent.length);
 }
+
+/** Taxa de regresso (E.3): clientes com duas ou mais visitas ÷ clientes com visitas, em %. */
+export function taxaRegresso(visitasPorCliente: readonly number[]): number | null {
+  const comVisitas = visitasPorCliente.filter((n) => n > 0);
+  if (comVisitas.length === 0) return null;
+  return Math.round((comVisitas.filter((n) => n >= 2).length / comVisitas.length) * 100);
+}

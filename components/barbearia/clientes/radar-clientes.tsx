@@ -29,6 +29,7 @@ export function RadarClientes({
   filtro,
   busca,
   base,
+  ficha = base,
   mensagens,
   indicadoresRadar,
   pagina,
@@ -39,6 +40,8 @@ export function RadarClientes({
   busca: string;
   /** Endereço desta lista (os filtros e a ficha penduram-se aqui). */
   base: string;
+  /** Endereço das fichas (`${ficha}/${id}`); por omissão, o da lista. */
+  ficha?: string;
   mensagens: boolean;
   /** `clientes_perdidos`: perdidos e faturação a recuperar. */
   indicadoresRadar: boolean;
@@ -124,7 +127,7 @@ export function RadarClientes({
             rotulo: t.colunas.cliente,
             valor: (l) => (
               <Link
-                href={`${base}/${l.cliente.id}`}
+                href={`${ficha}/${l.cliente.id}`}
                 className="font-semibold text-ligacao underline-offset-4 hover:underline"
               >
                 {l.cliente.nome}

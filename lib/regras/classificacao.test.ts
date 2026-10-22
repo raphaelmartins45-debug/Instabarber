@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { classificar, faturacaoARecuperar, frequenciaHabitual, ticketMedio } from "./classificacao";
+import {
+  classificar,
+  faturacaoARecuperar,
+  frequenciaHabitual,
+  taxaRegresso,
+  ticketMedio,
+} from "./classificacao";
 
 const agora = new Date("2026-10-22T10:00:00Z");
 
@@ -55,5 +61,12 @@ describe("faturação a recuperar e ticket médio", () => {
   it("ticket médio arredondado ao cêntimo", () => {
     expect(ticketMedio([1000, 1500, 1501])).toBe(1334);
     expect(ticketMedio([])).toBe(0);
+  });
+});
+
+describe("taxaRegresso", () => {
+  it("clientes que voltaram ÷ clientes atendidos", () => {
+    expect(taxaRegresso([1, 2, 3, 0, 1])).toBe(50);
+    expect(taxaRegresso([0])).toBeNull();
   });
 });

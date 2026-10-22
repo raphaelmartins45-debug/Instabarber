@@ -19,6 +19,7 @@ export const paineis = {
     sistema: "Gestão do sistema",
     plano: "O meu plano",
     metas: "Metas",
+    perfil: "O meu perfil",
   },
   menuRotulo: "Menu",
   upgrade: "Disponível no plano Pro",
