@@ -4,15 +4,51 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Rotas (app/)
 
-_Ainda não existe `app/`._
+- `app/(institucional)/route.ts`
+- `app/api/contacto/route.ts`
+- `app/api/medicao/route.ts`
 
 ## Variáveis CSS (app/globals.css)
 
-_Ainda não existe `app/globals.css`._
+- `--preto: #12100e;`
+- `--dourado: #f5a623;`
+- `--dourado-escuro: #c9821a;`
+- `--amarelo-claro: #fdf3e3;`
+- `--fundo: #f7f5f1;`
+- `--linha: #e6e1d8;`
+- `--verde: #1f8a5f;`
+- `--vermelho: #c0392b;`
+- `--cinza-texto: #8a847c;`
+- `--branco: #ffffff;`
+- `--raio: 16px;`
+- `--color-background: var(--fundo);`
+- `--color-foreground: var(--preto);`
+- `--color-card: var(--branco);`
+- `--color-card-foreground: var(--preto);`
+- `--color-popover: var(--branco);`
+- `--color-popover-foreground: var(--preto);`
+- `--color-primary: var(--preto);`
+- `--color-primary-foreground: var(--branco);`
+- `--color-secondary: var(--branco);`
+- `--color-secondary-foreground: var(--preto);`
+- `--color-muted: var(--fundo);`
+- `--color-muted-foreground: var(--cinza-texto);`
+- `--color-accent: var(--amarelo-claro);`
+- `--color-accent-foreground: var(--preto);`
+- `--color-destructive: var(--vermelho);`
+- `--color-sucesso: var(--verde);`
+- `--color-destaque: var(--dourado);`
+- `--color-ligacao: var(--dourado-escuro);`
+- `--color-border: var(--linha);`
+- `--color-input: var(--linha);`
+- `--color-ring: var(--dourado);`
+- `--radius-lg: var(--raio);`
+- `--radius-md: calc(var(--raio) - 4px);`
+- `--radius-sm: calc(var(--raio) - 8px);`
 
 ## Textos (lib/i18n)
 
-_Ainda não existe `lib/i18n`._
+- `lib/i18n/pt-PT.ts`: 25 chaves
 
 ## Tabelas
 

@@ -1,6 +1,11 @@
-<title>InstaBarber</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="InstaBarber: agenda, clientes, equipa, financeiro e página de marcação para barbearias. Atrai, fideliza, cresce.">
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>InstaBarber · Agenda, clientes e fidelização para barbearias</title>
+
+<meta name="description" content="Agenda, clientes, equipa e financeiro num só sistema, com marcação online e WhatsApp para recuperar clientes. Para barbearias em Portugal. Experimenta a demo.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_PT">
 <meta property="og:site_name" content="InstaBarber">
@@ -10,7 +15,17 @@
 <meta property="og:image" content="https://instabarber.pt/marca/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="InstaBarber. Atrai, fideliza, cresce.">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="InstaBarber. Atrai, fideliza, cresce.">
+<meta name="twitter:description" content="Tudo o que uma barbearia precisa, num só sistema.">
+<meta name="twitter:image" content="https://instabarber.pt/marca/og.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/marca/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/marca/favicon-192.png">
+<link rel="apple-touch-icon" href="/marca/apple-touch-icon.png">
+<link rel="canonical" href="https://instabarber.pt/">
+<meta name="theme-color" content="#12100E">
 <style>
 /* Layout: preto e dourado da marca. Hero em duas colunas (promessa + um painel de agenda de exemplo),
    faixa das três promessas, funcionalidades, quatro painéis, planos, contacto. Uma só aparência, escura. */
@@ -350,7 +365,7 @@ span.tag { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 .done .ask h4 { font-size: 18px; color: var(--cream); margin: 0; }
 .done .ask p { color: var(--mute); font-size: 15px; }
 .done .ask .btn { width: 100%; }
-.done .demo { color: var(--mute); font-size: 13px; border: 1px dashed var(--line); border-radius: 10px; padding: 8px 12px; }
+.form .isco { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .hint { color: var(--mute); font-size: 12.5px; }
 .hint a { color: var(--gold); }
 .contact .card p.hint { color: var(--mute); margin: 0; max-width: none; }
@@ -399,6 +414,9 @@ footer .links a:hover { color: var(--gold); }
   .btn { transition: none; }
 }
 </style>
+</head>
+<body>
+
 
 <div class="wrap">
   <header class="top">
@@ -825,6 +843,7 @@ footer .links a:hover { color: var(--gold); }
         </div>
       </div>
       <form class="card form" id="form" autocomplete="on" novalidate>
+        <div class="isco" aria-hidden="true"><label for="f-site">Não preencher</label><input id="f-site" name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <p class="step" id="step">Passo 1 de 2</p>
         <div id="passo1" class="fields1">
           <div class="f"><label for="f-nome">Nome completo *</label><input id="f-nome" name="nome" type="text" autocomplete="name" placeholder="Ex.: Miguel Santos"></div>
@@ -852,7 +871,6 @@ footer .links a:hover { color: var(--gold); }
         <p class="hint" id="hint"></p>
       </form>
       <div class="card done" id="done" role="status" aria-live="polite" hidden>
-        <p class="demo" id="demo-aviso" hidden>Pré-visualização: nada foi enviado. Em instabarber.pt, este pedido chega ao comercial.</p>
         <h3 id="done-t"></h3>
         <p id="done-p"></p>
         <div class="ask">
@@ -867,11 +885,11 @@ footer .links a:hover { color: var(--gold); }
   <section id="privacidade" class="legal" style="padding-top:0; padding-bottom:0">
     <details id="priv"><summary>Política de Privacidade deste site</summary><div class="ans">
       <p><b>Quem trata os dados.</b> A Performa LAB, em Viseu, Portugal, responsável pelo site instabarber.pt. Contacto: privacidade@instabarber.pt.</p>
-      <p><b>Que dados.</b> Este site não usa cookies, nem ferramentas de análise, nem guarda o que escreves no formulário. Só tratamos os dados que nos enviares por WhatsApp, e-mail ou telefone: nome, nome da barbearia, cidade, número de barbeiros, contacto e o que escreveres na mensagem. O alojamento do site pode registar o endereço IP, por razões técnicas e de segurança.</p>
+      <p><b>Que dados.</b> Os que enviares no formulário de contacto (nome, telemóvel e e-mail e, se quiseres, distrito, cidade, barbearia, número de barbeiros e maior dificuldade) e os que nos enviares por WhatsApp, e-mail ou telefone. O que escreves e não envias não é guardado. Este site não usa cookies nem ferramentas de análise: só contamos visitas e cliques, sem dados pessoais e sem guardar o endereço IP. O alojamento do site pode registar o endereço IP, por razões técnicas e de segurança.</p>
       <p><b>Para quê e com que base.</b> Para responder ao teu pedido, marcar a conversa e propor a contratação, ou seja, diligências pré-contratuais a pedido do titular. Não enviamos publicidade sem o teu consentimento.</p>
-      <p><b>Durante quanto tempo.</b> Enquanto durar a conversa e, se não houver contrato, até 12 meses depois do último contacto. Depois apagamos.</p>
+      <p><b>Onde ficam e durante quanto tempo.</b> O pedido do formulário chega à nossa equipa comercial por e-mail e fica guardado na caixa de correio. Enviamos-te também um e-mail com a referência do pedido. Guardamos os dados enquanto durar a conversa e, se não houver contrato, até 12 meses depois do último contacto. Depois apagamos.</p>
       <p><b>Os teus direitos.</b> Acesso, retificação, apagamento, limitação e oposição, escrevendo para privacidade@instabarber.pt. Podes também reclamar à Comissão Nacional de Proteção de Dados (cnpd.pt).</p>
-      <p><b>Quem mais vê os dados.</b> Os serviços de WhatsApp e de e-mail que usares para nos escrever, nos termos das políticas deles. Não vendemos nem partilhamos os dados para outros fins.</p>
+      <p><b>Quem mais vê os dados.</b> Os prestadores que tratam os dados por nossa conta: o alojamento do site, o serviço que envia os e-mails do formulário e o serviço da nossa caixa de correio. E ainda os serviços de WhatsApp e de e-mail que usares para nos escrever, nos termos das políticas deles. Não vendemos nem partilhamos os dados para outros fins.</p>
     </div></details>
   </section>
 
@@ -904,15 +922,23 @@ footer .links a:hover { color: var(--gold); }
   });
 
 
-  /* Rota de contacto no servidor (D-46). Vazia = ainda não existe: o formulário prepara a mensagem de WhatsApp.
-     Com a rota ligada, o pedido grava o lead e avisa o comercial antes de abrir o WhatsApp. */
-  var ENDPOINT = "";
-  /* Sem rota: em instabarber.pt nunca se finge um envio ("manual"); em qualquer outro endereço (pré-visualização)
-     mostra-se o fluxo final como demonstração, com aviso. */
-  var MODO = ENDPOINT ? "servidor" : (/(^|\.)instabarber\.pt$/.test(location.hostname) ? "manual" : "demo");
+  /* Rota de contacto no servidor (D-46): avisa o comercial por e-mail. «Pedido enviado» só quando a rota responde ok. */
+  var ENDPOINT = "/api/contacto";
+
+  /* Contadores sem cookies nem dados pessoais (D-50): só o nome do evento. */
+  function medir(evento) {
+    try { navigator.sendBeacon("/api/medicao", JSON.stringify({ evento: evento })); } catch (e) { /* a medição nunca impede a página */ }
+  }
+  medir("visita");
+  if ("IntersectionObserver" in window && $("calculadora")) {
+    var vista = new IntersectionObserver(function (ent) {
+      if (ent.some(function (x) { return x.isIntersecting; })) { medir("calculadora"); vista.disconnect(); }
+    }, { threshold: 0.4 });
+    vista.observe($("calculadora"));
+  }
 
   function valores() {
-    return { ref: REF, nome: $("f-nome").value.trim(), telemovel: $("f-tel").value.trim(), email: $("f-mail").value.trim(), distrito: $("f-dist").value, cidade: $("f-cid").value.trim(), barbearia: $("f-barb").value.trim(), barbeiros: $("f-n").value, dificuldade: $("f-dif").value, website: "" };
+    return { ref: REF, nome: $("f-nome").value.trim(), telemovel: $("f-tel").value.trim(), email: $("f-mail").value.trim(), distrito: $("f-dist").value, cidade: $("f-cid").value.trim(), barbearia: $("f-barb").value.trim(), barbeiros: $("f-n").value, dificuldade: $("f-dif").value, website: $("f-site").value };
   }
   var REF = "", PASSO = 1;
   function msgWa(f, completa) {
@@ -930,17 +956,13 @@ footer .links a:hover { color: var(--gold); }
   }
   function mostrar(estado, f) {
     $("form").hidden = true; $("done").hidden = false;
-    $("demo-aviso").hidden = MODO !== "demo";
     var t = $("done-t"), p = $("done-p");
     if (estado === "ok") { t.textContent = "Pedido enviado."; p.textContent = "Recebemos o teu pedido de contacto. Em breve vais receber uma chamada ou mensagem da nossa equipa comercial."; }
-    else if (estado === "manual") { t.textContent = "Quase lá."; p.textContent = "Falta só um passo: envia-nos a mensagem no WhatsApp, já preparada com os teus dados, e falamos contigo."; }
     else { t.textContent = "Não conseguimos enviar o pedido."; p.textContent = "Pede o contacto pelo WhatsApp, ou escreve para " + EMAIL + "."; }
     $("wa").href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msgWa(f, estado !== "ok"));
     $("done").scrollIntoView({ block: "center", behavior: "smooth" });
   }
-  $("hint").innerHTML = (MODO === "manual"
-    ? "Este formulário não guarda nada no site: os dados só chegam até nós quando enviares a mensagem no WhatsApp. "
-    : "Ao continuar, guardamos estes dados só para te contactar. ") + '<a href="#privacidade" data-open="priv">Política de Privacidade</a>.';
+  $("hint").innerHTML = 'Ao continuar, enviamos estes dados à nossa equipa comercial, só para te contactar. <a href="#privacidade" data-open="priv">Política de Privacidade</a>.';
   function erro(m) { $("err").textContent = m; $("err").hidden = false; }
   function validar1(f) {
     if (f.nome.split(/\s+/).filter(Boolean).length < 2) { erro("Escreve o nome completo (nome e apelido)."); return false; }
@@ -956,19 +978,18 @@ footer .links a:hover { color: var(--gold); }
     PASSO = 2; $("passo1").hidden = true; $("passo2").hidden = false; $("step").textContent = "Passo 2 de 2";
     $("send").textContent = "Enviar pedido"; $("send").disabled = false; $("skip").hidden = false; $("sub").hidden = true; $("err").hidden = true;
   }
-  $("skip").addEventListener("click", function () { mostrar(MODO === "manual" ? "manual" : "ok", valores()); });
+  $("skip").addEventListener("click", function () { mostrar("ok", valores()); });
   $("form").addEventListener("submit", function (e) {
     e.preventDefault();
     var f = valores(); $("err").hidden = true;
     if (PASSO === 1) {
       if (!validar1(f)) { return; }
-      if (MODO !== "servidor") { passo2(); return; }
+      medir("continuar");
       $("send").disabled = true;
       enviar(f, 1).then(function (r) { REF = (r && r.ref) || ""; passo2(); })
         .catch(function () { $("send").disabled = false; mostrar("erro", f); });
       return;
     }
-    if (MODO !== "servidor") { mostrar(MODO === "demo" ? "ok" : "manual", f); return; }
     $("send").disabled = true;
     enviar(f, 2).then(function () { mostrar("ok", f); }).catch(function () { mostrar("ok", f); });
   });
@@ -1175,3 +1196,6 @@ footer .links a:hover { color: var(--gold); }
   });
 })();
 </script>
+
+</body>
+</html>

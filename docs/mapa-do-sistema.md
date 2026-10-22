@@ -22,7 +22,7 @@ Antes de tocar em qualquer ficheiro, dizer a que tipo pertence. O tipo decide **
 | **Texto** | rótulos, mensagens, avisos | `lib/i18n/` (uma chave por texto) e `lib/vertical/barbearia.ts` (vocabulário) | Sim |
 | **Regra de cálculo ou de apresentação** | preço, classificação de clientes, objetivos | `lib/regras/` com testes | Sim |
 | **Regra que decide o que se grava** | vaga, comissão, selos, faltas | Funções SQL (`docs/esquema/02_funcoes.sql`) **por migração**, com testes SQL | Sim, e **risco alto** |
-| **Landing** | página de apresentação | `landing/index.html` (fonte) e a rota que a serve | Sim |
+| **Landing** | página de apresentação | `landing/index.html` (ficheiro único, servido tal como está por `app/(institucional)/route.ts`, D-99) | Sim |
 | **Dados** | corrigir um registo | Só por função ou ecrã existente, com ordem do dono. Nunca `update` direto em produção | Não |
 
 Se não der para classificar, **perguntar uma vez** ao dono, sem adivinhar.
@@ -33,7 +33,9 @@ O dono fala em «página tal». Tradução (confirmar os caminhos reais na fase 
 
 | O dono diz | O que é | Rota (B.4) | Camada |
 | --- | --- | --- | --- |
-| «a página da landing», «o site» | Apresentação da InstaBarber | `landing/index.html` → `app/(institucional)/` ou a rota da Fase 0 | — |
+| «a página da landing», «o site» | Apresentação da InstaBarber | `landing/index.html`, servido em `/` por `app/(institucional)/route.ts` | — |
+| «o formulário de contacto da landing» | Pedido de contacto em dois passos (D-50) | `app/api/contacto/route.ts`; validação em `lib/validacao/contacto.ts`; e-mails em `lib/email/contacto.ts`; textos em `lib/i18n/pt-PT.ts` | — |
+| «as contagens da landing» | Visitas, radar e «Continuar» (D-100) | `app/api/medicao/route.ts` (registos da Vercel até à Fase 3B) | — |
 | «o formulário de adesão» | Pedido de adesão em quatro passos | `app/(adesao)/adesao/` | — |
 | «o admin», «o meu painel» | Painel da Performa LAB | `app/(admin)/admin/` | 1 |
 | «o painel da barbearia», «o gestor» | Painel do gestor | `app/(app)/app/` | 2 |
@@ -61,7 +63,7 @@ Cada receita: **onde mexer → como verificar → como desfazer**.
 | Mudar a **ordem ou o nome** de um item de menu | A montagem do menu em `lib/funcionalidades/` (o menu sai das funcionalidades ligadas) | Cada papel vê só o que lhe pertence |
 | **Acrescentar um campo** a um formulário | Esquema Zod em `lib/validacao/` + coluna por migração + repositório + componente + testes (a mesma validação no formulário e no servidor) | Teste de cada camada e migração em ensaio |
 | Mudar uma **mensagem de WhatsApp** | `lib/regras/mensagens.ts` (modelos) e os testes | O `wa.me` abre com o texto certo, número em E.164 |
-| Mudar um **e-mail transacional** | `lib/email/` | Pré-visualização e envio de ensaio |
+| Mudar um **e-mail transacional** | Textos em `lib/i18n/pt-PT.ts`; montagem em `lib/email/` (`contacto.ts` para a landing; endereços em `enderecos.ts`) | Testes de `app/api/contacto` e envio de ensaio |
 | Mudar um **PDF** | Relatório: `app/api/relatorios` e a biblioteca de PDF (**confirmar**); propostas e contratos: `modelos_documento` na base de dados, pelo Comercial | Gerar um PDF de ensaio; continua a dizer «Não é documento fiscal» |
 | **Ligar ou desligar uma funcionalidade** de uma barbearia | Admin → Funcionalidades. Sem código | A barbearia vê (ou deixa de ver) o menu |
 | Mudar uma **regra da agenda** (vaga, sobreposição, antecedência) | Funções SQL por migração, nunca na interface (CLAUDE.md §3) | Testes SQL da agenda e Playwright de duas reservas em simultâneo |

@@ -18,7 +18,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 
 | Fase | Foco | Estado | Concluída em | Resultado verificado |
 | --- | --- | --- | --- | --- |
-| 0 | Preparação | Pendente | — | — |
+| 0 | Preparação | Em curso | — | Código pronto a 22/10/2026: typecheck, lint e build sem erros; 27 testes Vitest, 6 Playwright (computador e telemóvel), 396 testes SQL; `npm audit --omit=dev` 0. Falta: deploy Next.js na Vercel, pedido de teste real a chegar a comercial@, decisão sobre a vulnerabilidade de `braces` (D-98) |
 | 1 | Base de dados | Pendente | — | — |
 | 2 | Autenticação e papéis | Pendente | — | — |
 | 3 | Administração e adesão | Pendente | — | — |
@@ -35,7 +35,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 
 | Trabalho | Estado | Data | Verificação |
 | --- | --- | --- | --- |
-| Landing page (`landing/index.html`) | Fechada | 21/10/2026 | Versão 27 publicada; auditoria 0 problemas; sem rolagem horizontal em 1440 px e 390 px (mobile automático); sem «ao vivo» (D-65), sem rótulos de exemplo nos ecrãs (D-66) |
+| Landing page (`landing/index.html`) | Fechada (servida pelo Next.js desde a Fase 0, D-99) | 21/10/2026 | Versão 27 publicada; auditoria 0 problemas; sem rolagem horizontal em 1440 px e 390 px (mobile automático); sem «ao vivo» (D-65), sem rótulos de exemplo nos ecrãs (D-66) |
 | Instagram: imagens, reels, legendas, voz | Entregue ao criativo (conversa própria) | 21/10/2026 | `marketing/instagram/` + `InstaBarber-Kit-Redes-Sociais.zip`; regras em CLAUDE.md secções 11 e 12; D-61 a D-70 |
 | Estrutura de pastas do negócio | Entregue | 21/10/2026 | `InstaBarber-Estrutura-de-Pastas.zip` |
 
@@ -47,3 +47,4 @@ Fase 0 (Preparação), com início a 22/10/2026. Antes de escrever código: resu
 - 22/10/2026 · D-84: landing no ar em instabarber.pt e www.instabarber.pt (Vercel, HTTPS). Passo 0: faltam .env.local, Resend e confirmação do Zoho.
 - 22/10/2026 · D-85: regime de IVA normal. Resend verificado (domínio instabarber.pt), .env.local completo.
 - 22/10/2026 · Passo 0 concluído (domínio, landing no ar, Resend verificado, .env.local, IVA confirmado com o contabilista). Fase 0: resumo apresentado, à espera de confirmação do dono antes de escrever código.
+- 22/10/2026 · Fase 0, código: Next.js 15.5.28, React 19.2.9, rota `/api/contacto` e `/api/medicao`, landing ligada à rota (D-98 a D-100). Verificado: typecheck, lint, 27 testes Vitest, 6 Playwright, 396 testes SQL (PostgreSQL 16 local), build. À espera do dono: (1) decidir a vulnerabilidade de `braces` (D-98); (2) mudar na Vercel o Root Directory para a raiz, preset Next.js, e colar `RESEND_API_KEY`, `EMAIL_REMETENTE` e `EMAIL_COMERCIAL`; (3) pedido de teste real na landing (e o mesmo com a chave errada).

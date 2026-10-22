@@ -1,0 +1,11 @@
+import { defineConfig, devices } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "e2e",
+  use: { baseURL: "http://localhost:3000" },
+  projects: [
+    { name: "computador", use: { ...devices["Desktop Chrome"] } },
+    { name: "telemovel", use: { ...devices["Pixel 7"] } },
+  ],
+  webServer: { command: "npm run start", url: "http://localhost:3000", reuseExistingServer: true },
+});

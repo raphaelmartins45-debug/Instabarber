@@ -1,0 +1,7 @@
+landing/
+docs/
+fases/
+marketing/
+public/
+*.md
+package-lock.json
