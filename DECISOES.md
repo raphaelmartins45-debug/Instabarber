@@ -424,3 +424,7 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 ## D-91 · 22/10/2026 · Calculadora substituída pelo card do Radar
 - A calculadora (campos e contas) foi retirada. No seu lugar, um card fixo «Radar de clientes» com as abas «Em risco» e «Perdidos», cada cliente com o valor e o botão «Enviar mensagem» (abre o radar da demonstração). Cores iguais às dos outros cards.
 - Removidos o JavaScript e o CSS da calculadora e o campo «calculadora» do formulário de contacto. A âncora #calculadora mantém-se; a ligação do topo passou a «Vê como recuperas clientes perdidos».
+
+## D-92 · 22/10/2026 · Demonstração: «Painel financeiro» no lugar de «Clientes perdidos»
+- O separador «Clientes perdidos» da demonstração passou a «Painel financeiro»: objetivo do período com barra de progresso, faturado, lucro estimado, despesas, serviços feitos e ticket médio, com escolha entre Hoje, Esta semana e Este mês. Valores de exemplo; o texto lembra que o dinheiro é registado, nunca cobrado, e que não é documento fiscal.
+- Os clientes perdidos continuam no card «Radar de clientes» mais abaixo. O botão «Enviar mensagem» desse card passou a mostrar a mensagem preparada no próprio card (o envio real é sempre confirmado à mão).
