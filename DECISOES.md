@@ -407,3 +407,6 @@ Nova secção antes de «Clientes todos os meses e dinheiro que entra antes do c
 
 ## D-87 · Títulos de função na loja e na calculadora (22/10/2026)
 A secção da loja passa a chamar-se «Loja de produtos», com a descrição do que é e como funciona (escolhe produtos e preços, o sistema controla o stock e a margem, pagamento ao balcão). A secção da calculadora passa a «Recupera clientes perdidos», com a descrição do radar e das mensagens de WhatsApp (estas no plano Pro) e o convite a fazer a conta logo abaixo. Tratamento por «tu», como no resto da página.
+
+## D-88 · Calculadora mais pequena e clara, com aspeto de aplicação (22/10/2026)
+O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo («InstaBarber · Radar de clientes»), largura máxima de 880 px, campos e números mais pequenos. Sai a caixa do «Desafio dos 90 dias» de dentro do módulo (o desafio continua na sua secção, mais abaixo). Removido o CSS que só ela usava.

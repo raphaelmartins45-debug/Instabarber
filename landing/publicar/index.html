@@ -269,16 +269,20 @@ details .ans a { color: var(--gold); }
 .selo { aspect-ratio: 1; border-radius: 50%; border: 2px dashed var(--line); display: grid; place-items: center; font-weight: 800; color: var(--mute); }
 .selo.on { border: 2px solid var(--gold); background: var(--gold); color: var(--ink); }
 .lost-top .prize, .prize { color: var(--green); font-weight: 800; }
-.calc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
-.calc .fields { display: grid; gap: 14px; }
+.calc { display: block; padding: 0; overflow: hidden; max-width: 880px; --ink-2: #FFFFFF; --ink-3: #F4F1EB; --line: #DDD7CC; --cream: #1B1814; --mute: #6A645B; --green: #12805A; --red: #C13F30; color: var(--cream); color-scheme: light; box-shadow: 0 18px 50px rgba(0, 0, 0, .45); }
+.app-bar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #ECE8E0; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 700; color: var(--mute); }
+.app-bar .dots { display: flex; gap: 6px; }
+.app-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: #CFC8BB; }
+.calc-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; padding: clamp(16px, 3vw, 24px); }
+.calc .fields { display: grid; gap: 12px; }
 .calc label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); display: grid; gap: 6px; }
-.calc input { font: inherit; font-size: 18px; font-weight: 700; color: var(--cream); background: var(--ink-3); border: 1px solid var(--line); border-radius: 12px; min-height: 52px; padding: 0 14px; width: 100%; }
+.calc input { font: inherit; font-size: 17px; font-weight: 700; color: var(--cream); background: var(--ink-3); border: 1px solid var(--line); border-radius: 12px; min-height: 46px; padding: 0 14px; width: 100%; }
 .calc input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,166,35,.25); }
-.calc .res { display: grid; gap: 12px; }
+.calc .res { display: grid; gap: 10px; }
 .stat .k { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
 .stat.loss b { color: var(--red); }
 .stat.gain b { color: var(--green); }
-.calc .big b { font-size: clamp(34px, 6vw, 52px); }
+.calc .big b { font-size: clamp(30px, 5vw, 40px); }
 .calc .fine2 { color: var(--mute); font-size: 13px; }
 .calc .btn { justify-self: start; }
 
@@ -288,10 +292,6 @@ span.tag { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 .form .step { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
 .form .fields1 { display: grid; gap: 12px; }
 .form .sub2 { margin: 0; color: var(--cream); font-size: 15px; }
-.hook { display: grid; gap: 6px; border: 1.5px solid var(--gold); border-radius: 16px; padding: 16px 18px; background: rgba(245,166,35,.08); }
-.hook b { color: var(--gold); font-size: 16px; }
-.hook span { color: var(--cream); font-size: 14px; }
-.hook a { color: var(--gold); font-weight: 700; }
 .cmp { gap: 0; }
 .cmp-row { display: flex; justify-content: space-between; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding: 14px 0; border-top: 1px solid var(--line); }
 .cmp-row:first-child { border-top: 0; }
@@ -379,7 +379,7 @@ footer .links a:hover { color: var(--gold); }
   .all { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .who { grid-template-columns: minmax(0, 1fr); }
   .pt { grid-template-columns: minmax(0, 1fr); }
-  .row2, .calc { grid-template-columns: minmax(0, 1fr); }
+  .row2, .calc-body { grid-template-columns: minmax(0, 1fr); }
   .slotx { grid-template-columns: 52px minmax(0, 1fr); }
   #receitabox { grid-template-columns: minmax(0, 1fr) !important; }
   .prow { grid-template-columns: minmax(0, 1fr) auto; }
@@ -634,6 +634,8 @@ footer .links a:hover { color: var(--gold); }
       <p class="lead">O radar mostra quem deixou de aparecer e quanto esse cliente vale em euros. No plano Pro, o sistema prepara a mensagem de WhatsApp com o nome do cliente e o tempo que ele não vem: tu só tens de carregar em enviar. Põe os teus números aqui em baixo e vê quanto podes faturar a mais recuperando clientes. A conta é feita no teu telemóvel e não guardamos nada.</p>
     </div>
     <div class="box calc">
+      <div class="app-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>InstaBarber · Radar de clientes</span></div>
+      <div class="calc-body">
       <div class="fields">
         <label for="c-n">Quantos clientes deixaram de aparecer?<input id="c-n" type="number" inputmode="numeric" min="0" max="5000" value="40"></label>
         <label for="c-v">Quanto deixa cada um por visita (€)<input id="c-v" type="number" inputmode="decimal" min="0" max="500" step="0.5" value="15"></label>
@@ -643,9 +645,9 @@ footer .links a:hover { color: var(--gold); }
         <div class="stat big loss"><span class="k">Estás a perder</span><b id="c-mes">0 €</b><span>todos os meses, ou <span id="c-ano">0 €</span> por ano</span></div>
         <div class="stat gain"><span class="k">Poderias receber a mais</span><b id="c-rec">0 €</b><span>por mês, se só 4 em cada 10 voltassem</span></div>
         <p id="c-pago" class="prize"></p>
-        <div class="hook"><b>Desafio dos 90 dias (plano Pro)</b><span>Se não recuperares nenhum cliente nos primeiros 90 dias, devolvemos-te uma mensalidade. <a href="#desafio">Ver condições</a></span></div>
         <a class="btn btn-gold" id="c-cta" href="#contacto">Quero recuperar este dinheiro</a>
         <p class="fine2">Estimativa. O resultado real depende de cada barbearia e de quantos clientes respondem à mensagem.</p>
+      </div>
       </div>
     </div>
   </section>
