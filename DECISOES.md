@@ -441,3 +441,8 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 ## D-95 · 22/10/2026 · Cartão oferta: card estático
 - O Cartão oferta interativo foi substituído por um card estático: descrição do serviço («Uma prenda que traz clientes novos», com três pontos) e, ao lado, a ilustração do cartão (exemplo de 30,00 €, código de exemplo, «Válido por 12 meses», «Não é documento fiscal»).
 - Removidos o JavaScript e o CSS da versão interativa (incluindo as regras `.calc` e `#receitabox`, que já não tinham uso).
+
+## D-96 · 22/10/2026 · Agenda da demonstração: contagem e botão «Avisar cliente»
+- Na aba Agenda da demonstração, cada cliente marcado mostra uma contagem decrescente («Começa em 29:58», e «Começa em 1 h 16 min» quando falta mais de uma hora) e um botão verde «Avisar cliente».
+- O botão segue a regra do WhatsApp (CLAUDE.md, regra 7): primeiro prepara a mensagem, depois «Confirmei o envio», e só então fica «Cliente avisado». Nada se dá como enviado sem confirmação.
+- As horas da demonstração partem da hora atual de Lisboa (primeiro cliente daqui a cerca de 30 minutos), para a contagem parecer sempre «ao vivo».

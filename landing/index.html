@@ -246,6 +246,14 @@ details .ans a { color: var(--gold); }
 .slotx { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--ink-3); min-height: 56px; }
 .slotx time { font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
 .slotx small { display: block; color: var(--mute); font-size: 13px; }
+.slotx .act { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.slotx .cd { color: var(--green); font-weight: 700; font-variant-numeric: tabular-nums; }
+.slotx .avmsg { grid-column: 1 / -1; background: var(--ink); border-left: 3px solid var(--green); border-radius: 8px; padding: 10px 12px; font-size: 14px; color: var(--cream); }
+.slotx .avmsg small { margin-top: 6px; }
+.slotx .avok { color: var(--green); font-weight: 700; font-size: 14px; }
+.mini.ok { background: var(--green); border-color: var(--green); color: var(--ink); }
+.mini.ok:hover { background: #55D3A2; border-color: #55D3A2; color: var(--ink); }
+#lab[data-tema="claro"] .mini.ok { background: var(--green); border-color: var(--green); color: #FFFFFF; }
 .slotx.free { border-style: dashed; background: transparent; }
 .slotx.mine { border-color: var(--green); }
 .mini { font: inherit; font-weight: 700; font-size: 13px; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--gold); background: transparent; color: var(--gold); cursor: pointer; }
@@ -380,7 +388,7 @@ footer .links a:hover { color: var(--gold); }
   .slotx { grid-template-columns: 52px minmax(0, 1fr); }
   .prow { grid-template-columns: minmax(0, 1fr) auto; }
   .prow > :last-child { grid-column: 1 / -1; justify-self: start; }
-  .slotx > :last-child { grid-column: 1 / -1; justify-self: start; }
+  .slotx > .act, .slotx > .svc, .slotx > button { grid-column: 1 / -1; justify-self: start; }
   .who > div { border-left: 0; border-top: 1px solid var(--line); }
   .who > div:first-child { border-top: 0; }
   .plans { grid-template-columns: minmax(0, 1fr); }
@@ -481,7 +489,7 @@ footer .links a:hover { color: var(--gold); }
       </div>
 
       <div class="pane" id="p-agenda" role="tabpanel" aria-labelledby="t-agenda">
-        <p class="hintx">Carrega numa vaga livre e marca como se fosses um cliente da página pública.</p>
+        <p class="hintx">Carrega numa vaga livre e marca como se fosses um cliente da página pública. Quando a hora de um cliente se aproxima, avisa-o com um toque.</p>
         <div class="row2">
           <div class="pane" id="agenda"></div>
           <div class="stats">
@@ -1018,12 +1026,22 @@ footer .links a:hover { color: var(--gold); }
 
   /* agenda */
   var SERV = [{ k: "Corte", p: 12 }, { k: "Barba", p: 8 }, { k: "Corte e barba", p: 18 }];
+  var T0 = Date.now();
+  function agHora(ms) { return new Intl.DateTimeFormat("pt-PT", { timeZone: "Europe/Lisbon", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(ms)); }
+  function agAlvo(min) { return Math.ceil((T0 + min * 60000) / 300000) * 300000; }
   var slots = [
-    { t: "10:00", n: "Tiago M.", s: "Corte e barba", p: 18 }, { t: "10:45", n: "André S.", s: "Corte", p: 12 },
-    { t: "11:15", free: true }, { t: "12:00", n: "Rui P.", s: "Barba", p: 8 },
-    { t: "15:00", free: true }, { t: "16:30", n: "Nuno F.", s: "Corte", p: 12 }, { t: "17:15", free: true }
+    { m: 30, n: "Tiago M.", s: "Corte e barba", p: 18 }, { m: 75, n: "André S.", s: "Corte", p: 12 },
+    { m: 105, free: true }, { m: 150, n: "Rui P.", s: "Barba", p: 8 },
+    { m: 330, free: true }, { m: 420, n: "Nuno F.", s: "Corte", p: 12 }, { m: 465, free: true }
   ];
+  slots.forEach(function (s) { s.ts = agAlvo(s.m); s.t = agHora(s.ts); s.av = 0; });
   var abertoIdx = -1;
+  function contagem(ts) {
+    var d = Math.round((ts - Date.now()) / 1000);
+    if (d <= 0) { return "A começar agora"; }
+    if (d < 3600) { return "Começa em " + String(Math.floor(d / 60)).padStart(2, "0") + ":" + String(d % 60).padStart(2, "0"); }
+    return "Começa em " + Math.floor(d / 3600) + " h " + String(Math.floor(d % 3600 / 60)).padStart(2, "0") + " min";
+  }
   function pintarAgenda() {
     var h = "", total = 0, livres = 0;
     slots.forEach(function (s, i) {
@@ -1038,8 +1056,14 @@ footer .links a:hover { color: var(--gold); }
         }
       } else {
         total += s.p;
-        h += '<div class="slotx' + (s.mine ? " mine" : "") + '"><time>' + s.t + '</time><span>' + s.n + '<small>' + s.s + (s.mine ? " · marcado pela página pública" : "") + '</small></span>' +
-          (s.mine ? '<button class="mini ghost" type="button" data-x="' + i + '">Cancelar</button>' : '<em>' + s.p + ' €</em>') + '</div>';
+        var acao;
+        if (s.mine) { acao = '<button class="mini ghost" type="button" data-x="' + i + '">Cancelar</button>'; }
+        else if (s.av === 0) { acao = '<em>' + s.p + ' €</em><button class="mini ok" type="button" data-v="' + i + '">Avisar cliente</button>'; }
+        else if (s.av === 1) { acao = '<em>' + s.p + ' €</em><button class="mini ok" type="button" data-v="' + i + '">Confirmei o envio</button>'; }
+        else { acao = '<em>' + s.p + ' €</em><span class="avok">Cliente avisado</span>'; }
+        h += '<div class="slotx' + (s.mine ? " mine" : "") + '"><time>' + s.t + '</time><span>' + s.n + '<small>' + s.s + (s.mine ? " · marcado pela página pública" : "") + '</small><small class="cd" data-ts="' + s.ts + '">' + contagem(s.ts) + '</small></span>' +
+          '<div class="act">' + acao + '</div>' +
+          (s.av === 1 ? '<div class="avmsg">Olá ' + s.n.split(" ")[0] + '! Já falta pouco para o teu ' + s.s.toLowerCase() + ' na Barbearia Central, às ' + s.t + '. Até já!<small>No sistema real, a conversa abre no WhatsApp do cliente e nada se envia sozinho: tu confirmas.</small></div>' : '') + '</div>';
       }
     });
     $("agenda").innerHTML = h; $("a-total").textContent = eur(total); $("a-livres").textContent = String(livres);
@@ -1051,10 +1075,14 @@ footer .links a:hover { color: var(--gold); }
     else if (b.dataset.m) {
       var p = b.dataset.m.split(":"), s = slots[+p[0]], x = SERV[+p[1]];
       s.free = false; s.mine = true; s.n = "Tu (cliente novo)"; s.s = x.k; s.p = x.p; abertoIdx = -1;
-    } else if (b.dataset.x) { var q = slots[+b.dataset.x]; slots[+b.dataset.x] = { t: q.t, free: true }; }
+    } else if (b.dataset.v) { slots[+b.dataset.v].av += 1; }
+    else if (b.dataset.x) { var q = slots[+b.dataset.x]; slots[+b.dataset.x] = { m: q.m, ts: q.ts, t: q.t, av: 0, free: true }; }
     pintarAgenda();
   });
   pintarAgenda();
+  setInterval(function () {
+    Array.prototype.forEach.call(document.querySelectorAll("#agenda .cd"), function (el) { el.textContent = contagem(+el.dataset.ts); });
+  }, 1000);
 
   /* painel financeiro */
   var FIN = { hoje: { n: "Hoje", f: 186, o: 240, d: 35, s: 9 }, sem: { n: "Esta semana", f: 1040, o: 1250, d: 310, s: 48 }, mes: { n: "Este mês", f: 4180, o: 5000, d: 1260, s: 190 } };
