@@ -39,6 +39,8 @@ export type DadosTimbrado = {
   /** Linhas da assinatura, a negrito. */
   assinatura: string[];
   logoUrl: string;
+  iconeEmailUrl: string;
+  iconeInstagramUrl: string;
   rodape: { email: string; instagramTexto: string; instagramUrl: string };
 };
 
@@ -75,8 +77,10 @@ ${d.paragrafosFinais.map(paragrafo).join("\n")}
 <p style="margin:16px 0 24px 0;font-family:${FONTE};font-size:15px;line-height:1.6;color:${COR.texto};">${assinatura}</p>
 </td></tr>
 <tr><td ${fixo(COR.tinta)}padding:20px 32px;font-family:${FONTE};font-size:13px;line-height:1.7;color:${COR.suave};">
-<a href="mailto:${escapeHtml(email)}" style="color:${COR.ouro};text-decoration:none;">${escapeHtml(email)}</a><br>
-Instagram: <a href="${escapeHtml(instagramUrl)}" style="color:${COR.ouro};text-decoration:none;">${escapeHtml(instagramTexto)}</a>
+<table role="presentation" cellspacing="0" cellpadding="0" border="0">
+<tr><td width="28" valign="middle" style="padding:0 0 8px 0;"><img src="${escapeHtml(d.iconeEmailUrl)}" width="18" height="18" alt="" style="display:block;border:0;"></td><td valign="middle" style="padding:0 0 8px 0;font-family:${FONTE};font-size:14px;line-height:18px;"><a href="mailto:${escapeHtml(email)}" style="color:${COR.ouro};text-decoration:none;">${escapeHtml(email)}</a></td></tr>
+<tr><td width="28" valign="middle" style="padding:0;"><img src="${escapeHtml(d.iconeInstagramUrl)}" width="18" height="18" alt="" style="display:block;border:0;"></td><td valign="middle" style="padding:0;font-family:${FONTE};font-size:14px;line-height:18px;"><a href="${escapeHtml(instagramUrl)}" style="color:${COR.ouro};text-decoration:none;">${escapeHtml(instagramTexto)}</a></td></tr>
+</table>
 </td></tr>
 </table>
 </td></tr>

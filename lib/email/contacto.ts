@@ -98,6 +98,8 @@ export function respostaVisitante(ref: string, p: PedidoContactoFase1): Email {
     despedida: r.despedida,
     assinatura,
     logoUrl: `https://${DOMINIO}/marca/logo-horizontal-dourado.png`,
+    iconeEmailUrl: `https://${DOMINIO}/marca/icone-email-dourado.png`,
+    iconeInstagramUrl: `https://${DOMINIO}/marca/icone-instagram-dourado.png`,
     rodape: { email: comercial, instagramTexto, instagramUrl },
   });
   return {

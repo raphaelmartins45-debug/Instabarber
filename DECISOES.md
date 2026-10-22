@@ -485,3 +485,6 @@ A resposta ao visitante passa a levar versão HTML (cabeçalho preto com a logo 
 
 ## D-103 · 22/10/2026 · E-mail timbrado fixo em modo escuro
 O Gmail do iPhone em modo escuro inverteu a faixa preta do cabeçalho (logo ilegível). As faixas do e-mail timbrado levam `bgcolor` e um gradiente da mesma cor, mais `color-scheme: light only`, para o desenho ficar igual nos dois modos. Não há como testar o Gmail daqui: confirma-se com um e-mail real.
+
+## D-104 · 22/10/2026 · Ícones no rodapé do e-mail timbrado
+O rodapé passa a duas linhas alinhadas (ícone + texto): envelope junto do e-mail comercial e ícone do Instagram junto de @instabarberpt. Os ícones são PNG dourados (`public/marca/icone-email-dourado.png` e `icone-instagram-dourado.png`), porque os clientes de e-mail não suportam SVG.

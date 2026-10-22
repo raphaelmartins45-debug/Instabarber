@@ -8,6 +8,8 @@ const base = {
   despedida: "Com os melhores cumprimentos,",
   assinatura: ["Comercial InstaBarber", "+351 900 000 000"],
   logoUrl: "https://instabarber.pt/marca/logo-horizontal-dourado.png",
+  iconeEmailUrl: "https://instabarber.pt/marca/icone-email-dourado.png",
+  iconeInstagramUrl: "https://instabarber.pt/marca/icone-instagram-dourado.png",
   rodape: {
     email: "comercial@instabarber.pt",
     instagramTexto: "@instabarberpt",
@@ -22,6 +24,8 @@ describe("emailTimbrado", () => {
     expect(html).toContain("<strong>Comercial InstaBarber</strong><br><strong>+351 900 000 000</strong>");
     expect(html).toContain("mailto:comercial@instabarber.pt");
     expect(html).toContain("https://www.instagram.com/instabarberpt/");
+    expect(html).toContain("icone-email-dourado.png");
+    expect(html).toContain("icone-instagram-dourado.png");
     expect(html.indexOf("Com os melhores cumprimentos,")).toBeLessThan(html.indexOf("Comercial InstaBarber"));
   });
 
