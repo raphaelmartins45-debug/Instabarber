@@ -593,4 +593,5 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - O dono vai estar ausente e mandou avançar sem parar: fechar a Fase 3 e seguir para a Fase 4. Isto suspende, enquanto ele estiver ausente, a espera entre fases da regra 4.1 e o resumo com confirmação da regra 4.2. O resumo de cada fase fica escrito no `PROGRESSO.md`.
 - Tudo o que precise da aprovação do dono (permissões, contas externas, decisões de produto não especificadas) entra na lista numerada «Pendentes do dono» do `PROGRESSO.md`. Uma decisão de produto em falta resolve-se com a opção mais simples e conservadora, fica aplicada e marcada como pendente, e o trabalho continua.
 - A 3B e a 3C ficam para depois da Fase 4 (pendente 3).
+- Ordem do dono, mais tarde no mesmo dia: continuar pelas Fases 5, 6 e 7 sem parar. Quando voltar, pede a lista de pendentes para aprovar. Na Fase 7, o que mexe em produção ou em contas externas (DNS, projeto de Frankfurt, planos pagos) fica preparado e entra na lista.
 
