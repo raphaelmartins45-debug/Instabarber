@@ -369,3 +369,6 @@ Em Portugal diz-se «objetivos», não «metas»: a landing passa a dizer «obje
 
 ## D-75 · Comparação sem «comissões» (22/10/2026)
 Na linha «InstaBarber Basic» da comparação, deixa de aparecer «comissões» (o Basic tem 1 profissional, não faz sentido como argumento). Passa a descrever o produto: página com marcação online, lembretes por WhatsApp, ficha técnica, painel financeiro com objetivos e custos, relatório mensal em PDF e radar de clientes perdidos. A funcionalidade «Comissões e acertos» continua na lista completa e no Pro.
+
+## D-76 · Botão do Instagram na landing (22/10/2026)
+A secção de contacto ganha «Seguir-nos no Instagram» (@instabarberpt, abre em novo separador) e o rodapé uma ligação «Instagram». Sem imitar o Instagram: botão da própria marca, sem logótipo nem gradiente.
