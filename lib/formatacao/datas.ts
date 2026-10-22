@@ -139,3 +139,9 @@ export function dataLongaNaLingua(instante: string, lingua: string): string {
     timeZone: regiao.fuso,
   }).format(new Date(instante));
 }
+
+/** Os últimos n meses (AAAA-MM), do atual para trás. */
+export function ultimosMeses(n: number, agora: Date = new Date()): string[] {
+  const atual = mesAtual(agora);
+  return Array.from({ length: n }, (_, i) => mesAnterior(atual, i));
+}

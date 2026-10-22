@@ -16,6 +16,7 @@ export const paineis = {
     comissoes: "Comissões e acertos",
     loja: "Loja",
     relatorio: "Relatório",
+    meuRelatorio: "O meu relatório",
     sistema: "Gestão do sistema",
     plano: "O meu plano",
     metas: "Metas",

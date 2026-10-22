@@ -12,6 +12,7 @@ import { legal } from "./pt-PT/legal";
 import { loja } from "./pt-PT/loja";
 import { paineis } from "./pt-PT/paineis";
 import { profissional } from "./pt-PT/profissional";
+import { relatorio } from "./pt-PT/relatorio";
 import { sistema } from "./pt-PT/sistema";
 
 export const textos = {
@@ -78,4 +79,5 @@ export const textos = {
   profissional,
   financeiro,
   plano,
+  relatorio,
 } as const;
