@@ -73,6 +73,12 @@ export default async function semear() {
     if (error) throw new Error(`aplicar_pacote: ${error.message}`);
   }
 
+  // Serviços da A (painel da barbearia, Fase 4).
+  await inserir(bd, "servicos", [
+    { inquilino_id: BARBEARIA_A.id, nome: "Corte", duracao_min: 30, preco: 15, ordem: 1 },
+    { inquilino_id: BARBEARIA_A.id, nome: "Barba", duracao_min: 20, preco: 10, ordem: 2 },
+  ]);
+
   for (const projeto of PROJETOS) {
     const c = contas(projeto);
     const nomeBarbeiro = projeto === "computador" ? "Carlos" : "Tiago";

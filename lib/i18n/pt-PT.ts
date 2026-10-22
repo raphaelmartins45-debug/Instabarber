@@ -4,6 +4,7 @@ import { acesso } from "./pt-PT/acesso";
 import { adesao } from "./pt-PT/adesao";
 import { agenda, inicio, mensagensWhatsApp, upgrade } from "./pt-PT/agenda";
 import { admin } from "./pt-PT/admin";
+import { clientes } from "./pt-PT/clientes";
 import { comum } from "./pt-PT/comum";
 import { legal } from "./pt-PT/legal";
 import { paineis } from "./pt-PT/paineis";
@@ -13,6 +14,7 @@ export const textos = {
     nome: "InstaBarber",
     assinatura: "InstaBarber · Performa LAB",
     assinaturaComercial: "Comercial InstaBarber",
+    apoio: "apoio@instabarber.pt",
     instagram: { texto: "@instabarberpt", url: "https://www.instagram.com/instabarberpt/" },
   },
   contacto: {
@@ -63,4 +65,5 @@ export const textos = {
   inicio,
   mensagensWhatsApp,
   upgrade,
+  clientes,
 } as const;

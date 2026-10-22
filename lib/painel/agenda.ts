@@ -75,6 +75,7 @@ export async function agendaDoDia(
   profissionalId: string | null = null,
 ): Promise<AgendaDia> {
   const intervalo = intervaloDoDia(dia);
+  const agora = new Date();
   const [b, equipa, marcacoes, ausencias, horarios, servicos, feriados] = await Promise.all([
     obterConfiguracao(bd, inquilinoId),
     listarEquipa(bd, inquilinoId),
@@ -110,7 +111,10 @@ export async function agendaDoDia(
       nome: p.nome_apresentado,
       marcacoes: minhas,
       ausencias: aus,
-      livres: vagas.filter((v) => v.profissionalId === p.id).map((v) => v.inicio),
+      // As vagas que já passaram não se assinalam (o balcão pode registar à mão).
+      livres: vagas
+        .filter((v) => v.profissionalId === p.id && new Date(v.inicio) > agora)
+        .map((v) => v.inicio),
     };
   });
   return {

@@ -123,3 +123,11 @@ function unicas(lista: { id: string; nome: string; slug: string }[]): BarbeariaD
   lista.forEach(({ id, nome, slug }) => vistas.set(id, { id, nome, slug }));
   return [...vistas.values()];
 }
+
+/** Ações da equipa (gestor ou barbeiro) que gravam; o RLS limita o barbeiro ao que é dele. */
+export async function exigirEquipaParaEscrever(): Promise<ContextoEquipa> {
+  const contexto = await obterContextoEquipa();
+  if (contexto.apoio) throw new Error("apoio_so_leitura");
+  if (!contexto.eGestor && !contexto.profissionalId) notFound();
+  return contexto;
+}

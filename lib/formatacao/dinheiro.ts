@@ -50,3 +50,8 @@ export function centimosDeTexto(texto: string): number | null {
 export function numericParaGravar(centimos: number): number {
   return Number(numericDeCentimos(centimos));
 }
+
+/** Cêntimos → texto para um campo de preço editável («15,00»), o inverso de centimosDeTexto. */
+export function textoDeCentimos(centimos: number): string {
+  return numericDeCentimos(centimos).replace(".", regiao.separadorDecimal);
+}

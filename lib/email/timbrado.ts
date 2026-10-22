@@ -18,7 +18,8 @@ const FONTE = "Arial, Helvetica, sans-serif";
 
 // O Gmail (sobretudo no iPhone) inverte as cores em modo escuro e deixava a faixa preta clara, com a logo ilegível.
 // Atributo bgcolor mais um gradiente da mesma cor é o truque que o impede de inverter: o desenho fica igual nos dois modos.
-const fixo = (cor: string) => `bgcolor="${cor}" style="background-color:${cor};background-image:linear-gradient(${cor},${cor});`;
+const fixo = (cor: string) =>
+  `bgcolor="${cor}" style="background-color:${cor};background-image:linear-gradient(${cor},${cor});`;
 
 export function escapeHtml(valor: string): string {
   return valor
@@ -56,9 +57,7 @@ export function emailTimbrado(d: DadosTimbrado): string {
           : ""
       }</td></tr></table>`
     : "";
-  const assinatura = d.assinatura
-    .map((l) => `<strong>${escapeHtml(l)}</strong>`)
-    .join("<br>");
+  const assinatura = d.assinatura.map((l) => `<strong>${escapeHtml(l)}</strong>`).join("<br>");
   const { email, instagramTexto, instagramUrl } = d.rodape;
   return `<!doctype html>
 <html lang="pt-PT">

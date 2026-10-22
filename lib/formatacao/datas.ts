@@ -107,3 +107,8 @@ export function mesPorExtenso(anoMes: string): string {
 export function diaPorExtenso(dataIso: string): string {
   return format(meioDia(dataIso), "EEEE, d 'de' MMMM", { locale: pt });
 }
+
+/** A mesma data no mês seguinte; dias 29 a 31 passam ao último dia do mês (F.4.2). */
+export function mesmoDiaMesSeguinte(dataIso: string): string {
+  return format(addMonths(meioDia(dataIso), 1), "yyyy-MM-dd");
+}

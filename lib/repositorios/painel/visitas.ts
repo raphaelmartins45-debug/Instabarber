@@ -70,6 +70,7 @@ export async function listarVisitas(
 export type VisitaResumida = {
   clienteId: string;
   profissionalId: string | null;
+  servicoId: string;
   data: string;
   valorCobradoCent: number;
 };
@@ -82,7 +83,7 @@ export async function listarVisitasParaRadar(
 ): Promise<VisitaResumida[]> {
   let q = bd
     .from("visitas")
-    .select("cliente_id, profissional_id, data, valor_cobrado")
+    .select("cliente_id, profissional_id, servico_id, data, valor_cobrado")
     .eq("inquilino_id", inquilinoId);
   if (profissionalId) q = q.eq("profissional_id", profissionalId);
   const { data, error } = await q;
@@ -90,6 +91,7 @@ export async function listarVisitasParaRadar(
   return data.map((v) => ({
     clienteId: v.cliente_id,
     profissionalId: v.profissional_id,
+    servicoId: v.servico_id,
     data: v.data,
     valorCobradoCent: centimosDeNumeric(v.valor_cobrado),
   }));

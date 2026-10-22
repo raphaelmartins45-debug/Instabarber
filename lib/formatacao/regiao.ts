@@ -4,4 +4,5 @@ export const regiao = {
   moeda: "EUR",
   fuso: "Europe/Lisbon",
   indicativo: "351",
+  separadorDecimal: ",",
 } as const;

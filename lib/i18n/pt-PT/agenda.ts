@@ -140,7 +140,8 @@ export const inicio = {
     faturadoMes: "Faturado no mês",
     faltaObjetivo: "Falta para o objetivo",
     semObjetivo: "Sem objetivo definido",
-    diasRestantes: (n: number) => (n === 1 ? "1 dia de funcionamento" : `${n} dias de funcionamento`),
+    diasRestantes: (n: number) =>
+      n === 1 ? "1 dia de funcionamento" : `${n} dias de funcionamento`,
     faltaHoje: "Falta para o objetivo do dia",
     ticket: "Ticket médio",
     regresso: "Taxa de regresso",
@@ -168,7 +169,13 @@ export const mensagensWhatsApp = {
     `Olá ${d.nome}! Lembramos a sua marcação na ${d.barbearia}: ${d.servico}, ${d.data} às ${d.hora}, com ${d.barbeiro}.` +
     (d.minutos !== null ? ` Faltam ${d.minutos} minutos.` : "") +
     " Até já!",
-  posvenda: (d: { nome: string; servico: string; data: string; pagina: string; assinatura: string }) =>
+  posvenda: (d: {
+    nome: string;
+    servico: string;
+    data: string;
+    pagina: string;
+    assinatura: string;
+  }) =>
     `Olá ${d.nome}! Obrigado por ter vindo fazer ${d.servico} no dia ${d.data}. Quando quiser voltar, marque aqui: ${d.pagina} — ${d.assinatura}`,
   convite: (d: {
     nome: string;
@@ -197,7 +204,8 @@ export const upgrade = {
   texto:
     "No Pro, o WhatsApp abre com a mensagem pronta — o cliente certo, com o nome e o tempo sem vir já preenchidos — e só tens de carregar em enviar. Recuperas quem se está a perder sem escrever uma linha.",
   incluidos: (n: number) => `Com ${n} profissionais incluídos e todas as funções ativas.`,
-  botao: (semIva: string, comIva: string) => `Passar para o Pro — ${semIva}/mês (${comIva} com IVA)`,
+  botao: (semIva: string, comIva: string) =>
+    `Passar para o Pro — ${semIva}/mês (${comIva} com IVA)`,
   radar: (perdidos: number, valor: string) =>
     `${perdidos} clientes perdidos · ${valor} a recuperar. As mensagens de recuperação fazem parte do plano Pro.`,
   falar: "Para mudar de plano, fale com a InstaBarber.",

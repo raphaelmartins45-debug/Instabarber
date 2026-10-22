@@ -31,14 +31,19 @@ export function minutosDisponiveis(
   const aus = unir(ausencias);
   const ms = janelas.reduce(
     (total, j) =>
-      total + (j.fim.getTime() - j.inicio.getTime()) - aus.reduce((a, x) => a + sobreposto(j, x), 0),
+      total +
+      (j.fim.getTime() - j.inicio.getTime()) -
+      aus.reduce((a, x) => a + sobreposto(j, x), 0),
     0,
   );
   return Math.round(ms / MINUTO);
 }
 
 /** Minutos marcados dentro das janelas. */
-export function minutosMarcados(janelas: readonly Intervalo[], marcacoes: readonly Intervalo[]): number {
+export function minutosMarcados(
+  janelas: readonly Intervalo[],
+  marcacoes: readonly Intervalo[],
+): number {
   const ms = unir(marcacoes).reduce(
     (total, m) => total + janelas.reduce((a, j) => a + sobreposto(j, m), 0),
     0,
