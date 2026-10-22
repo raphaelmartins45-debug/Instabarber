@@ -9,3 +9,13 @@ export function telefoneE164(texto: string): string | null {
   const partes = PORTUGUES.exec(texto.replace(/[\s.-]/g, ""));
   return partes ? `+${regiao.indicativo}${partes[1]}` : null;
 }
+
+/** "+351912345678" → "912 345 678" para mostrar (outros indicativos ficam como estão). */
+export function formatarTelefone(e164: string): string {
+  const nacional = e164.startsWith(`+${regiao.indicativo}`)
+    ? e164.slice(regiao.indicativo.length + 1)
+    : null;
+  return nacional && nacional.length === 9
+    ? nacional.replace(/(\d{3})(\d{3})(\d{3})/, "$1 $2 $3")
+    : e164;
+}

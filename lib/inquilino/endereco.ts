@@ -30,3 +30,17 @@ export async function paginaPublica(slug: string): Promise<string> {
   const { slug: doHost } = await lerEndereco();
   return doHost === slug ? origem : `${origem}/${slug}`;
 }
+
+/**
+ * Origem do domínio principal, para as ligações que só lá existem (Termos, Privacidade): vazia
+ * quando já se está nele; no subdomínio ou no domínio próprio, o endereço completo.
+ */
+export async function origemPrincipal(): Promise<string> {
+  const { slug, base } = await lerEndereco();
+  if (!slug || base) return "";
+  const raiz = process.env.ROOT_DOMAIN || "instabarber.pt";
+  const origem = await origemDoPedido();
+  const protocolo = origem.startsWith("http://") ? "http" : "https";
+  const porta = /:(\d+)$/.exec(origem)?.[1];
+  return `${protocolo}://${raiz}${porta && raiz === "localhost" ? `:${porta}` : ""}`;
+}
