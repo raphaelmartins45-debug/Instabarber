@@ -112,3 +112,8 @@ export function diaPorExtenso(dataIso: string): string {
 export function mesmoDiaMesSeguinte(dataIso: string): string {
   return format(addMonths(meioDia(dataIso), 1), "yyyy-MM-dd");
 }
+
+/** Nome do mês: «outubro». */
+export function nomeDoMes(anoMes: string): string {
+  return format(meioDia(`${anoMes}-01`), "MMMM", { locale: pt });
+}

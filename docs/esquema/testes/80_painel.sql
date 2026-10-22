@@ -68,4 +68,22 @@ update inquilino_funcionalidades set ativa = false
 select teste.como('10000000-0000-0000-0000-000000000002');
 select teste.erro($$select vender_cartao_oferta('aaaaaaaa-0000-0000-0000-000000000000', 10, 'X')$$,
                   'PAINEL: sem a funcionalidade cartoes_oferta não se vende');
+
+-- Política de faltas: duas faltas (o limite por omissão) bloqueiam a marcação online.
+reset role;
+update marcacoes set inicio = now() - interval '2 days' where id = '50000000-0000-0000-0000-000000000002';
+update marcacoes set estado = 'falta' where id = '50000000-0000-0000-0000-000000000002';
+insert into marcacoes (inquilino_id, cliente_id, profissional_id, servico_id, inicio, origem, estado)
+values ('aaaaaaaa-0000-0000-0000-000000000000', '40000000-0000-0000-0000-000000000002',
+        '20000000-0000-0000-0000-000000000002', '30000000-0000-0000-0000-000000000002',
+        now() - interval '9 days', 'balcao', 'falta');
+select teste.como('10000000-0000-0000-0000-000000000002');
+select teste.ok(marcacao_online_bloqueada('40000000-0000-0000-0000-000000000002'),
+                'PAINEL: com duas faltas a marcação online fica bloqueada');
+update clientes set faltas_perdoadas_em = now() where id = '40000000-0000-0000-0000-000000000002';
+select teste.ok(not marcacao_online_bloqueada('40000000-0000-0000-0000-000000000002'),
+                'PAINEL: o gestor volta a permitir a marcação online');
+select teste.como('10000000-0000-0000-0000-000000000005');
+select teste.erro($$select marcacao_online_bloqueada('40000000-0000-0000-0000-000000000002')$$,
+                  'PAINEL: outra barbearia não pergunta pelo cliente');
 rollback;

@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
 import { FormularioBalcao } from "@/components/barbearia/agenda/formulario-balcao";
-import { MolduraPainel } from "@/components/barbearia/moldura-painel";
+import { PainelEquipa } from "@/components/barbearia/painel-equipa";
 import { obterContextoEquipa } from "@/lib/equipa/contexto";
 import { hojeIso, horaCurta } from "@/lib/formatacao/datas";
-import { MENU_GESTAO, menuEquipa, montarMenu } from "@/lib/funcionalidades/menus";
-import { exigirFuncionalidade, lerGrelha } from "@/lib/funcionalidades/servidor";
+import { exigirFuncionalidade } from "@/lib/funcionalidades/servidor";
 import { textos } from "@/lib/i18n/pt-PT";
 import { listarServicos } from "@/lib/repositorios/painel/servicos";
 import { listarEquipa } from "@/lib/repositorios/profissionais";
@@ -29,10 +28,9 @@ export default async function MarcarBalcao({
   const q = await searchParams;
   const modo = q.modo === "registar" ? "registar" : "marcar";
   const bd = await criarClienteServidor();
-  const [servicos, equipa, grelha] = await Promise.all([
+  const [servicos, equipa] = await Promise.all([
     listarServicos(bd, contexto.barbearia.id),
     listarEquipa(bd, contexto.barbearia.id),
-    lerGrelha(contexto.barbearia.id),
   ]);
   const profissionais = equipa
     .filter((p) => p.ativo && (contexto.eGestor || p.id === contexto.profissionalId))
@@ -47,22 +45,8 @@ export default async function MarcarBalcao({
   const depois = contexto.eGestor
     ? `/app/agenda?dia=${dia ?? hojeIso()}`
     : `/app/equipa/${contexto.profissionalId}/agenda?dia=${dia ?? hojeIso()}`;
-  const menu = contexto.eGestor
-    ? montarMenu(MENU_GESTAO, grelha.ativas, grelha.comUpgrade)
-    : montarMenu(menuEquipa(contexto.profissionalId!), grelha.ativas, grelha.comUpgrade);
-
   return (
-    <MolduraPainel
-      contexto={contexto}
-      camada={contexto.eGestor ? vertical.camadas.gestao : vertical.camadas.equipa}
-      vista={
-        contexto.eGestor
-          ? textos.paineis.vistaGestor
-          : textos.paineis.vistaDe(profissionais[0]!.rotulo)
-      }
-      menu={menu}
-      atual="agenda"
-    >
+    <PainelEquipa atual="agenda">
       <h1 className="text-[22px] font-extrabold">
         {modo === "marcar" ? t.tituloMarcar : t.tituloRegistar}
       </h1>
@@ -81,6 +65,6 @@ export default async function MarcarBalcao({
         horaAgora={horaCurta(new Date())}
         depois={depois}
       />
-    </MolduraPainel>
+    </PainelEquipa>
   );
 }

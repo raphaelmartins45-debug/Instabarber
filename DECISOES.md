@@ -597,5 +597,6 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 
 ## D-121 · 22/10/2026 · Cartões oferta na base de dados (Fase 4) — técnica
 - A venda e o uso dos cartões oferta passam por funções SQL (regra 4: o que decide o que se grava vive em SQL): `vender_cartao_oferta()` gera o código de oito caracteres, único na barbearia, sem letras e números confundíveis (I, O, 0, 1), com validade de um ano por omissão; `usar_cartao_oferta()` bloqueia o cartão, recusa anulados, expirados e usos acima do saldo, grava o movimento e liga a marcação.
-- Migração 06, as mesmas funções em `docs/esquema/02_funcoes.sql`, 13 testes em `docs/esquema/testes/80_painel.sql`.
+- `marcacao_online_bloqueada()`: a ficha do cliente pergunta se a política de faltas o bloqueou, sem copiar a regra para o TypeScript (a regra continua em `pode_marcar_online()`); só a equipa da barbearia do cliente.
+- Migração 06, as mesmas funções em `docs/esquema/02_funcoes.sql`, 16 testes em `docs/esquema/testes/80_painel.sql`.
 

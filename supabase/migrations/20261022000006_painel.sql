@@ -3,6 +3,19 @@
 -- docs/esquema/02_funcoes.sql, testadas em docs/esquema/testes/80_painel.sql.
 -- =============================================================================
 
+-- A ficha do cliente mostra se a política de faltas lhe bloqueou a marcação online (F.8). Só a
+-- equipa da barbearia do cliente pergunta; a regra continua a ser pode_marcar_online() (D-121).
+create or replace function public.marcacao_online_bloqueada(p_cliente uuid) returns boolean
+language plpgsql stable security definer set search_path = '' as $$
+declare v_inq uuid;
+begin
+  select inquilino_id into v_inq from public.clientes where id = p_cliente;
+  if v_inq is null or v_inq not in (select public.inquilinos_onde(array['proprietario','profissional'])) then
+    raise exception 'sem_permissao' using errcode = '42501';
+  end if;
+  return not public.pode_marcar_online(p_cliente);
+end $$;
+
 -- Cartões oferta (F.4.9): vendidos e pagos ao balcão. O código de oito caracteres gera-se aqui,
 -- único na barbearia; o uso verifica validade e saldo com o cartão bloqueado (D-121).
 create or replace function public.vender_cartao_oferta(
@@ -55,6 +68,8 @@ begin
 end $$;
 
 revoke execute on function public.vender_cartao_oferta(uuid, numeric, text, text, text, date, uuid),
-  public.usar_cartao_oferta(uuid, text, numeric, uuid) from public, anon, authenticated;
+  public.usar_cartao_oferta(uuid, text, numeric, uuid), public.marcacao_online_bloqueada(uuid)
+  from public, anon, authenticated;
 grant execute on function public.vender_cartao_oferta(uuid, numeric, text, text, text, date, uuid),
-  public.usar_cartao_oferta(uuid, text, numeric, uuid) to authenticated;
+  public.usar_cartao_oferta(uuid, text, numeric, uuid), public.marcacao_online_bloqueada(uuid)
+  to authenticated;

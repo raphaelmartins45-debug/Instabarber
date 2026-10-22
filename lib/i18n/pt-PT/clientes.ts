@@ -118,6 +118,18 @@ export const clientes = {
     erroFoto: "Fotografia em JPG, PNG ou WEBP, até 3 MB.",
     erroNota: "Escreva uma nota ou escolha uma fotografia.",
   },
+  erros: {
+    nome: "Escreva o nome.",
+    telefone: "Escreva um telemóvel válido.",
+    email: "Escreva um e-mail válido.",
+    data: "Data inválida.",
+    nif: "O NIF tem 9 dígitos.",
+    notas: "As notas são demasiado longas.",
+    telefone_repetido: "Já existe outro cliente com este telemóvel.",
+    nota: "Escreva uma nota ou escolha uma fotografia.",
+    foto: "Fotografia em JPG, PNG ou WEBP, até 3 MB.",
+    erro: "Não foi possível guardar. Tente outra vez.",
+  } as Record<string, string>,
   aniversarios: {
     titulo: (mes: string) => `Aniversariantes de ${mes}`,
     vazio: "Nenhum aniversário este mês.",

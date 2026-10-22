@@ -7,7 +7,9 @@ import { admin } from "./pt-PT/admin";
 import { clientes } from "./pt-PT/clientes";
 import { comum } from "./pt-PT/comum";
 import { legal } from "./pt-PT/legal";
+import { loja } from "./pt-PT/loja";
 import { paineis } from "./pt-PT/paineis";
+import { sistema } from "./pt-PT/sistema";
 
 export const textos = {
   marca: {
@@ -66,4 +68,6 @@ export const textos = {
   mensagensWhatsApp,
   upgrade,
   clientes,
+  loja,
+  sistema,
 } as const;

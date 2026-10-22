@@ -4972,6 +4972,7 @@ export type Database = {
         Args: { p_contrato: string; p_inquilino: string };
         Returns: undefined;
       };
+      marcacao_online_bloqueada: { Args: { p_cliente: string }; Returns: boolean };
       marcar_contrato_enviado: { Args: { p_contrato: string }; Returns: undefined };
       marcar_falta: { Args: { p_marcacao: string }; Returns: undefined };
       marcar_proposta_enviada: { Args: { p_proposta: string }; Returns: undefined };

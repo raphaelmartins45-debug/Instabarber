@@ -757,6 +757,19 @@ begin
   update public.pedidos_loja set estado = 'levantado', levantado_em = now() where id = pe.id;
 end $$;
 
+-- A ficha do cliente mostra se a política de faltas lhe bloqueou a marcação online (F.8). Só a
+-- equipa da barbearia do cliente pergunta; a regra continua a ser pode_marcar_online() (D-121).
+create or replace function public.marcacao_online_bloqueada(p_cliente uuid) returns boolean
+language plpgsql stable security definer set search_path = '' as $$
+declare v_inq uuid;
+begin
+  select inquilino_id into v_inq from public.clientes where id = p_cliente;
+  if v_inq is null or v_inq not in (select public.inquilinos_onde(array['proprietario','profissional'])) then
+    raise exception 'sem_permissao' using errcode = '42501';
+  end if;
+  return not public.pode_marcar_online(p_cliente);
+end $$;
+
 -- Cartões oferta (F.4.9): vendidos e pagos ao balcão. O código de oito caracteres gera-se aqui,
 -- único na barbearia; o uso verifica validade e saldo com o cartão bloqueado (D-121).
 create or replace function public.vender_cartao_oferta(
@@ -1544,7 +1557,8 @@ grant execute on function public.cancelar_minha_marcacao(uuid, text),
   public.registar_auditoria_admin(uuid, text, text, uuid, jsonb),
   public.validar_vaga(uuid, uuid, uuid, timestamptz, boolean, uuid),
   public.vender_cartao_oferta(uuid, numeric, text, text, text, date, uuid),
-  public.usar_cartao_oferta(uuid, text, numeric, uuid)
+  public.usar_cartao_oferta(uuid, text, numeric, uuid),
+  public.marcacao_online_bloqueada(uuid)
   to authenticated;
 
 -- Só a chave de serviço (rotas de servidor)
