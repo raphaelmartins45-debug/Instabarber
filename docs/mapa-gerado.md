@@ -48,7 +48,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Textos (lib/i18n)
 
-- `lib/i18n/pt-PT.ts`: 25 chaves
+- `lib/i18n/pt-PT.ts`: 32 chaves
 
 ## Tabelas
 

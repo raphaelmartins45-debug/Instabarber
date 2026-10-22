@@ -11,6 +11,13 @@ describe("dinheiro", () => {
     expect(centimosDeNumeric("-0.05")).toBe(-5);
   });
 
+  it("aceita o numeric como número JSON, sem erro de vírgula flutuante", () => {
+    expect(centimosDeNumeric(15)).toBe(1500);
+    expect(centimosDeNumeric(47.97)).toBe(4797);
+    expect(centimosDeNumeric(0.1)).toBe(10);
+    expect(centimosDeNumeric(99999999.99)).toBe(9999999999);
+  });
+
   it("converte cêntimos em numeric(10,2)", () => {
     expect(numericDeCentimos(4797)).toBe("47.97");
     expect(numericDeCentimos(5)).toBe("0.05");

@@ -14,7 +14,7 @@
     "test:sql": "bash scripts/testar-sql.sh",
     "test:e2e": "playwright test",
     "db:migrate": "supabase db push",
-    "db:types": "supabase gen types typescript --local > types/database.ts"
+    "db:types": "supabase gen types typescript --local > types/database.ts && prettier --write types/database.ts"
   },
   "dependencies": {
     "next": "15.5.28",

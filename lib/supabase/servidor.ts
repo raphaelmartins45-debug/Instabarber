@@ -2,11 +2,12 @@ import "server-only";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { variavel } from "@/lib/configuracao/ambiente";
+import type { Database } from "@/types/database";
 
 /** Cliente do servidor com a sessão do utilizador (cookies). Continua sujeito ao RLS. */
 export async function criarClienteServidor() {
   const loja = await cookies();
-  return createServerClient(
+  return createServerClient<Database>(
     variavel("NEXT_PUBLIC_SUPABASE_URL"),
     variavel("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
     {

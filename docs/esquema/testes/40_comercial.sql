@@ -207,7 +207,9 @@ select ligar_contrato_inquilino((select id from contratos where estado = 'assina
 select teste.ok((select inquilino_id from contratos where estado = 'assinado') = 'aaaaaaaa-0000-0000-0000-000000000000'
   and (select inquilino_id from leads where id = 'c0000000-0000-0000-0000-000000000003') = 'aaaaaaaa-0000-0000-0000-000000000000', 'N: na aprovação, o contrato e o lead ligam-se à barbearia criada');
 select teste.ok((select data_inicio from contratos where estado = 'assinado') is not null, 'N: a data de início fica preenchida');
+reset role;   -- storage.buckets tem RLS no Supabase e o authenticated não o lê: verifica-se como dono da base
 select teste.ok((select count(*) from storage.buckets where id = 'comercial' and not public) = 1, 'N: o bucket comercial é privado');
+select teste.como('10000000-0000-0000-0000-000000000001', 'aal2');
 insert into storage.objects (bucket_id, name) values ('comercial', 'leads/c3/contrato-assinado.pdf');
 select teste.ok((select count(*) from storage.objects where bucket_id = 'comercial') = 1, 'N: o super_admin guarda ficheiros no bucket comercial');
 rollback;

@@ -36,10 +36,14 @@ Cada teste escreve `ok   …` e a primeira falha para tudo com `FALHOU: …`.
 
 Com o Supabase local (`supabase start`), os ficheiros 01 a 04 já são as
 migrações. Os testes correm com `psql` na base local sem o ficheiro `00` (o
-Supabase já tem `auth`, `storage` e os papéis).
+Supabase já tem `auth`, `storage` e os papéis): `supabase db reset` e depois
+`npm run test:sql` (o ficheiro 05 deixa dados na base; sem o reset, a segunda
+corrida falha).
 
 Validado a 21 de outubro de 2026 em PostgreSQL 16.15: os quatro ficheiros
-aplicam-se de uma vez e os 389 testes passam.
+aplicam-se de uma vez e os 389 testes passam. A 22 de outubro de 2026 (Fase 1,
+D-108): 396 testes a passar no Supabase local (PostgreSQL 15.19) e no
+PostgreSQL 16.15 com o shim.
 
 ## Regras para alterar o esquema
 

@@ -497,3 +497,16 @@ O «IB» com tesoura e poste (branco e dourado sobre preto) **não é a logo ofi
 
 ## D-107 · 22/10/2026 · Ícone do atalho no iPhone
 O iOS guarda o `apple-touch-icon.png` em cache pelo nome e o atalho continuava com o ícone antigo. Os ícones grandes passam a `ib-180.png`, `ib-192.png` e `ib-512.png` (nomes novos para furar a cache; mesmo desenho do D-106, só ícones simples). Acrescentados o `manifest.webmanifest` e o nome curto «InstaBarber» (`apple-mobile-web-app-title`), para o atalho não levar o título inteiro da página. `favicon-192/512.png` mantêm-se; `apple-touch-icon.png` foi retirado por já não ser usado.
+
+## D-108 · 22/10/2026 · Teste do bucket comercial verificado como dono da base (Fase 1)
+- No Supabase verdadeiro, `storage.buckets` tem RLS ativo e nenhuma política para `authenticated`: um utilizador da aplicação não lista buckets. O teste «N: o bucket comercial é privado» (`40_comercial.sql`) consultava a tabela já como super_admin e via 0 buckets. Passava antes porque o `00_shim` não ativa RLS no Storage.
+- Correção, autorizada pelo dono: só o teste muda. A verificação faz-se como dono da base (`reset role`) e volta-se a entrar como super_admin logo a seguir. O esquema não muda. Verificado: 396 testes no Supabase local (PostgreSQL 15.19) e no PostgreSQL 16.15 com o shim.
+
+## D-109 · 22/10/2026 · Supabase local, migrações e repositórios (Fase 1) — técnica
+- `supabase/config.toml` com `major_version = 15` (stack, CLAUDE.md §2). O projeto de ensaio tem de ter a mesma versão; se o Supabase o criar em 17, muda-se esta linha e repete-se a verificação.
+- As migrações são cópias exatas de `docs/esquema/01…04`, com o nome que o Supabase exige: `20261022000001_tabelas.sql` a `20261022000004_dados_iniciais.sql`. Alterações futuras ao esquema entram como migrações novas, depois de mudarem `docs/esquema/` e os testes.
+- `scripts/gerar-mapa.sh` lê os dados iniciais por `*dados_iniciais.sql`, para servir tanto `docs/esquema/` como `supabase/migrations/`.
+- `npm run test:sql` deixa os dados de teste do ficheiro 05 na base: antes de cada corrida, `supabase db reset`.
+- `npm run db:types` gera `types/database.ts` e formata-o com o Prettier (o gerador sai sem formatação).
+- Repositórios (`lib/repositorios/`): funções que recebem o cliente do Supabase por parâmetro (`ClienteBD`), devolvem as linhas com os nomes das colunas e trocam o dinheiro por cêntimos inteiros (`preco` → `preco_centimos`). O PostgREST devolve `numeric` como número JSON; `centimosDeNumeric` passa a aceitar número além de texto. Um id que entra num filtro `or()` valida-se com Zod antes.
+- `lib/repositorios/integracao.test.ts` corre os repositórios contra o Supabase local como anónimo, só quando `SUPABASE_TESTE_URL` e `SUPABASE_TESTE_ANON_KEY` estão definidas; sem elas fica saltado e o `npm test` não precisa de base de dados.

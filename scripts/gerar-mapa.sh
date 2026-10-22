@@ -40,7 +40,7 @@ esq=docs/esquema; [ -d supabase/migrations ] && esq=supabase/migrations
   echo
   echo "## Funcionalidades (grelha)"
   echo
-  grep -hoE "^\s*\('[a-z_]+'," $esq/04_dados_iniciais.sql 2>/dev/null | sed -E "s/^\s*\('//; s/',//" | LC_ALL=C sort -u | while read -r t; do echo "- \`$t\`"; done
+  grep -hoE "^\s*\('[a-z_]+'," $esq/*dados_iniciais.sql 2>/dev/null | sed -E "s/^\s*\('//; s/',//" | LC_ALL=C sort -u | while read -r t; do echo "- \`$t\`"; done
 } > "$saida"
 # Verificação: toda a rota de app/ tem de constar do mapa gerado (falha se não constar)
 if [ -d app ]; then

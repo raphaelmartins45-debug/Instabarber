@@ -19,7 +19,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Fase | Foco | Estado | Concluída em | Resultado verificado |
 | --- | --- | --- | --- | --- |
 | 0 | Preparação | Concluída | 22/10/2026 | Código a 22/10/2026: typecheck, lint e build sem erros; 27 testes Vitest, 6 Playwright (computador e telemóvel), 396 testes SQL; `npm audit --omit=dev` 0. Deploy Next.js na Vercel em produção (instabarber.pt); pedido de teste real chegou a comercial@ e a resposta chegou ao visitante (e-mail timbrado, D-101 a D-104); com a chave do Resend errada aparece «Não conseguimos enviar». Depois disso: builds da Vercel verdes em cada alteração (e-mail, SEO, ícones); os testes Vitest não foram repetidos desde o e-mail timbrado e correm-se no início da Fase 1. Por limpar: campo `calculadora` e respetivo evento de medição na rota de contacto |
-| 1 | Base de dados | Pendente | — | — |
+| 1 | Base de dados | Em curso | — | Supabase local (PostgreSQL 15.19): migrações 01 a 04 aplicadas sem erros; RLS ativo nas 59 tabelas de `public`; 396 testes SQL a passar (81 isolamento, 54 agenda, 66 regras, 112 comercial, 76 finanças, 7 expansão), também no PostgreSQL 16.15 com o shim; um teste corrigido com autorização do dono (D-108). `types/database.ts` gerado; primeiros repositórios só de leitura (D-109). typecheck, lint e build sem erros; 33 testes Vitest (+5 de integração com o Supabase local); `npm audit --omit=dev` 0. **Falta:** o projeto de ensaio em eu-central-1 (credenciais do dono) e a confirmação do dono |
 | 2 | Autenticação e papéis | Pendente | — | — |
 | 3 | Administração e adesão | Pendente | — | — |
 | 3B | Comercial (CRM, propostas e contratos) | Pendente | — | — |
@@ -43,7 +43,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 
 ## Próximo passo
 
-Fase 0 (Preparação), com início a 22/10/2026. Antes de escrever código: resumo do que se vai construir e **espera pela confirmação do dono** (regra de trabalho do projeto). Ler só `fases/fase-0.md` e `CLAUDE.md`.
+Fechar a Fase 1: aplicar as migrações no projeto de ensaio (eu-central-1) e correr lá os 396 testes SQL, com as credenciais do dono. Depois, confirmação do dono antes da Fase 2.
 
 - 22/10/2026 · D-72: Pro com 3 profissionais incluídos (landing, docs, esquema e testes SQL atualizados; 396 verificações sem falhas).
 - 22/10/2026 · D-84: landing no ar em instabarber.pt e www.instabarber.pt (Vercel, HTTPS). Passo 0: faltam .env.local, Resend e confirmação do Zoho.
@@ -51,3 +51,4 @@ Fase 0 (Preparação), com início a 22/10/2026. Antes de escrever código: resu
 - 22/10/2026 · Passo 0 concluído (domínio, landing no ar, Resend verificado, .env.local, IVA confirmado com o contabilista). Fase 0: resumo apresentado, à espera de confirmação do dono antes de escrever código.
 - 22/10/2026 · Fase 0, código: Next.js 15.5.28, React 19.2.9, rota `/api/contacto` e `/api/medicao`, landing ligada à rota (D-98 a D-100). Verificado: typecheck, lint, 27 testes Vitest, 6 Playwright, 396 testes SQL (PostgreSQL 16 local), build. À espera do dono: (1) decidir a vulnerabilidade de `braces` (D-98); (2) mudar na Vercel o Root Directory para a raiz, preset Next.js, e colar `RESEND_API_KEY`, `EMAIL_REMETENTE` e `EMAIL_COMERCIAL`; (3) pedido de teste real na landing (e o mesmo com a chave errada).
 - 22/10/2026 · D-98: o dono mantém o `eslint-config-next` e aceita a exceção do `braces` (só ferramenta de lint, sem correção publicada). Faltam a Vercel e o teste real.
+- 22/10/2026 · Fase 1 retomada com o resumo confirmado. Supabase local com as migrações e 396 testes SQL a passar depois da correção do teste do bucket comercial (D-108, autorizada). Tipos e repositórios (D-109). À espera do dono: `SUPABASE_ACCESS_TOKEN`, identificador do projeto de ensaio (eu-central-1) e palavra-passe da base de dados, e a versão do PostgreSQL desse projeto.

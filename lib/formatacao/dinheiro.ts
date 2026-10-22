@@ -5,9 +5,9 @@ import { regiao } from "./regiao";
 
 const NUMERIC = /^(-)?(\d+)(?:\.(\d{1,2}))?$/;
 
-/** "12.30" (numeric(10,2)) → 1230 cêntimos. */
-export function centimosDeNumeric(valor: string): number {
-  const partes = NUMERIC.exec(valor.trim());
+/** "12.30" (numeric(10,2)) → 1230 cêntimos. O PostgREST devolve numeric como número JSON (12.3): também se aceita. */
+export function centimosDeNumeric(valor: string | number): number {
+  const partes = NUMERIC.exec(String(valor).trim());
   if (!partes) throw new Error(`Valor monetário inválido: ${valor}`);
   const [, sinal, euros = "0", decimais = ""] = partes;
   const centimos = Number(euros) * 100 + Number(decimais.padEnd(2, "0"));
