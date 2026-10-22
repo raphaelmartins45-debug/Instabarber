@@ -138,3 +138,21 @@ export async function listarPromocoesPublicas(
     p.id && p.titulo ? [{ id: p.id, titulo: p.titulo, descricao: p.descricao }] : [],
   );
 }
+
+/** Quais destas funcionalidades estão ligadas (funcionalidade_ativa, pública). */
+export async function funcionalidadesLigadas(
+  bd: ClienteBD,
+  inquilinoId: string,
+  chaves: readonly string[],
+): Promise<Set<string>> {
+  const r = await Promise.all(
+    chaves.map(async (c) => {
+      const { data } = await bd.rpc("funcionalidade_ativa", {
+        p_inquilino: inquilinoId,
+        p_chave: c,
+      });
+      return data === true ? c : null;
+    }),
+  );
+  return new Set(r.filter((c): c is string => c !== null));
+}
