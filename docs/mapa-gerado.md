@@ -15,8 +15,23 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/pedidos/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/pedidos/page.tsx`
 - `app/(admin)/admin/dois-passos/page.tsx`
+- `app/(app)/app/(painel)/agenda/marcar/page.tsx`
+- `app/(app)/app/(painel)/agenda/page.tsx`
+- `app/(app)/app/(painel)/clientes/[id]/page.tsx`
+- `app/(app)/app/(painel)/clientes/page.tsx`
+- `app/(app)/app/(painel)/equipa/[id]/acertos/page.tsx`
+- `app/(app)/app/(painel)/equipa/[id]/agenda/page.tsx`
+- `app/(app)/app/(painel)/equipa/[id]/clientes/page.tsx`
+- `app/(app)/app/(painel)/equipa/[id]/metas/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/page.tsx`
+- `app/(app)/app/(painel)/equipa/[id]/perfil/page.tsx`
+- `app/(app)/app/(painel)/equipa/page.tsx`
+- `app/(app)/app/(painel)/financeiro/acertos/page.tsx`
+- `app/(app)/app/(painel)/financeiro/page.tsx`
+- `app/(app)/app/(painel)/loja/page.tsx`
 - `app/(app)/app/(painel)/page.tsx`
+- `app/(app)/app/(painel)/plano/page.tsx`
+- `app/(app)/app/(painel)/sistema/[seccao]/page.tsx`
 - `app/(app)/app/(painel)/sistema/page.tsx`
 - `app/(app)/app/escolher/page.tsx`
 - `app/(auth)/entrar/confirmar/route.ts`
@@ -34,6 +49,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/api/adesoes/carregamento/route.ts`
 - `app/api/adesoes/route.ts`
 - `app/api/contacto/route.ts`
+- `app/api/manifesto/[slug]/route.ts`
 - `app/api/medicao/route.ts`
 
 ## Variáveis CSS (app/globals.css)
@@ -76,7 +92,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Textos (lib/i18n)
 
-- `lib/i18n/pt-PT.ts`: 32 chaves
+- `lib/i18n/pt-PT.ts`: 33 chaves
 
 ## Tabelas
 
@@ -142,6 +158,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Funções SQL
 
+- `abrir_ciclo_clube()`
 - `abrir_lembrete_vencimento()`
 - `anonimizar_cliente()`
 - `apagar_leads_inativos()`
@@ -175,12 +192,14 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `hoje_lisboa()`
 - `hora_local()`
 - `inquilinos_onde()`
+- `inscrever_clube()`
 - `instante_lisboa()`
 - `ler_convite_adesao()`
 - `levantar_pedido()`
 - `ligar_contrato_inquilino()`
 - `limitar_portfolio()`
 - `limitar_profissionais()`
+- `marcacao_online_bloqueada()`
 - `marcacoes_antes_gravar()`
 - `marcar_contrato_enviado()`
 - `marcar_falta()`
@@ -206,13 +225,16 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `registar_auditoria_admin()`
 - `registar_email_lembrete()`
 - `registar_evento_lead()`
+- `renovar_subscricao()`
 - `reservar_vaga()`
 - `submeter_lead()`
 - `submeter_pedido_adesao()`
+- `usar_cartao_oferta()`
 - `usar_convite_adesao()`
 - `vagas_livres()`
 - `validar_contratados()`
 - `validar_vaga()`
+- `vender_cartao_oferta()`
 - `verificar_codigo_acesso()`
 
 ## Funcionalidades (grelha)

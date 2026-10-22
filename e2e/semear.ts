@@ -73,6 +73,18 @@ export default async function semear() {
     if (error) throw new Error(`aplicar_pacote: ${error.message}`);
   }
 
+  // A aberta o dia todo, todos os dias: os ensaios da agenda correm a qualquer hora.
+  const { error: erroHorario } = await bd
+    .from("inquilinos")
+    .update({
+      hora_abertura: "00:00",
+      hora_fecho: "23:59",
+      dias_descanso: [],
+      fecha_feriados: false,
+    })
+    .eq("id", BARBEARIA_A.id);
+  if (erroHorario) throw new Error(`horário: ${erroHorario.message}`);
+
   // Serviços da A (painel da barbearia, Fase 4).
   await inserir(bd, "servicos", [
     { inquilino_id: BARBEARIA_A.id, nome: "Corte", duracao_min: 30, preco: 15, ordem: 1 },

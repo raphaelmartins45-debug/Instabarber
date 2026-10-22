@@ -607,3 +607,17 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - Com «transitar crédito», o que ficou por usar num ciclo pago soma-se aos créditos do ciclo seguinte.
 - Sem tarefas agendadas (D-26): as subscrições com renovação automática renovam quando o gestor abre o clube; as manuais, com «Renovar ciclo».
 - 8 testes em `docs/esquema/testes/80_painel.sql` (436 no total).
+
+## D-123 · 22/10/2026 · Ícone e manifesto por barbearia — técnica
+- Os painéis da barbearia levam o ícone e o manifesto dela: `/api/icone/<slug>?t=<32|180|192|512>&v=<versão>` desenha o logótipo sobre a cor da capa (com `next/og`, que já vem com o Next) ou, sem logótipo, o «IB» da marca; `/api/manifesto/<slug>` dá o nome e os ícones ao atalho. Só dados públicos (vista `publico_inquilinos`).
+- O endereço do ícone leva uma versão que muda com o logótipo, para furar a cache do iOS (D-107). O logótipo em SVG fica com o «IB» no ícone (o desenho do ícone só aceita imagens).
+- A página pública (Fase 5) usa as mesmas rotas.
+
+## D-124 · 22/10/2026 · Painel da barbearia (Fase 4) — técnica
+- Uma só origem para os números: `lib/painel/indicadores.ts` (Início, Equipa, área do barbeiro) e `lib/painel/financeiro.ts` usam a mesma faturação de serviços (`lib/regras/financeiro.ts`); os acertos vêm todos de `lib/painel/acertos.ts`. O ensaio de ponta a ponta confere a mesma receita no Financeiro do gestor e na folha do barbeiro.
+- A marcação ao balcão grava diretamente em `marcacoes` (RLS); o gatilho calcula o fim, valida a vaga e aplica o preço. Concluir e faltou só pelas funções SQL. Com cartão oferta, confirma-se o saldo antes de concluir e desconta-se depois.
+- O bloco de campos do Admin passou a componente comum (`components/nucleo/formulario-ficha.tsx`), com a ação de gravar recebida do servidor: o horário usa o mesmo esquema Zod nos dois painéis.
+- Fotografias da ficha técnica no bucket privado `fichas` (URL assinado de 10 minutos); fotografia e portfólio do barbeiro, logótipo, fachada, galeria e produtos no bucket `publico`. As Server Actions aceitam até 4 MB por pedido (imagens até 3 MB).
+- As mensagens individuais (lembrete, pós-venda, recuperação, aniversário, aviso da loja) ficam registadas em `mensagens` com o estado `ligacao_aberta` (F.4.10). O envio em lote fica para a Fase 6.
+- A paleta da Marca calcula-se no browser a partir do logótipo (`lib/regras/paleta.ts`, com testes); o dono escolhe.
+- A barbearia de ensaio dos testes de ponta a ponta abre o dia todo, todos os dias, para os ensaios da agenda correrem a qualquer hora.

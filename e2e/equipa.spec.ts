@@ -69,7 +69,7 @@ test("uma conta em duas barbearias escolhe e troca de barbearia", async ({ page 
 test("convite do barbeiro de ponta a ponta", async ({ page, browser }, info) => {
   const c = contas(info.project.name);
   await entrarEquipa(page, c.dono);
-  await page.goto("/app/sistema");
+  await page.goto("/app/sistema/equipa");
   const nome = `Nuno Novo ${info.project.name}`;
   await page.getByLabel("Nome").fill(nome);
   await page.getByLabel("E-mail").fill(c.novo);

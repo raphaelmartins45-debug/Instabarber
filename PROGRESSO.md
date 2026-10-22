@@ -24,7 +24,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | 3 | Administração e adesão | Concluída (por confirmar) | 22/10/2026 | Supabase local: **32 testes Playwright** (16 cenários × computador e telemóvel), incluindo o resultado verificável — adesão em quatro passos com logótipo e resumo em PDF, aprovação pelo super_admin com 2FA (barbearia ativa, pacote, serviços, conta do dono), mensalidade Pro com 4 profissionais 60,27 € (D.5), entrada do dono no painel, importação CSV (2 válidas, 1 com erro), exportação ZIP e vista de apoio; o fluxo completo demora cerca de 10 segundos. **412 testes SQL** no local e no ensaio (migração 05, D-116); 112 testes Vitest, mais 5 de integração com o Supabase local (mensalidade com os exemplos da D.5); typecheck, lint e build sem erros. Documentos legais publicados (D-117). Dados da Prestadora no `.env.local`: as três páginas legais respondem 200 com nome, NIF e morada. **Falta:** pendentes 1 e 2 |
 | 3B | Comercial (CRM, propostas e contratos) | Adiada | — | Por ordem do dono, a Fase 4 avança primeiro (D-120; pendente 3) |
 | 3C | Finanças da Performa LAB | Adiada | — | Como a 3B (D-120) |
-| 4 | Painel da barbearia | Em curso | — | — |
+| 4 | Painel da barbearia | Concluída (por confirmar) | 22/10/2026 | Supabase local: **34 testes Playwright** (17 cenários × computador e telemóvel), incluindo o resultado verificável — um dia completo: serviço registado ao balcão, cliente novo marcado na primeira vaga, concluído na agenda (a verde, lembrete wa.me pronto), ficha técnica com nota, comissões e acertos com os dois serviços (32,50 €) e acerto registado (liquidado), despesa no Financeiro, ausência na Gestão do sistema, e o barbeiro a ver a mesma receita na sua folha de acerto sem entrar na Gestão do sistema. Verificado também à mão, no computador e no telemóvel (sem deslocamento lateral): Início, Agenda, Clientes, ficha, Equipa, área do barbeiro, Financeiro (a faturação coincide com a do Início), acertos, as 14 secções da Gestão do sistema, clube (plano, inscrição, «Pago»), cartão oferta com PDF, loja (margem 9,76 € · 3,26 € · 33,4 %, como na F.4.4), O meu plano. **436 testes SQL** (migração 06: cartões oferta, bloqueio por faltas, clube; D-121, D-122); migração 06 aplicada no ensaio. **153 testes Vitest** (classificação, objetivos, acertos, financeiro, loja, ocupação, mensagens, paleta, calendário), mais 5 de integração; typecheck, lint e build sem erros. Ícone e manifesto por barbearia nos painéis (D-123) |
 | 5 | Motor de agenda e cliente | Pendente | — | — |
 | 6 | Mensagens, filas, loja, relatório e módulos desligados | Pendente | — | — |
 | 7 | Publicação | Pendente | — | — |
@@ -38,7 +38,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Landing page (`landing/index.html`) | Fechada (servida pelo Next.js desde a Fase 0, D-99) | 21/10/2026 | Versão 27 publicada; auditoria 0 problemas; sem rolagem horizontal em 1440 px e 390 px (mobile automático); sem «ao vivo» (D-65), sem rótulos de exemplo nos ecrãs (D-66) |
 | Instagram: imagens, reels, legendas, voz | Entregue ao criativo (conversa própria) | 21/10/2026 | `marketing/instagram/` + `InstaBarber-Kit-Redes-Sociais.zip`; regras em CLAUDE.md secções 11 e 12; D-61 a D-70 |
 | Estrutura de pastas do negócio | Entregue | 21/10/2026 | `InstaBarber-Estrutura-de-Pastas.zip` |
-| Ícone do atalho no iPhone | Por resolver | 22/10/2026 | O favicon do separador mostra o «IB» novo, mas «Adicionar à Tela de Início» no iOS continua com o ícone antigo, mesmo depois de nomes novos (`ib-180.png`, D-107). Voltar a isto para replicar a solução nos ícones dos painéis (gestor, barbeiro, cliente). Nos painéis e nas páginas públicas das barbearias o ícone e o manifesto têm de ser dinâmicos por inquilino (a partir de `logo_path`, com o «IB» como alternativa); resolver antes da Fase 4 |
+| Ícone do atalho no iPhone | Feito nos painéis (D-123); falta confirmar num iPhone (pendente 18) | 22/10/2026 | O favicon do separador mostra o «IB» novo, mas «Adicionar à Tela de Início» no iOS continua com o ícone antigo, mesmo depois de nomes novos (`ib-180.png`, D-107). Voltar a isto para replicar a solução nos ícones dos painéis (gestor, barbeiro, cliente). Nos painéis e nas páginas públicas das barbearias o ícone e o manifesto têm de ser dinâmicos por inquilino (a partir de `logo_path`, com o «IB» como alternativa); resolver antes da Fase 4 |
 | SEO da landing | Feito (D-105) | 22/10/2026 | Título, descrição, JSON-LD, `sitemap.xml`, `robots.txt`. Falta o dono registar o domínio no Google Search Console e submeter o sitemap |
 
 ## Pendentes do dono
@@ -65,10 +65,15 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 12. **Envio em lote** (clientes e «Lembretes em lote») fica para a Fase 6, com o registo completo das mensagens. As mensagens individuais já ficam registadas na tabela `mensagens` nesta fase (F.4.10).
 13. **Menu:** as entradas «Relatório» (Fase 6) aparecem quando a funcionalidade está ligada; até à Fase 6 a página ainda não existe.
 14. **Registar serviço ao balcão:** marca e conclui de seguida, na hora indicada (por omissão a hora atual), com o valor editável.
+15. **Confirmar a Fase 4** (resultado verificável na linha da Fase 4).
+16. **Taxa de regresso** (indicador do barbeiro, E.3): clientes com duas ou mais visitas com ele ÷ clientes atendidos por ele. A especificação não dá a fórmula.
+17. **Clube:** as renovações automáticas em atraso fazem-se quando o gestor abre a secção do clube (não há tarefas agendadas, D-26); o cliente tem de estar registado antes de ser inscrito (procura-se pelo telemóvel). Plano desativado não aceita subscrições novas.
+18. **Ícone no iPhone** (trabalho paralelo): os painéis já têm ícone e manifesto por barbearia (D-123). Falta o dono confirmar num iPhone real que «Adicionar ao ecrã principal» mostra o ícone novo.
+19. **Testes SQL no ensaio:** a migração 06 foi aplicada no projeto de ensaio, mas os 436 testes SQL só correram no Supabase local (correr no ensaio obriga a apagar e repor os dados de teste fixos, como na Fase 3). Fica para o fecho da Fase 7, antes da produção.
 
 ## Próximo passo
 
-Fase 4 (Painel da barbearia) em curso, sem esperar pela confirmação da Fase 3 (D-120).
+Fase 4 concluída (por confirmar, pendente 15). Fase 5 (Motor de agenda e cliente) em curso, sem esperar (D-120).
 
 ### Resumo da Fase 4 (D-120: escrito aqui em vez de esperar confirmação)
 
