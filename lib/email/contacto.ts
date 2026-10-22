@@ -2,7 +2,8 @@ import "server-only";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { PedidoContactoFase1, PedidoContactoFase2 } from "@/lib/validacao/contacto";
 import { variavelOpcional } from "@/lib/configuracao/ambiente";
-import { enderecos } from "./enderecos";
+import { DOMINIO, enderecos } from "./enderecos";
+import { emailTimbrado } from "./timbrado";
 import type { Email } from "./enviar";
 
 // Modelos dos e-mails do pedido de contacto da landing (D-46, D-50). Só texto simples.
@@ -66,19 +67,45 @@ export function avisoComercialFase2(p: PedidoContactoFase2): Email {
 /** Assinatura dos e-mails comerciais para fora: «Comercial InstaBarber» e o número de WhatsApp por baixo, sem rótulo (D-101). */
 function assinaturaComercial(): string[] {
   const telefone = variavelOpcional("TELEFONE_COMERCIAL_TXT");
-  return [
-    textos.marca.assinaturaComercial,
-    ...(telefone ? [telefone] : []),
-  ];
+  return [textos.marca.assinaturaComercial, ...(telefone ? [telefone] : [])];
 }
 
 export function respostaVisitante(ref: string, p: PedidoContactoFase1): Email {
   const primeiroNome = p.nome.split(/\s+/)[0] ?? p.nome;
+  const r = t.respostaVisitante;
+  const assinatura = assinaturaComercial();
+  const comercial = enderecos.comercial();
+  const { texto: instagramTexto, url: instagramUrl } = textos.marca.instagram;
+  const texto = [
+    r.saudacao(primeiroNome),
+    "",
+    ...r.paragrafos.flatMap((x) => [x, ""]),
+    r.referencia(ref),
+    r.dicaReferencia,
+    "",
+    ...r.paragrafosFinais.flatMap((x) => [x, ""]),
+    r.despedida,
+    "",
+    ...assinatura,
+    "",
+    `${comercial} · Instagram: ${instagramTexto} (${instagramUrl})`,
+  ].join("\n");
+  const html = emailTimbrado({
+    saudacao: r.saudacao(primeiroNome),
+    paragrafos: [...r.paragrafos],
+    destaque: { titulo: r.referencia(ref), nota: r.dicaReferencia },
+    paragrafosFinais: [...r.paragrafosFinais],
+    despedida: r.despedida,
+    assinatura,
+    logoUrl: `https://${DOMINIO}/marca/logo-horizontal-dourado.png`,
+    rodape: { email: comercial, instagramTexto, instagramUrl },
+  });
   return {
     de: enderecos.apoio(),
     para: p.email,
-    responderPara: enderecos.comercial(),
-    assunto: t.respostaVisitante.assunto(ref),
-    texto: [t.respostaVisitante.corpo(primeiroNome, ref), ...assinaturaComercial()].join("\n"),
+    responderPara: comercial,
+    assunto: r.assunto(ref),
+    texto,
+    html,
   };
 }

@@ -479,3 +479,6 @@ Com as versões exatas da B.3, o `npm audit` dava 21 vulnerabilidades (8 altas, 
 - O número vem da variável `TELEFONE_COMERCIAL_TXT` (nunca escrito no código). Se a variável faltar, o e-mail sai na mesma, sem a linha do WhatsApp (não é essencial). **Ação do dono:** juntar `TELEFONE_COMERCIAL_TXT` na Vercel (o valor está no `.env.local`).
 - O `reply-to` da resposta passa a ser o comercial@, para que «responde a este e-mail» chegue à caixa certa.
 - Os avisos internos para o comercial@ não mudam.
+
+## D-102 · 22/10/2026 · E-mail de resposta timbrado
+A resposta ao visitante passa a levar versão HTML (cabeçalho preto com a logo dourada, corpo claro, linha em branco após «Com os melhores cumprimentos,», assinatura «Comercial InstaBarber» e número a negrito, rodapé preto com comercial@instabarber.pt e o Instagram @instabarberpt). Layout em tabelas e estilos em linha (`lib/email/timbrado.ts`); texto do visitante escapado. O texto simples segue como alternativa. A logo é servida de instabarber.pt/marca. Os avisos internos continuam só em texto.

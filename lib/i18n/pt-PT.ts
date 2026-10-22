@@ -5,6 +5,7 @@ export const textos = {
     nome: "InstaBarber",
     assinatura: "InstaBarber · Performa LAB",
     assinaturaComercial: "Comercial InstaBarber",
+    instagram: { texto: "@instabarberpt", url: "https://www.instagram.com/instabarberpt/" },
   },
   contacto: {
     campos: {
@@ -30,21 +31,18 @@ export const textos = {
     },
     respostaVisitante: {
       assunto: (ref: string) => `Recebemos o teu pedido de contacto · ${ref}`,
-      corpo: (primeiroNome: string, ref: string) =>
-        [
-          `Olá ${primeiroNome},`,
-          "",
-          "Obrigado pelo interesse no InstaBarber. Recebemos o teu pedido e a nossa equipa comercial entra em contacto contigo em breve, por telefone ou mensagem, para perceber a tua barbearia e mostrar como o sistema pode ajudar.",
-          "",
-          `Referência do pedido: ${ref}`,
-          "Se nos escreveres ou ligares, indica esta referência para te atendermos mais depressa.",
-          "",
-          "Se preferires falar já connosco, responde a este e-mail ou escreve-nos no WhatsApp, no número abaixo.",
-          "",
-          "Se não foste tu a fazer este pedido, podes ignorar esta mensagem.",
-          "",
-          "Com os melhores cumprimentos,",
-        ].join("\n"),
+      saudacao: (primeiroNome: string) => `Olá ${primeiroNome},`,
+      paragrafos: [
+        "Obrigado pelo interesse no InstaBarber. Recebemos o teu pedido e a nossa equipa comercial entra em contacto contigo em breve, por telefone ou mensagem, para perceber a tua barbearia e mostrar como o sistema pode ajudar.",
+      ],
+      referencia: (ref: string) => `Referência do pedido: ${ref}`,
+      dicaReferencia:
+        "Se nos escreveres ou ligares, indica esta referência para te atendermos mais depressa.",
+      paragrafosFinais: [
+        "Se preferires falar já connosco, responde a este e-mail ou escreve-nos no WhatsApp, no número abaixo.",
+        "Se não foste tu a fazer este pedido, podes ignorar esta mensagem.",
+      ],
+      despedida: "Com os melhores cumprimentos,",
     },
   },
 } as const;

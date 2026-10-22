@@ -7,6 +7,8 @@ export type Email = {
   para: string;
   assunto: string;
   texto: string;
+  /** Versão HTML (e-mail timbrado). O texto simples segue sempre como alternativa. */
+  html?: string;
   responderPara?: string;
 };
 
@@ -23,6 +25,7 @@ export async function enviarEmail(montar: () => Email): Promise<boolean> {
       to: email.para,
       subject: email.assunto,
       text: email.texto,
+      ...(email.html ? { html: email.html } : {}),
       ...(email.responderPara ? { replyTo: email.responderPara } : {}),
     });
     if (error) {
