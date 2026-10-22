@@ -17,15 +17,16 @@ const ERROS: Record<string, string> = { ...t.erros, generico: textos.acesso.erro
 export function FormularioBarbeiro() {
   const [resultado, setResultado] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aEnviar, iniciar] = useTransition();
-  const { register, handleSubmit, formState, reset } = useForm<DadosRegistarBarbeiro>({
+  const { register, handleSubmit, formState, reset, getValues } = useForm<DadosRegistarBarbeiro>({
     resolver: zodResolver(esquemaRegistarBarbeiro),
     defaultValues: { nome: "", email: "", nif: "" },
   });
   const erro = (codigo?: string) => (codigo ? ERROS[codigo] : undefined);
 
-  const enviar = handleSubmit((dados) =>
+  const enviar = handleSubmit(() =>
     iniciar(async () => {
-      const r = await registarBarbeiro(dados);
+      // Os valores tal como escritos: o servidor valida-os com o mesmo esquema.
+      const r = await registarBarbeiro(getValues());
       if (!r.ok) return setResultado({ tipo: "erro", texto: ERROS[r.erro] ?? ERROS.generico! });
       reset();
       setResultado({

@@ -553,3 +553,38 @@ O iOS guarda o `apple-touch-icon.png` em cache pelo nome e o atalho continuava c
 - Endereços de retorno permitidos: `localhost` e subdomínios locais, e `https://instabarber-*.vercel.app/**` (pré-visualizações da Vercel). O `site_url` fica em `localhost` até haver endereço de ensaio.
 - Conta do super_admin criada no ensaio (`raphaelmartins@instabarber.pt`, perfil `super_admin`), **sem palavra-passe**: define-a por ligação segura (B9) quando houver uma aplicação de ensaio publicada a apontar para este projeto.
 - Atualização (22/10/2026): as variáveis do Supabase de ensaio (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ROOT_DOMAIN`) foram postas na Vercel **só para Preview**, pela API, com o token do dono. A produção continua sem elas até à Fase 7. As pré-visualizações estão protegidas pela Vercel (só abre quem tem sessão na conta). O e-mail para o super_admin definir a palavra-passe saiu pelo Resend, com a ligação para a pré-visualização deste ramo.
+
+## D-116 · 22/10/2026 · Esquema do InstaBarber Admin (Fase 3, migração 05)
+Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes novos (`testes/70_admin.sql`). Depois entrou como migração nova, `20261022000005_admin.sql`. Aplicado no Supabase local e no ensaio, com 412 testes SQL a passar nos dois.
+- `registar_auditoria_admin()`: as ações do Admin (aprovação, rejeição, vista de apoio, importação, exportação) ficam em auditoria com o autor da sessão. Só para o super_admin com dois fatores, e o nome da ação é validado.
+- `clientes_admin_criar`: o super_admin com dois fatores cria clientes de qualquer barbearia (importação CSV, E.1), mas não os altera nem apaga.
+- `storage_publico_admin`: o super_admin carrega o logótipo, a capa e a galeria (separador Marca e aprovação da adesão).
+- `funcionalidades_ler_publico` e `pacotes_ler_publico`: o catálogo e os pacotes leem-se sem conta, porque o formulário de adesão é público e mostra o que cada plano inclui (D.9). A grelha de cada barbearia continua fechada.
+- Tudo isto evita usar a chave de serviço para coisas que o RLS pode fazer (CLAUDE.md §3).
+
+## D-117 · 22/10/2026 · Documentos legais publicados (Fase 3)
+- Por decisão do dono, os três documentos ficam como versão definitiva. O dono informou que estão aprovados juridicamente. São os Termos de Uso (`/termos`), a Política de Privacidade (`/privacidade`) e o Acordo de Subcontratação (`/termos/subcontratacao`; o caminho fica debaixo de `/termos`, que é reservado, porque «subcontratacao» não é um slug reservado).
+- Texto em `lib/i18n/pt-PT/legal/`, coerente com `docs/comercial/modelo-contrato.md` e `modelo-acordo-subcontratacao.md`. Os valores que lá estavam entre parênteses retos ficaram com o valor proposto (30 dias, 48 horas, 2 dias úteis, 60 dias, 12 meses).
+- Zoho: centro de dados europeu (os MX do domínio são `zoho.eu`). Foro: os tribunais portugueses competentes nos termos da lei, depois de 30 dias de tentativa de acordo.
+- A identificação da Prestadora vem de `PRESTADORA_NOME`, `PRESTADORA_NIF` e `PRESTADORA_MORADA` (D-44). **Ação do dono:** pôr estas variáveis na Vercel. Sem elas, as três páginas dão erro.
+
+## D-118 · 22/10/2026 · Adesão e aprovação (Fase 3) — técnica
+- O Pro tem 3 profissionais incluídos e mínimo de 3 (D-72), em `lib/regras/mensalidade.ts`. O exemplo de código da D.7 ainda dizia 2.
+- Imagens da adesão: verificadas no browser (formato, tamanho, dimensões e fundo branco do logótipo) e carregadas por URL assinado para o bucket privado `comercial`, em `adesoes/<pasta>/`. A rota volta a verificar o formato e o tamanho. Na aprovação são copiadas para `publico/<inquilino>/`, e a fachada passa a ser a primeira foto da galeria.
+- `mensalidade_calculada` grava a mensalidade sem IVA, sem domínio próprio, calculada no servidor pela fórmula única.
+- A equipa indicada no pedido não cria profissionais: o proprietário convida cada barbeiro na Gestão do sistema (E.3), com o limite de profissionais da base de dados.
+- Boas-vindas: e-mail próprio pelo Resend, de apoio@, com o endereço da página, o do painel, a instrução completa das imagens e a ligação segura para definir a palavra-passe. A ligação é gerada sem enviar o convite do Supabase (`generateLink`, tipo convite). O reenvio usa uma ligação de recuperação. Quem já tinha conta recebe as boas-vindas sem ligação.
+- Se um passo da aprovação falhar, a barbearia criada é apagada e o pedido continua pendente.
+- Os formulários com React Hook Form enviam `getValues()`: o servidor valida o que a pessoa escreveu, com o mesmo esquema Zod. O resolver do formulário entregava os valores já transformados.
+- Os componentes do formulário ficam em `components/adesao/`: a adesão não pertence a nenhuma das quatro camadas.
+- Limites: adesão 3 por hora por IP e por e-mail; carregamento de imagens 40 por hora por IP.
+
+## D-119 · 22/10/2026 · Painel de administração (Fase 3) — técnica
+- Receita recorrente mensal: soma das barbearias ativas pela fórmula única; um plano anual conta como o valor do ano a dividir por 12 (`lib/regras/receita.ts`).
+- O extra do domínio próprio cobra-se quando `inquilinos.dominio_proprio` está preenchido. Não há interruptor à parte: gravar o domínio é ligar o extra.
+- Vista de apoio: cookie `ib_apoio` com a barbearia e a hora de fim (30 minutos). Só vale com sessão aal2. O painel mostra uma faixa e as ações de escrita da equipa recusam (`exigirGestorParaEscrever`). A entrada e a saída ficam em auditoria.
+- Exportação: ZIP de CSV (separador «;», UTF-8 com BOM), escrito com o `zlib` do Node, sem dependências. As tabelas exportadas são as da barbearia. As da plataforma (faturação da Performa LAB, adesão, auditoria, comercial, módulos, códigos de acesso) ficam de fora. Um teste confere a classificação com `01_tabelas.sql`. Um cliente é exportado pelo telemóvel.
+- Eliminar definitivamente: `eliminar_inquilino()` e depois as contas sem uso são apagadas com a chave de serviço (P-18).
+- No telemóvel, a ficha com dez separadores passa a passos com indicador de posição. Os painéis passam a ter navegação inferior (no máximo 5 entradas mais «Mais»), as tabelas passam a cartões e as ações destrutivas pedem confirmação (Parte I, I.3.1).
+- Os alertas «sinais de abandono» (M.2) dependem de dados de uso e ficam para a Fase 8.
+- shadcn/ui: `alert-dialog` sobre `@radix-ui/react-alert-dialog` 1.1.23 (julho de 2026, autorizado pela B.3).

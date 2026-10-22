@@ -37,10 +37,19 @@ O dono fala em «página tal». Tradução (confirmar os caminhos reais na fase 
 | «o formulário de contacto da landing» | Pedido de contacto em dois passos (D-50) | `app/api/contacto/route.ts`; validação em `lib/validacao/contacto.ts`; e-mails em `lib/email/contacto.ts`; textos em `lib/i18n/pt-PT.ts` | — |
 | «o SEO», «o Google», «o sitemap» | Título e descrição em `landing/index.html`; sitemap e robots (D-105) | `landing/index.html` (title, description, JSON-LD); `app/sitemap.ts`; `app/robots.ts` | — |
 | «as contagens da landing» | Visitas, radar e «Continuar» (D-100) | `app/api/medicao/route.ts` (registos da Vercel até à Fase 3B) | — |
-| «o formulário de adesão» | Pedido de adesão em quatro passos | `app/(adesao)/adesao/` | — |
+| «o formulário de adesão» | Pedido de adesão em quatro passos | `app/(adesao)/adesao/` e `components/adesao/`; validação em `lib/validacao/adesao.ts`; rotas `app/api/adesoes/` (pedido e URL assinado das imagens); PDF em `lib/pdf/resumo-contratacao.ts` | — |
+| «os termos», «a política de privacidade», «o acordo de subcontratação» | Documentos legais (H.4, D-117) | Texto em `lib/i18n/pt-PT/legal/`; páginas `app/(institucional)/termos/`, `privacidade/`, `termos/subcontratacao/`; identificação da Prestadora pelas variáveis `PRESTADORA_*` | — |
+| «a mensalidade», «o preço do plano» | Fórmula única (D.7) | `lib/regras/mensalidade.ts` (com testes); receita do Admin em `lib/regras/receita.ts` | — |
 | «a entrada», «o login da equipa», «esqueci-me da palavra-passe» | Entrada da equipa, recuperação, definir palavra-passe por convite | `app/(auth)/entrar/` (ações em `acoes.ts`; ligação dos e-mails em `confirmar/route.ts`); no endereço de uma barbearia a equipa entra em `/app/entrar` (D-112) | — |
 | «os e-mails de convite e de recuperação» | Modelos do Supabase Auth | `supabase/templates/convite.html` e `recuperacao.html` (local, `config.toml`); no ensaio e na produção, *Auth → Email templates* (aplicado pela Management API, D-115) | — |
-| «o admin», «o meu painel» | Painel da Performa LAB | `app/(admin)/admin/(protegido)/` (só com aal2; guarda em `lib/admin/contexto.ts`) | 1 |
+| «o admin», «o meu painel» | Painel da Performa LAB | `app/(admin)/admin/(protegido)/` (só com aal2; guarda em `lib/admin/contexto.ts`; menu em `lib/admin/menu.ts`) | 1 |
+| «a ficha da barbearia», «os separadores» | Dez separadores (E.1) | `app/(admin)/admin/(protegido)/barbearias/[id]/` (`[separador]/page.tsx`, ações em `acoes.ts`); campos em `lib/admin/ficha.ts`; validação em `lib/validacao/ficha-barbearia.ts`; componentes em `components/admin/` | 1 |
+| «os pedidos de adesão», «aprovar» | Lista, detalhe, aprovar, ajustar, rejeitar | `app/(admin)/admin/(protegido)/pedidos/`; lógica em `lib/admin/aprovacao.ts`; e-mails em `lib/email/adesao-decisao.ts` | 1 |
+| «a grelha de funcionalidades» | Pacote, bónus, inativa (D.3, D.4) | `app/(admin)/admin/(protegido)/funcionalidades/`; `components/admin/grelha-funcionalidades.tsx` | 1 |
+| «os pagamentos», «as faturas», «os recebimentos» | Registados à mão (E.1) | `app/(admin)/admin/(protegido)/pagamentos/` | 1 |
+| «a importação», «o CSV» | Clientes e serviços (E.1) | `lib/regras/importacao.ts` (com testes); separador Importação | 1 |
+| «exportar os dados», «eliminar a barbearia» | ZIP de CSV; `eliminar_inquilino()` | `barbearias/[id]/exportar/route.ts`; `lib/exportacao/`; ações rápidas da ficha | 1 |
+| «a vista de apoio» | Painel da barbearia só de leitura, 30 minutos (E.1) | `lib/admin/apoio.ts`, `lib/equipa/contexto.ts`, `components/barbearia/faixa-apoio.tsx` | 1 e 2 |
 | «a verificação em dois passos», «o 2FA» | Inscrição e código TOTP do super_admin | `app/(admin)/admin/dois-passos/`; `components/admin/formulario-dois-passos.tsx` | 1 |
 | «o painel da barbearia», «o gestor» | Painel do gestor | `app/(app)/app/(painel)/` (Início com «Pedidos de acesso»); contexto em `lib/equipa/contexto.ts` | 2 |
 | «a Gestão do sistema», «registar barbeiro», «reenviar convite» | Equipa e convites (E.3) | `app/(app)/app/(painel)/sistema/` (ações em `acoes.ts`; contas em `lib/auth/contas.ts`) | 2 |
@@ -75,7 +84,8 @@ Cada receita: **onde mexer → como verificar → como desfazer**.
 | Mudar um **e-mail transacional** | Textos em `lib/i18n/pt-PT.ts`; montagem em `lib/email/` (`contacto.ts` para a landing; endereços em `enderecos.ts`) | Testes de `app/api/contacto` e envio de ensaio |
 | Mudar um **PDF** | Relatório: `app/api/relatorios` e a biblioteca de PDF (**confirmar**); propostas e contratos: `modelos_documento` na base de dados, pelo Comercial | Gerar um PDF de ensaio; continua a dizer «Não é documento fiscal» |
 | **Ligar ou desligar uma funcionalidade** de uma barbearia | Admin → Funcionalidades. Sem código | A barbearia vê (ou deixa de ver) o menu |
-| Mudar o **esquema** da base de dados (tabela, coluna, função, política) | Primeiro `docs/esquema/` e os testes (regra 3); depois uma migração nova em `supabase/migrations/` (as quatro primeiras são cópias exatas dos ficheiros 01 a 04); `npm run db:types` atualiza `types/database.ts` (gerado, não se edita) | `supabase db reset`, `npm run test:sql` (396 testes) e `typecheck` |
+| Mudar um **texto legal** (Termos, Privacidade, Subcontratação) | `lib/i18n/pt-PT/legal/*.ts` e a «versão» com a data. **Pedir parecer** se mudar o sentido | As três páginas no telemóvel |
+| Mudar o **esquema** da base de dados (tabela, coluna, função, política) | Primeiro `docs/esquema/` e os testes (regra 3); depois uma migração nova em `supabase/migrations/` (as quatro primeiras são cópias exatas dos ficheiros 01 a 04); `npm run db:types` atualiza `types/database.ts` (gerado, não se edita) | `supabase db reset`, `npm run test:sql` (412 testes) e `typecheck` |
 | **Ler dados** num ecrã novo | Uma função em `lib/repositorios/` que recebe o cliente (`ClienteBD`, de `lib/supabase/tipos.ts`); dinheiro sai em cêntimos (`*_centimos`). Leitura pública só pelas vistas `publico_*` | Teste Vitest do repositório; `integracao.test.ts` contra o Supabase local |
 | Mudar uma **regra da agenda** (vaga, sobreposição, antecedência) | Funções SQL por migração, nunca na interface (CLAUDE.md §3) | Testes SQL da agenda e Playwright de duas reservas em simultâneo |
 | Mudar um **limite de pedidos** | Os números em `lib/repositorios/limites.ts` (`LIMITES`); a contagem é de `consumir_limite()` | Teste de limite |

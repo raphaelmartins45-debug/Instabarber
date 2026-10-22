@@ -1,3 +1,4 @@
+import { resumoAuditoria } from "@/lib/admin/resumo-auditoria";
 import { TabelaCartoes } from "@/components/nucleo/tabela-cartoes";
 import { dataHora } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
@@ -28,9 +29,9 @@ export async function SeparadorAuditoria({
           id: "detalhe",
           rotulo: t.detalhe,
           valor: (r) => (
-            <code className="text-xs break-all">
-              {r.detalhes ? JSON.stringify(r.detalhes).slice(0, 160) : textos.comum.vazio}
-            </code>
+            <span className="text-xs break-words text-muted-foreground">
+              {resumoAuditoria(r.detalhes, textos.comum.vazio)}
+            </span>
           ),
         },
       ]}

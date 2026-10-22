@@ -32,9 +32,10 @@ export function FormularioSeparador({
     defaultValues: valores,
   });
 
-  const enviar = form.handleSubmit((dados) =>
+  const enviar = form.handleSubmit(() =>
     iniciar(async () => {
-      const r = await guardarSeparador(inquilinoId, separador, dados);
+      // Os valores tal como escritos: o servidor valida-os com o mesmo esquema.
+      const r = await guardarSeparador(inquilinoId, separador, form.getValues());
       if (r.ok) return setAviso({ tipo: "sucesso", texto: textos.comum.guardado });
       if (r.campo) form.setError(r.campo, { message: r.erro });
       setAviso({ tipo: "erro", texto: erros[r.erro] ?? textos.comum.erroGuardar });

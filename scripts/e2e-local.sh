@@ -11,5 +11,7 @@ export NEXT_PUBLIC_SUPABASE_URL="$API_URL" NEXT_PUBLIC_SUPABASE_ANON_KEY="$ANON_
 export SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" MAILPIT_URL ROOT_DOMAIN=localhost
 # Nenhum e-mail real nos ensaios: a rota de contacto tem de falhar com a chave errada (e2e/landing).
 export RESEND_API_KEY=re_chave_invalida_dos_ensaios
+# Identificação fictícia da Prestadora para os documentos legais nos ensaios.
+export PRESTADORA_NOME="Prestadora de Ensaio" PRESTADORA_NIF=999999990 PRESTADORA_MORADA="Rua do Ensaio, Viseu"
 npm run build >/dev/null
 npx playwright test "$@"

@@ -15,8 +15,9 @@ test("o gestor entra no painel da barbearia e não vê o /admin", async ({ page 
   await expect(page.getByTestId("vista")).toHaveText("Vista do gestor");
   await expect(page.getByText(BARBEARIA_A.nome)).toBeVisible();
   // Menu montado pelas funcionalidades do Pro: a Loja está; as mensagens não são abas.
-  await expect(page.locator('[data-menu="loja"]')).toBeVisible();
-  await expect(page.locator('[data-menu="sistema"]')).toBeVisible();
+  // No telemóvel a Loja fica no «Mais» da navegação inferior: conta-se a presença, não a visibilidade.
+  await expect(page.locator('[data-menu="loja"]')).not.toHaveCount(0);
+  await expect(page.locator('[data-menu="sistema"]')).not.toHaveCount(0);
   const admin = await page.goto("/admin");
   expect(admin?.status()).toBe(404);
 });

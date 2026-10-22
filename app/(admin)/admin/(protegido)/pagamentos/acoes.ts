@@ -16,7 +16,7 @@ const valor = z.string().transform((v, ctx) => {
   return c ?? 0;
 });
 
-export const esquemaFatura = z
+const esquemaFatura = z
   .object({
     inquilino_id: z.string().uuid(),
     numero: z.string().trim().min(1, "numero").max(40),
@@ -27,7 +27,7 @@ export const esquemaFatura = z
   })
   .refine((f) => f.periodo_inicio <= f.periodo_fim, { message: "periodo", path: ["periodo_fim"] });
 
-export const esquemaRecebimento = z.object({
+const esquemaRecebimento = z.object({
   inquilino_id: z.string().uuid(),
   fatura_id: z.union([z.string().uuid(), z.literal("")]).transform((v) => v || null),
   valor,

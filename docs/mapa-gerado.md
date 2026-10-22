@@ -4,7 +4,16 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Rotas (app/)
 
+- `app/(adesao)/adesao/page.tsx`
+- `app/(admin)/admin/(protegido)/barbearias/[id]/[separador]/page.tsx`
+- `app/(admin)/admin/(protegido)/barbearias/[id]/exportar/route.ts`
+- `app/(admin)/admin/(protegido)/barbearias/[id]/page.tsx`
+- `app/(admin)/admin/(protegido)/barbearias/page.tsx`
+- `app/(admin)/admin/(protegido)/funcionalidades/page.tsx`
+- `app/(admin)/admin/(protegido)/pagamentos/page.tsx`
 - `app/(admin)/admin/(protegido)/page.tsx`
+- `app/(admin)/admin/(protegido)/pedidos/[id]/page.tsx`
+- `app/(admin)/admin/(protegido)/pedidos/page.tsx`
 - `app/(admin)/admin/dois-passos/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/page.tsx`
 - `app/(app)/app/(painel)/page.tsx`
@@ -14,11 +23,16 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(auth)/entrar/definir/page.tsx`
 - `app/(auth)/entrar/page.tsx`
 - `app/(auth)/entrar/recuperar/page.tsx`
+- `app/(institucional)/privacidade/page.tsx`
 - `app/(institucional)/route.ts`
+- `app/(institucional)/termos/page.tsx`
+- `app/(institucional)/termos/subcontratacao/page.tsx`
 - `app/(publico)/b/[slug]/entrar/page.tsx`
 - `app/(publico)/b/[slug]/minha-area/page.tsx`
 - `app/(publico)/b/[slug]/page.tsx`
 - `app/api/acesso/route.ts`
+- `app/api/adesoes/carregamento/route.ts`
+- `app/api/adesoes/route.ts`
 - `app/api/contacto/route.ts`
 - `app/api/medicao/route.ts`
 
@@ -189,6 +203,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `proteger_proposta()`
 - `proximo_numero_comercial()`
 - `registar_auditoria()`
+- `registar_auditoria_admin()`
 - `registar_email_lembrete()`
 - `registar_evento_lead()`
 - `reservar_vaga()`

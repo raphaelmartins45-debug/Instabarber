@@ -81,9 +81,12 @@ export function FormularioAdesao(props: {
     }
   };
 
-  const enviar = form.handleSubmit((dados) =>
+  // O validador do formulário devolve os valores já transformados; o servidor valida o que a
+  // pessoa escreveu, com o mesmo esquema, por isso envia-se form.getValues().
+  const enviar = form.handleSubmit(() =>
     iniciar(async () => {
       setErro(undefined);
+      const dados = form.getValues();
       const resposta = await fetch("/api/adesoes", {
         method: "POST",
         headers: { "content-type": "application/json" },
