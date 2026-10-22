@@ -58,6 +58,23 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 
 Fase 4 (Painel da barbearia) em curso, sem esperar pela confirmação da Fase 3 (D-120).
 
+### Resumo da Fase 4 (D-120: escrito aqui em vez de esperar confirmação)
+
+**Constrói-se** (E.2, E.3, F.1–F.4, I.2–I.3), nas camadas 2 e 3, computador e telemóvel:
+
+1. Regras puras com Vitest em `lib/regras`: `classificacao.ts` (F.1), `objetivos.ts` (F.3), `acertos.ts` e `financeiro.ts` (F.4.11), `loja.ts` (margem, F.4.4).
+2. Início do gestor: faixa de ação, quatro indicadores, marcações de hoje (Concluir, Faltou, lembrete), pedidos de acesso, contas a pagar, clientes a contactar.
+3. Agenda: dia por profissional, vagas livres, ausências; marcar ao balcão (a base de dados valida e aplica o preço); concluir com `concluir_marcacao()` (normal, crédito do clube, prémio de selos, cartão oferta); faltou; lembrete wa.me com `lembrete_aberto_em`; órfãs com atribuição.
+4. Clientes: radar com indicadores e filtros, ficha (consentimento, visitas, selos, clube, loja, faltas, «Voltar a permitir marcação online»), ficha técnica com fotografias no bucket `fichas`, aniversariantes.
+5. Equipa: um separador por profissional. Painel do profissional (E.3): indicadores próprios, agenda própria, clientes próprios classificados só com ele, metas, folha de acerto, perfil (nome apresentado, fotografia, portfólio, palavra-passe).
+6. Financeiro: objetivo do mês e por profissional, custos fixos e despesas, resumo, comissões e acertos (com correções de sinal contrário).
+7. Gestão do sistema: estado, marca, horário, ausências e feriados, equipa (horário, comissões, modelo de caixa, renda, acesso), serviços, fidelização, aniversário, faltas, ligações, clube, loja, períodos de desconto, cartões oferta, órfãs.
+8. Loja (produtos e pedidos), clube (planos, inscrições, ciclos «Pago»), cartões oferta (venda com PDF «Não é documento fiscal», uso).
+9. O meu plano (leitura) e funcionalidades fora do plano: «Sai» ou «Upgrade».
+10. Ícone e manifesto por barbearia nos painéis (pendente do trabalho paralelo, «resolver antes da Fase 4»).
+
+**Não se faz nesta fase:** marcação pela página pública e área de cliente (Fase 5); envio em lote, registo de mensagens na tabela `mensagens`, e-mails automáticos, filas e relatório mensal (Fase 6). Os botões de mensagem individuais abrem o wa.me já nesta fase.
+
 - 22/10/2026 · D-72: Pro com 3 profissionais incluídos (landing, docs, esquema e testes SQL atualizados; 396 verificações sem falhas).
 - 22/10/2026 · D-84: landing no ar em instabarber.pt e www.instabarber.pt (Vercel, HTTPS). Passo 0: faltam .env.local, Resend e confirmação do Zoho.
 - 22/10/2026 · D-85: regime de IVA normal. Resend verificado (domínio instabarber.pt), .env.local completo.
