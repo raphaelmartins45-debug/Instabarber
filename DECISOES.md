@@ -514,5 +514,12 @@ O iOS guarda o `apple-touch-icon.png` em cache pelo nome e o atalho continuava c
 ## D-110 · 22/10/2026 · PostgreSQL 17 no Supabase local e no ensaio (Fase 1) — técnica
 - O projeto de ensaio que o Supabase criou (`instabarber-ensaio`) usa PostgreSQL 17, e os projetos novos já não escolhem a versão. Como a D-109 previa, o `supabase/config.toml` passa a `major_version = 17`, para o local ser igual ao ensaio. Isto substitui o «PostgreSQL 15» da stack (CLAUDE.md §2) na base de dados.
 - Verificação repetida em 17.11: migrações 01 a 04 aplicadas sem erros, RLS ativo nas 59 tabelas de `public`, 396 testes SQL a passar, `types/database.ts` igual ao gerado em 15.
-- Esse projeto ficou em eu-west-2 (Londres), fora da região da stack (eu-central-1, Frankfurt), e não deixa mudar de região. Não se lhe aplicou nada. O ensaio passa a ser um projeto novo em Frankfurt.
+- Esse projeto ficou em eu-west-2 (Londres), fora da região da stack (eu-central-1, Frankfurt), e não deixa mudar de região. Ver D-111.
 - O Supabase CLI lê o `.env.local` da raiz: um `SUPABASE_DB_PASSWORD` lá dentro passa a ser usado também na base local e o `npm run db:types` falha («password authentication failed»). A palavra-passe do ensaio fica no `.env.local` como `SUPABASE_ENSAIO_DB_PASSWORD`.
+
+## D-111 · 22/10/2026 · O projeto de ensaio fica em Londres (Fase 1)
+- Decisão do dono: o `instabarber-ensaio` fica em eu-west-2 (Londres). O Supabase não muda a região de um projeto e o token recebido não cria projetos. O ensaio só guarda dados de teste.
+- **A produção nasce em eu-central-1 (Frankfurt)** na Fase 7, como manda a stack (CLAUDE.md §2). Se um dia o ensaio tiver de ir para Frankfurt, cria-se um projeto novo e reaplicam-se as migrações, porque não há dados para levar.
+- Esta sessão não tem ligação TCP à porta 5432. As migrações e os testes correram pela Management API do Supabase (`POST /v1/projects/<ref>/database/query`), um ficheiro por pedido, sem as linhas `\set`/`\echo` do psql. Uma falha de teste devolve o erro `FALHOU: …` e interrompe o ficheiro (verificado com uma falha propositada). A API não devolve os `NOTICE`: o número de testes de cada ficheiro é o de verificações que ele contém.
+- O histórico de migrações (`supabase_migrations.schema_migrations`) foi preenchido com as quatro versões, para um `supabase db push` futuro só aplicar as migrações novas.
+- Os dados de teste do ficheiro 05 ficam na base de ensaio (o esquema `teste` foi apagado), como no Supabase local.
