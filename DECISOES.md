@@ -372,3 +372,6 @@ Na linha «InstaBarber Basic» da comparação, deixa de aparecer «comissões»
 
 ## D-76 · Botão do Instagram na landing (22/10/2026)
 A secção de contacto ganha «Seguir-nos no Instagram» (@instabarberpt, abre em novo separador) e o rodapé uma ligação «Instagram». Sem imitar o Instagram: botão da própria marca, sem logótipo nem gradiente.
+
+## D-77 · Revisão final da landing (22/10/2026)
+Teste completo (desktop 1440 e telemóvel 390): sem erros na consola, sem rolagem lateral, âncoras e formulário a funcionar. Alterações: «Dashboard do dia» passa a «Painel do dia»; o rótulo «Gestor» passa a «Dono»; a comparação ganha a linha «Poupas, por mês» (37,41 €, 448,92 € por ano); o título da página publicada (`landing/publicar`) passa a «InstaBarber · Agenda, clientes e fidelização para barbearias» (melhor para pesquisa e separadores).
