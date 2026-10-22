@@ -33,7 +33,7 @@ Apresenta o resumo do que vais construir, os ficheiros que vais criar e o que **
 - [ ] `middleware.ts` mínimo que deixa passar tudo (a resolução do inquilino é da Fase 2).
 - [ ] Vitest e Playwright configurados, com um teste de exemplo de `lib/formatacao`.
 - [ ] `scripts/testar-sql.sh` e `scripts/gerar-mestre.sh`.
-- [ ] Manter `public/marca/` (D-35) e ligar o favicon (`favicon-32.png`, `apple-touch-icon.png`) no layout da raiz.
+- [ ] Manter `public/marca/` (D-35) e ligar o favicon (`favicon-32.png`, `ib-180.png`) no layout da raiz.
 - [ ] **Rota de contacto da landing** (`app/api/contacto/route.ts`, D-46): aceita duas fases (D-50): a fase 1 (nome completo, telemóvel português e e-mail obrigatórios) devolve uma `ref`; a fase 2 (distrito, cidade, barbearia, barbeiros, dificuldade, `calculadora`, todos opcionais, máx. 300 caracteres no resumo da calculadora) usa essa `ref`. Valida com Zod, com tamanhos máximos, descarta pedidos com o campo `website` preenchido (honeypot), envia o aviso para `EMAIL_COMERCIAL` pelo Resend (remetente `EMAIL_REMETENTE`, `reply-to` o e-mail do visitante, se houver) e responde `ok`; se o Resend falhar, responde erro (a landing mostra «Não conseguimos enviar» e o botão de WhatsApp). Sem base de dados nesta fase: não grava, e o limite por IP fica para a camada 1A da Fase 3B (`consumir_limite`). Testes Vitest com o Resend simulado. Cerca de duas horas, dentro dos 2 dias.
 - [ ] Contadores de medição no servidor, sem cookies nem IP guardado (visitas, abertura da calculadora, cliques em «Continuar»; D-50).
 - [ ] Resposta automática por e-mail ao visitante, com a referência do pedido (remetente apoio@).

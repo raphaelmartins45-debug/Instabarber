@@ -494,3 +494,6 @@ Título, descrição e og:description passam a levar as palavras que as pessoas 
 
 ## D-106 · 22/10/2026 · Ícone «IB» só para favicon e ícones simples
 O «IB» com tesoura e poste (branco e dourado sobre preto) **não é a logo oficial**: usa-se apenas no favicon e nos ícones simples (`favicon-512`, `favicon-192`, `apple-touch-icon`). Nunca em cabeçalhos, e-mails, documentos nem na landing como logo; a logo oficial continua a ser a horizontal (`logo-horizontal-*`). No separador do navegador (`favicon-32.png` e `favicon.ico`, 16 a 48 px) vai uma versão simplificada, sem poste nem moldura (IB maior e só a tesoura), porque o detalhe se perde abaixo de 32 px. O poste vermelho e azul foi posto de parte por não seguir as cores da marca.
+
+## D-107 · 22/10/2026 · Ícone do atalho no iPhone
+O iOS guarda o `apple-touch-icon.png` em cache pelo nome e o atalho continuava com o ícone antigo. Os ícones grandes passam a `ib-180.png`, `ib-192.png` e `ib-512.png` (nomes novos para furar a cache; mesmo desenho do D-106, só ícones simples). Acrescentados o `manifest.webmanifest` e o nome curto «InstaBarber» (`apple-mobile-web-app-title`), para o atalho não levar o título inteiro da página. `favicon-192/512.png` mantêm-se; `apple-touch-icon.png` foi retirado por já não ser usado.
