@@ -13,7 +13,13 @@ export function Campo({
   const descricao = erro ? `${id}-erro` : ajuda ? `${id}-ajuda` : undefined;
   return (
     <div className="grid gap-1.5">
-      <Label htmlFor={id}>{rotulo}</Label>
+      {/* Etiqueta em maiúsculas pequenas por cima do campo (I.2). */}
+      <Label
+        htmlFor={id}
+        className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase"
+      >
+        {rotulo}
+      </Label>
       <Input
         id={id}
         aria-invalid={!!erro}

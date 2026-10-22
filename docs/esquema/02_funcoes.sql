@@ -103,6 +103,17 @@ begin
   values (p_inquilino, auth.uid(), p_accao, p_entidade, p_entidade_id, p_detalhes);
 end $$;
 
+-- Ações do InstaBarber Admin que ficam em auditoria (aprovação, vista de apoio, importação,
+-- exportação, eliminação). Só o super_admin com dois fatores; o autor é sempre auth.uid().
+create or replace function public.registar_auditoria_admin(
+  p_inquilino uuid, p_accao text, p_entidade text, p_entidade_id uuid, p_detalhes jsonb)
+returns void language plpgsql security definer set search_path = '' as $$
+begin
+  if not public.e_super_admin() then raise exception 'sem_permissao' using errcode = '42501'; end if;
+  if p_accao !~ '^[a-z_]{3,60}$' then raise exception 'accao_invalida' using errcode = 'P0001'; end if;
+  perform public.registar_auditoria(p_inquilino, p_accao, p_entidade, p_entidade_id, p_detalhes);
+end $$;
+
 -- -----------------------------------------------------------------------------
 -- 3 · Gatilhos de proteção
 -- -----------------------------------------------------------------------------
@@ -1479,6 +1490,7 @@ grant execute on function public.cancelar_minha_marcacao(uuid, text),
   public.concluir_marcacao(uuid, text, numeric), public.marcar_falta(uuid),
   public.levantar_pedido(uuid), public.procurar_cliente_por_telefone(uuid, text),
   public.anonimizar_cliente(uuid), public.aplicar_pacote(uuid), public.eliminar_inquilino(uuid, text),
+  public.registar_auditoria_admin(uuid, text, text, uuid, jsonb),
   public.validar_vaga(uuid, uuid, uuid, timestamptz, boolean, uuid)
   to authenticated;
 

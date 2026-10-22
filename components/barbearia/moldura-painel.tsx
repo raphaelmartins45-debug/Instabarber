@@ -4,7 +4,7 @@ import { CabecalhoPainel } from "@/components/nucleo/cabecalho-painel";
 import type { ContextoEquipa } from "@/lib/equipa/contexto";
 import type { ItemMontado } from "@/lib/funcionalidades/menus";
 import { textos } from "@/lib/i18n/pt-PT";
-import { MenuPainel } from "./menu-painel";
+import { MenuPainel } from "@/components/nucleo/menu-painel";
 
 /** Cabeçalho, menu e conteúdo dos painéis da barbearia (camadas 2 e 3). */
 export function MolduraPainel({
@@ -36,7 +36,7 @@ export function MolduraPainel({
         extra={trocar}
       />
       <MenuPainel itens={menu} atual={atual} />
-      <main className="mx-auto grid max-w-6xl gap-6 px-4 py-6">{children}</main>
+      <main className="mx-auto grid max-w-6xl gap-6 px-4 pt-6 pb-24 md:pb-6">{children}</main>
     </>
   );
 }

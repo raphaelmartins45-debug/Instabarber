@@ -1,6 +1,9 @@
 // Textos visíveis em português de Portugal (base). Nenhum texto fica escrito nos componentes.
 
 import { acesso } from "./pt-PT/acesso";
+import { admin } from "./pt-PT/admin";
+import { comum } from "./pt-PT/comum";
+import { legal } from "./pt-PT/legal";
 import { paineis } from "./pt-PT/paineis";
 
 export const textos = {
@@ -48,6 +51,9 @@ export const textos = {
       despedida: "Com os melhores cumprimentos,",
     },
   },
+  comum,
+  legal,
   acesso,
   paineis,
+  admin,
 } as const;

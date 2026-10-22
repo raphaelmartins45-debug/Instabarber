@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { MenuAdmin } from "@/components/admin/menu-admin";
 import { CabecalhoPainel } from "@/components/nucleo/cabecalho-painel";
 import { exigirSuperAdmin } from "@/lib/admin/contexto";
 import { vertical } from "@/lib/vertical/barbearia";
@@ -10,7 +11,8 @@ export default async function LayoutAdmin({ children }: { children: ReactNode })
   return (
     <>
       <CabecalhoPainel camada={vertical.camadas.admin} vista={estado.email} />
-      <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
+      <MenuAdmin />
+      <main className="mx-auto grid max-w-6xl gap-6 px-4 pt-6 pb-24 md:pb-6">{children}</main>
     </>
   );
 }

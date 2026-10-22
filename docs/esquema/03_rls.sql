@@ -122,6 +122,9 @@ create policy clientes_alterar on clientes for update
   using (inquilino_id in (select public.inquilinos_onde(array['proprietario']))
          or id in (select public.clientes_do_profissional()))
   with check (inquilino_id in (select public.inquilinos_onde(array['proprietario','profissional'])));
+-- Importação de clientes pelo InstaBarber Admin (E.1): o super_admin com dois fatores cria
+-- clientes de qualquer barbearia. Não lhes altera nem apaga nada.
+create policy clientes_admin_criar on clientes for insert with check ((select public.e_super_admin()));
 -- Sem DELETE: o direito de eliminação é anonimizar_cliente().
 
 create policy fichas_ler on fichas_tecnicas for select using (
@@ -399,6 +402,12 @@ create policy storage_publico_escrever on storage.objects for all
          (storage.foldername(name))[1] in (select x::text from public.inquilinos_onde(array['proprietario']) x)
          or ((storage.foldername(name))[2] = 'portfolio'
              and (storage.foldername(name))[3] in (select x::text from public.meus_profissionais() x))));
+
+-- O super_admin carrega o logótipo, a capa e a galeria pela ficha da barbearia e na
+-- aprovação da adesão (E.1, D.8.1).
+create policy storage_publico_admin on storage.objects for all
+  using (bucket_id = 'publico' and (select public.e_super_admin()))
+  with check (bucket_id = 'publico' and (select public.e_super_admin()));
 
 create policy storage_fichas on storage.objects for all
   using (bucket_id = 'fichas' and (

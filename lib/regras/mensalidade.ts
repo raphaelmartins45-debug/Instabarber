@@ -1,0 +1,64 @@
+// Mensalidade da plataforma (D.5, D.7). Uma só fórmula para o formulário de adesão, o
+// painel de administração e o registo de recebimentos. Trabalha em cêntimos.
+// O Pro inclui 3 profissionais (D-72, que prevalece sobre o exemplo de código da D.7).
+
+export type Plano = "basic" | "pro";
+export type Periodicidade = "mensal" | "anual";
+export type RegimeIva = "normal" | "isento"; // PRESTADORA_REGIME_IVA (D-45, D-85)
+
+const BASE_CENT: Record<Plano, number> = { basic: 1999, pro: 3900 };
+export const INCLUIDOS: Record<Plano, number> = { basic: 1, pro: 3 };
+export const EXTRA_CENT: Record<Plano, number> = { basic: 0, pro: 1000 };
+export const DOMINIO_PROPRIO_CENT = 500;
+export const TAXA_IVA = 0.23;
+export const MESES_NO_ANUAL = 10;
+
+export function calcularMensalidadeCent(
+  plano: Plano,
+  nProfissionais: number,
+  dominioProprio = false,
+): number {
+  if (!Number.isInteger(nProfissionais)) throw new Error("profissionais_invalido");
+  if (plano === "basic" && nProfissionais !== 1) throw new Error("basic_um_profissional");
+  if (plano === "pro" && nProfissionais < INCLUIDOS.pro) throw new Error("pro_minimo_tres");
+  const extras = Math.max(0, nProfissionais - INCLUIDOS[plano]);
+  return (
+    BASE_CENT[plano] + extras * EXTRA_CENT[plano] + (dominioProprio ? DOMINIO_PROPRIO_CENT : 0)
+  );
+}
+
+export type Preco = {
+  /** Valor sem IVA (no regime isento é igual ao preço final). */
+  semIva: number;
+  /** Preço final que a barbearia paga, igual em qualquer regime. */
+  comIva: number;
+  ivaTaxa: 0 | 23;
+};
+
+export function calcularPrecoCent(
+  plano: Plano,
+  nProfissionais: number,
+  periodicidade: Periodicidade,
+  dominioProprio = false,
+  regime: RegimeIva = "normal",
+): Preco {
+  const mensal = calcularMensalidadeCent(plano, nProfissionais, dominioProprio);
+  const valor = periodicidade === "anual" ? mensal * MESES_NO_ANUAL : mensal;
+  const final = Math.round(valor * (1 + TAXA_IVA));
+  return regime === "isento"
+    ? { semIva: final, comIva: final, ivaTaxa: 0 }
+    : { semIva: valor, comIva: final, ivaTaxa: 23 };
+}
+
+/** Os profissionais além dos incluídos, para a conta em linguagem corrente (D.6). */
+export function profissionaisExtra(
+  plano: Plano,
+  nProfissionais: number,
+): { extras: number; valorCent: number } {
+  const extras = Math.max(0, nProfissionais - INCLUIDOS[plano]);
+  return { extras, valorCent: extras * EXTRA_CENT[plano] };
+}
+
+export function lerRegimeIva(valor: string | undefined): RegimeIva {
+  return valor === "isento" ? "isento" : "normal";
+}
