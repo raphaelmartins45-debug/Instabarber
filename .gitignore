@@ -10,3 +10,5 @@ playwright-report/
 test-results/
 # Cópias de segurança (L.7): têm dados pessoais, nunca vão para o Git.
 copias/
+# Ficheiros de trabalho da taste-skill (capturas, folhas de direção)
+.taste-skill/
