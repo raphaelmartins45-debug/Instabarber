@@ -599,6 +599,16 @@ footer { border-top-color: var(--line); }
 .box.sim { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); padding: 0; gap: 0; overflow: hidden; }
 .sim-hi p, .grp.legend p, .sim-hi .sim-sub { color: var(--mute); }
 @media (max-width: 880px) { .box.sim { grid-template-columns: minmax(0, 1fr); } }
+
+/* fotos de produto na loja: moldura em vidro com fundo claro */
+#lojabox .prow { grid-template-columns: 96px minmax(0, 1fr) auto auto; gap: 8px 16px; padding: 12px 14px 12px 12px; border-radius: 18px; background: linear-gradient(180deg, var(--ink-3), var(--ink-2)); border-color: var(--line-2); transition: border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease); }
+#lojabox .prow:hover { border-color: rgba(var(--ac-rgb), .45); transform: translateY(-2px); box-shadow: 0 18px 36px -22px rgba(var(--ac-rgb), .5); }
+.prow .foto { display: block; width: 96px; height: 96px; border-radius: 14px; overflow: hidden; position: relative; background: linear-gradient(160deg, #FFFFFF, #ECECEF); box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 10px 22px -10px rgba(0,0,0,.7), inset 0 0 0 1px rgba(9,9,11,.06); isolation: isolate; }
+.prow .foto::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(135deg, rgba(255,255,255,.55), transparent 38%); mix-blend-mode: soft-light; pointer-events: none; }
+.prow .foto img { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .5s var(--ease); }
+#lojabox .prow:hover .foto img { transform: scale(1.07); }
+.prow.out .foto img { filter: grayscale(1); opacity: .45; }
+@media (max-width: 880px) { #lojabox .prow { grid-template-columns: 80px minmax(0, 1fr) auto; } .prow .foto { width: 80px; height: 80px; } #lojabox .prow > :last-child { grid-column: 2 / -1; } }
 /* entrada suave */
 .rv { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
 .rv.in { opacity: 1; transform: none; }
@@ -1372,9 +1382,9 @@ footer { border-top-color: var(--line); }
 
   /* mini loja */
   var PROD = [
-    { n: "Pomada fixadora", p: 12, c: 6.5, s: 8, min: 3 },
-    { n: "Óleo de barba", p: 15, c: 7, s: 3, min: 3 },
-    { n: "Champô anticaspa", p: 9.5, c: 4, s: 0, min: 2 }
+    { n: "Pomada fixadora", f: "pomada", p: 12, c: 6.5, s: 8, min: 3 },
+    { n: "Óleo de barba", f: "oleo", p: 15, c: 7, s: 3, min: 3 },
+    { n: "Champô anticaspa", f: "champo", p: 9.5, c: 4, s: 0, min: 2 }
   ];
   var cart = {}, pedidos = [], ultimaMargem = 0, nped = 0;
   function sem(p) { return p / 1.23; }
@@ -1383,7 +1393,7 @@ footer { border-top-color: var(--line); }
     var h = "";
     PROD.forEach(function (x, i) {
       var e = estado(x), q = cart[i] || 0;
-      h += '<div class="prow"><span><b>' + x.n + '</b><small style="color:' + e[1] + '">' + e[0] + ' · ' + x.s + ' un.</small></span><em>' + eur2(x.p) + '</em>' +
+      h += '<div class="prow' + (x.s === 0 ? " out" : "") + '"><span class="foto" aria-hidden="true"><img src="/marca/loja/' + x.f + '.jpg" alt="" width="96" height="96" loading="lazy" decoding="async"></span><span><b>' + x.n + '</b><small style="color:' + e[1] + '">' + e[0] + ' · ' + x.s + ' un.</small></span><em>' + eur2(x.p) + '</em>' +
         (x.s === 0 ? '<span></span>' : '<button class="mini" type="button" data-add="' + i + '"' + (q >= x.s ? " disabled" : "") + '>Adicionar' + (q ? " (" + q + ")" : "") + '</button>') + '</div>';
     });
     $("ls-prod").innerHTML = h;

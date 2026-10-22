@@ -506,3 +506,6 @@ A landing passa a cinzentos profundos (#09090B, #121214, bordas a branco 8 %) co
 
 ## D-110 · 22/10/2026 · Novo favicon: «I» como poste de barbeiro
 O favicon e os ícones simples passam a um «IB» em que o «I» é um poste de barbeiro (corpo branco com listras vermelhas e azuis, tampas em barra) e o «B» usa o dourado dos botões da landing (#F5A623), sobre #09090B. As letras vêm do logótipo original (recortadas), não de uma fonte. Continua a **não ser a logo oficial** (D-106). O vermelho e o azul das listras são uma exceção pontual à paleta, pedida pelo dono. Ficheiros novos para furar a cache do iOS: `ib2-180/192/512.png`, `favicon2-32.png`, e `favicon.ico`, `apple-touch-icon*.png` na raiz atualizados.
+
+## D-111 · 22/10/2026 · Fotos de produto na loja de demonstração
+A loja de demonstração da landing mostra uma foto por produto (`public/marca/loja/`, JPEG 360 px), numa moldura clara com cantos redondos, sombra suave e brilho, dentro do cartão em vidro do redesenho (D-109). Produto esgotado fica a preto e branco. Atenção: as três fotos (pomada Kemon, óleo Proraso, champô Dr.EA) são imagens de terceiros com marcas visíveis, fornecidas pelo dono como exemplo. Antes de manter na página pública, confirmar o direito de uso ou trocar por fotos próprias ou genéricas; basta substituir os três ficheiros, sem mexer no código.
