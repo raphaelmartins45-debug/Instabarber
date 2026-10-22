@@ -243,9 +243,7 @@ details .ans a { color: var(--gold); }
 #lab { transition: background .25s ease, border-color .25s ease; }
 #lab[data-tema="claro"] { --ink-2: #FFFFFF; --ink-3: #F4F1EB; --line: #D9D3C8; --cream: #1B1814; --mute: #6A645B; --green: #12805A; --red: #C13F30; color: var(--cream); color-scheme: light; }
 #lab[data-tema="claro"] .slotx time, #lab[data-tema="claro"] .stat b, #lab[data-tema="claro"] .mini { color: #9A5B00; }
-#lab[data-tema="claro"] .stat.loss b { color: var(--red); }
-#lab[data-tema="claro"] .stat.gain b { color: var(--green); }
-#lab[data-tema="claro"] .mini { border-color: #C27A00; }
+#lab[data-tema="claro"] #lab[data-tema="claro"] #lab[data-tema="claro"] .mini { border-color: #C27A00; }
 #lab[data-tema="claro"] .mini:hover { background: var(--gold); color: var(--ink); }
 #lab[data-tema="claro"] .mini.ghost { border-color: var(--line); color: var(--mute); }
 #lab[data-tema="claro"] .phone { --ink-2: #1B1814; --ink-3: #25211B; --line: #34302A; --cream: #F7F5F1; --mute: #A9A298; --green: #3DBE8B; color: var(--cream); color-scheme: dark; }
@@ -281,22 +279,20 @@ details .ans a { color: var(--gold); }
 .selo { aspect-ratio: 1; border-radius: 50%; border: 2px dashed var(--line); display: grid; place-items: center; font-weight: 800; color: var(--mute); }
 .selo.on { border: 2px solid var(--gold); background: var(--gold); color: var(--ink); }
 .lost-top .prize, .prize { color: var(--green); font-weight: 800; }
-.calc { display: block; padding: 0; overflow: hidden; max-width: 880px; --ink-2: #4A463F; --ink-3: #3B3730; --line: #5F5A51; --mute: #D2CCC0; color: var(--cream); box-shadow: 0 18px 50px rgba(0, 0, 0, .45); }
-.app-bar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #58534A; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 700; color: var(--mute); }
-.app-bar .dots { display: flex; gap: 6px; }
-.app-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: #8E887C; }
-.calc-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; padding: clamp(16px, 3vw, 24px); }
+.calc { display: block; }
+.rad { max-width: 880px; display: grid; gap: 14px; }
+.rad-list { display: grid; gap: 10px; }
+.rad-row { display: flex; justify-content: space-between; align-items: center; gap: 12px 16px; flex-wrap: wrap; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--ink-3); }
+.rad-row > div { min-width: 0; display: grid; gap: 4px; }
+.rad-row .val { color: var(--red); font-weight: 800; font-variant-numeric: tabular-nums; margin-left: 8px; }
+.rad-row small { color: var(--mute); }
+.rad-row .mini { display: inline-flex; align-items: center; text-decoration: none; }
+.rad-foot { margin: 0; color: var(--mute); font-size: 14px; }
 .calc .fields { display: grid; gap: 12px; }
 .calc label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); display: grid; gap: 6px; }
 .calc input { font: inherit; font-size: 17px; font-weight: 700; color: var(--cream); background: var(--ink-3); border: 1px solid var(--line); border-radius: 12px; min-height: 46px; padding: 0 14px; width: 100%; }
 .calc input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,166,35,.25); }
-.calc .res { display: grid; gap: 10px; }
 .stat .k { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
-.stat.loss b { color: var(--red); }
-.stat.gain b { color: var(--green); }
-.calc .big b { font-size: clamp(30px, 5vw, 40px); }
-.calc .fine2 { color: var(--mute); font-size: 13px; }
-.calc .btn { justify-self: start; }
 
 .eyebrow-pt { display: flex; align-items: center; gap: 10px; }
 .flag { flex: none; border-radius: 3px; }
@@ -391,7 +387,7 @@ footer .links a:hover { color: var(--gold); }
   .all { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .who { grid-template-columns: minmax(0, 1fr); }
   .pt { grid-template-columns: minmax(0, 1fr); }
-  .row2, .calc-body { grid-template-columns: minmax(0, 1fr); }
+  .row2 { grid-template-columns: minmax(0, 1fr); }
   .slotx { grid-template-columns: 52px minmax(0, 1fr); }
   .prow { grid-template-columns: minmax(0, 1fr) auto; }
   .prow > :last-child { grid-column: 1 / -1; justify-self: start; }
@@ -436,7 +432,7 @@ footer .links a:hover { color: var(--gold); }
           <a class="btn btn-line" href="#planos">Compara os planos</a>
           <a class="btn btn-line" href="#contacto">Falar connosco</a>
         </div>
-        <p class="calc-link"><a href="#calculadora">Calcula quanto estás a perder por mês <span aria-hidden="true">→</span></a></p>
+        <p class="calc-link"><a href="#calculadora">Vê como recuperas clientes perdidos <span aria-hidden="true">→</span></a></p>
         <p class="note">Sem comissões sobre clientes. Sem custo por mensagem. Desde 0,82 € por dia, IVA incluído.</p>
       </div>
 
@@ -637,23 +633,29 @@ footer .links a:hover { color: var(--gold); }
     <div class="head">
       <p class="eyebrow">Deixa de perder clientes para a concorrência</p>
       <h2>Recupera clientes perdidos</h2>
-      <p class="lead">O radar mostra quem deixou de aparecer e quanto esse cliente vale em euros. No plano Pro, o sistema prepara a mensagem de WhatsApp com o nome do cliente e o tempo que ele não vem: tu só tens de carregar em enviar. Põe os teus números aqui em baixo e vê quanto podes faturar a mais recuperando clientes. A conta é feita no teu telemóvel e não guardamos nada.</p>
+      <p class="lead">O radar mostra quem deixou de aparecer e quanto esse cliente vale em euros. No plano Pro, o sistema prepara a mensagem de WhatsApp com o nome do cliente e o tempo que ele não vem: tu só tens de carregar em enviar. Aqui em baixo vês como fica: os clientes em risco, ainda a tempo de segurar, e os perdidos, com o botão para lhes enviar mensagem.</p>
     </div>
-    <div class="box calc">
-      <div class="app-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>InstaBarber · Radar de clientes</span></div>
-      <div class="calc-body">
-      <div class="fields">
-        <label for="c-n">Quantos clientes deixaram de aparecer?<input id="c-n" type="number" inputmode="numeric" min="0" max="5000" value="40"></label>
-        <label for="c-v">Quanto deixa cada um por visita (€)<input id="c-v" type="number" inputmode="decimal" min="0" max="500" step="0.5" value="15"></label>
-        <label for="c-f">Quantas vezes por ano vinha, em média?<input id="c-f" type="number" inputmode="numeric" min="1" max="52" value="8"></label>
+    <div class="box rad">
+      <div class="box-head"><b>Radar de clientes</b></div>
+      <div class="tabs" role="tablist" aria-label="Estado dos clientes">
+        <button role="tab" id="rt-risco" aria-selected="true" aria-controls="rp-risco" type="button">Em risco</button>
+        <button role="tab" id="rt-perd" aria-selected="false" aria-controls="rp-perd" type="button" tabindex="-1">Perdidos</button>
       </div>
-      <div class="res" aria-live="polite">
-        <div class="stat big loss"><span class="k">Estás a perder</span><b id="c-mes">0 €</b><span>todos os meses, ou <span id="c-ano">0 €</span> por ano</span></div>
-        <div class="stat gain"><span class="k">Poderias receber a mais</span><b id="c-rec">0 €</b><span>por mês, se só 4 em cada 10 voltassem</span></div>
-        <p id="c-pago" class="prize"></p>
-        <a class="btn btn-gold" id="c-cta" href="#contacto">Quero recuperar este dinheiro</a>
-        <p class="fine2">Estimativa. O resultado real depende de cada barbearia e de quantos clientes respondem à mensagem.</p>
+      <div role="tabpanel" id="rp-risco" aria-labelledby="rt-risco">
+        <div class="rad-list">
+        <div class="rad-row"><div><span><b>Tiago M.</b><span class="val">60 €</span></span><small>Não vem há 28 dias, costumava vir de 3 em 3 semanas.</small></div><a class="mini" href="#demo" data-tab="radar">Enviar mensagem</a></div>
+        <div class="rad-row"><div><span><b>Nuno P.</b><span class="val">48 €</span></span><small>Não vem há 38 dias, costumava vir todos os meses.</small></div><a class="mini" href="#demo" data-tab="radar">Enviar mensagem</a></div>
+        <div class="rad-row"><div><span><b>André S.</b><span class="val">90 €</span></span><small>Não vem há 35 dias, costumava vir de 2 em 2 semanas.</small></div><a class="mini" href="#demo" data-tab="radar">Enviar mensagem</a></div>
+        </div>
+        <p class="rad-foot">198 € em clientes que ainda vais a tempo de segurar.</p>
       </div>
+      <div role="tabpanel" id="rp-perd" aria-labelledby="rt-perd" hidden>
+        <div class="rad-list">
+        <div class="rad-row"><div><span><b>Rui C.</b><span class="val">135 €</span></span><small>Não vem há 52 dias, costumava vir de 3 em 3 semanas.</small></div><a class="mini" href="#demo" data-tab="radar">Enviar mensagem</a></div>
+        <div class="rad-row"><div><span><b>Bruno L.</b><span class="val">96 €</span></span><small>Não vem há 71 dias, costumava vir todos os meses.</small></div><a class="mini" href="#demo" data-tab="radar">Enviar mensagem</a></div>
+        <div class="rad-row"><div><span><b>Hugo A.</b><span class="val">60 €</span></span><small>Não vem há 46 dias, costumava vir de 2 em 2 semanas.</small></div><a class="mini" href="#demo" data-tab="radar">Enviar mensagem</a></div>
+        </div>
+        <p class="rad-foot">291 € parados em clientes que já não aparecem.</p>
       </div>
     </div>
   </section>
@@ -915,7 +917,7 @@ footer .links a:hover { color: var(--gold); }
   var MODO = ENDPOINT ? "servidor" : (/(^|\.)instabarber\.pt$/.test(location.hostname) ? "manual" : "demo");
 
   function valores() {
-    return { ref: REF, nome: $("f-nome").value.trim(), telemovel: $("f-tel").value.trim(), email: $("f-mail").value.trim(), distrito: $("f-dist").value, cidade: $("f-cid").value.trim(), barbearia: $("f-barb").value.trim(), barbeiros: $("f-n").value, dificuldade: $("f-dif").value, calculadora: window.IB_CALC || "", website: "" };
+    return { ref: REF, nome: $("f-nome").value.trim(), telemovel: $("f-tel").value.trim(), email: $("f-mail").value.trim(), distrito: $("f-dist").value, cidade: $("f-cid").value.trim(), barbearia: $("f-barb").value.trim(), barbeiros: $("f-n").value, dificuldade: $("f-dif").value, website: "" };
   }
   var REF = "", PASSO = 1;
   function msgWa(f, completa) {
@@ -928,7 +930,6 @@ footer .links a:hover { color: var(--gold); }
       if (f.dificuldade) l.push("Maior dificuldade: " + f.dificuldade);
       if (f.telemovel) l.push("Telemóvel: " + f.telemovel);
       if (f.email) l.push("E-mail: " + f.email);
-      if (f.calculadora) l.push(f.calculadora);
     }
     return l.join("\n");
   }
@@ -1003,7 +1004,6 @@ footer .links a:hover { color: var(--gold); }
   var $ = function (id) { return document.getElementById(id); };
   var eur = function (n) { return new Intl.NumberFormat("pt-PT", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(n)); };
   var eur2 = function (n) { return new Intl.NumberFormat("pt-PT", { style: "currency", currency: "EUR" }).format(n); };
-  function num(id, min, max) { var v = parseFloat(String($(id).value).replace(",", ".")); if (!isFinite(v)) { v = 0; } return Math.min(max, Math.max(min, v)); }
 
   /* separadores */
   var tabs = ["agenda", "radar", "selos", "lemb"];
@@ -1190,17 +1190,16 @@ footer .links a:hover { color: var(--gold); }
   $("s-btn").addEventListener("click", function () { selos = selos >= 10 ? 0 : selos + 1; pintarSelos(); });
   pintarSelos();
 
-  /* calculadora */
-  function calcular() {
-    var n = num("c-n", 0, 5000), v = num("c-v", 0, 500), f = num("c-f", 1, 52);
-    var ano = n * v * f, mes = ano / 12, rec = mes * 0.4;
-    $("c-mes").textContent = eur(mes); $("c-ano").textContent = eur(ano); $("c-rec").textContent = eur(rec);
-    var x = rec / 24.59;
-    $("c-pago").textContent = x >= 1 ? "Só isto paga o InstaBarber Basic (24,59 € por mês, IVA incluído) cerca de " + (Math.round(x * 10) / 10).toString().replace(".", ",") + " vezes." : "";
-    window.IB_CALC = mes > 0 ? "Calculadora: estou a perder cerca de " + eur(mes) + " por mês (" + n + " clientes, " + eur2(v) + " por visita, " + f + " visitas por ano)." : "";
-  }
-  ["c-n", "c-v", "c-f"].forEach(function (id) { $(id).addEventListener("input", calcular); });
-  calcular();
+  /* radar de clientes (cartão fixo) */
+  ["risco", "perd"].forEach(function (n) {
+    $("rt-" + n).addEventListener("click", function () {
+      ["risco", "perd"].forEach(function (m) {
+        $("rt-" + m).setAttribute("aria-selected", m === n ? "true" : "false");
+        $("rt-" + m).tabIndex = m === n ? 0 : -1;
+        $("rp-" + m).hidden = m !== n;
+      });
+    });
+  });
 })();
 </script>
 

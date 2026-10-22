@@ -420,3 +420,7 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 - Removida a caixa interativa do Clube (e o seu JavaScript). Fica o cartão fixo: 10 clientes × 35 € = 350 € por mês, com até 4 cortes incluídos.
 - O cartão diz que é um exemplo ilustrativo e que o plano é totalmente personalizável (nome, preço, cortes, serviços). O exemplo do Plano Cabelo passou de 25 € para 35 € em todos os sítios da landing.
 - O Cartão oferta interativo mantém-se por baixo, numa só coluna.
+
+## D-91 · 22/10/2026 · Calculadora substituída pelo card do Radar
+- A calculadora (campos e contas) foi retirada. No seu lugar, um card fixo «Radar de clientes» com as abas «Em risco» e «Perdidos», cada cliente com o valor e o botão «Enviar mensagem» (abre o radar da demonstração). Cores iguais às dos outros cards.
+- Removidos o JavaScript e o CSS da calculadora e o campo «calculadora» do formulário de contacto. A âncora #calculadora mantém-se; a ligação do topo passou a «Vê como recuperas clientes perdidos».
