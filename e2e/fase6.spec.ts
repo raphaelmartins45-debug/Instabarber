@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { fromZonedTime } from "date-fns-tz";
 import { BARBEARIA_A, BARBEARIA_B, contas, servico, temSupabase } from "./auxiliares/dados";
 import { entrarEquipa } from "./auxiliares/entrar";
 import { codigoTotp } from "./auxiliares/totp";
@@ -44,8 +45,8 @@ test("fila de espera: sem vagas o cliente entra; abre a vaga e a barbearia avisa
     .insert({
       inquilino_id: BARBEARIA_A.id,
       tipo: "folga",
-      inicio: `${dia}T00:00:00+00:00`,
-      fim: `${lisboa(desloca + 1)}T00:00:00+00:00`,
+      inicio: fromZonedTime(`${dia}T00:00:00`, "Europe/Lisbon").toISOString(),
+      fim: fromZonedTime(`${lisboa(desloca + 1)}T00:00:00`, "Europe/Lisbon").toISOString(),
     })
     .select("id")
     .single();

@@ -28,7 +28,7 @@ export function MolduraPainel({
     contexto.barbearias.length > 1 ? (
       <Link
         href="/app/escolher"
-        className="hidden text-xs text-ligacao underline underline-offset-4 sm:inline"
+        className="shrink-0 text-xs text-ligacao underline underline-offset-4"
       >
         {textos.paineis.trocar}
       </Link>

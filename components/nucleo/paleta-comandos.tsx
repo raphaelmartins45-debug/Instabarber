@@ -100,7 +100,7 @@ export function PaletaComandos({ itens }: { itens: ItemMontado[] }) {
       <button
         type="button"
         onClick={() => setAberta(true)}
-        aria-label={t.abrir}
+        aria-label={t.titulo}
         className="flex h-10 items-center gap-2 rounded-lg border border-border bg-foreground/[.03] px-3 text-sm text-muted-foreground transition-colors duration-200 ease-sistema hover:text-foreground"
       >
         <Search aria-hidden className="size-4" />
