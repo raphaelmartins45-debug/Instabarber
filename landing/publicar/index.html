@@ -221,6 +221,10 @@ details .ans a { color: var(--gold); }
 .sim-eq span { color: var(--cream); font-weight: 700; }
 .sim-sub { margin: 0; color: var(--mute); font-size: 15px; }
 .sim-note { margin: 4px 0 0; padding-top: 10px; border-top: 1px solid var(--line); color: var(--mute); font-size: 13px; }
+.sim-main h3 { font-size: clamp(20px, 2.6vw, 24px); }
+.sim-list { margin: 4px 0 0; padding-left: 20px; display: grid; gap: 6px; color: var(--cream); font-size: 15px; }
+.sim-art { padding: clamp(20px, 3vw, 32px); display: grid; align-items: center; background: var(--ink-3); }
+.sim-art .giftcard { max-width: 360px; width: 100%; justify-self: center; }
 .sim-hi { background: var(--gold); color: var(--ink); padding: clamp(20px, 3vw, 32px); display: grid; gap: 8px; align-content: center; }
 .sim-hi .k { color: var(--ink); opacity: .75; }
 .sim-hi h3 { font-size: clamp(20px, 2.6vw, 24px); }
@@ -271,7 +275,6 @@ details .ans a { color: var(--gold); }
 .selos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; max-width: 360px; }
 .selo { aspect-ratio: 1; border-radius: 50%; border: 2px dashed var(--line); display: grid; place-items: center; font-weight: 800; color: var(--mute); }
 .selo.on { border: 2px solid var(--gold); background: var(--gold); color: var(--ink); }
-.calc { display: block; }
 .lost { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--ink-3); }
 .lost-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
 .lost-top strong { color: var(--red); font-variant-numeric: tabular-nums; }
@@ -295,10 +298,6 @@ details .ans a { color: var(--gold); }
 .rad-msg { flex-basis: 100%; background: var(--ink); border-left: 3px solid var(--green); border-radius: 8px; padding: 10px 12px; font-size: 14px; color: var(--cream); }
 .rad-msg[hidden] { display: none; }
 .rad-foot { margin: 0; color: var(--mute); font-size: 14px; }
-.calc .fields { display: grid; gap: 12px; }
-.calc label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); display: grid; gap: 6px; }
-.calc input { font: inherit; font-size: 17px; font-weight: 700; color: var(--cream); background: var(--ink-3); border: 1px solid var(--line); border-radius: 12px; min-height: 46px; padding: 0 14px; width: 100%; }
-.calc input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,166,35,.25); }
 .stat .k { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
 
 .eyebrow-pt { display: flex; align-items: center; gap: 10px; }
@@ -335,9 +334,8 @@ span.tag { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 .giftcard { display: grid; gap: 6px; border-radius: 18px; padding: 18px 20px; background: linear-gradient(135deg, #2A2010, #14110B); border: 1.5px solid var(--gold); }
 .giftcard .gc-brand { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
 .giftcard strong { font-size: 34px; line-height: 1; color: var(--cream); font-variant-numeric: tabular-nums; }
-.giftcard #gc-code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 20px; letter-spacing: .14em; color: var(--gold); overflow-wrap: anywhere; }
+.giftcard .gc-code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 20px; letter-spacing: .14em; color: var(--gold); overflow-wrap: anywhere; }
 .giftcard small { color: var(--mute); font-size: 12px; }
-#receitabox { align-items: stretch; }
 .pub { background: var(--ink-2); border: 1px solid var(--line); border-radius: 28px; padding: 14px; display: grid; gap: 10px; width: 100%; max-width: 380px; justify-self: center; box-shadow: 0 30px 60px -30px rgba(0,0,0,.8); }
 .pub-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
 .pub-lang { color: var(--gold); }
@@ -618,25 +616,24 @@ footer .links a:hover { color: var(--gold); }
         <p>Os subscritores marcam nos dias e nas horas de menos movimento. É uma cadeira que ficava vazia a render, com o dinheiro do mês já garantido.</p>
       </div>
     </div>
-    <div class="row2" id="receitabox" style="grid-template-columns: minmax(0, 1fr); max-width: 560px">
-      <div class="box" id="cartao">
-        <div class="box-head"><b>Cartão oferta</b></div>
-        <p class="hintx">Vende ao balcão, o cliente leva para oferecer. O sistema gera o código e o cartão com a tua marca.</p>
-        <div class="calc"><div class="fields" style="grid-column: 1 / -1">
-          <label for="gc-v">Valor do cartão (€)<input id="gc-v" type="number" inputmode="decimal" min="5" max="500" step="5" value="30"></label>
-        </div></div>
-        <div><button class="mini" id="gc-vender" type="button">Vender cartão</button></div>
-        <div class="giftcard" id="gc-card" hidden>
+    <div class="box sim">
+      <div class="sim-main">
+        <span class="k">Cartão oferta · plano Pro</span>
+        <h3>Uma prenda que traz clientes novos</h3>
+        <p class="sim-sub">Vendes o cartão ao balcão, pelo valor que o cliente escolher. O sistema gera o código e o cartão com a marca da barbearia. Quem o recebe usa o saldo nos serviços, aos poucos, até acabar. Tu ganhas a venda e ganhas alguém que talvez nunca tivesse entrado na tua porta.</p>
+        <ul class="sim-list">
+          <li>O valor e o código ficam registados no sistema.</li>
+          <li>O saldo desce a cada serviço pago com o cartão.</li>
+          <li>O pagamento regista-se ao balcão: o sistema não cobra nada a ninguém.</li>
+        </ul>
+      </div>
+      <div class="sim-art" aria-hidden="true">
+        <div class="giftcard">
           <span class="gc-brand">Barbearia Central</span>
-          <strong id="gc-saldo"></strong>
-          <span id="gc-code"></span>
-          <small id="gc-val"></small>
+          <strong>30,00 €</strong>
+          <span class="gc-code">K7MQ 4TXP</span>
+          <small>Válido por 12 meses</small>
           <small>Não é documento fiscal</small>
-        </div>
-        <div id="gc-uso" hidden>
-          <label class="hintx" for="gc-usar-v" style="display:block;margin-bottom:6px">Pagar com o cartão (€)</label>
-          <div class="svc"><input id="gc-usar-v" type="number" inputmode="decimal" min="1" step="1" value="12" style="font:inherit;color:var(--cream);background:var(--ink-3);border:1px solid var(--line);border-radius:12px;min-height:44px;padding:0 12px;width:120px"><button class="mini" id="gc-usar" type="button">Pagar com cartão oferta</button></div>
-          <p class="okx" id="gc-msg" role="status"></p>
         </div>
       </div>
     </div>
@@ -1166,26 +1163,6 @@ footer .links a:hover { color: var(--gold); }
     pintarLoja();
   });
   pintarLoja();
-
-  /* cartão oferta */
-  var gc = { saldo: 0, ativo: false };
-  function codigoGc() { var a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", s = ""; for (var i = 0; i < 8; i++) { s += a.charAt(Math.floor(Math.random() * a.length)); } return s.slice(0, 4) + " " + s.slice(4); }
-  function validade() { var d = new Date(); d.setFullYear(d.getFullYear() + 1); return new Intl.DateTimeFormat("pt-PT", { timeZone: "Europe/Lisbon", day: "numeric", month: "long", year: "numeric" }).format(d); }
-  $("gc-vender").addEventListener("click", function () {
-    var v = Math.min(500, Math.max(5, parseFloat($("gc-v").value) || 0));
-    gc.saldo = v; gc.ativo = true;
-    $("gc-card").hidden = false; $("gc-uso").hidden = false;
-    $("gc-saldo").textContent = eur2(v); $("gc-code").textContent = codigoGc(); $("gc-val").textContent = "Válido até " + validade();
-    $("gc-msg").textContent = "";
-  });
-  $("gc-usar").addEventListener("click", function () {
-    var u = parseFloat($("gc-usar-v").value) || 0, m = $("gc-msg");
-    if (!gc.ativo) { return; }
-    if (u <= 0) { m.textContent = "Escreve um valor maior que zero."; return; }
-    if (u > gc.saldo) { m.textContent = "O saldo (" + eur2(gc.saldo) + ") não chega para " + eur2(u) + "."; return; }
-    gc.saldo = Math.round((gc.saldo - u) * 100) / 100; $("gc-saldo").textContent = eur2(gc.saldo);
-    m.textContent = "Pago com cartão oferta. Saldo restante: " + eur2(gc.saldo) + ".";
-  });
 
   /* selos */
   var selos = 7;

@@ -437,3 +437,7 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 - Grafia única «online» (o botão passa de «Experimenta on-line já» a «Experimenta online já»; CLAUDE.md §11 e o guia de voz atualizados). Substitui a grafia da D-81.
 - Na lista de funcionalidades, «Comissões e acertos com a equipa» passa a «Percentagens e acertos por barbeiro», para não parecer que a plataforma cobra comissões.
 - Mantidas, por decisão do dono, «100 % feito em Portugal» e «E o que mais ninguém junta».
+
+## D-95 · 22/10/2026 · Cartão oferta: card estático
+- O Cartão oferta interativo foi substituído por um card estático: descrição do serviço («Uma prenda que traz clientes novos», com três pontos) e, ao lado, a ilustração do cartão (exemplo de 30,00 €, código de exemplo, «Válido por 12 meses», «Não é documento fiscal»).
+- Removidos o JavaScript e o CSS da versão interativa (incluindo as regras `.calc` e `#receitabox`, que já não tinham uso).
