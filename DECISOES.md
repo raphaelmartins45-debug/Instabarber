@@ -451,14 +451,14 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 - A aba «Lembrete» (redundante com o botão «Avisar cliente» da Agenda) passou a «Gestor do barbeiro»: o resumo que o barbeiro vê ao entrar (objetivo de hoje e do mês, faturado hoje, percentagem do mês, próximo cliente e os clientes dele: regulares, em risco e perdidos). Valores de exemplo, estáticos.
 - Removidos o código e o CSS do lembrete e a ligação «Ver exemplo» da lista de funcionalidades que apontava para ele.
 
-## D-98 · 22/10/2026 · Versões da B.3 ajustadas por segurança (Fase 0) — técnica, por confirmar pelo dono
+## D-98 · 22/10/2026 · Versões da B.3 ajustadas por segurança (Fase 0) — técnica
 Com as versões exatas da B.3, o `npm audit` dava 21 vulnerabilidades (8 altas, 4 críticas). Ajustes, todos registados no `package.json` sem intervalos:
 - `next` e `eslint-config-next` 15.5.28, `react` e `react-dom` 19.2.9: as correções mais recentes das mesmas séries (regra da B.3).
 - `@playwright/test` 1.49.1 → 1.56.1: o Next 15.5.28 exige ≥ 1.51.1, e a 1.56 corresponde ao Chromium instalado no ambiente.
 - `vitest` 2.1.8 → 5.0.5: todas as versões até à 4.1.10 têm falhas críticas (tinypool, execução remota), e a 4.1.11/4.1.12 não instala (erro do npm 10). Com o vitest 5, `@types/node` passa a 22.20.5 (ainda Node 22).
 - `jspdf` 2.5.2 → 4.2.1 (falhas críticas e altas até à 4.2.0). Ainda não há código que o use; a Fase 6 escreve-se já para a versão 4.
 - `supabase` (CLI) 2.6.8 → 2.121.0 (`tar` vulnerável), `eslint` 9.18.0 → 9.39.5, `@supabase/supabase-js` 2.47.12 → 2.118.0, `postcss` 8.4.49 → 8.5.31, com `overrides` para o `postcss` interno do Next.
-- **Resta uma vulnerabilidade alta sem correção publicada:** `braces` ≤ 3.0.3 (negação de serviço por padrões muito encaixados), puxada por `eslint-config-next` → `fast-glob` → `micromatch`. É só ferramenta de desenvolvimento (lint), não vai para o site nem para o servidor, e os padrões são escritos por nós. `npm audit --omit=dev` dá 0 vulnerabilidades. **O dono decide** se aceita esta exceção até haver correção, ou se se retira o `eslint-config-next` (perdem-se as regras de lint próprias do Next).
+- **Resta uma vulnerabilidade alta sem correção publicada:** `braces` ≤ 3.0.3 (negação de serviço por padrões muito encaixados), puxada por `eslint-config-next` → `fast-glob` → `micromatch`. É só ferramenta de desenvolvimento (lint), não vai para o site nem para o servidor, e os padrões são escritos por nós. `npm audit --omit=dev` dá 0 vulnerabilidades. **Decisão do dono (22/10/2026):** mantém-se o `eslint-config-next` e aceita-se esta exceção, só para o `braces` e só enquanto não houver correção. O `npm audit` corre em cada fase; quando sair a correção, atualiza-se e a exceção acaba. Qualquer outra vulnerabilidade alta ou crítica continua a parar a fase.
 
 ## D-99 · 22/10/2026 · A landing é servida tal como está pelo Next.js (Fase 0) — técnica
 - A D-34 dizia `app/page.tsx` com os mesmos textos. A landing tem 225 KB de HTML, CSS e JavaScript próprios; passá-la a componentes React seria reescrevê-la (com risco de a estragar), fora dos 2 dias da fase. Fica um só ficheiro, `landing/index.html` (agora com `doctype`, `head` completo e ícones), servido em `/` por `app/(institucional)/route.ts`, estático (lido no build).

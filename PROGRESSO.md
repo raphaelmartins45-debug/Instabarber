@@ -18,7 +18,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 
 | Fase | Foco | Estado | Concluída em | Resultado verificado |
 | --- | --- | --- | --- | --- |
-| 0 | Preparação | Em curso | — | Código pronto a 22/10/2026: typecheck, lint e build sem erros; 27 testes Vitest, 6 Playwright (computador e telemóvel), 396 testes SQL; `npm audit --omit=dev` 0. Falta: deploy Next.js na Vercel, pedido de teste real a chegar a comercial@, decisão sobre a vulnerabilidade de `braces` (D-98) |
+| 0 | Preparação | Em curso | — | Código pronto a 22/10/2026: typecheck, lint e build sem erros; 27 testes Vitest, 6 Playwright (computador e telemóvel), 396 testes SQL; `npm audit --omit=dev` 0. Falta: deploy Next.js na Vercel, pedido de teste real a chegar a comercial@ |
 | 1 | Base de dados | Pendente | — | — |
 | 2 | Autenticação e papéis | Pendente | — | — |
 | 3 | Administração e adesão | Pendente | — | — |
@@ -48,3 +48,4 @@ Fase 0 (Preparação), com início a 22/10/2026. Antes de escrever código: resu
 - 22/10/2026 · D-85: regime de IVA normal. Resend verificado (domínio instabarber.pt), .env.local completo.
 - 22/10/2026 · Passo 0 concluído (domínio, landing no ar, Resend verificado, .env.local, IVA confirmado com o contabilista). Fase 0: resumo apresentado, à espera de confirmação do dono antes de escrever código.
 - 22/10/2026 · Fase 0, código: Next.js 15.5.28, React 19.2.9, rota `/api/contacto` e `/api/medicao`, landing ligada à rota (D-98 a D-100). Verificado: typecheck, lint, 27 testes Vitest, 6 Playwright, 396 testes SQL (PostgreSQL 16 local), build. À espera do dono: (1) decidir a vulnerabilidade de `braces` (D-98); (2) mudar na Vercel o Root Directory para a raiz, preset Next.js, e colar `RESEND_API_KEY`, `EMAIL_REMETENTE` e `EMAIL_COMERCIAL`; (3) pedido de teste real na landing (e o mesmo com a chave errada).
+- 22/10/2026 · D-98: o dono mantém o `eslint-config-next` e aceita a exceção do `braces` (só ferramenta de lint, sem correção publicada). Faltam a Vercel e o teste real.
