@@ -20,5 +20,7 @@ export function paletaDePixeis(pixeis: ArrayLike<number>, maximo = 5): string[] 
   return [...contagem.values()]
     .sort((x, y) => y.n - x.n)
     .slice(0, maximo)
-    .map((c) => `#${hex(Math.round(c.r / c.n))}${hex(Math.round(c.g / c.n))}${hex(Math.round(c.b / c.n))}`.toUpperCase());
+    .map((c) =>
+      `#${hex(Math.round(c.r / c.n))}${hex(Math.round(c.g / c.n))}${hex(Math.round(c.b / c.n))}`.toUpperCase(),
+    );
 }

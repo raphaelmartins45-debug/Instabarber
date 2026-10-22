@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { paletaDePixeis } from "./paleta";
 
-const px = (r: number, g: number, b: number, a = 255, n = 1) => Array.from({ length: n }, () => [r, g, b, a]).flat();
+const px = (r: number, g: number, b: number, a = 255, n = 1) =>
+  Array.from({ length: n }, () => [r, g, b, a]).flat();
 
 describe("paletaDePixeis", () => {
   it("devolve as cores mais frequentes, sem transparente, branco nem preto", () => {
@@ -15,6 +16,8 @@ describe("paletaDePixeis", () => {
     expect(paletaDePixeis(pixeis)).toEqual(["#F5A623", "#1428C8"]);
   });
   it("limita o número de cores", () => {
-    expect(paletaDePixeis([...px(100, 0, 0), ...px(0, 100, 0), ...px(0, 0, 100)], 2)).toHaveLength(2);
+    expect(paletaDePixeis([...px(100, 0, 0), ...px(0, 100, 0), ...px(0, 0, 100)], 2)).toHaveLength(
+      2,
+    );
   });
 });

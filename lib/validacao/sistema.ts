@@ -157,3 +157,22 @@ export const esquemaHorarioBarbeiro = z
   .array(z.object({ diaSemana: numeroTexto(0, 6, true), inicio: hora, fim: hora }))
   .max(21)
   .refine((ls) => ls.every((l) => l.inicio < l.fim), "horario");
+
+/** Plano do clube (F.4.2): preço mensal final, validade, transitar crédito e serviços incluídos. */
+export const esquemaPlano = z.object({
+  nome: z.string().trim().min(1, "nome").max(60, "nome"),
+  precoCent: valorEurosSistema,
+  validadeDias: numeroTexto(7, 92, true),
+  transitaCredito: z.boolean(),
+  renovacaoAuto: z.boolean(),
+  ativo: z.boolean(),
+  servicos: z.record(z.string().uuid(), z.string()).transform((r, ctx) =>
+    Object.entries(r).flatMap(([servicoId, v]) => {
+      if (!v.trim() || v.trim() === "0") return [];
+      const n = Number(v);
+      if (!Number.isInteger(n) || n < 1 || n > 60)
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "numero" });
+      return [{ servicoId, quantidade: n }];
+    }),
+  ),
+});

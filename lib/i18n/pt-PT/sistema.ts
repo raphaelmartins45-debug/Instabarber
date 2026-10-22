@@ -210,6 +210,17 @@ export const sistema = {
       estado: "Estado",
     },
   },
+  pdfCartao: {
+    titulo: "Cartão oferta",
+    valor: "Valor",
+    codigo: "Código",
+    para: (nome: string) => `Para ${nome}`,
+    de: (nome: string) => `Oferta de ${nome}`,
+    validade: (data: string) => `Válido até ${data}`,
+    uso: "Apresente este código ao balcão. Pode usá-lo em várias vezes até acabar o saldo.",
+    fiscal: "Não é documento fiscal.",
+    ficheiro: (codigo: string) => `cartao-oferta-${codigo}.pdf`,
+  },
   metodos: {
     dinheiro: "Dinheiro",
     mbway: "MB WAY",
@@ -230,6 +241,9 @@ export const sistema = {
     renda: "No modelo C, indique a renda.",
     limite_profissionais: "Já tem todos os profissionais contratados ativos.",
     indisponivel: "Funcionalidade não disponível.",
+    cliente: "Não há cliente com este telemóvel. Registe-o primeiro ao balcão.",
+    cliente_invalido: "Não há cliente com este telemóvel. Registe-o primeiro ao balcão.",
+    plano_inativo: "Este plano está desativado e não aceita subscrições.",
     erro: "Não foi possível guardar. Tente outra vez.",
   } as Record<string, string>,
 } as const;
