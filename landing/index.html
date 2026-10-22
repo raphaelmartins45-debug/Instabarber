@@ -96,6 +96,9 @@ section { padding-block: clamp(48px, 7vw, 96px); }
 .feat.hi { background: var(--cream); color: var(--ink); border-color: var(--cream); }
 .feat.hi p { color: #4B463F; }
 .feat.hi .k { color: var(--gold-d); }
+.feats.f4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .feats.f4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .feats.f4 { grid-template-columns: minmax(0, 1fr); } }
 .k { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
 
 /* tudo num só sistema */
@@ -548,9 +551,23 @@ footer .links a:hover { color: var(--gold); }
     </div>
   </section>
 
-  <section id="receita" style="padding-top:0">
+  <section id="clube-assinatura" style="padding-top:0">
     <div class="head">
       <p class="eyebrow">Mais receita · plano Pro</p>
+      <h2>Clube de assinatura</h2>
+      <p class="lead">O cliente paga um valor fixo por mês e tem os serviços incluídos. Tu sabes quanto vais receber antes de o mês começar, e ele deixa de pensar no preço de cada corte.</p>
+    </div>
+    <div class="feats f4">
+      <div class="feat"><span class="k">Receita</span><h3>Dinheiro certo todos os meses</h3><p>Cada subscritor é uma mensalidade garantida. Fazes as contas do mês antes de abrires a porta.</p></div>
+      <div class="feat"><span class="k">Fidelidade</span><h3>Clientes que voltam</h3><p>Quem já pagou o mês tem um bom motivo para vir cortar contigo, e não à porta do lado.</p></div>
+      <div class="feat"><span class="k">Controlo</span><h3>O plano é teu</h3><p>Defines o nome, o preço e os serviços incluídos. Por exemplo, 2 cortes por 25 € ao mês.</p></div>
+      <div class="feat"><span class="k">Sem trabalho</span><h3>O sistema faz as contas</h3><p>Controla o ciclo, os cortes que restam a cada cliente e quem está por pagar. O pagamento regista-se ao balcão: o sistema não cobra.</p></div>
+    </div>
+  </section>
+
+  <section id="receita" style="padding-top:0">
+    <div class="head">
+      <p class="eyebrow">Experimenta · plano Pro</p>
       <h2>Clientes todos os meses e dinheiro que entra antes do corte.</h2>
       <p class="lead">O clube de assinatura dá-te receita previsível. O cartão oferta traz clientes novos pela mão de quem já te conhece. Em ambos, o pagamento é registado ao balcão: o sistema não cobra nada a ninguém.</p>
     </div>
