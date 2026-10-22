@@ -45,7 +45,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 
 O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depende da aprovação dele fica aqui, numerado. Cada decisão tomada por mim está aplicada e pode ser revertida.
 
-**Respostas do dono a 22/10/2026 (D-128):** grupo A aceite (Fases 3 a 6 confirmadas, preparação da Fase 7 aceite, 3B e 3C depois da Fase 4); grupo C aceite tal como está (pendentes 6 a 11, 14, 16, 17, 21, 22, 23, 25, 27 a 33). Resolvidos pelo trabalho: 12, 13 e 19. O pendente 4 fica para o fim do projeto. **Em aberto:** 2 e 38 (autorização da Vercel), 5 (Search Console), 18 (ícone no iPhone), 24 (telemóvel real) e o grupo de produção (35 a 44).
+**Respostas do dono a 22/10/2026 (D-128):** grupo A aceite (Fases 3 a 6 confirmadas, preparação da Fase 7 aceite, 3B e 3C depois da Fase 4); grupo C aceite tal como está (pendentes 6 a 11, 14, 16, 17, 21, 22, 23, 25, 27 a 33). Resolvidos pelo trabalho: 12, 13 e 19. O pendente 4 fica para o fim do projeto. **Pendente 2 resolvido** (autorizado pelo dono; variáveis escritas na Vercel a 22/10/2026). **Em aberto:** 38 (só as do Supabase de produção, depois do item 35), 5 (Search Console), 18 (ícone no iPhone), 24 (telemóvel real) e o grupo de produção (35 a 44).
 
 1. **Confirmar a Fase 3** (resultado verificável na linha da Fase 3).
 2. **Variáveis na Vercel.** O modo automático não me deixa escrever segredos na Vercel. Opções: autorizar a ação (permissão de Bash para a API `api.vercel.com/v10/projects/.../env`) ou pô-las à mão em Vercel → `instabarber-landing` → Settings → Environment Variables, com os valores do `.env.local`:
