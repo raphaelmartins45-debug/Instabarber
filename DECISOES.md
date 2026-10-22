@@ -497,3 +497,6 @@ O «IB» com tesoura e poste (branco e dourado sobre preto) **não é a logo ofi
 
 ## D-107 · 22/10/2026 · Ícone do atalho no iPhone
 O iOS guarda o `apple-touch-icon.png` em cache pelo nome e o atalho continuava com o ícone antigo. Os ícones grandes passam a `ib-180.png`, `ib-192.png` e `ib-512.png` (nomes novos para furar a cache; mesmo desenho do D-106, só ícones simples). Acrescentados o `manifest.webmanifest` e o nome curto «InstaBarber» (`apple-mobile-web-app-title`), para o atalho não levar o título inteiro da página. `favicon-192/512.png` mantêm-se; `apple-touch-icon.png` foi retirado por já não ser usado.
+
+## D-108 · 22/10/2026 · Ícone do atalho: PNG sem transparência e cópia na raiz
+O atalho no iPhone mostrava o nome certo mas não o ícone (um «I» sobre preto), embora o ficheiro abrisse no Safari. Os ícones `ib-*.png` passam a RGB, sem canal alfa, e há uma cópia na raiz (`/apple-touch-icon.png` e `-precomposed`), que é onde o iOS também procura; a landing e o layout apontam para a raiz. O `middleware.ts` deixa de intercetar `apple-touch-icon`. Se mesmo assim falhar, o próximo passo é testar sem o manifesto.

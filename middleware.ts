@@ -6,5 +6,5 @@ export function middleware() {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|marca/).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|apple-touch-icon|marca/).*)"],
 };
