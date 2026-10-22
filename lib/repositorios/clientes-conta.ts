@@ -38,10 +38,10 @@ export async function obterMinhaFicha(
   bd: ClienteBD,
   inquilinoId: string,
   userId: string,
-): Promise<{ id: string; nome: string } | null> {
+): Promise<{ id: string; nome: string; telefone: string | null; email: string | null } | null> {
   const { data, error } = await bd
     .from("clientes")
-    .select("id, nome")
+    .select("id, nome, telefone, email")
     .eq("inquilino_id", inquilinoId)
     .eq("auth_user_id", userId)
     .maybeSingle();

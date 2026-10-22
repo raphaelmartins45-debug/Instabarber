@@ -117,3 +117,25 @@ export function mesmoDiaMesSeguinte(dataIso: string): string {
 export function nomeDoMes(anoMes: string): string {
   return format(meioDia(`${anoMes}-01`), "MMMM", { locale: pt });
 }
+
+const LOCALES: Record<string, string> = { pt: "pt-PT", en: "en-GB", fr: "fr-FR" };
+
+/** Dia curto na língua do cliente: «qui., 22/10», «Thu 22/10» (página pública, I.3.2). */
+export function diaCurtoNaLingua(dataIso: string, lingua: string): string {
+  return new Intl.DateTimeFormat(LOCALES[lingua] ?? regiao.idioma, {
+    weekday: "short",
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: "UTC",
+  }).format(meioDia(dataIso));
+}
+
+/** Data longa de um instante na língua do cliente, no fuso da região: «quinta-feira, 22 de outubro». */
+export function dataLongaNaLingua(instante: string, lingua: string): string {
+  return new Intl.DateTimeFormat(LOCALES[lingua] ?? regiao.idioma, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: regiao.fuso,
+  }).format(new Date(instante));
+}

@@ -27,3 +27,9 @@ export async function consumirLimite(
   if (error) throw new Error(`Limite de pedidos falhou: ${error.message}`);
   return data === true;
 }
+
+/** Marcação pública (F.6): reservas e confirmações por IP. */
+export const LIMITES_MARCACAO = {
+  reservarIp: { maximo: 30, janelaSegundos: 3600 },
+  confirmarIp: { maximo: 15, janelaSegundos: 3600 },
+} as const;

@@ -4386,6 +4386,7 @@ export type Database = {
       publico_inquilinos: {
         Row: {
           aberto: boolean | null;
+          antecedencia_cancelamento_min: number | null;
           capa_cor: string | null;
           capa_foto_url: string | null;
           cidade: string | null;
@@ -4404,6 +4405,7 @@ export type Database = {
           instagram: string | null;
           intervalo_almoco_fim: string | null;
           intervalo_almoco_inicio: string | null;
+          janela_marcacao_dias: number | null;
           livro_reclamacoes_url: string | null;
           logo_url: string | null;
           morada: string | null;
@@ -4419,6 +4421,7 @@ export type Database = {
         ComputedFields: never;
         Insert: {
           aberto?: boolean | null;
+          antecedencia_cancelamento_min?: number | null;
           capa_cor?: string | null;
           capa_foto_url?: string | null;
           cidade?: string | null;
@@ -4437,6 +4440,7 @@ export type Database = {
           instagram?: string | null;
           intervalo_almoco_fim?: string | null;
           intervalo_almoco_inicio?: string | null;
+          janela_marcacao_dias?: number | null;
           livro_reclamacoes_url?: string | null;
           logo_url?: string | null;
           morada?: string | null;
@@ -4451,6 +4455,7 @@ export type Database = {
         };
         Update: {
           aberto?: boolean | null;
+          antecedencia_cancelamento_min?: number | null;
           capa_cor?: string | null;
           capa_foto_url?: string | null;
           cidade?: string | null;
@@ -4469,6 +4474,7 @@ export type Database = {
           instagram?: string | null;
           intervalo_almoco_fim?: string | null;
           intervalo_almoco_inicio?: string | null;
+          janela_marcacao_dias?: number | null;
           livro_reclamacoes_url?: string | null;
           logo_url?: string | null;
           morada?: string | null;
@@ -4981,6 +4987,7 @@ export type Database = {
       marcar_contrato_enviado: { Args: { p_contrato: string }; Returns: undefined };
       marcar_falta: { Args: { p_marcacao: string }; Returns: undefined };
       marcar_proposta_enviada: { Args: { p_proposta: string }; Returns: undefined };
+      meu_codigo_convite: { Args: { p_inquilino: string }; Returns: string };
       meus_clientes: { Args: Record<PropertyKey, never>; Returns: string[] };
       meus_profissionais: { Args: Record<PropertyKey, never>; Returns: string[] };
       modulo_ativo: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };

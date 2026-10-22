@@ -757,6 +757,25 @@ begin
   update public.pedidos_loja set estado = 'levantado', levantado_em = now() where id = pe.id;
 end $$;
 
+-- Código de convite pessoal (F.4.5): seis caracteres, gerado no primeiro acesso à área de
+-- cliente. Só o próprio cliente o pede; o cliente não altera a sua ficha diretamente (D-125).
+create or replace function public.meu_codigo_convite(p_inquilino uuid) returns text
+language plpgsql security definer set search_path = '' as $$
+declare c public.clientes%rowtype; v_codigo text; v_alfabeto text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+begin
+  select * into c from public.clientes
+   where inquilino_id = p_inquilino and auth_user_id = auth.uid() and anonimizado_em is null for update;
+  if not found then raise exception 'sem_permissao' using errcode = '42501'; end if;
+  if c.codigo_convite is not null then return c.codigo_convite; end if;
+  loop
+    select string_agg(substr(v_alfabeto, 1 + floor(random() * length(v_alfabeto))::integer, 1), '')
+      into v_codigo from generate_series(1, 6);
+    exit when not exists (select 1 from public.clientes where codigo_convite = v_codigo);
+  end loop;
+  update public.clientes set codigo_convite = v_codigo where id = c.id;
+  return v_codigo;
+end $$;
+
 -- Clube de assinatura (F.4.2): cada ciclo nasce por pagar, com os créditos do plano (e, se o
 -- plano transita crédito, o que ficou por usar no ciclo anterior). A renovação é no mesmo dia do
 -- mês da inscrição (29 a 31 passa ao último dia do mês). Sem tarefas agendadas (D-26): renova-se
@@ -1102,7 +1121,9 @@ create view publico_inquilinos as
          google_avaliacao_url, livro_reclamacoes_url, logo_url, capa_cor, capa_foto_url, galeria_urls,
          hora_abertura, hora_fecho, dias_descanso, intervalo_almoco_inicio, intervalo_almoco_fim,
          aberto, public.funcionalidade_ativa(id, 'multilinguagem') as multilinguagem_ativa,
-         dominio_proprio, selos_necessarios
+         dominio_proprio, selos_necessarios,
+         -- A marcação pública mostra a regra de cancelamento (H.2) e só os dias da janela (D-125).
+         antecedencia_cancelamento_min, janela_marcacao_dias
     from inquilinos where estado = 'ativo';
 
 create view publico_servicos as
@@ -1620,7 +1641,8 @@ grant execute on function public.cancelar_minha_marcacao(uuid, text),
   public.vender_cartao_oferta(uuid, numeric, text, text, text, date, uuid),
   public.usar_cartao_oferta(uuid, text, numeric, uuid),
   public.marcacao_online_bloqueada(uuid),
-  public.inscrever_clube(uuid, uuid, date), public.renovar_subscricao(uuid)
+  public.inscrever_clube(uuid, uuid, date), public.renovar_subscricao(uuid),
+  public.meu_codigo_convite(uuid)
   to authenticated;
 
 -- Só a chave de serviço (rotas de servidor)
