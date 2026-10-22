@@ -404,3 +404,6 @@ Nota a D-84 (22/10/2026): a Vercel estava a servir `landing/index.html` (sem vie
 
 ## D-86 · Secção «Clube de assinatura» na landing (22/10/2026)
 Nova secção antes de «Clientes todos os meses e dinheiro que entra antes do corte.», com título do mesmo tamanho dos outros, uma descrição do que é o clube e quatro vantagens (receita certa, clientes que voltam, plano definido pela barbearia, o sistema faz as contas; o pagamento regista-se ao balcão, o sistema não cobra). A secção seguinte passa a ter o rótulo «Experimenta · plano Pro».
+
+## D-87 · Títulos de função na loja e na calculadora (22/10/2026)
+A secção da loja passa a chamar-se «Loja de produtos», com a descrição do que é e como funciona (escolhe produtos e preços, o sistema controla o stock e a margem, pagamento ao balcão). A secção da calculadora passa a «Recupera clientes perdidos», com a descrição do radar e das mensagens de WhatsApp (estas no plano Pro) e o convite a fazer a conta logo abaixo. Tratamento por «tu», como no resto da página.
