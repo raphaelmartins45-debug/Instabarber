@@ -28,10 +28,14 @@ test.beforeAll(async () => {
 });
 
 const sufixo = (projeto: string) => (projeto === "computador" ? "1" : "2");
-const lisboa = (deslocamento: number) =>
-  new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Lisbon" }).format(
-    new Date(Date.now() + deslocamento * 86_400_000),
-  );
+// Dias de calendário a partir de hoje em Lisboa (somar 24 h falha perto da meia-noite nas
+// semanas da mudança da hora).
+const lisboa = (deslocamento: number) => {
+  const hoje = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Lisbon" }).format(new Date());
+  const d = new Date(`${hoje}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + deslocamento);
+  return d.toISOString().slice(0, 10);
+};
 
 test("fila de espera: sem vagas o cliente entra; abre a vaga e a barbearia avisa por wa.me", async ({
   page,

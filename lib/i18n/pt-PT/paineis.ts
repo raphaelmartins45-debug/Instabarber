@@ -34,7 +34,7 @@ export const paineis = {
     ajuda: "Fica guardada neste dispositivo.",
   },
   comandos: {
-    abrir: "Procurar",
+    abrir: "Ir para…",
     atalho: "Ctrl K",
     titulo: "Procurar e ir",
     placeholder: "Escreva um ecrã, um cliente ou uma ação…",

@@ -26,20 +26,35 @@ export function CabecalhoPainel({
 }) {
   return (
     <header className="vidro sticky top-0 z-40 border-b border-border">
-      <div className="flex h-16 items-center gap-3 px-4 md:gap-4 md:px-6">
+      <div className="flex h-16 items-center gap-2 px-4 sm:gap-3 md:gap-4 md:px-6">
+        {/* Logótipo horizontal a partir de 640 px; no telemóvel, só o ícone, para caber o nome. */}
         <Image
           src="/marca/logo-horizontal-dourado.png"
           alt={textos.marca.nome}
           width={120}
           height={28}
-          className="h-6 w-auto claro:hidden md:h-7"
+          className="hidden h-7 w-auto sm:block claro:sm:hidden"
         />
         <Image
           src="/marca/logo-horizontal-preto.png"
           alt={textos.marca.nome}
           width={120}
           height={28}
-          className="hidden h-6 w-auto claro:block md:h-7"
+          className="hidden h-7 w-auto claro:sm:block"
+        />
+        <Image
+          src="/marca/icone-dourado.png"
+          alt={textos.marca.nome}
+          width={28}
+          height={28}
+          className="size-7 sm:hidden claro:hidden"
+        />
+        <Image
+          src="/marca/icone-preto.png"
+          alt={textos.marca.nome}
+          width={28}
+          height={28}
+          className="hidden size-7 claro:block claro:sm:hidden"
         />
         <span aria-hidden className="hidden h-6 w-px bg-border sm:block" />
         <div className="min-w-0 flex-1">
