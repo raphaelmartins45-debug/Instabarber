@@ -366,3 +366,6 @@ A palavra «piloto» sai da landing (botão do topo, nota dos preços e texto do
 
 ## D-74 · «Objetivos» em vez de «metas»; comparação com valor único (22/10/2026)
 Em Portugal diz-se «objetivos», não «metas»: a landing passa a dizer «objetivos» (equipa, grelha de funcionalidades e plano Pro). Na comparação «E se comprasses cada coisa separada?», cada categoria mostra um só valor, o mais alto da referência (agenda 27 €, fidelização 35 €), e o total dá 62 € por mês, contra 24,59 € do Basic. A nota de rodapé deixa de falar do «valor mais baixo». Antes de campanhas, confirmar os valores de mercado e a data de consulta (publicidade comparativa deve ser verificável).
+
+## D-75 · Comparação sem «comissões» (22/10/2026)
+Na linha «InstaBarber Basic» da comparação, deixa de aparecer «comissões» (o Basic tem 1 profissional, não faz sentido como argumento). Passa a descrever o produto: página com marcação online, lembretes por WhatsApp, ficha técnica, painel financeiro com objetivos e custos, relatório mensal em PDF e radar de clientes perdidos. A funcionalidade «Comissões e acertos» continua na lista completa e no Pro.
