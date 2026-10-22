@@ -387,3 +387,6 @@ O topo ganha «Compara os planos» (#planos) ao lado de «Experimentar a demo».
 
 ## D-81 · Botão «Experimenta on-line já» (22/10/2026)
 O botão principal do topo passa de «Experimentar a demo» para «Experimenta on-line já» (mesmo destino, #demo). O CTA das publicações no CLAUDE.md §11 e no guia de voz acompanha: «Experimenta on-line já» / «link na bio». As imagens e legendas do Instagram já feitas podem ainda dizer «demo»: rever no novo trabalho de redes.
+
+## D-82 · Título da demo (22/10/2026)
+«Testa o InstaBarber aqui, sem registo.» passa a «Testa o InstaBarber aqui e vê o que ele pode fazer pela tua barbearia.» Foca no benefício e não no registo.
