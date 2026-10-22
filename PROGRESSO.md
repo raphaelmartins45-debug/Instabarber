@@ -25,7 +25,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | 3B | Comercial (CRM, propostas e contratos) | Adiada | — | Por ordem do dono, a Fase 4 avança primeiro (D-120; pendente 3) |
 | 3C | Finanças da Performa LAB | Adiada | — | Como a 3B (D-120) |
 | 4 | Painel da barbearia | Concluída (por confirmar) | 22/10/2026 | Supabase local: **34 testes Playwright** (17 cenários × computador e telemóvel), incluindo o resultado verificável — um dia completo: serviço registado ao balcão, cliente novo marcado na primeira vaga, concluído na agenda (a verde, lembrete wa.me pronto), ficha técnica com nota, comissões e acertos com os dois serviços (32,50 €) e acerto registado (liquidado), despesa no Financeiro, ausência na Gestão do sistema, e o barbeiro a ver a mesma receita na sua folha de acerto sem entrar na Gestão do sistema. Verificado também à mão, no computador e no telemóvel (sem deslocamento lateral): Início, Agenda, Clientes, ficha, Equipa, área do barbeiro, Financeiro (a faturação coincide com a do Início), acertos, as 14 secções da Gestão do sistema, clube (plano, inscrição, «Pago»), cartão oferta com PDF, loja (margem 9,76 € · 3,26 € · 33,4 %, como na F.4.4), O meu plano. **436 testes SQL** (migração 06: cartões oferta, bloqueio por faltas, clube; D-121, D-122); migração 06 aplicada no ensaio. **153 testes Vitest** (classificação, objetivos, acertos, financeiro, loja, ocupação, mensagens, paleta, calendário), mais 5 de integração; typecheck, lint e build sem erros. Ícone e manifesto por barbearia nos painéis (D-123) |
-| 5 | Motor de agenda e cliente | Pendente | — | — |
+| 5 | Motor de agenda e cliente | Em curso | — | — |
 | 6 | Mensagens, filas, loja, relatório e módulos desligados | Pendente | — | — |
 | 7 | Publicação | Pendente | — | — |
 | 8 | Operação | Pendente | — | — |
@@ -74,6 +74,18 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 ## Próximo passo
 
 Fase 4 concluída (por confirmar, pendente 15). Fase 5 (Motor de agenda e cliente) em curso, sem esperar (D-120).
+
+### Resumo da Fase 5 (D-120)
+
+**Constrói-se** (F.4.5, F.7, F.8, F.9, E.4, E.6, I.3.1, I.3.2, H.2):
+
+1. Página pública completa (E.6), só das vistas `publico_*`: capa com o logótipo e o halo, texto com contraste mínimo de 4,5:1, as três ações (e a barra fixa no fundo), barra fina ao rolar, «Entrar» com as três pessoas, serviços, promoções, barbeiros e portfólio, história, mapa, horário com «aberto agora», loja, contactos e rodapé (Privacidade, Termos, Livro de Reclamações, avaliar no Google, os três acessos). Indexável, com dados estruturados `HairSalon`; ícone e manifesto da barbearia (D-123).
+2. Marcação em passos: serviço, barbeiro (com «Sem preferência»), dia e hora (`vagas_livres()`, preço riscado nas horas mortas), reserva de 10 minutos com contagem (`reservar_vaga()`), dados (com palavra-passe opcional, F.9), confirmação (`confirmar_reserva()`) com «Adicionar ao calendário» e a regra de cancelamento (H.2). Erros em frases; «Esta hora acabou de ser ocupada».
+3. Área de cliente: cartão de selos, próxima marcação com «Cancelar», histórico, clube, encomendas, código de convite, «Repetir o último serviço», WhatsApp e ligar.
+4. Multilinguagem (PT, EN, FR escritos à mão) na página pública e na área de cliente, só com a funcionalidade ligada.
+5. Testes: marcação completa sem conta; duas reservas simultâneas (uma recusada); política de faltas com um cliente de ensaio.
+
+**Não se faz nesta fase:** e-mail de confirmação, filas, clube/loja/cartões do lado público e relatório (Fase 6). A validação num telemóvel real fica para o dono (pendente).
 
 ### Resumo da Fase 4 (D-120: escrito aqui em vez de esperar confirmação)
 
