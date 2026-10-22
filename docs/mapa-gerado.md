@@ -43,6 +43,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(institucional)/termos/page.tsx`
 - `app/(institucional)/termos/subcontratacao/page.tsx`
 - `app/(publico)/b/[slug]/entrar/page.tsx`
+- `app/(publico)/b/[slug]/marcar/page.tsx`
 - `app/(publico)/b/[slug]/minha-area/page.tsx`
 - `app/(publico)/b/[slug]/page.tsx`
 - `app/api/acesso/route.ts`
@@ -204,6 +205,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `marcar_contrato_enviado()`
 - `marcar_falta()`
 - `marcar_proposta_enviada()`
+- `meu_cartao_selos()`
+- `meu_codigo_convite()`
 - `meus_clientes()`
 - `meus_profissionais()`
 - `modulo_ativo()`

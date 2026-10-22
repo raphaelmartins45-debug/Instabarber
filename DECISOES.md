@@ -621,3 +621,12 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - As mensagens individuais (lembrete, pós-venda, recuperação, aniversário, aviso da loja) ficam registadas em `mensagens` com o estado `ligacao_aberta` (F.4.10). O envio em lote fica para a Fase 6.
 - A paleta da Marca calcula-se no browser a partir do logótipo (`lib/regras/paleta.ts`, com testes); o dono escolhe.
 - A barbearia de ensaio dos testes de ponta a ponta abre o dia todo, todos os dias, para os ensaios da agenda correrem a qualquer hora.
+
+## D-125 · 22/10/2026 · Página pública, marcação e área de cliente (Fase 5) — técnica
+- Migração 07: a vista `publico_inquilinos` passa a mostrar `antecedencia_cancelamento_min` e `janela_marcacao_dias` (a confirmação diz a regra de cancelamento, H.2, e o calendário só abre os dias permitidos). `meu_codigo_convite()` e `meu_cartao_selos()` dão ao cliente com sessão só o que é dele, na barbearia pedida, sem abrir as tabelas por RLS. As mesmas funções em `docs/esquema/02_funcoes.sql`; 10 testes em `docs/esquema/testes/90_cliente.sql` (446 no total).
+- A marcação pública passa só pelas funções da agenda: `vagas_livres()`, `reservar_vaga()` (reserva de 10 minutos com contagem no ecrã) e `confirmar_reserva()`; os códigos de erro traduzem-se em frases em `lib/i18n/publico`. Os pedidos de vagas, de reserva e de confirmação contam nos limites (`LIMITES_MARCACAO`).
+- Multilinguagem: os textos públicos em `lib/i18n/publico/{pt,en,fr}.ts`, com um teste que confere as mesmas chaves nas três línguas. A língua escolhe-se pelo cookie `ib_lingua` ou pelo dispositivo; sem a funcionalidade `multilinguagem`, só português. Os componentes do cliente recebem a língua, não o dicionário (funções não passam do servidor para o browser).
+- O texto da capa usa a cor com contraste de pelo menos 4,5:1 sobre a cor da barbearia (`lib/regras/contraste.ts`): branco, preto de marca ou preto puro.
+- Livro de Reclamações: sem ligação própria configurada, o rodapé aponta para `https://www.livroreclamacoes.pt` (pendente).
+- O nome da barbearia é o título principal (`h1`) da página pública.
+- «Repetir o último serviço» procura o primeiro horário livre do mesmo serviço com o mesmo barbeiro, até 30 dias (ou a janela de marcação, se for menor), e reserva-o; o cliente confirma os dados.

@@ -88,7 +88,9 @@ export default async function MinhaArea({ params }: { params: Promise<{ slug: st
           />
         }
       >
-        <h1 className="text-xl font-extrabold">{t.area.ola(ficha.nome)}</h1>
+        <h1 className="text-xl font-extrabold" data-testid="vista">
+          {t.area.ola(ficha.nome)}
+        </h1>
         <div className="grid grid-cols-2 gap-2">
           <Button asChild className="h-12">
             <Link href={`${base}/marcar`}>{t.area.marcar}</Link>

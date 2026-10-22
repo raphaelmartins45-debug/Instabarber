@@ -25,7 +25,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | 3B | Comercial (CRM, propostas e contratos) | Adiada | — | Por ordem do dono, a Fase 4 avança primeiro (D-120; pendente 3) |
 | 3C | Finanças da Performa LAB | Adiada | — | Como a 3B (D-120) |
 | 4 | Painel da barbearia | Concluída (por confirmar) | 22/10/2026 | Supabase local: **34 testes Playwright** (17 cenários × computador e telemóvel), incluindo o resultado verificável — um dia completo: serviço registado ao balcão, cliente novo marcado na primeira vaga, concluído na agenda (a verde, lembrete wa.me pronto), ficha técnica com nota, comissões e acertos com os dois serviços (32,50 €) e acerto registado (liquidado), despesa no Financeiro, ausência na Gestão do sistema, e o barbeiro a ver a mesma receita na sua folha de acerto sem entrar na Gestão do sistema. Verificado também à mão, no computador e no telemóvel (sem deslocamento lateral): Início, Agenda, Clientes, ficha, Equipa, área do barbeiro, Financeiro (a faturação coincide com a do Início), acertos, as 14 secções da Gestão do sistema, clube (plano, inscrição, «Pago»), cartão oferta com PDF, loja (margem 9,76 € · 3,26 € · 33,4 %, como na F.4.4), O meu plano. **436 testes SQL** (migração 06: cartões oferta, bloqueio por faltas, clube; D-121, D-122); migração 06 aplicada no ensaio. **153 testes Vitest** (classificação, objetivos, acertos, financeiro, loja, ocupação, mensagens, paleta, calendário), mais 5 de integração; typecheck, lint e build sem erros. Ícone e manifesto por barbearia nos painéis (D-123) |
-| 5 | Motor de agenda e cliente | Em curso | — | — |
+| 5 | Motor de agenda e cliente | Concluída (por confirmar) | 22/10/2026 | Supabase local: **40 testes Playwright** (20 cenários × computador e telemóvel), incluindo o resultado verificável — marcação completa sem conta pela página pública (serviço, barbeiro, hora, reserva de 10 minutos, dados, confirmação); duas reservas da mesma vaga em simultâneo, uma passa e a outra é recusada («Esta hora acabou de ser ocupada»); cliente de ensaio com duas faltas bloqueado na marcação online («Para marcar, fale com a barbearia.»). Verificado à mão no computador e no telemóvel (sem deslocamento lateral): página pública, marcação com criação de acesso (F.9), área de cliente (selos, próxima marcação, cancelar, histórico, convite, repetir), troca para inglês e francês. **446 testes SQL** (migração 07, D-125; os 54 da agenda continuam a passar); migração 07 aplicada no ensaio; **158 testes Vitest**, mais 5 de integração; typecheck, lint e build sem erros. **Falta:** validar num telemóvel real (pendente 24) |
 | 6 | Mensagens, filas, loja, relatório e módulos desligados | Pendente | — | — |
 | 7 | Publicação | Pendente | — | — |
 | 8 | Operação | Pendente | — | — |
@@ -70,10 +70,16 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 17. **Clube:** as renovações automáticas em atraso fazem-se quando o gestor abre a secção do clube (não há tarefas agendadas, D-26); o cliente tem de estar registado antes de ser inscrito (procura-se pelo telemóvel). Plano desativado não aceita subscrições novas.
 18. **Ícone no iPhone** (trabalho paralelo): os painéis já têm ícone e manifesto por barbearia (D-123). Falta o dono confirmar num iPhone real que «Adicionar ao ecrã principal» mostra o ícone novo.
 19. **Testes SQL no ensaio:** a migração 06 foi aplicada no projeto de ensaio, mas os 436 testes SQL só correram no Supabase local (correr no ensaio obriga a apagar e repor os dados de teste fixos, como na Fase 3). Fica para o fecho da Fase 7, antes da produção.
+20. **Confirmar a Fase 5** (resultado verificável na linha da Fase 5).
+21. **Promoções sem ecrã de gestão.** A página pública mostra as promoções (vista `publico_*`), mas a E.2 não lista um ecrã para as criar. Por agora só se criam na base de dados. Dizer se quer um ecrã na Gestão do sistema.
+22. **Livro de Reclamações:** sem ligação própria da barbearia, o rodapé aponta para o portal geral `livroreclamacoes.pt` (D-125). Confirmar.
+23. **Textos públicos em inglês e francês** (`lib/i18n/publico/en.ts` e `fr.ts`) escritos por mim. Rever (ou mandar rever) antes de ligar a multilinguagem a uma barbearia.
+24. **Validar a página pública num telemóvel real** (verificação da Fase 5): abrir, marcar, entrar na área de cliente e cancelar.
+25. **«Repetir o último serviço»** procura vaga só até 30 dias (ou a janela de marcação); sem vaga nesse prazo, o cliente escolhe a hora à mão (D-125).
 
 ## Próximo passo
 
-Fase 4 concluída (por confirmar, pendente 15). Fase 5 (Motor de agenda e cliente) em curso, sem esperar (D-120).
+Fase 5 concluída (por confirmar, pendente 20). Fase 6 (Mensagens, filas, loja, relatório e módulos desligados) em curso, sem esperar (D-120).
 
 ### Resumo da Fase 5 (D-120)
 
