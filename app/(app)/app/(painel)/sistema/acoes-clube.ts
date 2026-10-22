@@ -11,9 +11,9 @@ import {
   cancelarSubscricao,
   gravarPlano,
   inscrever,
-  marcarCicloPago,
   renovar,
 } from "@/lib/repositorios/painel/clube";
+import { registarRecebimento } from "@/lib/pagamentos";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { esquemaPlano } from "@/lib/validacao/sistema";
 
@@ -61,12 +61,13 @@ export async function pagarCiclo(cicloId: string, metodo: string): Promise<Resul
   const contexto = await exigirGestorParaEscrever();
   const m = z.enum(["dinheiro", "mbway", "transferencia", "cartao"]).safeParse(metodo);
   if (!uuid.safeParse(cicloId).success || !m.success) return { ok: false, erro: "erro" };
-  const ok = await marcarCicloPago(
-    await criarClienteServidor(),
-    contexto.barbearia.id,
-    cicloId,
-    m.data,
-  );
+  // O núcleo regista pela interface dos pagamentos (G.4); desligada, só regista.
+  const ok = await registarRecebimento(await criarClienteServidor(), {
+    finalidade: "clube",
+    inquilinoId: contexto.barbearia.id,
+    referenciaId: cicloId,
+    metodo: m.data,
+  });
   revalidar();
   return ok ? { ok: true } : { ok: false, erro: "erro" };
 }

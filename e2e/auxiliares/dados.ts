@@ -29,6 +29,8 @@ export const contas = (projeto: string) => ({
   // Super_admin próprio do ensaio da adesão (o 2FA inscreve-se uma vez por conta).
   adminAdesao: `admin-adesao-${projeto}@teste.instabarber.pt`,
   donoAdesao: `dono-adesao-${projeto}@teste.instabarber.pt`,
+  // Super_admin do ensaio dos módulos desligados (Fase 6).
+  adminModulos: `admin-modulos-${projeto}@teste.instabarber.pt`,
 });
 
 /** Telefones dos clientes de teste, também por projeto. */

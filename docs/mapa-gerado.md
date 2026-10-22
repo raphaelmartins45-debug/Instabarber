@@ -10,6 +10,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/barbearias/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/page.tsx`
 - `app/(admin)/admin/(protegido)/funcionalidades/page.tsx`
+- `app/(admin)/admin/(protegido)/modulos/page.tsx`
 - `app/(admin)/admin/(protegido)/pagamentos/page.tsx`
 - `app/(admin)/admin/(protegido)/page.tsx`
 - `app/(admin)/admin/(protegido)/pedidos/[id]/page.tsx`
@@ -17,6 +18,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/dois-passos/page.tsx`
 - `app/(app)/app/(painel)/agenda/marcar/page.tsx`
 - `app/(app)/app/(painel)/agenda/page.tsx`
+- `app/(app)/app/(painel)/agenda/qr/page.tsx`
 - `app/(app)/app/(painel)/clientes/[id]/page.tsx`
 - `app/(app)/app/(painel)/clientes/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/acertos/page.tsx`
@@ -25,12 +27,14 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(app)/app/(painel)/equipa/[id]/metas/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/perfil/page.tsx`
+- `app/(app)/app/(painel)/equipa/[id]/relatorio/page.tsx`
 - `app/(app)/app/(painel)/equipa/page.tsx`
 - `app/(app)/app/(painel)/financeiro/acertos/page.tsx`
 - `app/(app)/app/(painel)/financeiro/page.tsx`
 - `app/(app)/app/(painel)/loja/page.tsx`
 - `app/(app)/app/(painel)/page.tsx`
 - `app/(app)/app/(painel)/plano/page.tsx`
+- `app/(app)/app/(painel)/relatorio/page.tsx`
 - `app/(app)/app/(painel)/sistema/[seccao]/page.tsx`
 - `app/(app)/app/(painel)/sistema/page.tsx`
 - `app/(app)/app/escolher/page.tsx`
@@ -43,6 +47,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(institucional)/termos/page.tsx`
 - `app/(institucional)/termos/subcontratacao/page.tsx`
 - `app/(publico)/b/[slug]/entrar/page.tsx`
+- `app/(publico)/b/[slug]/fila/page.tsx`
+- `app/(publico)/b/[slug]/loja/page.tsx`
 - `app/(publico)/b/[slug]/marcar/page.tsx`
 - `app/(publico)/b/[slug]/minha-area/page.tsx`
 - `app/(publico)/b/[slug]/page.tsx`
@@ -52,6 +58,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/api/contacto/route.ts`
 - `app/api/manifesto/[slug]/route.ts`
 - `app/api/medicao/route.ts`
+- `app/api/relatorios/route.ts`
+- `app/api/webhooks/pagamentos/route.ts`
 
 ## Variáveis CSS (app/globals.css)
 
@@ -167,6 +175,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `assinar_contrato()`
 - `auditar_inquilino()`
 - `auditar_interruptor()`
+- `auditar_modulo_plataforma()`
+- `avisar_fila_espera()`
 - `calcular_preco()`
 - `campos_alterados()`
 - `cancelar_lembrete_vencimento()`
@@ -186,6 +196,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `eliminar_inquilino()`
 - `entrar_fila_espera()`
 - `entrar_fila_presencial()`
+- `estado_fila_presencial()`
 - `evento_lead()`
 - `exigir_super_admin()`
 - `funcionalidade_ativa()`
@@ -216,6 +227,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `pedir_codigo_acesso()`
 - `pode_criar_acesso_direto()`
 - `pode_marcar_online()`
+- `posicao_fila_espera()`
 - `preparar_lembrete_vencimento()`
 - `procurar_cliente_por_telefone()`
 - `proteger_acerto()`
@@ -224,8 +236,10 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `proteger_profissional()`
 - `proteger_proposta()`
 - `proximo_numero_comercial()`
+- `reclamar_email_confirmacao()`
 - `registar_auditoria()`
 - `registar_auditoria_admin()`
+- `registar_email_confirmacao()`
 - `registar_email_lembrete()`
 - `registar_evento_lead()`
 - `renovar_subscricao()`

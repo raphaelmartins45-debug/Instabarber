@@ -96,6 +96,7 @@ export default async function semear() {
     const nomeBarbeiro = projeto === "computador" ? "Carlos" : "Tiago";
     await perfil(bd, await criarConta(bd, c.admin), "super_admin", null, c.admin);
     await perfil(bd, await criarConta(bd, c.adminAdesao), "super_admin", null, c.adminAdesao);
+    await perfil(bd, await criarConta(bd, c.adminModulos), "super_admin", null, c.adminModulos);
     await perfil(bd, await criarConta(bd, c.dono), "proprietario", BARBEARIA_A.id, c.dono);
 
     const barbeiro = await criarConta(bd, c.barbeiro);

@@ -7,6 +7,7 @@ export const admin = {
     pedidos: "Pedidos",
     funcionalidades: "Funcionalidades",
     pagamentos: "Pagamentos",
+    modulos: "Módulos",
   },
   estados: { pendente: "Pendente", ativo: "Ativa", suspenso: "Suspensa", cancelado: "Cancelada" },
   estadosPagamento: { em_dia: "Em dia", em_atraso: "Em atraso" },
@@ -349,5 +350,24 @@ export const admin = {
     motivo: (motivo: string) => `Motivo: ${motivo}`,
     rejeicaoContacto:
       "Se quiser falar connosco sobre isto, responda a este e-mail ou escreva para comercial@instabarber.pt.",
+  },
+  modulos: {
+    titulo: "Módulos preparados",
+    texto:
+      "Pagamentos e faturação existem na versão 1, testados e desligados. Não aparecem às barbearias enquanto estiverem desligados, e nada no resto do sistema depende deles.",
+    aviso:
+      "Antes de ligar para qualquer barbearia: contrato com o fornecedor e parecer de um contabilista certificado sobre quem fatura.",
+    nomes: { pagamentos: "Pagamentos (MB WAY)", faturacao: "Faturação" } as Record<string, string>,
+    geral: "Interruptor geral",
+    ligado: "Ligado",
+    desligado: "Desligado",
+    ligar: "Ligar",
+    desligar: "Desligar",
+    emFalta: (chaves: string) =>
+      `Faltam as chaves do fornecedor: ${chaves}. Cole-as no painel da Vercel.`,
+    porBarbearia: "Por barbearia",
+    barbearia: "Barbearia",
+    auditoria: "Cada alteração fica em auditoria.",
+    erro: "Não foi possível alterar.",
   },
 } as const;

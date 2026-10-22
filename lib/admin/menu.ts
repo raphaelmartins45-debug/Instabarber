@@ -29,6 +29,7 @@ export const MENU_ADMIN: ItemMontado[] = [
     chave: null,
     estado: "ativo",
   },
+  { id: "modulos", rotulo: m.modulos, href: "/admin/modulos", chave: null, estado: "ativo" },
 ];
 
 /** O separador ativo a partir do caminho: o prefixo mais longo que coincide. */

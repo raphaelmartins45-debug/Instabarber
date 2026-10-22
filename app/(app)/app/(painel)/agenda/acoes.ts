@@ -10,6 +10,7 @@ import {
 import { numericParaGravar } from "@/lib/formatacao/dinheiro";
 import { hojeIso } from "@/lib/formatacao/datas";
 import { telefoneE164 } from "@/lib/formatacao/telefone";
+import { prepararDocumento } from "@/lib/faturacao";
 import { lerGrelha } from "@/lib/funcionalidades/servidor";
 import { mensagemLembrete } from "@/lib/regras/mensagens";
 import {
@@ -184,6 +185,8 @@ export async function concluir(dados: z.input<typeof esquemaConcluir>): Promise<
     });
     if (!u.ok) return { ok: false, erro: u.motivo };
   }
+  // Faturação (G.4): desligada, não faz nada.
+  await prepararDocumento(bd, { inquilinoId, marcacaoId: d.id });
   revalidar();
   return { ok: true };
 }
