@@ -664,3 +664,4 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - Sem `meta keywords` (o Google ignora-a): as variações de pesquisa vão nos dados estruturados (`alternateName`, `keywords`) e no texto (a primeira resposta das perguntas frequentes diz «programa para barbearias… como uma app»).
 - Dados estruturados: `SoftwareApplication` com os preços (de 24,59 € a 47,97 € por mês, com IVA) e `FAQPage` com as seis perguntas da página. O sitemap passa a levar a data da publicação (`lastmod`).
 - Feito no `main` com autorização do dono (a outra sessão tinha terminado).
+- Com autorização do dono, `www.instabarber.pt` redireciona para `instabarber.pt` (308, nas definições de domínio da Vercel): uma só morada para o Google, sem conteúdo duplicado.
