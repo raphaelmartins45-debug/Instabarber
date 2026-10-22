@@ -135,6 +135,7 @@ export const sistema = {
     reclamacoes: "Livro de Reclamações eletrónico",
   },
   clube: {
+    planos: "Planos",
     novo: "Novo plano",
     nome: "Nome do plano",
     preco: "Preço mensal (€)",

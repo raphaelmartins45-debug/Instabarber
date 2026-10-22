@@ -55,7 +55,7 @@ export async function SeccaoClube({ inquilinoId }: { inquilinoId: string }) {
           />
         ) : null}
       </Secao>
-      <Secao id="planos" titulo={t.novo}>
+      <Secao id="planos" titulo={t.planos}>
         {planos.length === 0 ? <p className="text-sm text-muted-foreground">{t.vazio}</p> : null}
         {planos.map((p) => (
           <FormularioPlano key={p.id} plano={p} servicos={servicos} />

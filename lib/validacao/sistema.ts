@@ -176,3 +176,16 @@ export const esquemaPlano = z.object({
     }),
   ),
 });
+
+/** Produto da loja (F.4.4): custo sem IVA obrigatório, preço com IVA, taxas de 6, 13 ou 23 %. */
+export const esquemaProduto = z.object({
+  nome: z.string().trim().min(1, "nome").max(80, "nome"),
+  descricao: textoOpc(300),
+  custoCent: valorEurosSistema,
+  ivaPercent: numeroTexto(0, 23, true).refine((v) => [6, 13, 23].includes(v), "numero"),
+  precoCent: valorEurosSistema,
+  stock: numeroTexto(0, 100000, true),
+  stockMinimo: numeroTexto(0, 100000, true),
+  mostrarEsgotado: z.boolean(),
+  ativo: z.boolean(),
+});
