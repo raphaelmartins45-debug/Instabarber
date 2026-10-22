@@ -214,6 +214,17 @@ details .ans a { color: var(--gold); }
 .form .err { margin: 0; color: #FFB4A8; font-size: 14px; font-weight: 600; }
 
 /* atalhos no topo */
+.sim { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; padding: 0; overflow: hidden; margin-bottom: 20px; }
+.sim-main { padding: clamp(20px, 3vw, 32px); display: grid; gap: 10px; align-content: start; }
+.sim-eq { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; font-size: 17px; color: var(--mute); }
+.sim-eq b { font-size: clamp(40px, 6vw, 56px); line-height: 1; color: var(--green); font-variant-numeric: tabular-nums; }
+.sim-eq span { color: var(--cream); font-weight: 700; }
+.sim-sub { margin: 0; color: var(--mute); font-size: 15px; }
+.sim-hi { background: var(--gold); color: var(--ink); padding: clamp(20px, 3vw, 32px); display: grid; gap: 8px; align-content: center; }
+.sim-hi .k { color: var(--ink); opacity: .75; }
+.sim-hi h3 { font-size: clamp(20px, 2.6vw, 24px); }
+.sim-hi p { margin: 0; font-size: 15px; color: #3A2A0B; }
+@media (max-width: 880px) { .sim { grid-template-columns: minmax(0, 1fr); } }
 .calc-link { margin: 16px 0 0; font-size: 15px; }
 .calc-link a { color: var(--gold); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 .calc-link a:hover { color: #FFB63D; }
@@ -269,10 +280,10 @@ details .ans a { color: var(--gold); }
 .selo { aspect-ratio: 1; border-radius: 50%; border: 2px dashed var(--line); display: grid; place-items: center; font-weight: 800; color: var(--mute); }
 .selo.on { border: 2px solid var(--gold); background: var(--gold); color: var(--ink); }
 .lost-top .prize, .prize { color: var(--green); font-weight: 800; }
-.calc { display: block; padding: 0; overflow: hidden; max-width: 880px; --ink-2: #FFFFFF; --ink-3: #F4F1EB; --line: #DDD7CC; --cream: #1B1814; --mute: #6A645B; --green: #12805A; --red: #C13F30; color: var(--cream); color-scheme: light; box-shadow: 0 18px 50px rgba(0, 0, 0, .45); }
-.app-bar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #ECE8E0; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 700; color: var(--mute); }
+.calc { display: block; padding: 0; overflow: hidden; max-width: 880px; --ink-2: #4A463F; --ink-3: #3B3730; --line: #5F5A51; --mute: #D2CCC0; color: var(--cream); box-shadow: 0 18px 50px rgba(0, 0, 0, .45); }
+.app-bar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #58534A; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 700; color: var(--mute); }
 .app-bar .dots { display: flex; gap: 6px; }
-.app-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: #CFC8BB; }
+.app-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: #8E887C; }
 .calc-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; padding: clamp(16px, 3vw, 24px); }
 .calc .fields { display: grid; gap: 12px; }
 .calc label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); display: grid; gap: 6px; }
@@ -585,10 +596,17 @@ footer .links a:hover { color: var(--gold); }
   </section>
 
   <section id="receita" style="padding-top:0">
-    <div class="head">
-      <p class="eyebrow">Experimenta · plano Pro</p>
-      <h2>Clientes todos os meses e dinheiro que entra antes do corte.</h2>
-      <p class="lead">O clube de assinatura dá-te receita previsível. O cartão oferta traz clientes novos pela mão de quem já te conhece. Em ambos, o pagamento é registado ao balcão: o sistema não cobra nada a ninguém.</p>
+    <div class="box sim">
+      <div class="sim-main">
+        <span class="k">Clube de assinatura · a conta</span>
+        <div class="sim-eq"><span>10 clientes</span> × <span>25 € por mês</span> = <b>250 €</b></div>
+        <p class="sim-sub">por mês, no teu bolso antes de os clientes se sentarem na cadeira. Cada um tem 2 cortes incluídos e o pagamento regista-se ao balcão: o sistema não cobra nada a ninguém.</p>
+      </div>
+      <div class="sim-hi">
+        <span class="k">A vantagem</span>
+        <h3>Enche os teus dias mais fracos</h3>
+        <p>Os subscritores marcam nos dias e nas horas de menos movimento. É uma cadeira que ficava vazia a render, com o dinheiro do mês já garantido.</p>
+      </div>
     </div>
     <div class="row2" id="receitabox" style="grid-template-columns: repeat(2, minmax(0, 1fr))">
       <div class="box" id="clube">
@@ -629,7 +647,7 @@ footer .links a:hover { color: var(--gold); }
 
   <section id="calculadora" style="padding-top:0">
     <div class="head">
-      <p class="eyebrow">Quanto estás a perder</p>
+      <p class="eyebrow">Deixa de perder clientes para a concorrência</p>
       <h2>Recupera clientes perdidos</h2>
       <p class="lead">O radar mostra quem deixou de aparecer e quanto esse cliente vale em euros. No plano Pro, o sistema prepara a mensagem de WhatsApp com o nome do cliente e o tempo que ele não vem: tu só tens de carregar em enviar. Põe os teus números aqui em baixo e vê quanto podes faturar a mais recuperando clientes. A conta é feita no teu telemóvel e não guardamos nada.</p>
     </div>
@@ -656,7 +674,7 @@ footer .links a:hover { color: var(--gold); }
 <div class="wrap">
   <section>
     <div class="head">
-      <p class="eyebrow">O que tens</p>
+      <p class="eyebrow">O que vais ter no sistema</p>
       <h2>Os dados sempre à mão, onde estiveres.</h2>
       <p class="lead">Funciona no telemóvel como no computador. Nada para instalar.</p>
     </div>

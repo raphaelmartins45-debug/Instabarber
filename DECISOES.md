@@ -410,3 +410,8 @@ A secção da loja passa a chamar-se «Loja de produtos», com a descrição do 
 
 ## D-88 · Calculadora mais pequena e clara, com aspeto de aplicação (22/10/2026)
 O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo («InstaBarber · Radar de clientes»), largura máxima de 880 px, campos e números mais pequenos. Sai a caixa do «Desafio dos 90 dias» de dentro do módulo (o desafio continua na sua secção, mais abaixo). Removido o CSS que só ela usava.
+
+## D-89 · 22/10/2026 · Calculadora em cinza médio e cartão fixo do Clube
+- A calculadora passa de clara a cinza médio (mais claro que os módulos escuros, sem destoar).
+- Rótulos: «Deixa de perder clientes para a concorrência» (calculadora) e «O que vais ter no sistema».
+- O cabeçalho do bloco «Experimenta · plano Pro» foi substituído por um cartão fixo com a conta de 10 clientes × 25 € = 250 € por mês e a vantagem «Enche os teus dias mais fracos». As caixas interativas do Clube e do Cartão oferta mantêm-se por baixo.
