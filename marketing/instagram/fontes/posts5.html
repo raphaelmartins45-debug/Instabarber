@@ -1,0 +1,78 @@
+<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><title>Posts v3</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#000;font-family:Inter,system-ui,sans-serif}
+.post{width:1080px;height:1350px;position:relative;overflow:hidden}
+/* A · foto */
+#a{background:#12100E url(foto-barbearia.jpg) center/cover}
+#a::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,16,14,.55) 0%,rgba(18,16,14,.15) 30%,rgba(18,16,14,.55) 62%,rgba(18,16,14,.94) 100%)}
+#a .in{position:absolute;inset:0;padding:84px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
+#a h1{margin:0;font-size:116px;line-height:1;font-weight:900;letter-spacing:-.04em;text-shadow:0 4px 40px rgba(0,0,0,.5)}
+#a h1 span{color:#F5A623}
+/* B · notas */
+#b{background:#F2F1EE;color:#1c1c1e;padding:0}
+.nbar{height:120px;display:flex;align-items:center;padding:0 60px;color:#C9930F;font-size:34px;font-weight:600;border-bottom:2px solid #E1DFD9;justify-content:space-between}
+.note{padding:36px 84px}
+.note .d{font-size:26px;color:#8e8e93;text-align:center;font-weight:500}
+.note h2{margin:18px 0 22px;font-size:76px;letter-spacing:-.03em;font-weight:800}
+.it{display:flex;gap:30px;align-items:flex-start;font-size:44px;line-height:1.22;font-weight:500;padding:14px 0;border-bottom:2px solid #E4E2DC}
+.ck{flex:none;width:50px;height:50px;border-radius:50%;border:4px solid #C9930F;margin-top:4px}
+.ck.on{background:#C9930F;position:relative}
+.ck.on::after{content:"";position:absolute;left:14px;top:5px;width:12px;height:24px;border:solid #fff;border-width:0 5px 5px 0;transform:rotate(40deg)}
+.done{color:#9a9a9f;text-decoration:line-through}
+#b .cap{position:absolute;left:0;right:0;bottom:0;padding:44px 84px 56px;background:#12100E;color:#F7F5F1;display:flex;justify-content:space-between;align-items:center;gap:30px}
+#b .cap b{font-size:46px;letter-spacing:-.02em;line-height:1.12}
+#b .cap img{height:64px}
+/* C · chat */
+#c{background:#E9E2D7}
+.chead{height:130px;background:#1F2C34;display:flex;align-items:center;gap:26px;padding:0 50px;color:#fff}
+.av{width:78px;height:78px;border-radius:50%;background:#8FA3AE;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:32px;color:#1F2C34}
+.chat{padding:50px 50px 0;display:flex;flex-direction:column;gap:22px}
+.m{max-width:760px;font-size:42px;line-height:1.3;padding:22px 30px;border-radius:30px;position:relative}
+.m small{display:block;text-align:right;font-size:24px;color:#8a8f93;margin-top:4px}
+.mi{background:#fff;align-self:flex-start;border-top-left-radius:8px}
+.mo{background:#D9FDD3;align-self:flex-end;border-top-right-radius:8px}
+.gap{align-self:center;background:#fff;color:#667781;font-size:26px;padding:10px 24px;border-radius:14px;font-weight:600}
+#c .cap{position:absolute;left:0;right:0;bottom:0;padding:50px 84px 60px;background:#F5A623;color:#12100E}
+#c .cap b{display:block;font-size:76px;line-height:1.02;letter-spacing:-.035em;font-weight:900}
+#c .cap div{display:flex;justify-content:space-between;align-items:center;margin-top:30px;font-size:30px;font-weight:700}
+#c .cap img{height:60px}
+</style></head><body>
+
+<section class="post" id="a"><div class="in">
+  <img src="logo-horizontal-branco.png" style="height:74px;width:auto;align-self:flex-start" alt="InstaBarber">
+  <div>
+    <h1>Tudo o que a tua barbearia precisa.<br><span>Num só sistema.</span></h1>
+    <p style="margin:36px 0 0;font-size:38px;font-weight:600;color:#EDE7DC">Agenda, clientes, equipa e contas. Sem pagar por cada serviço.</p>
+    <p style="margin:44px 0 0;font-size:30px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#F5A623">instabarber.pt</p>
+  </div>
+</div></section>
+
+<section class="post" id="b">
+  <div class="nbar"><span>‹ Notas</span><span style="color:#8e8e93;font-size:28px">···</span></div>
+  <div class="note">
+    <div class="d">segunda-feira, 8:42</div>
+    <h2>Barbearia: a fazer</h2>
+    <div class="it"><i class="ck on"></i><span class="done">Responder às marcações no WhatsApp</span></div>
+    <div class="it"><i class="ck on"></i><span class="done">Abrir a loja</span></div>
+    <div class="it"><i class="ck"></i><span>Quem faltou na sexta?</span></div>
+    <div class="it"><i class="ck"></i><span>Contas do mês (onde pus o caderno?)</span></div>
+    <div class="it"><i class="ck"></i><span>Escala da equipa</span></div>
+    <div class="it"><i class="ck"></i><span>Pomada a acabar, encomendar</span></div>
+    <div class="it"><i class="ck"></i><span>Aquele cliente que já não vem...</span></div>
+  </div>
+  <div class="cap"><b>Isto tudo<br>num só sítio.</b><img src="logo-horizontal-branco.png" alt="InstaBarber"></div>
+</section>
+
+<section class="post" id="c">
+  <div class="chead"><div class="av">C</div><div><div style="font-size:38px;font-weight:700">Cliente</div><div style="font-size:26px;color:#9fb0ba">a escrever...</div></div></div>
+  <div class="chat">
+    <div class="gap">HOJE</div>
+    <div class="m mi">Boas! Tens vaga hoje depois das 18h?<small>17:52</small></div>
+    <div class="m mo">Deixa-me ver o caderno...<small>18:20 ✓✓</small></div>
+    <div class="m mi">Já marquei noutro sítio.<small>18:21</small></div>
+    <div class="m mi">Fica para a próxima 👍<small>18:21</small></div>
+  </div>
+  <div class="cap"><b>Respondeste tarde.<br>O cliente já cortou.</b>
+    <div><span>Marcação online, a qualquer hora.</span><img src="logo-horizontal-preto.png" alt="InstaBarber"></div></div>
+</section>
+</body></html>

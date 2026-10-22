@@ -1,0 +1,362 @@
+# DECISOES.md — InstaBarber
+
+Decisões tomadas e porquê. Em caso de contradição entre ficheiros, **prevalece a
+decisão mais recente deste registo**. Cada decisão nova acrescenta-se no fim,
+com data; uma decisão revista não se apaga, marca-se como substituída.
+
+> Nota: o ficheiro recebido para a revisão 10.1 começava na secção 8. As
+> secções 1 a 7 da versão anterior não estavam no ficheiro; se existirem noutra
+> cópia, acrescentar aqui com a data original.
+
+---
+
+## Anteriores à versão 10.1
+
+### 8 · Endereços de correio — 20 de outubro de 2026
+
+Cinco endereços, uma caixa e quatro alias: geral@, raphaelmartins@, comercial@,
+apoio@, privacidade@. O endereço segue a natureza da mensagem, não quem escreve.
+Zoho Mail Lite a cerca de 1 EUR/mês. O privacidade@ vai para a Política de Privacidade.
+
+### 9 · Lacunas fechadas no documento — 20 de outubro de 2026
+
+- **L.2** — os cinco endereços de correio e a regra que decide qual usar
+- **D.3** — quem liga as funcionalidades: só a Performa LAB, e o que desaparece quando se desliga
+- **F.4.4** — os ecrãs da loja: os dois separadores, os quatro estados dos pedidos e a regra do stock
+
+---
+
+## Versão 10.1 — auditoria de 21 de outubro de 2026
+
+Decisões do dono (Raphael Martins) marcadas «dono»; decisões técnicas da
+revisão marcadas «técnica».
+
+### D-01 · Sem pagamentos nem faturação na versão 1 — dono
+A plataforma não processa pagamentos nem emite documentos fiscais. Todo o
+dinheiro é registado, nunca cobrado. O tema volta a ser avaliado aos 50 clientes.
+Consequências: «recibo» passa a «resumo» (D.11, F.4.2) e todos os PDF dizem
+«Não é documento fiscal».
+
+### D-02 · Pagamentos e faturação preparados e desligados — dono
+Os módulos existem na versão 1 (G.4), testados, desligados ao nível da
+plataforma e invisíveis para a barbearia. Liga-os o super_admin no painel de
+administração, barbearia a barbearia, sem mexer no código. As chaves dos
+fornecedores colam-se uma vez no painel da Vercel. Não entram na grelha D.3.
+
+### D-03 · Emitente por profissional — dono
+Na maioria das barbearias o barbeiro é independente e emite a sua fatura-recibo.
+O emitente decide-se pelo modelo de caixa do profissional (A → barbearia;
+B e C → barbeiro) e fica gravado em cada visita. Três modos de emissão:
+programa certificado ligado, Portal das Finanças à mão (o sistema prepara os
+dados e regista o número) ou nenhum. A validar com um contabilista certificado
+antes de qualquer ativação.
+
+### D-04 · Faturação por programa certificado — técnica (recomendação aceite)
+A via preparada é a integração com Moloni ou InvoiceXpress, uma conta por
+emitente. Certificar o próprio InstaBarber na AT fica para depois dos 50 clientes.
+
+### D-05 · Fornecedor de pagamentos por decidir — pendente
+O módulo usa um adaptador; na versão 1 só existe o adaptador «simulado».
+Escolher entre ifthenpay, Eupago e Stripe antes de ativar.
+
+### D-06 · Acesso do cliente por código enviado pela barbearia — dono
+O cliente prova que o telemóvel é dele com um código de 6 dígitos que o sistema
+gera e a barbearia envia por wa.me (válido 15 minutos, 5 tentativas, 3 pedidos
+por hora). Serve para criar e para recuperar a palavra-passe.
+Consequências técnicas:
+- **Marcar não exige conta.** Como o código depende de alguém da barbearia, uma
+  marcação às 23h não pode esperar por ele. A marcação pede nome e telemóvel; a
+  conta (área de cliente, selos, histórico) é opcional e ativa-se pelo código.
+- **Uma conta por cliente e por barbearia.** A conta de autenticação usa um
+  e-mail técnico `<telefone>.<inquilino_id>@clientes.instabarber.pt`, que nunca
+  recebe correio. Assim, quem trabalha numa barbearia não consegue usar um
+  código para entrar na conta do mesmo cliente noutra barbearia.
+- Não há OTP por SMS.
+
+### D-07 · Funcionalidade fora do plano — dono
+Desaparece do painel (menu, ecrã, botão, rota), exceto as chaves com
+`mostra_upgrade`: `envio_mensagens`, `envio_lote`, `pedido_avaliacao` e
+`metas_profissional`, que aparecem desativadas com a chamada de upgrade.
+
+### D-08 · O Basic ganha o lembrete individual e os selos — dono
+`lembretes_marcacao` (lembrete individual por wa.me) e `fidelizacao_selos`
+passam para o Basic. O envio em lote, a recuperação e os módulos de receita
+continuam no Pro.
+
+### D-09 · Multilinguagem fica na versão 1 — dono
+Passa a ser a chave `multilinguagem` da grelha, fora dos dois pacotes, ligada
+pela Performa LAB. Prevalece a versão com campos opcionais por língua no
+formulário de serviços (F.3.2, J.1); a frase da I.3.2 que os dava como
+«futuros» foi retirada.
+
+### D-10 · Preços com IVA e plano anual — dono
+Mostrar sempre o preço com IVA ao lado do preço sem IVA. Plano anual a 10
+mensalidades (dois meses grátis).
+
+### D-11 · Relatório mensal só para descarregar — dono
+Não segue por e-mail. A tarefa mensal da M.1 «enviar o relatório» foi retirada.
+
+### D-12 · Clube não ligado a um barbeiro — dono (confirmado a 21/10/2026)
+A frase «o clube está sempre ligado a um barbeiro» foi retirada: o serviço com
+crédito fica atribuído a quem o fez, e a comissão é de quem o fez.
+
+### D-13 · Regras que gravam vivem na base de dados — técnica
+Validação de vaga, preço com desconto, comissão, selos e stock são funções SQL
+(`docs/esquema/02_funcoes.sql`) com testes. Motivo: o cliente JS do Supabase
+não faz transações, e só assim a marcação é atómica e as mudanças de hora são
+tratadas pelo Postgres. O TypeScript chama estas funções e não as reimplementa.
+
+### D-14 · O esquema tem uma fonte única — técnica
+`docs/esquema/` (quatro ficheiros SQL e testes). Identificadores só em ASCII.
+Referências entre tabelas do mesmo inquilino por chaves compostas
+`(inquilino_id, id)`. Substitui a regra «as tabelas vivem na Parte F».
+
+### D-15 · Vercel Hobby até ao ponto de equilíbrio — dono
+Risco registado: os termos da Vercel não permitem uso comercial no plano Hobby,
+e a Vercel pode suspender a conta. A passagem para o Pro é só configuração. O
+Supabase Pro continua necessário desde a primeira barbearia real (cópias de
+segurança e o projeto gratuito pausa por inatividade).
+
+### D-16 · Sem tarefas agendadas — dono (21/10/2026)
+A plataforma não usa tarefas agendadas (Vercel Cron). O lembrete é por WhatsApp,
+que chega melhor aos clientes em Portugal; não há lembrete por e-mail. O
+e-mail de confirmação sai no momento da marcação. A cópia externa da base de
+dados faz-se à mão, semanalmente (manual do operador, P-13), além das cópias
+diárias automáticas do Supabase Pro. A funcionalidade `lembretes_email` passou
+a `confirmacao_email`.
+
+### D-17 · Barbeiro entra por convite — técnica (B8)
+A conta do barbeiro cria-se com convite por e-mail (Supabase Auth, enviado pelo
+Resend). O NIF deixa de ser palavra-passe. Reposição pela mesma via.
+
+### D-18 · Uma conta de equipa, vários perfis — técnica
+Um utilizador pode ter perfis em várias barbearias. O RLS verifica a pertença
+(`inquilinos_onde()`), não um «inquilino ativo»; a interface escolhe a
+barbearia pelo endereço.
+
+### D-19 · Endereço público — técnica
+Três formas, por esta ordem: domínio próprio, subdomínio
+(`exemplo.instabarber.pt`) e caminho (`instabarber.pt/exemplo`). O middleware
+reescreve as três para a rota interna `/b/[slug]`, que nunca aparece ao
+público. Há uma lista de slugs reservados na base de dados.
+
+### D-20 · Grelha de funcionalidades — técnica
+Chaves novas: `ficha_tecnica`, `politica_faltas`, `confirmacao_email`,
+`pedido_avaliacao`, `multilinguagem`, `cartoes_oferta`, `portfolio_barbeiro`.
+`comissoes` passa a `comissoes_acertos`. A fonte é
+`docs/esquema/04_dados_iniciais.sql`.
+
+### D-21 · Preço dos serviços — técnica
+`servicos.preco` é o preço final ao cliente (com IVA, se o houver). Muitas
+barbearias estão isentas; a plataforma não calcula IVA de serviços.
+
+### D-22 · Radar e clientes com poucas visitas — técnica (L8)
+Com menos de três visitas, a frequência é 30 dias por omissão; o cliente que
+veio uma vez e não voltou passa a aparecer como em risco e depois perdido.
+
+### D-23 · Faturado — técnica (L6)
+«Faturado» é a soma de `valor_cobrado` das visitas. O relatório e o Início
+separam: receita própria (modelo A), receita que passou pelos barbeiros
+(modelos B e C, informativa) e rendas de cadeira. Uma só função calcula os três.
+
+### D-24 · Selos em livro — técnica (C6)
+Os selos são movimentos (`movimentos_selos`); o saldo é a soma. O resgate
+consome os selos necessários e o excedente transita.
+
+### D-25 · Base da comissão — técnica (C5)
+Base = valor de tabela quando o serviço sai do crédito do clube; senão, o valor
+cobrado (com o desconto de hora morta). A percentagem fica gravada na visita.
+
+### D-26 · Filas sem tarefas agendadas — técnica (L3, L4)
+A reserva de 10 minutos e o prazo de 30 minutos da fila de espera expiram por
+cálculo (`reservada_ate`, `expira_em`), sem tarefa agendada. As reservas
+expiradas libertam-se na marcação seguinte.
+
+### D-27 · Notificações push fora da versão 1 — técnica
+Exigiriam uma dependência nova (`web-push`). Ficam para depois do lançamento.
+
+### D-28 · Palavra-passe na primeira marcação — dono (substitui em parte a D-06)
+O cliente com número novo na barbearia escolhe a palavra-passe na primeira
+marcação, sem código. O número que já tem ficha (balcão, QR, importação) cria o
+acesso pelo código, uma vez. Quem se esquece da palavra-passe recupera-a pelo
+código. Se alguém registar o número de outra pessoa, o dono do número recupera a
+conta pelo código. Verificação: `pode_criar_acesso_direto()`.
+
+### D-29 · Domínio próprio como extra — dono (confirmado a 21/10/2026)
+5,00 € por mês sem IVA (6,15 € com IVA), em qualquer plano; 50,00 € no plano
+anual. Liga-se na ficha da barbearia, no painel de administração, e entra na
+fórmula da D.7 (`DOMINIO_PROPRIO_CENT`). A ligação técnica do domínio segue o
+manual do operador (P-10).
+
+### D-30 · Exportação dos dados de uma barbearia — técnica
+O super_admin (com dois fatores) lê todas as tabelas e exporta os dados de uma
+barbearia em CSV quando ela sai, como obriga o art. 28.º, n.º 3, alínea g) do
+RGPD. Políticas `*_admin_ler` em todas as tabelas.
+
+### D-31 · Manual do operador — dono
+`docs/manual-do-operador.md` descreve todos os processos manuais da Performa
+LAB. Escreve-se a partir da especificação e revê-se na Fase 8 com o sistema real.
+
+### D-32 · Nomes das camadas — dono (21/10/2026)
+InstaBarber Admin (Performa LAB), InstaBarber Gestão (dono), InstaBarber Equipa
+(barbeiro), Página pública e Minha área (cliente, com a marca da barbearia).
+
+### D-33 · O Admin só no domínio principal — dono (21/10/2026)
+`/admin` só funciona em `instabarber.pt`. Nos endereços das barbearias
+(subdomínio ou domínio próprio) responde 404, para que a entrada da Performa LAB
+não se descubra a partir de uma barbearia.
+
+### D-34 · Página de apresentação no domínio principal — dono (21/10/2026)
+`instabarber.pt` mostra uma página de apresentação com botão de contacto, em vez de ficar vazio. O ficheiro de partida está em `landing/index.html` (HTML único, sem cookies nem análise). Na Fase 0 passa a `app/page.tsx` do domínio principal, com os mesmos textos e preços (preços com IVA, H.2). O e-mail de contacto é `comercial@instabarber.pt` (L.2), numa só constante. O flyer em PDF está desatualizado (preço 39,99 €, garantia de 30 dias e desafio de 90 dias não fazem parte da especificação) e não é fonte de preços.
+
+### D-35 · Ficheiros da marca — dono (21/10/2026)
+Os logótipos entregues pelo dono vivem em `public/marca/`: versões com fundo transparente (horizontal, vertical e símbolo, em dourado, branco, preto e cor), favicons e `originais/` com os 12 ficheiros recebidos. Dourado e branco são para fundo escuro; preto e cor para fundo claro. São imagens PNG, não vetoriais: se for preciso ampliar (impressão, fachada), pedir o SVG ao designer ou mandar vetorizar. O dourado sobre preto é a versão principal (I.1).
+
+### D-36 · Desafio de 90 dias do plano Pro — dono (21/10/2026), condições por aprovar
+Mantém-se o desafio do flyer: no plano Pro, se nenhum cliente for recuperado nos primeiros 90 dias, devolve-se uma mensalidade. Condições escritas na landing, ancoradas nas regras do sistema: (1) o barbeiro contacta pelo sistema pelo menos 20 clientes classificados como perdidos (mensagem de recuperação aberta e envio confirmado, D-07/F.5); (2) «recuperado» é a definição da E.8 (visita registada até 30 dias depois da mensagem aberta); (3) a contagem sai dos registos do sistema; (4) o valor devolvido é o de uma mensalidade do Pro. O envio é por `wa.me` e confirmado à mão, por isso o flyer deixa de dizer «mensagens automatizadas». O exemplo «22 contactados, 9 regressam, 15 €» é ilustrativo e usa o fator 0,4 da F.1; com 47,97 € de mensalidade paga quase 3 mensalidades (o flyer dizia mais de 3 com 39,99 €). **Por aprovar:** o prazo exato, o que acontece se houver menos de 20 clientes perdidos, e a redação para os Termos, que um jurista deve rever. A devolução faz-se à mão (D-01).
+
+### D-37 · Landing em modo «barbearia piloto» — dono (21/10/2026)
+Enquanto o sistema não existir (antes da Fase 4), a página não promete demonstração nem datas: convida as primeiras barbearias a serem piloto e fala em «condições de lançamento», sem números. O contacto é um formulário que não guarda nada no site: monta a mensagem e abre o WhatsApp ou o e-mail do visitante. Política de Privacidade do site dentro da página, sem cookies nem análise. Quando houver demonstração real, voltar ao texto «mostramos o sistema a funcionar» e trocar o painel de exemplo por capturas. O telemóvel está num só sítio (constantes `PHONE` e `PHONE_TXT` no fim do ficheiro) e muda quando o novo chip existir.
+
+### D-38 · Módulo Comercial (CRM, propostas e contratos) — dono (21/10/2026)
+O Admin ganha o separador Comercial: funil de leads, briefing, propostas em PDF e contratos gerados da proposta aceite (Parte N). Vive só no Admin (super_admin com 2FA, domínio principal). Sem dependências novas (jsPDF; preços pela fórmula da D.7). Os textos jurídicos são modelos em `modelos_documento`: os de `docs/comercial/` são **rascunhos** e só se aprovam no sistema depois do parecer de um jurista. A assinatura faz-se fora do sistema (por exemplo, Chave Móvel Digital) e carrega-se o PDF assinado. Um lead só passa a «ganho» ao assinar o contrato.
+
+### D-39 · Fase 3B e retenção dos leads — técnica (21/10/2026)
+O módulo é a Fase 3B, a seguir à Fase 3 (estimativa de 6 dias, fora dos 47 das nove fases). Retenção: lead sem contrato é apagado 12 meses depois do último contacto, por procedimento mensal manual (`apagar_leads_inativos`, P-24), sem tarefas agendadas (D-16). Contratos e propostas ligadas a contratos guardam-se pelos prazos legais. Até à Fase 3B, o formulário da landing continua a não guardar nada (D-37).
+
+### D-40 · Módulo de Finanças da Performa LAB — dono (21/10/2026)
+O Admin ganha o separador Finanças (Parte O): custos fixos e variáveis, contas a pagar, indicadores sem IVA, ponto de equilíbrio, objetivo de faturação com «quantas barbearias faltam», previsões a 12 meses em três cenários e exportação para o contabilista. Regista, não cobra nem fatura (D-01): é controlo interno e nada do que exporta é documento fiscal. Sem ligação ao banco nem leitura de faturas. Os valores dos fornecedores em dólares registam-se em euros, à mão. As previsões mostram sempre os pressupostos e dizem que não são promessa. É a Fase 3C, depois da 3B (5 dias, fora dos 47).
+
+### D-41 · Lembretes de vencimento aos inquilinos — dono (21/10/2026)
+O Admin lembra as barbearias de que a mensalidade vence, com o modelo dos lembretes da barbearia (E.2): o sistema prepara o texto; o operador abre o WhatsApp por `wa.me` e confirma o envio à mão; ou carrega no botão de e-mail e o servidor envia pelo Resend, de apoio@, no momento do clique. Nunca agendado nem automático (D-16). São mensagens de serviço B2B: não precisam de consentimento promocional. O estado do lembrete só muda por funções da base de dados.
+
+### D-42 · Contrato e Acordo de Subcontratação baseados na lei portuguesa — dono (21/10/2026)
+Os rascunhos de `docs/comercial/` (contrato, Acordo de Subcontratação e condições da proposta) apoiam-se na lei portuguesa e europeia aplicável: Código Civil, cláusulas contratuais gerais (Decreto-Lei n.º 446/85), pagamentos em atraso (Decreto-Lei n.º 62/2013), RGPD art. 28.º, Regulamento dos Dados (mudança de prestador), eIDAS e Decreto-Lei n.º 12/2021. Procuram dar garantias às duas partes: sem fidelização e saída fácil, exportação gratuita dos dados em 30 dias, nenhum dado apagado na suspensão, responsabilidade sem limite por dolo, culpa grave e danos pessoais, limite de 12 mensalidades nos restantes casos, juros e 40 € em atraso. Continuam a ser **rascunhos**: `notas-para-o-jurista.md` lista os pontos a rever e os prazos entre parênteses retos. O contrato só se aprova no sistema depois do parecer.
+
+### D-43 · Decisões sobre as Finanças — dono (21/10/2026)
+Saídas mensais de 3 % como pressuposto enquanto houver menos de 10 barbearias; remetente dos lembretes por e-mail: apoio@; faturas e recebimentos com valor com IVA (os indicadores dividem por 1,23).
+
+### D-44 · Quem é a Prestadora enquanto não houver sociedade — titular decidida, regime de IVA por confirmar (21/10/2026)
+Os dados de quem presta o serviço entram no contrato por configuração (`prestadora.*`), nunca escritos no modelo. Enquanto não existir Lda., a Prestadora é o titular da atividade em nome individual sob a qual a Performa LAB opera: é ele quem assina, fatura e responde. **Por decidir pelo dono, com contabilista:** quem é o titular (a namorada, ou o próprio dono abrindo atividade), o CAE, o regime de IVA (os preços com IVA a 23 % pressupõem IVA normal) e o acordo escrito entre o titular e quem desenvolve o trabalho. A cláusula 19 do contrato já prevê a cessão à futura sociedade.
+
+**Atualização (21/10/2026):** a titular é a companheira do dono, que assina o contrato. Não há cláusula de exclusividade nem concorrência no contrato de trabalho dela, e não é função pública. Falta confirmar com o contabilista o CAE, o regime de IVA e a Segurança Social, e escrever o acordo entre os dois.
+
+**Dados recebidos (21/10/2026):** o comprovativo de início de atividade da titular mostra regime simplificado de IRS, isenção de IVA (art. 53.º, desde 24/09/2025), CAE principal 61200 (telecomunicações) e volume previsto de 1.500 €. Entram no contrato só nome, NIF, domicílio e qualidade, pelas variáveis `PRESTADORA_*` (valores em `dados-locais/prestadora.env`, fora do Git). Telefone e e-mail comerciais entram só na proposta e na landing. O Raphael é sócio de facto, gere e vende: não assina nem aparece em documentos, e a assinatura de todas as mensagens passa a ser «InstaBarber · Performa LAB». **Por decidir:** CAE de software, e o regime de preços com a isenção de IVA (ver D-45).
+
+### D-45 · Preços e regime de IVA da Prestadora — dono (21/10/2026)
+O dono escolheu a opção B: o **preço final** ao cliente mantém-se em 24,59 € (Basic) e 47,97 € (Pro), com os extras de 12,30 € e 6,15 €, quer a Prestadora esteja isenta de IVA (art. 53.º do CIVA) ou no regime normal. Com a isenção, o IVA é 0 %, a fatura diz «IVA – Regime de Isenção» e o valor sem IVA é igual ao preço final. Com o regime normal, o preço final inclui o IVA a 23 % (19,99 € e 39,00 € sem IVA). O regime é a variável `PRESTADORA_REGIME_IVA` (`isento` por omissão, segundo o comprovativo de início de atividade); a fórmula da D.7 e a coluna `propostas.iva_taxa` (0 ou 23, com teste) suportam os dois. **Por confirmar com o contabilista:** se a isenção do art. 53.º continua (não tem prazo próprio: depende do volume de negócios; o «primeiro ano de isenção» é o da Segurança Social, não o do IVA), e o que fazer quando o volume passar de 15.000 € (absorver o IVA no preço final, ou subir o preço por aviso).
+
+### D-46 · O formulário da landing envia ao servidor — dono (21/10/2026)
+Fica superada a parte da D-37 que dizia que o formulário não guarda nada. Quando a rota de contacto existir, o botão de enviar (e o do WhatsApp) faz primeiro um pedido ao servidor: valida (Zod), aplica honeypot e limite por IP, chama `submeter_lead()` (que grava o lead e aplica o limite por contacto) e envia o aviso por e-mail para comercial@ pelo Resend. O fluxo é um só botão, «Enviar pedido de contacto», com a nota «Em breve vais receber um contacto». Depois de enviar, o formulário desaparece e dá lugar a uma mensagem grande («Pedido enviado»), com o título «Não queres esperar?» e um botão verde «Falar agora no WhatsApp», que abre a conversa com a mensagem preparada. Se o pedido ao servidor falhar, a mensagem diz que não foi possível e oferece o mesmo botão, para o lead não se perder. Nome e um contacto (telemóvel ou e-mail) são obrigatórios. Enquanto a rota não existir (constante `ENDPOINT` vazia), o botão não finge que enviou: mostra «Quase lá» e pede o envio pelo WhatsApp; fora de instabarber.pt (pré-visualização) mostra-se o fluxo final como demonstração, com aviso, para se poder rever o desenho. Até lá, a landing só prepara a mensagem de WhatsApp e não guarda nada. O formulário passa a dizer, junto ao botão, que os dados são guardados para contactar o visitante, e a Política de Privacidade é atualizada (12 meses, H.1). **Confirmado pelo dono (21/10/2026):** a rota de contacto, só com o aviso por e-mail ao comercial@ e sem base de dados, entra já na **Fase 0**, para o «Pedido enviado» ser verdadeiro desde o primeiro deploy. A gravação no CRM (`submeter_lead`, limite por contacto e por IP, 12 meses) fica na camada 1A da Fase 3B. A Fase 0 passa a precisar da chave do Resend e do domínio verificado (SPF e DKIM).
+
+### D-47 · Posicionamento: «Feito em Portugal», sem superlativos por provar — dono (21/10/2026)
+A landing diz «Feito em Portugal» e mostra o que é verdade hoje: português de Portugal, hora de Lisboa e feriados, dados na União Europeia, WhatsApp sem custo por mensagem, desenvolvimento e apoio a partir de Viseu. Não diz «100 % português» (a infraestrutura usa fornecedores estrangeiros, mesmo com dados na UE) nem «o mais completo do mercado» (sem estudo da concorrência e sem pagamentos, faturação certificada ou aplicação nativa, que outros oferecem). Poderá dizer-se «um dos mais completos» quando houver uma comparação feita e atualizada.
+
+## D-48 · Atalhos, demonstração e calculadora na landing (21/10/2026)
+
+- Três atalhos no topo: «Vê quanto dinheiro estás a perder todos os meses» (→ #calculadora), «Experimenta o InstaBarber já» (→ #demo), «Quanto custa?» (→ #planos).
+- Demonstração dentro da landing (Agenda, Clientes perdidos, Selos), com dados fictícios e aviso visível. O fluxo WhatsApp é preparar, abrir, confirmar: nada se envia sozinho (regra 7).
+- Calculadora: estimativa feita no browser, sem guardar nada; fator de recuperação 40 % (o mesmo do radar); compara com o Basic (24,59 €). O resumo segue no campo `calculadora` do pedido de contacto e na mensagem de WhatsApp.
+- Fase 0: ao portar a landing, a rota `/api/contacto` aceita o campo opcional `calculadora` (texto, máx. 300 caracteres) e grava-o no lead.
+
+## D-49 · Ajustes à landing e auditoria (21/10/2026)
+
+- Os atalhos passam para o hero, logo abaixo do texto introdutório.
+- O selo do hero passa a «100% Feito em Portugal», com bandeira em SVG. Substitui a redação cautelosa de D-47 por decisão do dono. Nota: a base de dados e o alojamento ficam em Frankfurt/Vercel; manter o texto referido à origem do produto e da operação, nunca à infraestrutura.
+- A calculadora passa a falar de perda («Estás a perder» e «Poderias receber a mais»).
+- Erro corrigido: a classe `.lab` da demonstração colidia com a etiqueta `.lab` do quadro de contacto. Renomeada para `.box`.
+- Auditoria: `scripts/auditar-landing.py` (ids duplicados, classes repetidas, âncoras sem destino, brasileirismos, pontuação, elementos fora do ecrã a 1280/768/390/360 px). Corre-se antes de cada publicação.
+
+## D-50 · Formulário em dois passos, leads incompletos e vídeo (21/10/2026)
+
+- **Passo 1** (obrigatório): nome completo, telemóvel português (9 dígitos) e e-mail, com validação. O botão «Continuar» grava o lead (fase 1). O aviso de privacidade está por baixo do botão.
+- **Passo 2** (opcional): distrito (lista dos 18 distritos e das 2 regiões autónomas), cidade ou concelho, nome da barbearia, barbeiros e maior dificuldade hoje. «Enviar pedido» completa o lead (fase 2, com a `ref` do passo 1); «Agora não» termina sem enviar mais nada.
+- **Não se guarda o que foi escrito e não enviado.** Sem pedido do titular não há base legal nem informação prévia (RGPD, arts. 6.º e 13.º), e contactá-lo seria comunicação não solicitada. Os leads que fizeram o passo 1 e não o 2 aparecem no CRM numa aba «Incompletos» (Fase 3B).
+- Medição sem dados pessoais: contadores no servidor (visitas, abertura da calculadora, cliques em «Continuar»), sem cookies nem IP guardado. Registado na Fase 0.
+- Desafio dos 90 dias: gancho junto da calculadora, com ligação às condições da secção #desafio. Texto por validar pelo jurista (D-36).
+- Vídeo de 30 s: só depois de o sistema estar lançado e testado (piloto), gravado no painel real com legendas. Até lá, vale a demonstração interativa da landing, que diz ser fictícia. Fica na Fase 8, com o cliente piloto a autorizar por escrito o uso do nome e das imagens.
+- Prova real: testemunho e foto do barbeiro piloto, só com consentimento por escrito.
+
+## D-51 · Preparação para outros países e Parte P dormente — dono (21/10/2026)
+
+- O dono quer poder vender noutros países da Europa e no Brasil (a empresa de TI do pai é a entidade candidata) e ativar mais tarde o MB Way online, sem refazer a base.
+- **Feito agora:** `inquilinos.pais`, `fuso`, `moeda` e `idioma`, dormentes (cada restrição só aceita hoje o valor de Portugal), com 7 testes (`60_expansao.sql`); regra nova em CLAUDE.md §5 (textos só em `lib/i18n/`, nada de moeda, IVA, fuso ou formato escritos à mão).
+- **Parte P (`docs/parte-p-roteiro-de-expansoes.md`):** roteiro dormente com o inventário dos pontos ainda portugueses (P.2), o procedimento comum para ativar um país (P.3) e as secções Espanha (P.4), Brasil (P.5), outros países da Europa (P.6), MB Way online (P.7) e outros métodos (P.8). Fica fora das nove fases, das 3B e 3C e do documento mestre, e só se lê por ordem do dono (CLAUDE.md §1).
+- **Regra 6 (fuso):** mantém-se «Europe/Lisbon» enquanto só existir Portugal. Passa a «fuso da barbearia, por omissão Europe/Lisbon» só na ativação de um país (P.3, passo 5), com ordem do dono.
+- **Tradução:** dicionário próprio em `lib/i18n/`, sem dependência nova (a stack mantém-se fechada). Se a Parte P vier a exigir uma biblioteca, pede-se autorização nessa altura.
+- **Confirmada pelo dono em 21/10/2026**, assumindo o risco: a regra 6 só muda na ativação, o dicionário é nosso e a Parte P fica como está. As dúvidas jurídicas e contabilísticas ficam para a fase de expansão de cada país.
+- **Pareceres jurídicos e fiscais** dos países e da relação entre a Performa LAB e a empresa do pai são de profissionais locais; a Parte P só os lista.
+
+## D-52 · Fase 9: manuais operacionais no fim — dono (21/10/2026)
+
+Os manuais completos escrevem-se **depois** de o sistema estar pronto, publicado e testado numa barbearia real (Fase 9, `fases/fase-9-manuais.md`, 7 dias, fora dos 47), para descreverem os ecrãs e os problemas reais, com capturas verdadeiras. Cobrem: ciclo de vida da barbearia (do 1.º contacto a 12 meses de pós-venda), manual comercial, guia de resolução de problemas por sintoma, apoio ao cliente, calendário de operação, manual de expansões para o dono (versão operacional da Parte P) e passagem de testemunho a quem entre na operação. Verificação pelo teste do estranho. O `manual-do-operador.md` atual (P-00 a P-27) é a base e continua a ser atualizado em cada fase.
+
+## D-53 · Comparação «Se comprasses separado» sem nomear concorrentes — dono/técnica (21/10/2026)
+
+O dono sugeriu comparar com o custo de comprar cada sistema separado e, no limite, nomear concorrentes com o nome desfocado. Decisão: **categorias, sem nomes**. Um nome desfocado continua a identificar o concorrente (publicidade comparativa: tem de ser objetiva, verificável e não enganosa) e o texto fica no código da página. Os valores têm fonte, data e taxa de câmbio em `docs/comercial/referencias-de-preco.md`, revistos de seis em seis meses. A secção só soma o que o Basic inclui e diz que, no valor mais baixo, a diferença é pequena (23 € a 62 € contra 24,59 €). Gestão financeira, comissões e página própria não têm preço comparável com fonte: aparecem como «incluído», sem valor. Antes de publicar em instabarber.pt, o jurista confirma o texto (D-36).
+
+## D-54 · Landing: idiomas, «IVA incluído» e lembrete ilustrado — dono (21/10/2026)
+
+- O bloco «Português de Portugal» da landing passa a «Página em vários idiomas» (português, inglês e francês, ativados a pedido: a funcionalidade `multilinguagem` não vem em nenhum pacote, só a Performa LAB a liga). «De Viseu para o país» passa a «De Portugal para o mundo».
+- Todo o preço da InstaBarber na landing leva «IVA incluído». Enquanto a Prestadora estiver isenta (art. 53.º do CIVA), não se acresce IVA e o preço final não muda se o regime mudar (D-45): o contabilista confirma a expressão.
+- Lembrete de marcação: separador «Lembrete» na demonstração, com a mensagem como chega ao cliente. A mensagem passa a incluir serviço, data, hora, barbeiro e, no próprio dia, quantos minutos faltam (calculado em Europe/Lisbon ao preparar). Continua a ser por `wa.me`, aberto e confirmado à mão (regra 7), nos dois planos.
+
+## D-55 · Catálogo de atualizações numeradas — dono (21/10/2026)
+
+O dono quer pedir mudanças futuras por número («executa as atualizações 1, 7, 9 e 32»), cada uma com procedimento escrito para o Claude Code executar sem deixar a plataforma inoperante. Criado `docs/atualizacoes/`: `README.md` (como se pede, o que o Claude Code faz e o protocolo de segurança: repositório limpo, cópia de segurança, migrações em três tempos, ensaio primeiro, interruptor, reversão testada, verificação completa, registo), `catalogo.md` (18 itens, números fixos e nunca reutilizados, próximo livre: 19) e um ficheiro `U-NN` por item. Itens de risco Alto, ou que toquem em dados reais ou chaves, esperam um «sim» do dono; os de risco Baixo ou Médio sem decisões pendentes avançam. Dormente: fora das fases e do documento mestre, só se lê por ordem do dono. Os procedimentos foram escritos antes do código existir e referem a estrutura da B.4: ao executar, confirmam-se os nomes reais e corrige-se o procedimento. Decisão de 21/10/2026 sobre o login do cliente: **não mudar agora** (U-01 fica como opção).
+
+## D-56 · Mapa do sistema para manutenção — dono (21/10/2026)
+
+O Claude Code não guarda memória entre sessões, por isso a memória do sistema é o repositório. Criados `docs/mapa-do-sistema.md` (classifica o pedido, traduz «página tal» para ficheiro, receitas de pedidos comuns com como verificar e desfazer, protocolo de pedido pequeno) e `scripts/gerar-mapa.sh` (gera `docs/mapa-gerado.md` do código real: rotas, variáveis de cor, chaves de texto, tabelas, funções e funcionalidades; falha se uma rota de `app/` ficar fora do mapa). Regra 15 do CLAUDE.md: cada fase termina com o mapa atualizado e confirmado. O `CLAUDE.md` manda ler o mapa em pedidos de manutenção. Atualização 19 do catálogo: pedido pequeno de alteração. Princípio: a cor, o horário ou o logótipo **de uma barbearia** são configuração no painel, não código (regra 2); a cor **da marca** só muda com ordem expressa e atualiza a Parte I.
+
+## D-57 · Manuais de atualizações e do desenvolvedor só no fim — dono (21/10/2026)
+
+O procedimento de pedidos pequenos e o catálogo de atualizações passam a ter dois manuais, produzidos na Fase 9, **depois** de tudo construído e conferido: o **manual de atualizações para o dono** (como pedir, o que esperar, o que é configuração e o que é código) e o **manual do desenvolvedor para o Claude Code** (mapa final, receitas executadas em ensaio, procedimentos `U-NN` reconciliados com o código real, armadilhas conhecidas, teste de arranque com uma sessão nova). Até lá, o mapa e o catálogo são rascunhos fiéis à especificação (D-55, D-56). A Fase 9 só fecha se o teste de arranque passar.
+
+## D-58 · Mini loja visível na landing (21/10/2026)
+
+A loja de produtos (`loja_produtos`, F.4.4, plano Pro) tinha só uma linha na lista de funcionalidades. Passa a ter secção própria (`#loja`), com demonstração interativa: o visitante encomenda como cliente e atende como dono (Novo → Pronto → Levantado; o stock só desce ao levantar; margem calculada sobre o preço sem IVA). Diz sempre que o pagamento é ao balcão, sem cobrança online e sem comissões (CLAUDE.md §3), e que os dados são fictícios.
+
+## D-59 · Clube de assinatura e cartões oferta visíveis na landing (21/10/2026)
+
+Secção própria `#receita` com duas demonstrações interativas, como a loja (D-58): **clube** (F.4.2: receita previsível por subscritores, crédito só vale depois de «Pago», crédito usado cobra 0 e o valor de tabela mantém-se, sem crédito cobra-se normalmente) e **cartão oferta** (F.4.9: código de oito caracteres, cartão com a marca e «Não é documento fiscal», validade de um ano, uso com saldo e recusa se o saldo não chega). Diz sempre que o pagamento é registado ao balcão e que o sistema não cobra (CLAUDE.md §3). Dados fictícios assinalados.
+
+## D-60 · Hero com página pública de exemplo e painel mais abaixo (21/10/2026)
+
+O hero passa a mostrar, à direita, um exemplo ilustrativo de **página pública de barbearia** (nome e logótipo fictícios: marcação, fila digital, serviços, loja, clube, selos, cartões oferta, idiomas e Livro de Reclamações), que mostra os diferenciais logo ao abrir. O quadro «Hoje na cadeira» (painel do gestor) foi para a secção `#painel`, antes de «Experimenta já». É um desenho em HTML e CSS, não uma fotografia: quando houver capturas reais da barbearia piloto, substituem-se (Fase 9).
+
+## D-61 · Quadro «Hoje na cadeira» retirado da landing (21/10/2026)
+O dono considerou a secção «O teu painel» redundante (a demo e o exemplo do topo já mostram agenda, clientes perdidos e mensagem). Removida a secção e o CSS associado.
+
+## D-62 · Instagram: peças e plano de lançamento (21/10/2026)
+Criados o esboço do perfil, 6 publicações, um Reel de 30 s e o plano de 30 dias (documento «InstaBarber · Plano de Instagram»). Fontes editáveis em `marketing/instagram/fontes/`, peças prontas em `marketing/instagram/saida/`. Todos os ecrãs são desenhos marcados «Exemplo ilustrativo»; dizem «primeiras vagas piloto» e não anunciam o desafio dos 90 dias (D-36 por validar). Proposta pendente: registar a origem `?origem=instagram` no formulário (nova entrada U-20 do catálogo, se o dono autorizar).
+
+## D-63 · Instagram: posts 7 e 8, vídeo 2 e fotografia de fundo (21/10/2026)
+Acrescentados o post 7 (faltas), o post 8 (cliente com 52 dias sem vir, versões feed e story com a mensagem como notificação de WhatsApp) e o vídeo 2 (fim do mês). O fundo do post 8 é uma fotografia de banco de imagens escolhida pelo dono: **confirmar e guardar a licença** (uso comercial e redes sociais) antes de publicar; se a imagem for gerada por IA ou tiver pessoas, rever a autorização. O fundo desenhado por código foi descartado. A fonte é `marketing/instagram/fontes/posts3.html`.
+
+## D-64 · Instagram: post 9, fila digital (21/10/2026)
+O post/story 9 apresenta a entrada por QR code e a fila digital (F.4.3, plano Pro): o cliente vê a posição e a estimativa de espera em tempo real. **Não promete aviso automático** («serás avisado quando for a tua vez»): a especificação não o prevê e a regra 5/7 impede mensagens automáticas. Se o dono quiser o aviso, é uma nova funcionalidade (abrir a conversa de WhatsApp com um clique para o barbeiro avisar o cliente), a pedir como atualização. A fotografia de fundo tem um letreiro de terceiros, que foi desfocado; confirmar a licença da imagem.
+
+## D-65 · Vocabulário PT-PT: «em direto» e «fila digital» (21/10/2026)
+«Ao vivo» é brasileirismo (regra 4). Em Portugal diz-se «em direto». O nome da funcionalidade passa a **Fila digital** (F.4.3, Pro) na landing, nos posts e nos textos de Instagram; o estado do cartão no post 9 diz «Em direto». Corrigidos landing, posts 5 e 9, story 9, legendas e planos.
+
+## D-66 · Landing sem rótulos de «exemplo/fictício» nos ecrãs (21/10/2026)
+Removidos das capturas e demos da landing os rótulos «Exemplo ilustrativo» e «Demonstração com dados fictícios», e «(demonstração)» nos botões. Mantidos apenas o aviso da calculadora («Exemplo com números ilustrativos», porque é uma estimativa) e «Preços de exemplo, com IVA» na loja. Os dados continuam a ser da barbearia fictícia «Barbearia Central»; antes de qualquer campanha paga, o jurista confirma se a ausência de rótulo é aceitável.
+
+## D-67 · Instagram sem Performa LAB nem «Viseu» (21/10/2026)
+Pedido do dono: as publicações não mencionam a Performa LAB nem «feito em Viseu». Removido do post 1 e do rodapé do post 6; o plano v2 deixa de ter o pilar «autoridade da Performa LAB» e a assinatura passa a InstaBarber apenas. O post 1 foi redesenhado como lançamento tipográfico («Agenda. Clientes. Equipa. Contas.»). Regra registada no CLAUDE.md, secção 11.
+
+## D-68 · Instagram sem «piloto»; promessa «tudo num só sistema» (21/10/2026)
+Removido «piloto» do post 1, do post 6, do reel 1, do esboço do perfil (destaque «Demo») e das legendas. CTA: «Experimenta a demo». Mensagem central do post 1: «Tudo o que a tua barbearia precisa, reunido num só sistema. Sem pagar por cada serviço.» («sem custo por mensagem» continua verdadeiro, mas passa a argumento secundário.)
+
+## D-69 · Tom das legendas: português falado, com gíria natural (21/10/2026)
+As legendas deixam o registo institucional e passam a soar a conversa entre barbeiros portugueses, com expressões naturais e calão leve, sem forçar. Pedido do dono depois de as primeiras versões soarem «a IA». Regra no CLAUDE.md, secção 12. Aplica-se a legendas, ecrãs de texto dos reels e respostas aos comentários.
+
+## D-70 · Guia de voz e linguagem das redes sociais (21/10/2026)
+Escrito `marketing/instagram/GUIA-DE-VOZ-E-LINGUAGEM.md`: persona («o colega do ofício»), cinco traços, lista de expressões proibidas (sinais de texto de IA), tabela Brasil/Portugal, dosagem de gíria (nível 2 de 5), vocabulário da casa, humor, emojis, receitas de gancho, antes e depois, respostas a comentários e teste de voz. É a referência final das legendas.
+
+## D-71 · Landing publicável e endereço www (21/10/2026)
+Criada `landing/publicar/` (index.html completo com doctype, viewport, ícones, canonical e og.png, mais `marca/`) para publicar já na Vercel como página estática, com Root Directory `landing/publicar`. O fonte de trabalho continua em `landing/index.html`; a pasta `publicar` regenera-se a partir dele. Domínios: `instabarber.pt` principal e `www.instabarber.pt` a redirecionar (L.8, passo 7). O dono pediu www.instabarber.pt: se quiser o www como principal, decidir antes (afeta `/admin` e `instabarber.pt/<slug>`). Nameservers da Vercel só na Fase 7. Na Fase 0 a landing passa para o Next.js e esta pasta é substituída.
+
+## D-72 · Plano Pro inclui 3 profissionais (22/10/2026)
+O Pro passa de 2 para 3 profissionais incluídos, sem referência ao gestor em nenhum texto (landing incluída). Preço base mantido (39,00 € / 47,97 € com IVA). O profissional adicional continua a 10,00 € por mês (12,30 € com IVA), ou 100,00 € por ano, mas só a partir do 4.º. Novos exemplos: 4 profissionais 49,00 € / 60,27 €; 5 → 59,00 € / 72,57 €; 8 → 89,00 € / 109,47 €. Alterados: landing, CLAUDE.md §6, Parte D (D.1, D.2, D.5, D.6, exemplo do e-mail), Parte J, documento mestre, esquema (`check profissionais_contratados >= 3` no Pro) e dados de teste (Barbearia B com 3). Testes SQL repetidos: 396 verificações, sem falhas. Preço do adicional e base por confirmar pelo dono.

@@ -1,0 +1,236 @@
+INSTABARBER · PLANEAMENTO DE INSTAGRAM (22/10 a 5/11/2026)
+Tudo o que está feito, com data, hora, legenda e áudio. Copiar e colar.
+
+REGRAS (CLAUDE.md, secções 11 e 12)
+- Nunca aparece: Performa LAB, «feito em Viseu», «piloto».
+- Mensagem central: tudo o que a barbearia precisa, num só sistema, sem pagar por cada serviço.
+- Tom: português falado de Portugal, gíria leve. Emojis com critério.
+- Endereço: instabarber.pt (link na bio).
+- Fila digital, loja, clube e cartões oferta são do plano Pro. Não prometer aviso automático.
+- Os ecrãs com «Exemplo ilustrativo» são ecrãs desenhados. Decidir antes de publicar: manter o selo discreto ou tirar. Os números dos exemplos (400 €, 52 dias, 1 440 €) são ilustrativos e as legendas dizem-no.
+
+ESTADO DOS FICHEIROS
+Nova linguagem (v3, fora do estilo da landing): v3-a (foto), v3-b (notas), v3-c (WhatsApp).
+Linguagem antiga (ainda parecem recortes da landing, refazer por esta ordem): feed 02, 04, 07, 08, 09, 05, 06 e os stories 8 e 9.
+Reels: 2 vídeos de 30 s, sem áudio (juntar música na app).
+
+================ CALENDÁRIO ================
+Qui 22/10  19:00  FEED   Post 1 · Lançamento (v3-a). Fixar no topo da grelha.
+Sex 23/10         STORY  Apresentação (ver Stories)
+Sáb 24/10  11:00  FEED   Post 2 · Notas do telemóvel (v3-b)
+Dom 25/10         STORY  Só stories
+Seg 26/10  12:00  FEED   Post 3 · A conta dos 400 € (feed 02)
+Ter 27/10  19:00  REEL   Reel 1 · Dinheiro na mesa
+Qua 28/10  12:00  FEED   Post 4 · Conversa de WhatsApp (v3-c)
+Qui 29/10  19:00  FEED   Post 5 · 52 dias sem vir (feed 08) + story 8
+Sex 30/10  12:00  FEED   Post 6 · Marcou e não apareceu (feed 07)
+Sáb 31/10  11:00  FEED   Post 7 · Antes e depois (feed 04)
+Dom 1/11          STORY  Só stories
+Seg 2/11   12:00  FEED   Post 8 · Fila digital (feed 09) + story 9
+Ter 3/11   19:00  REEL   Reel 2 · Fim do mês
+Qua 4/11   12:00  FEED   Post 9 · Página pública (feed 05)
+Qui 5/11   12:00  FEED   Post 10 · Preço (feed 06)
+Reserva: feed 03 («Um clique. A mensagem já está escrita.»), usar se algum post falhar.
+
+Regra de ouro: na primeira hora depois de publicar, responder a todos os comentários. Quem comenta a palavra-chave recebe o link por mensagem, enviado à mão.
+
+================ LEGENDAS ================
+
+---- POST 1 · 22/10 · Lançamento (v3-a) ----
+Imagem: v3-a (foto da barbearia, 1080x1350)
+A sério que ainda geres a barbearia com lista no telemóvel e um caderno velho? 🤨
+
+Bora simplificar. Agenda, clientes, equipa e caixa no mesmo sítio, e sem pagares uma coisa para cada. É o InstaBarber 💈
+
+Vai ver em instabarber.pt (link na bio) 👇
+
+#barbearia #barbeariaportugal #gestaodebarbearia #barbeiros #softwareparabarbearias
+Texto alternativo: Interior de uma barbearia com cadeiras de couro e um poste de barbeiro iluminado, com o texto «Tudo o que a tua barbearia precisa. Num só sistema.»
+
+---- POST 2 · 24/10 · Notas do telemóvel (v3-b) ----
+Segunda-feira, 8h42. A lista de um dono de barbearia 📝
+
+Metade riscada, a outra metade a viver na cabeça.
+
+Diz lá: quantas destas linhas só existem na tua memória? Põe o número nos comentários. Spoiler: nunca é zero 😅
+
+Agenda, clientes, equipa, stock e contas no mesmo sítio, sem pagares uma coisa para cada. É o InstaBarber.
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeiro #gestaodebarbearia #barbeariaportugal
+Texto alternativo: Captura de uma app de notas com a lista «Barbearia: a fazer», duas tarefas riscadas e cinco por fazer.
+
+---- POST 3 · 26/10 · A conta dos 400 € (feed 02) ----
+40 clientes que deixaram de aparecer. 15 € por visita. 8 visitas por ano. 🧮
+
+Faz a conta, a sério: são 400 € por mês que não estás a ver 😬
+
+(É um exemplo, não uma média. A tua conta pode ser pior ou melhor, mas só sabes se a fizeres.)
+
+Quantos clientes é que já não vês há mais de dois meses? Diz o número, não tenhas vergonha 👇
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeiro #gestaodebarbearia #barbeariaportugal
+
+---- REEL 1 · 27/10 · Dinheiro na mesa ----
+Vídeo: reel-instabarber-30s.mp4 (1080x1920, 30 s). Capa: reel-capa.png
+400 € por mês a fugir-te pela porta e tu nem dás por isso 💸
+
+No vídeo: a conta, a mensagem que traz o cliente de volta (já escrita, só carregas em enviar no WhatsApp 💬) e os selos que fazem o cliente voltar ⭐
+
+Tudo num sistema só, sem pagares uma coisa para cada. instabarber.pt, link na bio.
+
+Manda isto àquele amigo que tem barbearia e vive a queixar-se dos clientes que somem 😄
+
+#barbearia #barbeiro #gestaodebarbearia #barbeariaportugal #reels
+
+---- POST 4 · 28/10 · Conversa de WhatsApp (v3-c) ----
+17h52: «Tens vaga depois das 18h?»
+18h20: «Deixa-me ver o caderno...»
+18h21: «Já marquei noutro sítio.»
+
+28 minutos. Foi quanto demorou a perder um cliente. Fogo 😮‍💨
+
+Com marcação online, o cliente vê as vagas livres e marca sozinho, a qualquer hora. Tu ficas a cortar, que é o que sabes fazer ✂️
+
+Marca aí o colega que responde sempre «já te digo». E tu, quanto demoras? Sê sincero 😏
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeiro #barbeariaportugal #gestaodebarbearia
+Texto alternativo: Conversa de WhatsApp em que o cliente pergunta por uma vaga, o barbeiro demora 28 minutos a responder e o cliente já marcou noutro sítio.
+
+---- POST 5 · 29/10 · 52 dias sem vir (feed 08 + story 8) ----
+O Rui não corta o cabelo há 52 dias. Tu sabias? 👀
+
+Pois, ninguém sabia. É assim que se perde um cliente: sem fazer barulho.
+
+O InstaBarber mostra quem sumiu e deixa a mensagem escrita. Carregas, abre o WhatsApp e envias tu 💬 Não pagas nada por mensagem.
+
+Quem é o teu «Rui»? Comenta o nome (inventa um, ninguém vai saber) 😂
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeiro #gestaodebarbearia #barbeariaportugal
+
+---- POST 6 · 30/10 · Marcou e não apareceu (feed 07) ----
+Marcou. Não apareceu. Cadeira vazia 🪑
+
+4 faltas por mês × 15 € = 60 € que não entram. E ainda lhe vais mandar «está tudo bem?» 🙃
+
+O lembrete por WhatsApp já vem escrito, tu só confirmas o envio. O Basic custa 24,59 € por mês, IVA incluído. Menos do que as faltas.
+
+Quantas faltas tiveste este mês? Diz o número 👇
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeiro #barbeariaportugal #gestaodebarbearia
+
+---- POST 7 · 31/10 · Antes e depois (feed 04) ----
+Antes: caderno, folha de cálculo, grupos de WhatsApp e cartões de selos 📒
+Depois: tudo ligado, com os mesmos dados ✅
+
+Se andas à espera de «um dia arrumar isto», esse dia pode ser hoje. Agenda, clientes, equipa, financeiro e selos num só sistema, sem pagares uma coisa para cada.
+
+Qual é a tua maior dor de cabeça: o caderno ou o grupo de WhatsApp? Vota nos comentários 🗳️
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeiro #gestaodebarbearia #barbeariaportugal
+
+---- POST 8 · 2/11 · Fila digital (feed 09 + story 9) ----
+«Quanto tempo demora?» Quantas vezes por dia ouves isto? ⏳
+
+Com a fila digital, o cliente entra pelo QR code, vê a vez dele no telemóvel e vai tratar da vida, em vez de ficar especado à tua porta 📱
+
+Funciona no plano Pro.
+
+Marca o colega que ouve esta pergunta vinte vezes por dia 😅
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeiro #barbeariaportugal #gestaodebarbearia
+
+---- REEL 2 · 3/11 · Fim do mês ----
+Vídeo: reel2-instabarber-30s.mp4 (1080x1920, 30 s). Capa: reel2-capa.png
+Faturaste bem. Mas quanto sobrou mesmo? 🤔
+
+No vídeo: faturado 2 400 €, depois das contas ficam 1 440 € (margem de 60 %), e o objetivo do mês já nos 80 % 📈 Com as contas a pagar e o relatório em PDF (não é documento fiscal). Números de exemplo.
+
+Ninguém gosta de fazer contas. Por isso é que o sistema as faz por ti 🧾
+
+Sabes a tua margem de cabeça? Diz-me se acertas 👇 instabarber.pt, link na bio.
+
+#barbearia #gestaodebarbearia #barbeiro #barbeariaportugal #reels
+
+---- POST 9 · 4/11 · Página pública (feed 05) ----
+A tua barbearia merece mais do que um link para o Instagram e um número de telemóvel 📲
+
+Página própria, com a tua marca: marcação online, e nos planos Pro também mini loja, clube e fila digital. Em português, inglês e francês (os turistas também cortam o cabelo 😎).
+
+Se a tua barbearia tivesse página, que nome lhe davas? Diz nos comentários 👇
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeariaportugal #gestaodebarbearia #barbeiros
+
+---- POST 10 · 5/11 · Preço (feed 06) ----
+0,82 € por dia 💶 É o preço de uma bica, mais coisa menos coisa. Já fizemos a conta.
+
+24,59 € por mês, IVA incluído, sem fidelização e sem comissões sobre os teus clientes (valor por dia sobre 30 dias).
+
+Experimenta em instabarber.pt, link na bio 👇
+
+#barbearia #barbeiro #gestaodebarbearia #barbeariaportugal
+
+---- RESERVA · feed 03 ----
+Um clique. A mensagem já está escrita 💬
+
+O cliente sumiu? O InstaBarber mostra-te quem é e deixa o texto pronto. Abres no WhatsApp, envias tu, e não pagas nada por mensagem.
+
+instabarber.pt (link na bio)
+
+#barbearia #barbeiro #gestaodebarbearia
+
+================ STORIES ================
+Fazer 2 a 3 por dia, sem grande produção.
+23/10  Apresentação: foto da barbearia + «Chegou o InstaBarber 💈». Autocolante «Link» para instabarber.pt.
+24/10  Pergunta (caixa): «Qual é a tua maior dor de cabeça na barbearia?» Guardar as respostas, vão dar posts.
+25/10  Votação: «Caderno ou aplicação?» 📒 / 📱
+26/10  Contagem: partilhar o post da conta dos 400 €.
+27/10  Partilhar o reel 1 com «Vê até ao fim 👀».
+28/10  Votação: «Quanto demoras a responder a um cliente?» Menos de 5 min / 5 a 30 min / Depende 😅
+29/10  Story 8 (52 dias sem vir): «Recupera o teu cliente com um clique».
+30/10  Caixa de perguntas: «Quantas faltas tiveste este mês?»
+1/11   Responder às perguntas da semana (cara ou texto).
+2/11   Story 9 (fila digital) com a votação «Já ouviste "quanto tempo demora?" hoje? Sim / Mil vezes».
+3/11   Partilhar o reel 2.
+4/11   Partilhar o post da página pública.
+
+================ ÁUDIO PARA OS REELS ================
+Aviso importante: com conta profissional (empresa), o Instagram só deixa usar a Coleção de Sons da Meta, que é música livre de direitos para empresas, cerca de 14 000 faixas. As músicas comerciais e populares ficam escondidas, e usá-las sem licença pode dar silêncio no vídeo ou retirada. Não consigo ver o catálogo da tua conta daqui, por isso não te dou nomes de faixas que não consiga confirmar. Dou-te o que procurar e como escolher, e a escolha demora 2 minutos na app.
+
+Como: abre o reel na app > Áudio > Coleção de sons (música sem direitos de autor) > filtra por género e disposição.
+
+REEL 1 · Dinheiro na mesa (30 s)
+- Procurar: instrumental, «upbeat», «hip hop» ou «lo-fi beat», entre 90 e 105 batidas por minuto.
+- Sem voz cantada.
+- Baixar o áudio para 20 a 30 % (o texto no ecrã é que fala).
+- Cortes do vídeo: 3,5 s · 9 s · 15 s · 20,5 s · 25,5 s. Escolher uma faixa com batida forte logo ao início e deixar cair a música no último corte (preço + «Experimenta já»).
+
+REEL 2 · Fim do mês (30 s)
+- Procurar: instrumental «corporate», «tech», «minimal beat» ou «motivational», entre 100 e 115 batidas por minuto.
+- Mais limpa e serena que a do reel 1, para dar peso aos números.
+- Volume a 20 a 25 %.
+- Cortes do vídeo: 3,5 s · 11 s · 17 s · 22 s · 26,5 s.
+
+Dica: ouve 3 faixas no telemóvel com o vídeo a correr. A certa é a que não te faz ler mais devagar.
+Se quiseres uma faixa em alta (música popular), a conta teria de passar a «criador» e perderia funções de empresa. Não recomendo.
+
+================ ANTES DE PUBLICAR ================
+- Confirmar a licença das duas fotografias (posts 5 e 8 e v3-a) e guardar o comprovativo.
+- Fotografias novas ajudam a variedade (as duas que temos são pequenas).
+- Refazer na nova linguagem os feeds 02, 04, 07, 08, 09, 05 e 06 antes das datas respetivas (ficam já com estes textos, mudam só as imagens).
+- A demo da landing tem de estar online antes do reel 1 (27/10), porque é para lá que o link leva.

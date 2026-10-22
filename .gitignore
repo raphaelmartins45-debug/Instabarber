@@ -1,0 +1,5 @@
+.env*
+!.env.example
+dados-locais/
+node_modules/
+.next/

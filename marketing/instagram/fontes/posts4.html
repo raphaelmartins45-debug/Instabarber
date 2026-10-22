@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-PT"><head><meta charset="utf-8"><title>Post 9 · fila digital</title>
+<style>
+:root{--ink:#12100E;--gold:#F5A623;--cream:#F7F5F1;--green:#3DBE8B}
+*{box-sizing:border-box}
+body{margin:0;background:#000;font-family:Inter,system-ui,sans-serif}
+.p{position:relative;overflow:hidden;color:var(--cream)}
+#feed{width:1080px;height:1350px}#story{width:1080px;height:1920px}
+.bg{position:absolute;inset:-20px;background:url(foto-fila.jpg) center/cover;filter:blur(3px) brightness(.95)}
+.sh{position:absolute;inset:0}
+#feed .sh{background:linear-gradient(180deg,rgba(10,8,6,.9) 0%,rgba(10,8,6,.72) 30%,rgba(10,8,6,.25) 52%,rgba(10,8,6,.3) 70%,rgba(10,8,6,.88) 100%)}
+#story .sh{background:linear-gradient(180deg,rgba(10,8,6,.9) 0%,rgba(10,8,6,.72) 30%,rgba(10,8,6,.2) 52%,rgba(10,8,6,.3) 70%,rgba(10,8,6,.9) 100%)}
+.in{position:absolute;left:84px;right:84px;display:flex;flex-direction:column}
+.eyebrow{margin:0;font-weight:800;font-size:26px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+h1{margin:0;font-weight:900;letter-spacing:-.035em;line-height:1.02;font-size:112px}
+.sub{margin:28px 0 0;font-size:40px;font-weight:600;line-height:1.28;letter-spacing:-.01em;max-width:900px;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+.pill{display:inline-block;font-size:22px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border:2px solid rgba(255,255,255,.35);color:#E8E2D6;border-radius:999px;padding:8px 20px;background:rgba(0,0,0,.35)}
+.card{background:rgba(238,238,240,.93);color:#111;border-radius:40px;padding:34px 38px;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.ct{display:flex;justify-content:space-between;align-items:center;font-size:28px;font-weight:700}
+.live{display:inline-flex;align-items:center;gap:10px;color:#127A55;font-size:24px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.live i{width:14px;height:14px;border-radius:50%;background:var(--green);display:block}
+.big{font-size:64px;font-weight:900;letter-spacing:-.03em;margin-top:14px;line-height:1.05}
+.eta{font-size:34px;color:#44444a;font-weight:600;margin-top:6px}
+.dots{display:flex;gap:16px;margin-top:24px;align-items:center}
+.dots i{width:46px;height:46px;border-radius:50%;background:#C9C9CE;display:block}
+.dots i.me{background:var(--gold);box-shadow:0 0 0 6px rgba(245,166,35,.28)}
+.dots span{font-size:26px;font-weight:800;color:#8A5A00;margin-left:4px}
+.foot{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.foot img{height:74px}.foot .tag{font-size:26px;font-weight:700;letter-spacing:.04em;text-align:right;line-height:1.35;color:#D9D3C7}
+</style></head><body>
+<section class="p" id="feed"><div class="bg"></div><div class="sh"></div>
+  <div class="in" style="top:84px"><p class="eyebrow">Fila digital</p><div style="height:24px"></div>
+    <h1>Marca a vez.<br><span style="color:var(--gold)">Sem esperar<br>na loja.</span></h1>
+    <p class="sub">O cliente entra na fila pelo QR code e vê a vez dele no telemóvel, em tempo real.</p></div>
+  <div class="in" style="bottom:190px"><div style="margin-bottom:18px"><span class="pill">Exemplo ilustrativo</span></div>
+    <div class="card"><div class="ct"><span>Barbearia Central</span><span class="live"><i></i>Em direto</span></div>
+      <div class="big">2 pessoas à tua frente</div><div class="eta">Cerca de 15 minutos</div>
+      <div class="dots"><i></i><i></i><i class="me"></i><span>TU</span></div></div></div>
+  <div class="in foot" style="bottom:60px;flex-direction:row"><img src="logo-horizontal-branco.png" alt="InstaBarber"><div class="tag">Entrada por QR code e fila digital<br>no plano Pro</div></div>
+</section>
+<section class="p" id="story"><div class="bg"></div><div class="sh"></div>
+  <div class="in" style="top:260px"><p class="eyebrow">Fila digital</p><div style="height:24px"></div>
+    <h1 style="font-size:124px">Marca a vez.<br><span style="color:var(--gold)">Sem esperar<br>na loja.</span></h1>
+    <p class="sub" style="font-size:44px">O cliente entra na fila pelo QR code e vê a vez dele no telemóvel, em tempo real.</p></div>
+  <div class="in" style="bottom:470px"><div style="margin-bottom:18px"><span class="pill">Exemplo ilustrativo</span></div>
+    <div class="card"><div class="ct"><span>Barbearia Central</span><span class="live"><i></i>Em direto</span></div>
+      <div class="big">2 pessoas à tua frente</div><div class="eta">Cerca de 15 minutos</div>
+      <div class="dots"><i></i><i></i><i class="me"></i><span>TU</span></div></div></div>
+  <div class="in foot" style="bottom:350px;flex-direction:row"><img src="logo-horizontal-branco.png" alt="InstaBarber"><div class="tag">Entrada por QR code e fila digital<br>no plano Pro</div></div>
+</section>
+</body></html>

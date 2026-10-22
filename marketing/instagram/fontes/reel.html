@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-PT"><head><meta charset="utf-8"><title>Reel InstaBarber</title>
+<style>
+:root{--ink:#12100E;--ink2:#1B1814;--ink3:#25211B;--line:#34302A;--gold:#F5A623;--cream:#F7F5F1;--mute:#A9A298;--green:#3DBE8B;--red:#E5675A}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);overflow:hidden}
+body{width:1080px;height:1920px;font-family:Inter,system-ui,sans-serif;color:var(--cream);position:relative}
+.sc{position:absolute;inset:0;padding:230px 84px 320px;display:flex;flex-direction:column;justify-content:center;gap:40px;opacity:0}
+h1{margin:0;font-weight:900;letter-spacing:-.035em;line-height:1.03;font-size:118px}
+.g{color:var(--gold)}
+.eyebrow{font-weight:800;font-size:30px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.card{background:var(--ink2);border:2px solid var(--line);border-radius:40px;padding:48px}
+.pill{display:inline-block;font-size:24px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border:2px solid var(--line);color:var(--mute);border-radius:999px;padding:9px 22px}
+.row{display:flex;justify-content:space-between;align-items:baseline;font-size:44px;font-weight:600;color:#CFC9BF}
+.row b{color:var(--cream)}
+.big{font-weight:900;letter-spacing:-.04em;line-height:1}
+.chip{display:inline-block;font-size:40px;font-weight:800;border:3px solid var(--gold);color:var(--gold);border-radius:999px;padding:16px 34px;margin:0 14px 14px 0;opacity:0}
+.d{display:block;width:120px;height:120px;border-radius:50%;border:4px dashed #4A443B;transition:none}
+.d.f{background:var(--gold);border:4px solid var(--gold)}
+.bar{position:absolute;left:0;top:0;height:10px;background:var(--gold);width:0}
+.brand{position:absolute;left:0;right:0;bottom:200px;display:flex;justify-content:center}
+.brand img{height:84px}
+.ill{position:absolute;right:84px;top:130px;opacity:.9}
+</style></head><body>
+<div class="bar" id="bar"></div>
+
+<!-- 0-3.5 gancho -->
+<section class="sc" id="s1">
+  <p class="eyebrow">Barbearias</p>
+  <h1>A tua barbearia está a <span class="g">perder dinheiro</span> todos os meses.</h1>
+  <p style="margin:0;font-size:44px;color:#CFC9BF;font-weight:500">E tu nem vês.</p>
+</section>
+
+<!-- 3.5-9 a conta -->
+<section class="sc" id="s2">
+  <p class="eyebrow">A conta</p>
+  <h1 style="font-size:96px">Clientes que deixaram de aparecer valem dinheiro.</h1>
+  <div class="card">
+    <div style="display:grid;gap:22px">
+      <div class="row"><span>Clientes perdidos</span><b>40</b></div>
+      <div class="row"><span>Cada visita</span><b>15 €</b></div>
+      <div class="row"><span>Visitas por ano</span><b>8</b></div>
+    </div>
+    <div style="height:3px;background:var(--gold);margin:38px 0 30px"></div>
+    <div style="display:flex;align-items:baseline;gap:24px"><span class="big" id="n400" style="font-size:190px;color:var(--red)">0 €</span><span style="font-size:44px;color:#CFC9BF;font-weight:600">por mês</span></div>
+  </div>
+  <p style="margin:0;font-size:32px;color:var(--mute)">Exemplo com números ilustrativos.</p>
+</section>
+
+<!-- 9-15 radar + mensagem -->
+<section class="sc" id="s3">
+  <p class="eyebrow">O InstaBarber vê por ti</p>
+  <h1 style="font-size:100px">Mostra quem sumiu. E escreve a <span class="g">mensagem.</span></h1>
+  <div class="card" style="display:grid;gap:30px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span class="pill">Exemplo ilustrativo</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:46px;font-weight:700">Rui C. <span style="color:var(--mute);font-weight:500;font-size:34px">· 52 dias sem vir</span></span><span style="font-size:60px;font-weight:900;color:var(--gold)">135 €</span></div>
+    <div id="msg" style="background:var(--ink3);border-radius:32px 32px 32px 8px;padding:32px 36px;font-size:38px;line-height:1.4;min-height:210px"></div>
+    <div id="wa" style="justify-self:start;background:var(--green);color:#06251A;font-weight:800;font-size:38px;border-radius:999px;padding:24px 50px;opacity:0">Abrir no WhatsApp</div>
+  </div>
+</section>
+
+<!-- 15-20.5 selos -->
+<section class="sc" id="s4">
+  <p class="eyebrow">Fideliza</p>
+  <h1 style="font-size:108px">10 selos. 1 serviço à tua <span class="g">escolha.</span></h1>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:38px"><span class="pill">Exemplo ilustrativo</span><span id="cnt" style="font-size:34px;color:var(--mute);font-weight:600">0 de 10 selos</span></div>
+    <div id="dots" style="display:grid;grid-template-columns:repeat(5,1fr);gap:28px;justify-items:center"></div>
+  </div>
+  <p style="margin:0;font-size:42px;color:#CFC9BF;font-weight:500">Sem cartões. Sem autocolantes.</p>
+</section>
+
+<!-- 20.5-25.5 tudo -->
+<section class="sc" id="s5">
+  <p class="eyebrow">Tudo num só sistema</p>
+  <h1 style="font-size:108px">A barbearia inteira, <span class="g">numa só plataforma.</span></h1>
+  <div id="chips"></div>
+</section>
+
+<!-- 25.5-30 preço + CTA -->
+<section class="sc" id="s6">
+  <p class="eyebrow">InstaBarber Basic</p>
+  <div class="big" style="font-size:250px">0,82 €</div>
+  <p style="margin:-20px 0 0;font-size:58px;font-weight:800;letter-spacing:-.02em">por dia. IVA incluído.</p>
+  <p style="margin:0;font-size:42px;color:#CFC9BF;font-weight:500">Sem fidelização. Sem comissões sobre os teus clientes.</p>
+  <div class="card" style="background:var(--gold);color:var(--ink);border:0;margin-top:20px">
+    <div style="font-size:30px;font-weight:800;letter-spacing:.14em;text-transform:uppercase">Experimenta já</div>
+    <div style="font-size:72px;font-weight:900;letter-spacing:-.02em;margin-top:6px">Link na bio</div>
+  </div>
+</section>
+
+<div class="brand"><img src="logo-horizontal-branco.png" alt="InstaBarber"></div>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+var MSG="Olá Rui, já passaram uns dias desde o último corte. Tens vaga quinta às 18h. Marcamos?";
+var dots=$("dots");for(var i=0;i<10;i++){dots.insertAdjacentHTML("beforeend",'<i class="d" id="d'+i+'"></i>')}
+var CH=["Agenda","Clientes","Equipa","Financeiro","Selos","Loja","Clube","Página pública"];
+CH.forEach(function(c,i){$("chips").insertAdjacentHTML("beforeend",'<span class="chip" id="c'+i+'">'+c+'</span>')});
+// cenas: [id, início, fim]
+var SC=[["s1",0,3.5],["s2",3.5,9],["s3",9,15],["s4",15,20.5],["s5",20.5,25.5],["s6",25.5,30]];
+function cl(x){return Math.max(0,Math.min(1,x))}
+function ease(x){return 1-Math.pow(1-x,3)}
+window.setT=function(t){
+  $("bar").style.width=(t/30*100)+"%";
+  SC.forEach(function(s){
+    var el=$(s[0]), a=s[1], b=s[2];
+    var inn=ease(cl((t-a)/0.45)), out=ease(cl((t-(b-0.3))/0.3));
+    var o=(t>=a&&t<b)?inn*(1-out):0;
+    el.style.opacity=o;
+    el.style.transform="translateY("+((1-inn)*40)+"px)";
+  });
+  // contador 400
+  var k=ease(cl((t-4.4)/2.2));
+  $("n400").textContent=Math.round(400*k)+" €";
+  // escrita da mensagem
+  var m=cl((t-10.2)/3.4);
+  $("msg").textContent=MSG.slice(0,Math.round(MSG.length*m))+(m<1?"▍":"");
+  $("wa").style.opacity=ease(cl((t-13.6)/0.4));
+  // selos
+  var n=Math.floor(cl((t-16)/3.6)*10+0.0001);
+  for(var i=0;i<10;i++){$("d"+i).className="d"+(i<n?" f":"")}
+  $("cnt").textContent=n+" de 10 selos";
+  // chips
+  CH.forEach(function(c,i){var q=ease(cl((t-(21.6+i*0.38))/0.3));var e=$("c"+i);e.style.opacity=q;e.style.transform="scale("+(0.85+0.15*q)+")"});
+};
+setT(0);
+</script></body></html>
