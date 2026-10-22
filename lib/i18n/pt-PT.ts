@@ -4,6 +4,8 @@ export const textos = {
   marca: {
     nome: "InstaBarber",
     assinatura: "InstaBarber · Performa LAB",
+    assinaturaComercial: "Comercial InstaBarber",
+    rotuloWhatsapp: "WhatsApp",
   },
   contacto: {
     campos: {
@@ -33,11 +35,16 @@ export const textos = {
         [
           `Olá ${primeiroNome},`,
           "",
-          "Recebemos o teu pedido de contacto. Em breve vais receber uma chamada ou mensagem da nossa equipa comercial.",
+          "Obrigado pelo interesse no InstaBarber. Recebemos o teu pedido e a nossa equipa comercial entra em contacto contigo em breve, por telefone ou mensagem, para perceber a tua barbearia e mostrar como o sistema pode ajudar.",
           "",
-          `A referência do teu pedido é ${ref}. Se nos escreveres, indica-a.`,
+          `Referência do pedido: ${ref}`,
+          "Se nos escreveres ou ligares, indica esta referência para te atendermos mais depressa.",
           "",
-          "Se não foste tu a fazer este pedido, ignora este e-mail.",
+          "Se preferires falar já connosco, responde a este e-mail ou escreve-nos no WhatsApp, no número abaixo.",
+          "",
+          "Se não foste tu a fazer este pedido, podes ignorar esta mensagem.",
+          "",
+          "Com os melhores cumprimentos,",
         ].join("\n"),
     },
   },

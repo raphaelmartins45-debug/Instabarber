@@ -202,7 +202,7 @@ duas maiúsculas. Ver a nota da marca na Parte J.
 | privacidade@instabarber.pt | Alias | Exercício de direitos do RGPD |
 
 O endereço segue a natureza da mensagem, não quem escreve. Assinatura única:
-«InstaBarber · Performa LAB», sem nome pessoal (D-44). Detalhe na L.2.
+«InstaBarber · Performa LAB», sem nome pessoal (D-44). Exceção: os e-mails comerciais enviados a visitantes e clientes assinam «Comercial InstaBarber», com o WhatsApp por baixo (D-101). Detalhe na L.2.
 
 ## 11 · Redes sociais: o que não se diz
 

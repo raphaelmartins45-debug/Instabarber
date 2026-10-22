@@ -33,6 +33,7 @@ beforeEach(() => {
   vi.stubEnv("RESEND_API_KEY", "re_teste");
   vi.stubEnv("EMAIL_COMERCIAL", "comercial@instabarber.pt");
   vi.stubEnv("EMAIL_REMETENTE", "nao-responder@instabarber.pt");
+  vi.stubEnv("TELEFONE_COMERCIAL_TXT", "+351 900 000 000");
 });
 
 describe("POST /api/contacto · fase 1", () => {
@@ -58,6 +59,11 @@ describe("POST /api/contacto · fase 1", () => {
     expect(resposta.from).toBe("InstaBarber <apoio@instabarber.pt>");
     expect(resposta.text).toContain(json.ref);
     expect(resposta.text).toContain("Olá Miguel,");
+    expect(resposta.replyTo).toBe("comercial@instabarber.pt");
+    expect(resposta.text.trimEnd().split("\n").slice(-2)).toEqual([
+      "Comercial InstaBarber",
+      "WhatsApp: +351 900 000 000",
+    ]);
   });
 
   it("responde erro se o Resend recusar o aviso (chave errada)", async () => {

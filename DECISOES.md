@@ -473,3 +473,9 @@ Com as versões exatas da B.3, o `npm audit` dava 21 vulnerabilidades (8 altas, 
 - Modo de demonstração e modo «manual» retirados da landing: «Pedido enviado» só quando a rota responde `ok`.
 - Política de Privacidade da landing: o pedido chega ao comercial por e-mail e fica guardado na caixa de correio; enviamos um e-mail com a referência; contamos visitas e cliques sem dados pessoais; os prestadores (alojamento, envio de e-mail, caixa de correio) aparecem como subcontratantes.
 - A fonte Inter (I.2) entra com o primeiro ecrã da aplicação (Fase 2/3): na Fase 0 não há nenhuma página React visível.
+
+## D-101 · 22/10/2026 · E-mail de resposta ao visitante: texto profissional e assinatura comercial
+- Pedido do dono: o e-mail automático que o visitante recebe fica mais profissional e passa a assinar «Comercial InstaBarber», com o número de WhatsApp por baixo. Substitui, só nos e-mails comerciais enviados para fora, a assinatura única «InstaBarber · Performa LAB» da D-44 (que se mantém nos restantes e-mails).
+- O número vem da variável `TELEFONE_COMERCIAL_TXT` (nunca escrito no código). Se a variável faltar, o e-mail sai na mesma, sem a linha do WhatsApp (não é essencial). **Ação do dono:** juntar `TELEFONE_COMERCIAL_TXT` na Vercel (o valor está no `.env.local`).
+- O `reply-to` da resposta passa a ser o comercial@, para que «responde a este e-mail» chegue à caixa certa.
+- Os avisos internos para o comercial@ não mudam.

@@ -1,6 +1,7 @@
 import "server-only";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { PedidoContactoFase1, PedidoContactoFase2 } from "@/lib/validacao/contacto";
+import { variavelOpcional } from "@/lib/configuracao/ambiente";
 import { enderecos } from "./enderecos";
 import type { Email } from "./enviar";
 
@@ -62,12 +63,22 @@ export function avisoComercialFase2(p: PedidoContactoFase2): Email {
   };
 }
 
+/** Assinatura dos e-mails comerciais para fora: «Comercial InstaBarber» e o WhatsApp por baixo (D-101). */
+function assinaturaComercial(): string[] {
+  const telefone = variavelOpcional("TELEFONE_COMERCIAL_TXT");
+  return [
+    textos.marca.assinaturaComercial,
+    ...(telefone ? [`${textos.marca.rotuloWhatsapp}: ${telefone}`] : []),
+  ];
+}
+
 export function respostaVisitante(ref: string, p: PedidoContactoFase1): Email {
   const primeiroNome = p.nome.split(/\s+/)[0] ?? p.nome;
   return {
     de: enderecos.apoio(),
     para: p.email,
+    responderPara: enderecos.comercial(),
     assunto: t.respostaVisitante.assunto(ref),
-    texto: [t.respostaVisitante.corpo(primeiroNome, ref), "", textos.marca.assinatura].join("\n"),
+    texto: [t.respostaVisitante.corpo(primeiroNome, ref), ...assinaturaComercial()].join("\n"),
   };
 }
