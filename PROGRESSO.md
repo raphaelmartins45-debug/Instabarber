@@ -18,7 +18,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 
 | Fase | Foco | Estado | Concluída em | Resultado verificado |
 | --- | --- | --- | --- | --- |
-| 0 | Preparação | Em curso | — | Código pronto a 22/10/2026: typecheck, lint e build sem erros; 27 testes Vitest, 6 Playwright (computador e telemóvel), 396 testes SQL; `npm audit --omit=dev` 0. Falta: deploy Next.js na Vercel, pedido de teste real a chegar a comercial@ |
+| 0 | Preparação | Concluída | 22/10/2026 | Código a 22/10/2026: typecheck, lint e build sem erros; 27 testes Vitest, 6 Playwright (computador e telemóvel), 396 testes SQL; `npm audit --omit=dev` 0. Deploy Next.js na Vercel em produção (instabarber.pt); pedido de teste real chegou a comercial@ e a resposta chegou ao visitante (e-mail timbrado, D-101 a D-104); com a chave do Resend errada aparece «Não conseguimos enviar». Depois disso: builds da Vercel verdes em cada alteração (e-mail, SEO, ícones); os testes Vitest não foram repetidos desde o e-mail timbrado e correm-se no início da Fase 1. Por limpar: campo `calculadora` e respetivo evento de medição na rota de contacto |
 | 1 | Base de dados | Pendente | — | — |
 | 2 | Autenticação e papéis | Pendente | — | — |
 | 3 | Administração e adesão | Pendente | — | — |
@@ -38,6 +38,8 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Landing page (`landing/index.html`) | Fechada (servida pelo Next.js desde a Fase 0, D-99) | 21/10/2026 | Versão 27 publicada; auditoria 0 problemas; sem rolagem horizontal em 1440 px e 390 px (mobile automático); sem «ao vivo» (D-65), sem rótulos de exemplo nos ecrãs (D-66) |
 | Instagram: imagens, reels, legendas, voz | Entregue ao criativo (conversa própria) | 21/10/2026 | `marketing/instagram/` + `InstaBarber-Kit-Redes-Sociais.zip`; regras em CLAUDE.md secções 11 e 12; D-61 a D-70 |
 | Estrutura de pastas do negócio | Entregue | 21/10/2026 | `InstaBarber-Estrutura-de-Pastas.zip` |
+| Ícone do atalho no iPhone | Por resolver | 22/10/2026 | O favicon do separador mostra o «IB» novo, mas «Adicionar à Tela de Início» no iOS continua com o ícone antigo, mesmo depois de nomes novos (`ib-180.png`, D-107). Voltar a isto para replicar a solução nos ícones dos painéis (gestor, barbeiro, cliente) |
+| SEO da landing | Feito (D-105) | 22/10/2026 | Título, descrição, JSON-LD, `sitemap.xml`, `robots.txt`. Falta o dono registar o domínio no Google Search Console e submeter o sitemap |
 
 ## Próximo passo
 
