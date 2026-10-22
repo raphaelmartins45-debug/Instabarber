@@ -234,7 +234,6 @@ details .ans a { color: var(--gold); }
 #lab[data-tema="claro"] .mini { border-color: #C27A00; }
 #lab[data-tema="claro"] .mini:hover { background: var(--gold); color: var(--ink); }
 #lab[data-tema="claro"] .mini.ghost { border-color: var(--line); color: var(--mute); }
-#lab[data-tema="claro"] .phone { --ink-2: #1B1814; --ink-3: #25211B; --line: #34302A; --cream: #F7F5F1; --mute: #A9A298; --green: #3DBE8B; color: var(--cream); color-scheme: dark; }
 #lab[data-tema="claro"] .lost .msgx { background: var(--ink-3); }
 #lab[data-tema="claro"] .box-head .tag { font-size: 12px; color: var(--mute); border: 1px dashed var(--line); border-radius: 999px; padding: 4px 12px; }
 .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -310,15 +309,6 @@ span.tag { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 .cmp-row.save strong { color: var(--green); }
 .cmp-row strong em { display: block; font-style: normal; font-size: 12px; font-weight: 600; color: var(--mute); text-align: right; letter-spacing: 0; }
 .cmp .fine2 { padding-top: 14px; margin: 0; color: var(--mute); font-size: 13px; max-width: none; }
-.phone { max-width: 340px; width: 100%; justify-self: center; border: 2px solid var(--line); border-radius: 28px; background: var(--ink); overflow: hidden; }
-.phone-top { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: #14241D; border-bottom: 1px solid var(--line); }
-.phone-top b { display: block; font-size: 15px; }
-.phone-top small { color: var(--mute); font-size: 12px; }
-.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); color: var(--ink); display: grid; place-items: center; font-weight: 800; flex: none; }
-.chat { padding: 18px 14px 26px; background: #0E1512; min-height: 220px; display: flex; align-items: flex-start; }
-.bubble { background: #1E3A2D; border-radius: 4px 16px 16px 16px; padding: 10px 14px 8px; max-width: 100%; display: grid; gap: 4px; }
-.bubble p { margin: 0; font-size: 15px; line-height: 1.45; color: var(--cream); overflow-wrap: anywhere; }
-.bubble small { justify-self: end; color: var(--mute); font-size: 11px; }
 .see { color: var(--gold); font-size: 13px; font-weight: 700; margin-left: 6px; white-space: nowrap; }
 .prow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--ink-3); min-height: 56px; }
 .prow small { display: block; font-size: 13px; }
@@ -479,7 +469,7 @@ footer .links a:hover { color: var(--gold); }
           <button role="tab" id="t-agenda" aria-selected="true" aria-controls="p-agenda" type="button">Agenda</button>
           <button role="tab" id="t-fin" aria-selected="false" aria-controls="p-fin" type="button" tabindex="-1">Painel financeiro</button>
           <button role="tab" id="t-selos" aria-selected="false" aria-controls="p-selos" type="button" tabindex="-1">Selos</button>
-          <button role="tab" id="t-lemb" aria-selected="false" aria-controls="p-lemb" type="button" tabindex="-1">Lembrete</button>
+          <button role="tab" id="t-gest" aria-selected="false" aria-controls="p-gest" type="button" tabindex="-1">Gestor do barbeiro</button>
         </div>
         <div class="tema" role="group" aria-label="Cor de fundo da demonstração">
           <span class="tema-l">Muda o fundo</span>
@@ -517,19 +507,24 @@ footer .links a:hover { color: var(--gold); }
         <p class="hintx">Todo o dinheiro é registado, nunca cobrado pelo sistema. Não é documento fiscal.</p>
       </div>
 
-      <div class="pane" id="p-lemb" role="tabpanel" aria-labelledby="t-lemb" hidden>
-        <p class="hintx">Na agenda, um toque abre o WhatsApp do cliente com o lembrete já escrito. Vê como chega ao telemóvel dele.</p>
+      <div class="pane" id="p-gest" role="tabpanel" aria-labelledby="t-gest" hidden>
+        <p class="hintx">É isto que o Miguel vê ao entrar: a agenda dele, o que faturou, os objetivos e os clientes dele. Cada barbeiro só vê os seus números.</p>
         <div class="row2">
-          <div class="phone" aria-label="Mensagem no telemóvel do cliente">
-            <div class="phone-top"><span class="avatar">B</span><div><b>Barbearia Central</b><small>mensagem</small></div></div>
-            <div class="chat"><div class="bubble"><p id="l-txt"></p><small id="l-hora"></small></div></div>
-          </div>
-          <div class="stats">
-            <p class="hintx">Quanto falta para a marcação?</p>
-            <div class="svc" id="l-opts"></div>
-            <p class="hintx">O sistema prepara a mensagem e abre a conversa. Tu confirmas o envio, sem custo por mensagem.</p>
-          </div>
+          <div class="stat"><span class="k">Objetivo de hoje</span><b>78 %</b><div class="bar" aria-hidden="true"><i style="width: 78%"></i></div><span>186 € de 240 €. Faltam 54 €.</span></div>
+          <div class="stat"><span class="k">Objetivo do mês</span><b>78 %</b><div class="bar" aria-hidden="true"><i style="width: 78%"></i></div><span>3120 € de 4000 €. Faltam 880 €.</span></div>
         </div>
+        <div class="stats3">
+          <div class="stat"><span class="k">Faturado hoje</span><b>186 €</b><span>9 serviços feitos</span></div>
+          <div class="stat"><span class="k">A minha percentagem do mês</span><b>1404 €</b><span>45 % do faturado, a acertar no fim do mês</span></div>
+          <div class="stat"><span class="k">Próximo cliente</span><b>Tiago M.</b><span>Corte e barba, daqui a 12 minutos</span></div>
+        </div>
+        <p class="hintx">Os meus clientes</p>
+        <div class="stats3">
+          <div class="stat"><span class="k">Regulares</span><b>38</b><span>vêm dentro do habitual</span></div>
+          <div class="stat"><span class="k">Em risco</span><b>5</b><span>ainda vais a tempo de os segurar</span></div>
+          <div class="stat"><span class="k">Perdidos</span><b>3</b><span>há mais de 45 dias sem vir</span></div>
+        </div>
+        <p class="hintx">O dono vê a barbearia inteira, num painel à parte. Todo o dinheiro é registado, nunca cobrado pelo sistema.</p>
       </div>
 
       <div class="pane" id="p-selos" role="tabpanel" aria-labelledby="t-selos" hidden>
@@ -686,7 +681,7 @@ footer .links a:hover { color: var(--gold); }
     </div>
     <div class="all">
       <div class="grp"><p class="k">Operação do dia</p><ul><li><span class="t">Agenda e marcações, sem sobreposições</span></li><li><span class="t">Gestão de clientes</span></li><li><span class="t">Ficha técnica de cada cliente</span></li><li><span class="t">Política de faltas</span></li><li><span class="t">Painel individual por barbeiro</span></li><li><span class="t">Objetivos por barbeiro <span class=pro>Pro</span></span></li><li><span class="t">Vários barbeiros na mesma conta <span class=pro>Pro</span></span></li><li><span class="t">Entrada por QR code na loja <span class=pro>Pro</span></span></li></ul></div>
-      <div class="grp"><p class="k">Presença e marcação online</p><ul><li><span class="t">Página pública com a marca da barbearia</span></li><li><span class="t">Lembrete de marcação por WhatsApp <a class="see" href="#demo" data-tab="lemb">Ver exemplo</a></span></li><li><span class="t">Confirmação por e-mail</span></li><li><span class="t">Portfólio de cada barbeiro</span></li><li><span class="t">Pedido de avaliação no Google <span class=pro>Pro</span></span></li></ul></div>
+      <div class="grp"><p class="k">Presença e marcação online</p><ul><li><span class="t">Página pública com a marca da barbearia</span></li><li><span class="t">Lembrete de marcação por WhatsApp</span></li><li><span class="t">Confirmação por e-mail</span></li><li><span class="t">Portfólio de cada barbeiro</span></li><li><span class="t">Pedido de avaliação no Google <span class=pro>Pro</span></span></li></ul></div>
       <div class="grp"><p class="k">Clientes que voltam</p><ul><li><span class="t">Radar de clientes perdidos, com o valor em euros</span></li><li><span class="t">Mensagem de recuperação com um clique <span class=pro>Pro</span></span></li><li><span class="t">Lista de aniversariantes</span></li>
 <li><span class="t">Mensagem de aniversário com um clique <span class=pro>Pro</span></span></li><li><span class="t">Fidelização por selos digitais</span></li><li><span class="t">Marcação rápida: repetir o último serviço</span></li><li><span class="t">Fila de espera <span class=pro>Pro</span></span></li></ul></div>
       <div class="grp"><p class="k">Dinheiro e contas</p><ul><li><span class="t">Painel financeiro com objetivos</span></li><li><span class="t">Contas a pagar</span></li><li><span class="t">Painel de gestão do dono</span></li><li><span class="t">Percentagens e acertos por barbeiro</span></li><li><span class="t">Relatórios por barbeiro</span></li><li><span class="t">Relatório mensal em PDF</span></li></ul></div>
@@ -1006,7 +1001,7 @@ footer .links a:hover { color: var(--gold); }
   var eur2 = function (n) { return new Intl.NumberFormat("pt-PT", { style: "currency", currency: "EUR" }).format(n); };
 
   /* separadores */
-  var tabs = ["agenda", "fin", "selos", "lemb"];
+  var tabs = ["agenda", "fin", "selos", "gest"];
   function abrirTab(nome) {
     tabs.forEach(function (n) {
       var on = n === nome;
@@ -1107,22 +1102,6 @@ footer .links a:hover { color: var(--gold); }
   });
 
 
-  /* lembrete: a hora e a data calculam-se sempre no fuso de Lisboa */
-  var LISBOA = "Europe/Lisbon";
-  function hm(d) { return new Intl.DateTimeFormat("pt-PT", { timeZone: LISBOA, hour: "2-digit", minute: "2-digit", hour12: false }).format(d); }
-  function dia(d) { return new Intl.DateTimeFormat("pt-PT", { timeZone: LISBOA, weekday: "long", day: "numeric", month: "long" }).format(d); }
-  var lemb = 60;
-  function pintarLemb() {
-    var agora = new Date(), alvo = new Date(Math.ceil((agora.getTime() + lemb * 60000) / 300000) * 300000);
-    var quanto = lemb < 60 ? lemb + " minutos" : lemb === 60 ? "1 hora" : (lemb / 60) + " horas";
-    $("l-txt").innerHTML = "Olá Tiago! Lembrete da Barbearia Central: tens <b>Corte e barba</b> marcado para hoje, " + dia(alvo) + ", às <b>" + hm(alvo) + "</b>, daqui a " + quanto + ", com o Miguel. Se não puderes vir, avisa-nos por aqui. Até já!";
-    $("l-hora").textContent = hm(agora);
-    var h = ""; [30, 60, 120].forEach(function (m) { h += '<button class="mini' + (m === lemb ? '' : ' ghost') + '" type="button" data-l="' + m + '">' + (m < 60 ? m + " minutos" : m === 60 ? "1 hora" : (m / 60) + " horas") + '</button>'; });
-    $("l-opts").innerHTML = h;
-  }
-  $("l-opts").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b && b.dataset.l) { lemb = +b.dataset.l; pintarLemb(); } });
-  pintarLemb();
-  Array.prototype.forEach.call(document.querySelectorAll("[data-tab]"), function (a) { a.addEventListener("click", function () { abrirTab(a.dataset.tab); }); });
 
   /* mini loja */
   var PROD = [

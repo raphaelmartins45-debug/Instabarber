@@ -446,3 +446,7 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 - Na aba Agenda da demonstração, cada cliente marcado mostra uma contagem decrescente («Começa em 29:58», e «Começa em 1 h 16 min» quando falta mais de uma hora) e um botão verde «Avisar cliente».
 - O botão segue a regra do WhatsApp (CLAUDE.md, regra 7): primeiro prepara a mensagem, depois «Confirmei o envio», e só então fica «Cliente avisado». Nada se dá como enviado sem confirmação.
 - As horas da demonstração partem da hora atual de Lisboa (primeiro cliente daqui a cerca de 30 minutos), para a contagem parecer sempre «ao vivo».
+
+## D-97 · 22/10/2026 · Demonstração: «Gestor do barbeiro» no lugar de «Lembrete»
+- A aba «Lembrete» (redundante com o botão «Avisar cliente» da Agenda) passou a «Gestor do barbeiro»: o resumo que o barbeiro vê ao entrar (objetivo de hoje e do mês, faturado hoje, percentagem do mês, próximo cliente e os clientes dele: regulares, em risco e perdidos). Valores de exemplo, estáticos.
+- Removidos o código e o CSS do lembrete e a ligação «Ver exemplo» da lista de funcionalidades que apontava para ele.
