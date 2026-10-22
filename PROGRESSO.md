@@ -19,7 +19,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Fase | Foco | Estado | Concluída em | Resultado verificado |
 | --- | --- | --- | --- | --- |
 | 0 | Preparação | Concluída | 22/10/2026 | Código a 22/10/2026: typecheck, lint e build sem erros; 27 testes Vitest, 6 Playwright (computador e telemóvel), 396 testes SQL; `npm audit --omit=dev` 0. Deploy Next.js na Vercel em produção (instabarber.pt); pedido de teste real chegou a comercial@ e a resposta chegou ao visitante (e-mail timbrado, D-101 a D-104); com a chave do Resend errada aparece «Não conseguimos enviar». Depois disso: builds da Vercel verdes em cada alteração (e-mail, SEO, ícones); os testes Vitest não foram repetidos desde o e-mail timbrado e correm-se no início da Fase 1. Por limpar: campo `calculadora` e respetivo evento de medição na rota de contacto |
-| 1 | Base de dados | Em curso | — | **Supabase local** (PostgreSQL 17.11, D-110): migrações 01 a 04 aplicadas sem erros; RLS ativo nas 59 tabelas de `public`; 396 testes SQL a passar (81 isolamento, 54 agenda, 66 regras, 112 comercial, 76 finanças, 7 expansão), um deles corrigido com autorização do dono (D-108); antes, o mesmo em 15.19 e em 16.15 com o shim. **Projeto de ensaio** `instabarber-ensaio` (PostgreSQL 17.11, eu-west-2 por decisão do dono, D-111): as mesmas migrações aplicadas, RLS em 59 de 59, buckets `publico` público, `fichas` e `comercial` privados, 31 funcionalidades e 39 feriados carregados, 396 testes SQL a passar. `types/database.ts` gerado (igual em 15 e 17); primeiros repositórios só de leitura (D-109). typecheck, lint e build sem erros; 38 testes Vitest (5 de integração com o Supabase local); `npm audit --omit=dev` 0. **Falta:** a confirmação do dono |
+| 1 | Base de dados | Concluída | 22/10/2026 | **Supabase local** (PostgreSQL 17.11, D-110): migrações 01 a 04 aplicadas sem erros; RLS ativo nas 59 tabelas de `public`; 396 testes SQL a passar (81 isolamento, 54 agenda, 66 regras, 112 comercial, 76 finanças, 7 expansão), um deles corrigido com autorização do dono (D-108); antes, o mesmo em 15.19 e em 16.15 com o shim. **Projeto de ensaio** `instabarber-ensaio` (PostgreSQL 17.11, eu-west-2 por decisão do dono, D-111): as mesmas migrações aplicadas, RLS em 59 de 59, buckets `publico` público, `fichas` e `comercial` privados, 31 funcionalidades e 39 feriados carregados, 396 testes SQL a passar. `types/database.ts` gerado (igual em 15 e 17); primeiros repositórios só de leitura (D-109). typecheck, lint e build sem erros; 38 testes Vitest (5 de integração com o Supabase local); `npm audit --omit=dev` 0. Confirmada pelo dono a 22/10/2026 |
 | 2 | Autenticação e papéis | Pendente | — | — |
 | 3 | Administração e adesão | Pendente | — | — |
 | 3B | Comercial (CRM, propostas e contratos) | Pendente | — | — |
@@ -43,7 +43,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 
 ## Próximo passo
 
-Fase 1 à espera da confirmação do dono. Depois, Fase 2 (Autenticação e papéis): resumo e confirmação antes de escrever código.
+Fase 2 (Autenticação e papéis): resumo apresentado ao dono; esperar confirmação antes de escrever código. Ler só `fases/fase-2.md` e as secções que indica.
 
 - 22/10/2026 · D-72: Pro com 3 profissionais incluídos (landing, docs, esquema e testes SQL atualizados; 396 verificações sem falhas).
 - 22/10/2026 · D-84: landing no ar em instabarber.pt e www.instabarber.pt (Vercel, HTTPS). Passo 0: faltam .env.local, Resend e confirmação do Zoho.
@@ -54,3 +54,4 @@ Fase 1 à espera da confirmação do dono. Depois, Fase 2 (Autenticação e pap�
 - 22/10/2026 · Fase 1 retomada com o resumo confirmado. Supabase local com as migrações e 396 testes SQL a passar depois da correção do teste do bucket comercial (D-108, autorizada). Tipos e repositórios (D-109). À espera do dono: `SUPABASE_ACCESS_TOKEN`, identificador do projeto de ensaio (eu-central-1) e palavra-passe da base de dados, e a versão do PostgreSQL desse projeto.
 - 22/10/2026 · Credenciais recebidas, mas o `instabarber-ensaio` ficou em eu-west-2 (Londres) e em PostgreSQL 17. Nada aplicado lá. Supabase local passado a 17 e verificação repetida: 396 testes SQL, RLS em 59 de 59 (D-110). À espera do dono: projeto novo em Frankfurt.
 - 22/10/2026 · O dono mantém o ensaio em Londres (D-111). Migrações aplicadas no ensaio pela Management API; RLS em 59 de 59; 396 testes SQL a passar. Fase 1 à espera de confirmação.
+- 22/10/2026 · Fase 1 confirmada pelo dono. Início da Fase 2: resumo apresentado, à espera de confirmação.
