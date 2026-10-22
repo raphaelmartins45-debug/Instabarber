@@ -217,6 +217,23 @@ details .ans a { color: var(--gold); }
 /* demonstração e calculadora */
 .box { grid-template-columns: minmax(0, 1fr); align-content: start; min-width: 0; background: var(--ink-2); border: 1px solid var(--line); border-radius: 24px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 20px; }
 .box-head { display: flex; justify-content: space-between; align-items: center; gap: 10px 16px; flex-wrap: wrap; }
+/* personalização da demonstração: fundo escuro (original) ou claro */
+.tema { display: flex; align-items: center; gap: 10px; }
+.tema-l { font-size: 13px; color: var(--mute); }
+.sw { width: 44px; height: 44px; padding: 0; border-radius: 50%; border: 2px solid var(--line); cursor: pointer; transition: box-shadow .15s ease, border-color .15s ease; }
+.sw-escuro { background: #12100E; }
+.sw-claro { background: #FFFFFF; }
+.sw[aria-pressed="true"] { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,166,35,.35); }
+#lab { transition: background .25s ease, border-color .25s ease; }
+#lab[data-tema="claro"] { --ink-2: #FFFFFF; --ink-3: #F4F1EB; --line: #D9D3C8; --cream: #1B1814; --mute: #6A645B; --green: #12805A; --red: #C13F30; color: var(--cream); color-scheme: light; }
+#lab[data-tema="claro"] .slotx time, #lab[data-tema="claro"] .stat b, #lab[data-tema="claro"] .mini { color: #9A5B00; }
+#lab[data-tema="claro"] .stat.loss b { color: var(--red); }
+#lab[data-tema="claro"] .stat.gain b { color: var(--green); }
+#lab[data-tema="claro"] .mini { border-color: #C27A00; }
+#lab[data-tema="claro"] .mini:hover { background: var(--gold); color: var(--ink); }
+#lab[data-tema="claro"] .mini.ghost { border-color: var(--line); color: var(--mute); }
+#lab[data-tema="claro"] .phone { --ink-2: #1B1814; --ink-3: #25211B; --line: #34302A; --cream: #F7F5F1; --mute: #A9A298; --green: #3DBE8B; color: var(--cream); color-scheme: dark; }
+#lab[data-tema="claro"] .lost .msgx { background: var(--ink-3); }
 .box-head .tag { font-size: 12px; color: var(--mute); border: 1px dashed var(--line); border-radius: 999px; padding: 4px 12px; }
 .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 .tabs button { font: inherit; font-weight: 700; font-size: 14px; color: var(--cream); background: transparent; border: 1.5px solid var(--line); border-radius: 999px; min-height: 44px; padding: 0 18px; cursor: pointer; }
@@ -459,7 +476,11 @@ footer .links a:hover { color: var(--gold); }
           <button role="tab" id="t-selos" aria-selected="false" aria-controls="p-selos" type="button" tabindex="-1">Selos</button>
           <button role="tab" id="t-lemb" aria-selected="false" aria-controls="p-lemb" type="button" tabindex="-1">Lembrete</button>
         </div>
-        
+        <div class="tema" role="group" aria-label="Cor de fundo da demonstração">
+          <span class="tema-l">Muda o fundo</span>
+          <button type="button" class="sw sw-escuro" data-tema="escuro" aria-pressed="true" aria-label="Fundo escuro"></button>
+          <button type="button" class="sw sw-claro" data-tema="claro" aria-pressed="false" aria-label="Fundo claro"></button>
+        </div>
       </div>
 
       <div class="pane" id="p-agenda" role="tabpanel" aria-labelledby="t-agenda">
@@ -850,6 +871,15 @@ footer .links a:hover { color: var(--gold); }
   var $ = function (id) { return document.getElementById(id); };
   Array.prototype.forEach.call(document.querySelectorAll("[data-phone]"), function (el) { el.textContent = PHONE_TXT; });
   $("mail").textContent = EMAIL;
+
+  /* Personalizar o fundo da demonstração (só visual, nada é guardado). */
+  Array.prototype.forEach.call(document.querySelectorAll(".tema .sw"), function (b) {
+    b.addEventListener("click", function () {
+      $("lab").setAttribute("data-tema", b.getAttribute("data-tema"));
+      Array.prototype.forEach.call(document.querySelectorAll(".tema .sw"), function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+    });
+  });
+
 
   /* Rota de contacto no servidor (D-46). Vazia = ainda não existe: o formulário prepara a mensagem de WhatsApp.
      Com a rota ligada, o pedido grava o lead e avisa o comercial antes de abrir o WhatsApp. */

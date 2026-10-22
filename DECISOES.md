@@ -390,3 +390,6 @@ O botão principal do topo passa de «Experimentar a demo» para «Experimenta o
 
 ## D-82 · Título da demo (22/10/2026)
 «Testa o InstaBarber aqui, sem registo.» passa a «Testa o InstaBarber aqui e vê o que ele pode fazer pela tua barbearia.» Foca no benefício e não no registo.
+
+## D-83 · Fundo personalizável na demonstração (22/10/2026)
+No topo da janela «Experimenta já» há dois botões redondos (escuro e claro) com a nota «Muda o fundo», para mostrar que a página da barbearia é personalizável. Só visual: nada é guardado e não afeta o resto da página. O telemóvel de WhatsApp do separador Lembrete mantém o aspeto escuro. Botões com 44 px de toque.
