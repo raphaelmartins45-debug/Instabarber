@@ -360,3 +360,6 @@ Criada `landing/publicar/` (index.html completo com doctype, viewport, ícones, 
 
 ## D-72 · Plano Pro inclui 3 profissionais (22/10/2026)
 O Pro passa de 2 para 3 profissionais incluídos, sem referência ao gestor em nenhum texto (landing incluída). Preço base mantido (39,00 € / 47,97 € com IVA). O profissional adicional continua a 10,00 € por mês (12,30 € com IVA), ou 100,00 € por ano, mas só a partir do 4.º. Novos exemplos: 4 profissionais 49,00 € / 60,27 €; 5 → 59,00 € / 72,57 €; 8 → 89,00 € / 109,47 €. Alterados: landing, CLAUDE.md §6, Parte D (D.1, D.2, D.5, D.6, exemplo do e-mail), Parte J, documento mestre, esquema (`check profissionais_contratados >= 3` no Pro) e dados de teste (Barbearia B com 3). Testes SQL repetidos: 396 verificações, sem falhas. Preço do adicional e base por confirmar pelo dono.
+
+## D-73 · Sem «piloto» também na landing (22/10/2026)
+A palavra «piloto» sai da landing (botão do topo, nota dos preços e texto do contacto), além das publicações (D-68). O botão passa a «Quero experimentar».
