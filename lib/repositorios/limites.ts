@@ -7,6 +7,10 @@ export const LIMITES = {
   pedirCodigoIp: { maximo: 10, janelaSegundos: 3600 },
   criarAcessoIp: { maximo: 20, janelaSegundos: 3600 },
   entrarClienteIp: { maximo: 30, janelaSegundos: 3600 },
+  // Adesão (F.6): 3 por hora por IP e por e-mail; os carregamentos de imagens à parte.
+  adesaoIp: { maximo: 3, janelaSegundos: 3600 },
+  adesaoEmail: { maximo: 3, janelaSegundos: 3600 },
+  carregamentoIp: { maximo: 40, janelaSegundos: 3600 },
 } as const;
 
 /** Verdadeiro se o pedido pode seguir. */

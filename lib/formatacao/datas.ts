@@ -16,3 +16,8 @@ export function momentoLocal(instante: Date): { diaSemana: number; hora: string 
     hora: formatInTimeZone(instante, regiao.fuso, "HH:mm:ss"),
   };
 }
+
+/** Data curta no fuso da região: «22/10/2026». */
+export function dataCurta(instante: Date | string): string {
+  return formatInTimeZone(new Date(instante), regiao.fuso, "dd/MM/yyyy");
+}

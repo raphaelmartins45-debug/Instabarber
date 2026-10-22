@@ -51,5 +51,8 @@ select teste.erro($$select registar_auditoria_admin(null, 'vista_apoio', null, n
 select teste.anonimo();
 select teste.erro($$select registar_auditoria_admin(null, 'vista_apoio', null, null, null)$$,
                   'ADM: o anónimo não executa a função');
+select teste.ok((select count(*) from funcionalidades) > 0 and (select count(*) from pacote_funcionalidades where plano = 'pro') > 0,
+                'ADM: o formulário de adesão lê o catálogo e os pacotes sem conta (D.9)');
+select teste.zero($$select 1 from inquilino_funcionalidades$$, 'ADM: sem conta não se lê a grelha de nenhuma barbearia');
 rollback;
 \echo '== admin: todos os testes passaram'

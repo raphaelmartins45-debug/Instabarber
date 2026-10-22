@@ -341,6 +341,10 @@ create policy funcionalidades_escrever on funcionalidades for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 
 create policy pacotes_ler on pacote_funcionalidades for select to authenticated using (true);
+-- O formulário de adesão é público e mostra o que cada plano inclui (D.9): o catálogo e os
+-- pacotes leem-se sem conta. Não dizem nada sobre nenhuma barbearia.
+create policy funcionalidades_ler_publico on funcionalidades for select to anon using (true);
+create policy pacotes_ler_publico on pacote_funcionalidades for select to anon using (true);
 create policy pacotes_escrever on pacote_funcionalidades for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 

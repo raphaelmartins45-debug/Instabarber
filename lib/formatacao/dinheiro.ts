@@ -32,3 +32,13 @@ export function formatarDinheiro(centimos: number): string {
   if (!Number.isInteger(centimos)) throw new Error(`Os cêntimos têm de ser inteiros: ${centimos}`);
   return formatador.format(centimos / 100);
 }
+
+const EUROS = /^(\d{1,6})(?:[.,](\d{1,2}))?$/;
+
+/** O que a pessoa escreve num campo de preço («15», «15,5», «15.50») → cêntimos; null se inválido. */
+export function centimosDeTexto(texto: string): number | null {
+  const partes = EUROS.exec(texto.trim().replace(/\s*€$/, ""));
+  if (!partes) return null;
+  const [, euros = "0", decimais = ""] = partes;
+  return Number(euros) * 100 + Number(decimais.padEnd(2, "0"));
+}

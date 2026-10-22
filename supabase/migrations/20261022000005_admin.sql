@@ -26,3 +26,8 @@ create policy clientes_admin_criar on clientes for insert with check ((select pu
 create policy storage_publico_admin on storage.objects for all
   using (bucket_id = 'publico' and (select public.e_super_admin()))
   with check (bucket_id = 'publico' and (select public.e_super_admin()));
+
+-- O formulário de adesão é público e mostra o que cada plano inclui (D.9): o catálogo e os
+-- pacotes leem-se sem conta. Não dizem nada sobre nenhuma barbearia.
+create policy funcionalidades_ler_publico on funcionalidades for select to anon using (true);
+create policy pacotes_ler_publico on pacote_funcionalidades for select to anon using (true);

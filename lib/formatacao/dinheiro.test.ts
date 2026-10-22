@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { centimosDeNumeric, formatarDinheiro, numericDeCentimos } from "./dinheiro";
+import { centimosDeNumeric, centimosDeTexto, formatarDinheiro, numericDeCentimos } from "./dinheiro";
 
 const espaco = " ";
 
@@ -40,5 +40,15 @@ describe("dinheiro", () => {
     expect(() => centimosDeNumeric("1.234")).toThrow();
     expect(() => numericDeCentimos(12.5)).toThrow();
     expect(() => formatarDinheiro(0.5)).toThrow();
+  });
+});
+
+describe("centimosDeTexto", () => {
+  it("aceita vírgula ou ponto e recusa o resto", () => {
+    expect(centimosDeTexto("15")).toBe(1500);
+    expect(centimosDeTexto("15,5")).toBe(1550);
+    expect(centimosDeTexto("15.50 €")).toBe(1550);
+    expect(centimosDeTexto("-3")).toBeNull();
+    expect(centimosDeTexto("abc")).toBeNull();
   });
 });

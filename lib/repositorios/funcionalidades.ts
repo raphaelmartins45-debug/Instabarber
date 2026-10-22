@@ -29,3 +29,13 @@ export async function listarChavesAtivas(bd: ClienteBD, inquilinoId: string): Pr
   if (error) falhaDeLeitura("inquilino_funcionalidades", error);
   return data.map((linha) => linha.chave);
 }
+
+/** As chaves de cada plano (pacote_funcionalidades). Públicas: o formulário de adesão mostra-as (D.9). */
+export async function listarPacotes(bd: ClienteBD): Promise<Record<"basic" | "pro", string[]>> {
+  const { data, error } = await bd.from("pacote_funcionalidades").select("plano, chave");
+  if (error) falhaDeLeitura("pacote_funcionalidades", error);
+  return {
+    basic: data.filter((l) => l.plano === "basic").map((l) => l.chave),
+    pro: data.filter((l) => l.plano === "pro").map((l) => l.chave),
+  };
+}
