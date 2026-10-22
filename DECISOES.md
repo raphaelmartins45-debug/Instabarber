@@ -491,3 +491,6 @@ O rodapé passa a duas linhas alinhadas (ícone + texto): envelope junto do e-ma
 
 ## D-105 · 22/10/2026 · SEO da landing
 Título, descrição e og:description passam a levar as palavras que as pessoas pesquisam («sistema de gestão para barbearias em Portugal», «software para barbeiros», agenda e marcação online). Sem «clientes perdidos» na descrição, por pedido do dono. Acrescentados JSON-LD (SoftwareApplication, sem preços), `app/sitemap.ts` e `app/robots.ts` (bloqueia só `/api/`). Cabe ao dono registar o domínio no Google Search Console e submeter o sitemap.
+
+## D-106 · 22/10/2026 · Ícone «IB» só para favicon e ícones simples
+O «IB» com tesoura e poste (branco e dourado sobre preto) **não é a logo oficial**: usa-se apenas no favicon e nos ícones simples (`favicon-512`, `favicon-192`, `apple-touch-icon`). Nunca em cabeçalhos, e-mails, documentos nem na landing como logo; a logo oficial continua a ser a horizontal (`logo-horizontal-*`). No separador do navegador (`favicon-32.png` e `favicon.ico`, 16 a 48 px) vai uma versão simplificada, sem poste nem moldura (IB maior e só a tesoura), porque o detalhe se perde abaixo de 32 px. O poste vermelho e azul foi posto de parte por não seguir as cores da marca.
