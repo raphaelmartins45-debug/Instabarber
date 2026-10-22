@@ -100,6 +100,8 @@ export const pt = {
     palavraPasse: "Palavra-passe",
     confirmar: "Confirmar marcação",
     continuar: "Continuar",
+    suaMarcacao: "A sua marcação",
+    porEscolher: "Por escolher",
     feita: "Marcação confirmada",
     resumo: (servico: string, barbeiro: string, data: string, hora: string) =>
       `${servico} com ${barbeiro}, ${data} às ${hora}`,

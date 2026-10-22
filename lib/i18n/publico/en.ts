@@ -93,6 +93,8 @@ export const en = {
     palavraPasse: "Password",
     confirmar: "Confirm booking",
     continuar: "Continue",
+    suaMarcacao: "Your booking",
+    porEscolher: "To choose",
     feita: "Booking confirmed",
     resumo: (servico: string, barbeiro: string, data: string, hora: string) =>
       `${servico} with ${barbeiro}, ${data} at ${hora}`,

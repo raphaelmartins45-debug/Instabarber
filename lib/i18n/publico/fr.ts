@@ -93,6 +93,8 @@ export const fr = {
     palavraPasse: "Mot de passe",
     confirmar: "Confirmer le rendez-vous",
     continuar: "Continuer",
+    suaMarcacao: "Votre rendez-vous",
+    porEscolher: "À choisir",
     feita: "Rendez-vous confirmé",
     resumo: (servico: string, barbeiro: string, data: string, hora: string) =>
       `${servico} avec ${barbeiro}, le ${data} à ${hora}`,

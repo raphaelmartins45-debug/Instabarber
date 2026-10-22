@@ -49,6 +49,7 @@ export default async function Marcar({
   return (
     <div lang={lingua}>
       <MolduraCliente
+        larga
         titulo={`${t.marcacao.titulo} · ${b.nome}`}
         voltar={base || "/"}
         rotuloVoltar={t.marcacao.voltar}

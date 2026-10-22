@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { confirmar, reservar, vagasDoDia } from "@/app/(publico)/b/[slug]/marcar/acoes";
+import { useState, useTransition } from "react";
+import { confirmar, reservar } from "@/app/(publico)/b/[slug]/marcar/acoes";
 import { Aviso } from "@/components/nucleo/aviso";
-import { somarDias } from "@/lib/formatacao/datas";
 import { textosPublicos, type Lingua } from "@/lib/i18n/publico";
 import type { Reserva, VagaPublica } from "@/lib/repositorios/marcacao-publica";
 import { Confirmacao } from "./confirmacao";
 import { Contagem } from "./contagem";
 import { PassoDados, type DadosCliente } from "./passo-dados";
 import { PassoHora } from "./passo-hora";
+import { ResumoMarcacao } from "./resumo-marcacao";
+import { useRepetir } from "./usar-repetir";
 import { PassoBarbeiro, PassoServico } from "./passos-escolha";
 import type { BarbeariaMarcacao, BarbeiroMarcacao, ServicoMarcacao } from "./tipos";
 
@@ -58,26 +59,15 @@ export function FluxoMarcacao({
       setPasso("dados");
     });
 
-  // «Repetir o último serviço»: o mesmo serviço e barbeiro, no primeiro horário livre.
-  useEffect(() => {
-    if (!inicial.repetir || !servicoInicial || !barbeiroInicial) return;
-    let ativo = true;
-    void (async () => {
-      for (let i = 0; i <= Math.min(barbearia.janelaDias, 30) && ativo; i++) {
-        const vagas = await vagasDoDia(
-          barbearia.slug,
-          servicoInicial.id,
-          somarDias(hoje, i),
-          barbeiroInicial,
-        );
-        if (vagas[0]) return ativo && escolherVaga(vagas[0]);
-      }
-    })();
-    return () => {
-      ativo = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- só à entrada
-  }, []);
+  useRepetir({
+    ativo: !!inicial.repetir,
+    slug: barbearia.slug,
+    servicoId: servicoInicial?.id,
+    profissionalId: barbeiroInicial,
+    hoje,
+    janelaDias: barbearia.janelaDias,
+    aoEncontrar: escolherVaga,
+  });
 
   const enviar = (d: DadosCliente) =>
     iniciar(async () => {
@@ -105,84 +95,104 @@ export function FluxoMarcacao({
   const nomeBarbeiro = (id: string) => equipa.find((b) => b.id === id)?.nome ?? "";
 
   return (
-    <div className="grid gap-4">
-      {passo !== "servico" && passo !== "feita" ? (
-        <button
-          type="button"
-          onClick={voltar}
-          className="h-11 justify-self-start text-sm font-semibold underline-offset-4 hover:underline"
-        >
-          ← {m.voltar}
-        </button>
-      ) : null}
-      {erro && passo !== "dados" ? <Aviso tipo="erro">{erro}</Aviso> : null}
-      {passo === "servico" ? (
-        <PassoServico
-          t={t}
-          servicos={servicos}
-          aoEscolher={(s) => (setServico(s), setPasso(umSo ? "hora" : "barbeiro"))}
-        />
-      ) : null}
-      {passo === "barbeiro" ? (
-        <PassoBarbeiro
-          t={t}
-          equipa={equipa}
-          aoEscolher={(id) => (setBarbeiro(id), setPasso("hora"))}
-        />
-      ) : null}
-      {passo === "hora" && servico ? (
-        <>
-          <h2 className="text-lg font-extrabold">{m.dia}</h2>
-          <PassoHora
+    <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_300px] md:items-start">
+      <div className="grid gap-4">
+        {passo !== "servico" && passo !== "feita" ? (
+          <button
+            type="button"
+            onClick={voltar}
+            className="h-11 justify-self-start text-sm font-semibold underline-offset-4 hover:underline"
+          >
+            ← {m.voltar}
+          </button>
+        ) : null}
+        {erro && passo !== "dados" ? <Aviso tipo="erro">{erro}</Aviso> : null}
+        {passo === "servico" ? (
+          <PassoServico
+            t={t}
+            servicos={servicos}
+            aoEscolher={(s) => (setServico(s), setPasso(umSo ? "hora" : "barbeiro"))}
+          />
+        ) : null}
+        {passo === "barbeiro" ? (
+          <PassoBarbeiro
+            t={t}
+            equipa={equipa}
+            aoEscolher={(id) => (setBarbeiro(id), setPasso("hora"))}
+          />
+        ) : null}
+        {passo === "hora" && servico ? (
+          <>
+            <h2 className="text-lg font-extrabold">{m.dia}</h2>
+            <PassoHora
+              t={t}
+              lingua={lingua}
+              slug={barbearia.slug}
+              servicoId={servico.id}
+              profissionalId={barbeiro ?? null}
+              hoje={hoje}
+              janelaDias={barbearia.janelaDias}
+              filaEspera={barbearia.filaEspera ? { cliente } : undefined}
+              aoEscolher={escolherVaga}
+            />
+          </>
+        ) : null}
+        {passo === "dados" && reserva ? (
+          <>
+            <h2 className="text-lg font-extrabold">{m.dados}</h2>
+            <Contagem
+              ate={reserva.reservadaAte}
+              texto={m.reservada}
+              aoAcabar={() => (setReserva(null), setErro(m.expirou), setPasso("hora"))}
+            />
+            <PassoDados
+              t={t}
+              inicial={cliente ?? {}}
+              comConta={!!cliente}
+              erro={erro}
+              aEnviar={aEnviar}
+              aoConfirmar={enviar}
+              privacidade={barbearia.privacidade}
+            />
+          </>
+        ) : null}
+        {passo === "feita" && reserva && servico ? (
+          <Confirmacao
             t={t}
             lingua={lingua}
-            slug={barbearia.slug}
-            servicoId={servico.id}
-            profissionalId={barbeiro ?? null}
-            hoje={hoje}
-            janelaDias={barbearia.janelaDias}
-            filaEspera={barbearia.filaEspera ? { cliente } : undefined}
-            aoEscolher={escolherVaga}
+            id={reserva.marcacaoId}
+            servico={servico.nome}
+            barbeiro={nomeBarbeiro(reserva.profissionalId)}
+            inicio={reserva.inicio}
+            fim={new Date(
+              new Date(reserva.inicio).getTime() + servico.duracao * 60_000,
+            ).toISOString()}
+            valorCent={reserva.valorCobradoCent}
+            barbearia={barbearia.nome}
+            morada={barbearia.morada}
+            cancelamentoMin={barbearia.cancelamentoMin}
+            acesso={acesso}
+            area={barbearia.area}
+            nova={() => (setReserva(null), setServico(undefined), setPasso("servico"))}
           />
-        </>
-      ) : null}
-      {passo === "dados" && reserva ? (
-        <>
-          <h2 className="text-lg font-extrabold">{m.dados}</h2>
-          <Contagem
-            ate={reserva.reservadaAte}
-            texto={m.reservada}
-            aoAcabar={() => (setReserva(null), setErro(m.expirou), setPasso("hora"))}
-          />
-          <PassoDados
-            t={t}
-            inicial={cliente ?? {}}
-            comConta={!!cliente}
-            erro={erro}
-            aEnviar={aEnviar}
-            aoConfirmar={enviar}
-            privacidade={barbearia.privacidade}
-          />
-        </>
-      ) : null}
-      {passo === "feita" && reserva && servico ? (
-        <Confirmacao
+        ) : null}
+      </div>
+      {passo !== "feita" ? (
+        <ResumoMarcacao
           t={t}
           lingua={lingua}
-          id={reserva.marcacaoId}
-          servico={servico.nome}
-          barbeiro={nomeBarbeiro(reserva.profissionalId)}
-          inicio={reserva.inicio}
-          fim={new Date(
-            new Date(reserva.inicio).getTime() + servico.duracao * 60_000,
-          ).toISOString()}
-          valorCent={reserva.valorCobradoCent}
           barbearia={barbearia.nome}
           morada={barbearia.morada}
-          cancelamentoMin={barbearia.cancelamentoMin}
-          acesso={acesso}
-          area={barbearia.area}
-          nova={() => (setReserva(null), setServico(undefined), setPasso("servico"))}
+          servico={servico}
+          barbeiro={
+            reserva
+              ? nomeBarbeiro(reserva.profissionalId)
+              : barbeiro === null
+                ? m.semPreferencia
+                : barbeiro && nomeBarbeiro(barbeiro)
+          }
+          inicio={reserva?.inicio}
+          valorCent={reserva?.valorCobradoCent}
         />
       ) : null}
     </div>

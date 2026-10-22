@@ -16,16 +16,18 @@ export function PassoServico({
   return (
     <>
       <h2 className="text-lg font-extrabold">{t.marcacao.servico}</h2>
-      {servicos.map((s) => (
-        <Escolha
-          key={s.id}
-          titulo={s.nome}
-          linha={`${t.blocos.minutos(s.duracao)}${s.descricao ? ` · ${s.descricao}` : ""}`}
-          lado={formatarDinheiro(s.precoCent)}
-          testId="escolher-servico"
-          aoEscolher={() => aoEscolher(s)}
-        />
-      ))}
+      <div className="grid gap-3 md:grid-cols-2">
+        {servicos.map((s) => (
+          <Escolha
+            key={s.id}
+            titulo={s.nome}
+            linha={`${t.blocos.minutos(s.duracao)}${s.descricao ? ` · ${s.descricao}` : ""}`}
+            lado={formatarDinheiro(s.precoCent)}
+            testId="escolher-servico"
+            aoEscolher={() => aoEscolher(s)}
+          />
+        ))}
+      </div>
     </>
   );
 }
@@ -43,21 +45,23 @@ export function PassoBarbeiro({
   return (
     <>
       <h2 className="text-lg font-extrabold">{t.marcacao.barbeiro}</h2>
-      <Escolha
-        titulo={t.marcacao.semPreferencia}
-        linha={t.marcacao.semPreferenciaAjuda}
-        testId="sem-preferencia"
-        aoEscolher={() => aoEscolher(null)}
-      />
-      {equipa.map((b) => (
+      <div className="grid gap-3 md:grid-cols-2">
         <Escolha
-          key={b.id}
-          titulo={b.nome}
-          imagem={b.fotoUrl}
-          testId="escolher-barbeiro"
-          aoEscolher={() => aoEscolher(b.id)}
+          titulo={t.marcacao.semPreferencia}
+          linha={t.marcacao.semPreferenciaAjuda}
+          testId="sem-preferencia"
+          aoEscolher={() => aoEscolher(null)}
         />
-      ))}
+        {equipa.map((b) => (
+          <Escolha
+            key={b.id}
+            titulo={b.nome}
+            imagem={b.fotoUrl}
+            testId="escolher-barbeiro"
+            aoEscolher={() => aoEscolher(b.id)}
+          />
+        ))}
+      </div>
     </>
   );
 }

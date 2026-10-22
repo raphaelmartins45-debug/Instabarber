@@ -75,6 +75,7 @@ export default async function MinhaArea({ params }: { params: Promise<{ slug: st
   return (
     <div lang={lingua}>
       <MolduraCliente
+        larga
         titulo={`${t.area.titulo} · ${b.nome}`}
         voltar={base || "/"}
         rotuloVoltar={t.marcacao.voltar}
@@ -88,65 +89,75 @@ export default async function MinhaArea({ params }: { params: Promise<{ slug: st
           />
         }
       >
-        <h1 className="text-xl font-extrabold" data-testid="vista">
-          {t.area.ola(ficha.nome)}
-        </h1>
-        <div className="grid grid-cols-2 gap-2">
-          <Button asChild className="h-12">
-            <Link href={`${base}/marcar`}>{t.area.marcar}</Link>
-          </Button>
-          {ligadas.has("marcacao_rapida") && ultima?.profissionalId ? (
-            <Button asChild variant="outline" className="h-12">
-              <Link
-                href={`${base}/marcar?servico=${ultima.servicoId}&profissional=${ultima.profissionalId}&repetir=1`}
-              >
-                {t.marcacao.repetir}
-              </Link>
-            </Button>
-          ) : null}
-          {b.whatsapp ? (
-            <Button asChild variant="outline" className="h-12">
-              <a href={ligacaoWhatsApp(b.whatsapp, "")} target="_blank" rel="noopener noreferrer">
-                {t.area.whatsapp}
-              </a>
-            </Button>
-          ) : null}
-          {b.telefone ? (
-            <Button asChild variant="outline" className="h-12">
-              <a href={`tel:${b.telefone}`}>{t.area.ligar}</a>
-            </Button>
-          ) : null}
-        </div>
-        {cartao ? <CartaoSelos t={t} cartao={cartao} /> : null}
-        <SeccaoArea titulo={t.area.proxima}>
-          {proxima ? (
-            <ProximaMarcacao
-              lingua={lingua}
-              id={proxima.id}
-              inicio={proxima.inicio}
-              servico={servico(proxima.servicoId)}
-              barbeiro={barbeiro(proxima.profissionalId)}
-              valorCent={proxima.valorCent}
-              cancelamentoMin={b.antecedencia_cancelamento_min ?? 120}
+        <div className="grid gap-4 md:grid-cols-2 md:items-start md:gap-6">
+          <div className="grid gap-4">
+            <h1 className="text-xl font-extrabold" data-testid="vista">
+              {t.area.ola(ficha.nome)}
+            </h1>
+            <div className="grid grid-cols-2 gap-2">
+              <Button asChild className="h-12">
+                <Link href={`${base}/marcar`}>{t.area.marcar}</Link>
+              </Button>
+              {ligadas.has("marcacao_rapida") && ultima?.profissionalId ? (
+                <Button asChild variant="outline" className="h-12">
+                  <Link
+                    href={`${base}/marcar?servico=${ultima.servicoId}&profissional=${ultima.profissionalId}&repetir=1`}
+                  >
+                    {t.marcacao.repetir}
+                  </Link>
+                </Button>
+              ) : null}
+              {b.whatsapp ? (
+                <Button asChild variant="outline" className="h-12">
+                  <a
+                    href={ligacaoWhatsApp(b.whatsapp, "")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t.area.whatsapp}
+                  </a>
+                </Button>
+              ) : null}
+              {b.telefone ? (
+                <Button asChild variant="outline" className="h-12">
+                  <a href={`tel:${b.telefone}`}>{t.area.ligar}</a>
+                </Button>
+              ) : null}
+            </div>
+            {cartao ? <CartaoSelos t={t} cartao={cartao} /> : null}
+            <SeccaoArea titulo={t.area.proxima}>
+              {proxima ? (
+                <ProximaMarcacao
+                  lingua={lingua}
+                  id={proxima.id}
+                  inicio={proxima.inicio}
+                  servico={servico(proxima.servicoId)}
+                  barbeiro={barbeiro(proxima.profissionalId)}
+                  valorCent={proxima.valorCent}
+                  cancelamentoMin={b.antecedencia_cancelamento_min ?? 120}
+                />
+              ) : (
+                <p className="text-sm text-muted-foreground">{t.area.semProxima}</p>
+              )}
+            </SeccaoArea>
+          </div>
+          <div className="grid gap-4">
+            <ListasArea
+              t={t}
+              visitas={visitas}
+              planos={ligadas.has("clube_assinatura") ? planos : null}
+              encomendas={ligadas.has("loja_produtos") ? encomendas : null}
+              servico={servico}
+              barbeiro={barbeiro}
             />
-          ) : (
-            <p className="text-sm text-muted-foreground">{t.area.semProxima}</p>
-          )}
-        </SeccaoArea>
-        <ListasArea
-          t={t}
-          visitas={visitas}
-          planos={ligadas.has("clube_assinatura") ? planos : null}
-          encomendas={ligadas.has("loja_produtos") ? encomendas : null}
-          servico={servico}
-          barbeiro={barbeiro}
-        />
-        {codigo ? (
-          <SeccaoArea titulo={t.area.convite} testId="codigo-convite">
-            <p className="font-mono text-2xl font-bold tracking-widest">{codigo}</p>
-            <p className="text-sm text-muted-foreground">{t.area.conviteTexto}</p>
-          </SeccaoArea>
-        ) : null}
+            {codigo ? (
+              <SeccaoArea titulo={t.area.convite} testId="codigo-convite">
+                <p className="font-mono text-2xl font-bold tracking-widest">{codigo}</p>
+                <p className="text-sm text-muted-foreground">{t.area.conviteTexto}</p>
+              </SeccaoArea>
+            ) : null}
+          </div>
+        </div>
         {b.multilinguagem_ativa ? <SeletorLingua atual={lingua} rotulo={t.linguas} /> : null}
       </MolduraCliente>
     </div>

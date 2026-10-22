@@ -24,6 +24,8 @@ async function sairDaArea(page: Page) {
 
 async function pedirCodigo(page: Page, telefone: string) {
   await page.goto(entrada);
+  // O formulário só responde depois de a página ficar interativa.
+  await page.waitForLoadState("networkidle");
   await page.locator("#telefone-codigo").fill(telefone);
   await page.getByRole("button", { name: "Pedir código" }).click();
   await expect(page.getByText("Pedido registado.")).toBeVisible();
@@ -34,6 +36,7 @@ test("o cliente com conta entra com telemóvel e palavra-passe, também pelo sub
 }, info) => {
   const { comConta } = telefones(info.project.name);
   await page.goto(`http://${BARBEARIA_A.slug}.localhost:3000/entrar`);
+  await page.waitForLoadState("networkidle");
   await page.locator("#telefone").fill("912 000 999");
   await page.locator("#palavra_passe").fill("errada-123");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();

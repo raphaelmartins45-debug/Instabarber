@@ -31,6 +31,7 @@ export default async function Loja({ params }: { params: Promise<{ slug: string 
   return (
     <div lang={lingua}>
       <MolduraCliente
+        larga
         titulo={`${t.loja.titulo} · ${b.nome}`}
         voltar={base || "/"}
         rotuloVoltar={t.marcacao.voltar}

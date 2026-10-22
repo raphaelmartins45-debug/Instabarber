@@ -85,7 +85,7 @@ export function PassoHora({
           ) : null}
         </>
       ) : (
-        <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+        <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
           {vagas.map((v) => (
             <li key={`${v.inicio}-${v.profissionalId}`}>
               <button

@@ -48,14 +48,18 @@ export function Carrinho({
       </div>
     );
   return (
-    <div className="grid gap-6">
-      <ul className="grid gap-2">
+    <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_360px] md:items-start">
+      <ul className="grid gap-2 md:grid-cols-2 md:gap-3">
         {produtos.map((p) => (
           <li
             key={p.id}
             className="flex items-center justify-between gap-3 rounded-xl border bg-card p-3"
           >
-            <span className="grid">
+            {p.fotoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
+              <img src={p.fotoUrl} alt="" className="size-14 shrink-0 rounded-md object-cover" />
+            ) : null}
+            <span className="grid flex-1">
               <span className="font-semibold">{p.nome}</span>
               <span className="text-sm text-muted-foreground">
                 {p.esgotado ? t.blocos.esgotado : formatarDinheiro(p.precoCent)}
@@ -73,26 +77,29 @@ export function Carrinho({
           </li>
         ))}
       </ul>
-      <p className="text-lg font-bold" data-testid="total-encomenda">
-        {l.total(formatarDinheiro(total))}
-      </p>
-      <h2 className="text-lg font-extrabold">{l.dados}</h2>
-      <FormularioContacto
-        t={t}
-        prefixo="lj"
-        inicial={cliente ?? undefined}
-        submeter={l.encomendar}
-        erro={erro}
-        aEnviar={aEnviar}
-        aoEnviar={(c) =>
-          iniciar(async () => {
-            if (!linhas.length) return setErro(l.vazio);
-            const r = await encomendar(slug, { ...c, linhas });
-            if (r.ok) return setFeita(true);
-            setErro(t.marcacao.erros[r.erro] ?? t.marcacao.erros.erro);
-          })
-        }
-      />
+      {/* No computador, o total e os dados ficam fixos ao lado dos produtos (D-129). */}
+      <div className="grid gap-4 md:sticky md:top-6 md:rounded-2xl md:border md:bg-card md:p-5">
+        <p className="text-lg font-bold" data-testid="total-encomenda">
+          {l.total(formatarDinheiro(total))}
+        </p>
+        <h2 className="text-lg font-extrabold">{l.dados}</h2>
+        <FormularioContacto
+          t={t}
+          prefixo="lj"
+          inicial={cliente ?? undefined}
+          submeter={l.encomendar}
+          erro={erro}
+          aEnviar={aEnviar}
+          aoEnviar={(c) =>
+            iniciar(async () => {
+              if (!linhas.length) return setErro(l.vazio);
+              const r = await encomendar(slug, { ...c, linhas });
+              if (r.ok) return setFeita(true);
+              setErro(t.marcacao.erros[r.erro] ?? t.marcacao.erros.erro);
+            })
+          }
+        />
+      </div>
     </div>
   );
 }
