@@ -588,3 +588,9 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - No telemóvel, a ficha com dez separadores passa a passos com indicador de posição. Os painéis passam a ter navegação inferior (no máximo 5 entradas mais «Mais»), as tabelas passam a cartões e as ações destrutivas pedem confirmação (Parte I, I.3.1).
 - Os alertas «sinais de abandono» (M.2) dependem de dados de uso e ficam para a Fase 8.
 - shadcn/ui: `alert-dialog` sobre `@radix-ui/react-alert-dialog` 1.1.23 (julho de 2026, autorizado pela B.3).
+
+## D-120 · 22/10/2026 · Avançar sem esperar pela confirmação — dono
+- O dono vai estar ausente e mandou avançar sem parar: fechar a Fase 3 e seguir para a Fase 4. Isto suspende, enquanto ele estiver ausente, a espera entre fases da regra 4.1 e o resumo com confirmação da regra 4.2. O resumo de cada fase fica escrito no `PROGRESSO.md`.
+- Tudo o que precise da aprovação do dono (permissões, contas externas, decisões de produto não especificadas) entra na lista numerada «Pendentes do dono» do `PROGRESSO.md`. Uma decisão de produto em falta resolve-se com a opção mais simples e conservadora, fica aplicada e marcada como pendente, e o trabalho continua.
+- A 3B e a 3C ficam para depois da Fase 4 (pendente 3).
+
