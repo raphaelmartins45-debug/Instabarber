@@ -399,3 +399,5 @@ No topo da janela «Experimenta já» há dois botões redondos (escuro e claro)
 
 ## D-85 · A Prestadora passa ao regime normal de IVA (22/10/2026)
 O dono informou que já não está isenta de IVA. `PRESTADORA_REGIME_IVA=normal` no `.env.local` (e na Vercel quando for preciso). O preço final ao cliente não muda (24,59 €, 47,97 €, 12,30 € e 6,15 € com IVA); o valor sem IVA é o preço final ÷ 1,23 (19,99 €, 39,00 €, 10,00 € e 5,00 €), que já era a base das tabelas. As faturas saem com IVA a 23 % e a menção «IVA – Regime de Isenção» deixa de se usar. Rever com o contabilista: o modelo de contrato (cláusula 6.4, que já previa a mudança), as notas para o jurista e a data em que o regime mudou. Código e esquema não mudam: o regime vive na variável (D-45).
+
+Nota a D-84 (22/10/2026): a Vercel estava a servir `landing/index.html` (sem viewport, ícone nem descrição nova) porque o Root Directory ainda não tinha efeito; depois de guardar `landing/publicar` é preciso um deploy novo (um commit dentro dessa pasta chega). Confirmado no telemóvel, pelo link da bio do Instagram, em 22/10/2026.
