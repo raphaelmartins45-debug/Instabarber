@@ -393,3 +393,6 @@ O botão principal do topo passa de «Experimentar a demo» para «Experimenta o
 
 ## D-83 · Fundo personalizável na demonstração (22/10/2026)
 No topo da janela «Experimenta já» há dois botões redondos (escuro e claro) com a nota «Muda o fundo», para mostrar que a página da barbearia é personalizável. Só visual: nada é guardado e não afeta o resto da página. O telemóvel de WhatsApp do separador Lembrete mantém o aspeto escuro. Botões com 44 px de toque.
+
+## D-84 · Domínios ligados à Vercel (22/10/2026)
+`instabarber.pt` e `www.instabarber.pt` estão ligados ao projeto `instabarber-landing` (Root Directory `landing/publicar`, preset Other) e a abrir com HTTPS. Registador: Arsys, com a gestão de DNS em «Gestión libre». Registos do site: A `@` → 216.198.79.1 e CNAME `www` para a Vercel; apagados os A/AAAA de estacionamento (217.160.0.48 e 2001:8d8:100f:f000::200). Mantidos os MX, SPF, DKIM e verificação do Zoho (`mx`, `mx2`, `mx3.zoho.eu`). O `www` ficou como Production, não como redirecionamento: o redirecionamento 308 para `instabarber.pt` deu erro SSL enquanto o certificado se refazia. Repetir mais tarde, com calma (melhora a pesquisa e evita dois endereços iguais). Nameservers da Arsys inalterados até à Fase 7.

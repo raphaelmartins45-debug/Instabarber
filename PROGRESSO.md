@@ -44,3 +44,4 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 Fase 0 (Preparação), com início a 22/10/2026. Antes de escrever código: resumo do que se vai construir e **espera pela confirmação do dono** (regra de trabalho do projeto). Ler só `fases/fase-0.md` e `CLAUDE.md`.
 
 - 22/10/2026 · D-72: Pro com 3 profissionais incluídos (landing, docs, esquema e testes SQL atualizados; 396 verificações sem falhas).
+- 22/10/2026 · D-84: landing no ar em instabarber.pt e www.instabarber.pt (Vercel, HTTPS). Passo 0: faltam .env.local, Resend e confirmação do Zoho.
