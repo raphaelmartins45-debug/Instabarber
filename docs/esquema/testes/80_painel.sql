@@ -86,4 +86,37 @@ select teste.ok(not marcacao_online_bloqueada('40000000-0000-0000-0000-000000000
 select teste.como('10000000-0000-0000-0000-000000000005');
 select teste.erro($$select marcacao_online_bloqueada('40000000-0000-0000-0000-000000000002')$$,
                   'PAINEL: outra barbearia não pergunta pelo cliente');
+
+-- Clube: inscrição, ciclo por pagar, créditos, renovação no mesmo dia do mês e transitar crédito.
+reset role;
+insert into clubes (id, inquilino_id, nome, preco_mensal, transita_credito)
+values ('60000000-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000000', 'Plano Cabelo', 25, true);
+insert into clube_servicos (inquilino_id, clube_id, servico_id, quantidade_mes)
+values ('aaaaaaaa-0000-0000-0000-000000000000', '60000000-0000-0000-0000-000000000001', '30000000-0000-0000-0000-000000000001', 2);
+select teste.como('10000000-0000-0000-0000-000000000003');
+select teste.erro($$select inscrever_clube('40000000-0000-0000-0000-000000000001', '60000000-0000-0000-0000-000000000001', '2027-01-31')$$,
+                  'PAINEL: o barbeiro não inscreve clientes no clube');
+select teste.como('10000000-0000-0000-0000-000000000005');
+select teste.erro($$select inscrever_clube('40000000-0000-0000-0000-000000000001', '60000000-0000-0000-0000-000000000001', '2027-01-31')$$,
+                  'PAINEL: outra barbearia também não');
+select teste.como('10000000-0000-0000-0000-000000000002');
+create temp table s as
+  select inscrever_clube('40000000-0000-0000-0000-000000000001', '60000000-0000-0000-0000-000000000001', '2027-01-31') as id;
+grant select on s to authenticated;
+select teste.ok((select proxima_renovacao = '2027-02-28' from subscricoes where id = (select id from s)),
+                'PAINEL: inscrição a 31 renova no último dia de fevereiro');
+select teste.ok((select pago_em is null and valor = 25 and fim = '2027-03-02' from ciclos_clube where subscricao_id = (select id from s)),
+                'PAINEL: o primeiro ciclo nasce por pagar, com o preço e a validade do plano');
+select teste.ok((select quantidade = 2 from creditos_clube cc join ciclos_clube ci on ci.id = cc.ciclo_id
+                  where ci.subscricao_id = (select id from s)),
+                'PAINEL: o ciclo traz os créditos do plano');
+update ciclos_clube set pago_em = now(), metodo = 'mbway' where subscricao_id = (select id from s);
+select renovar_subscricao((select id from s));
+select teste.ok((select quantidade = 4 from creditos_clube cc join ciclos_clube ci on ci.id = cc.ciclo_id
+                  where ci.subscricao_id = (select id from s) and ci.inicio = '2027-02-28'),
+                'PAINEL: o crédito não usado de um ciclo pago transita para o seguinte');
+select teste.ok((select proxima_renovacao = '2027-03-31' from subscricoes where id = (select id from s)),
+                'PAINEL: a renovação volta ao dia 31 em março');
+update subscricoes set estado = 'cancelada', cancelada_em = now() where id = (select id from s);
+select teste.erro($$select renovar_subscricao((select id from s))$$, 'PAINEL: subscrição cancelada não renova');
 rollback;

@@ -33,6 +33,8 @@ export type TipoCampo =
 export type CampoFicha = {
   nome: string;
   tipo: TipoCampo;
+  /** Rótulo próprio; sem ele, vale o de textos.admin.ficha.campos. */
+  rotulo?: string;
   opcoes?: { valor: string; rotulo: string }[];
   ajuda?: string;
 };

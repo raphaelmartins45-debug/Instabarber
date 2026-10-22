@@ -1,10 +1,17 @@
+import Link from "next/link";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { EstadoConvite } from "@/lib/regras/convite";
 import { BotaoReenviar } from "./botao-reenviar";
 
 const t = textos.paineis.equipa;
 
-export type LinhaEquipa = { id: string; nome: string; email: string | null; estado: EstadoConvite };
+export type LinhaEquipa = {
+  id: string;
+  nome: string;
+  email: string | null;
+  estado: EstadoConvite;
+  ativo: boolean;
+};
 
 /** A equipa com o estado de cada convite. No telemóvel, cada linha é um cartão. */
 export function ListaEquipa({ linhas }: { linhas: LinhaEquipa[] }) {
@@ -17,10 +24,17 @@ export function ListaEquipa({ linhas }: { linhas: LinhaEquipa[] }) {
           data-testid="membro-equipa"
         >
           <div className="min-w-0 flex-1">
-            <p className="truncate font-semibold">{l.nome}</p>
+            <Link
+              href={`/app/sistema/equipa?p=${l.id}`}
+              className="block truncate font-semibold text-ligacao underline-offset-4 hover:underline"
+            >
+              {l.nome}
+            </Link>
             <p className="truncate text-sm text-muted-foreground">{l.email}</p>
           </div>
-          {l.estado === "ativo" ? (
+          {!l.ativo ? (
+            <span className="text-sm text-muted-foreground">{textos.sistema.equipa.inativo}</span>
+          ) : l.estado === "ativo" ? (
             <span className="text-sm text-sucesso">{t.ativo}</span>
           ) : (
             <span className="text-sm text-muted-foreground">{t.aguarda}</span>

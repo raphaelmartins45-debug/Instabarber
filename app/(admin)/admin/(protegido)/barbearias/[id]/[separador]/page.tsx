@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { FormularioPagamento } from "@/components/admin/formulario-pagamento";
-import { FormularioSeparador } from "@/components/admin/formulario-separador";
+import { FormularioFicha } from "@/components/nucleo/formulario-ficha";
+import { guardarSeparador } from "../acoes";
 import { GrelhaFuncionalidades } from "@/components/admin/grelha-funcionalidades";
 import { ListasPagamentos } from "@/components/admin/listas-pagamentos";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
@@ -48,9 +49,9 @@ export default async function SeparadorFicha({
           capa={b.capa_foto_url}
           galeria={b.galeria_urls}
         />
-        <FormularioSeparador
-          inquilinoId={b.id}
-          separador={s}
+        <FormularioFicha
+          guardar={guardarSeparador.bind(null, b.id)}
+          esquema={s}
           campos={campos}
           valores={valoresDe(b, campos)}
         />
@@ -60,9 +61,9 @@ export default async function SeparadorFicha({
   if (s === "identidade" || s === "contactos" || s === "horario") {
     const campos = camposDe(s, rotulos);
     return (
-      <FormularioSeparador
-        inquilinoId={b.id}
-        separador={s}
+      <FormularioFicha
+        guardar={guardarSeparador.bind(null, b.id)}
+        esquema={s}
         campos={campos}
         valores={valoresDe(b, campos)}
       />
@@ -82,9 +83,9 @@ export default async function SeparadorFicha({
     }));
     return (
       <div className="grid gap-6">
-        <FormularioSeparador
-          inquilinoId={b.id}
-          separador="pagamentos"
+        <FormularioFicha
+          guardar={guardarSeparador.bind(null, b.id)}
+          esquema="pagamentos"
           campos={campos}
           valores={valoresDe(b, campos)}
         />

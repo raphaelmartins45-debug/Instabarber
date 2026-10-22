@@ -600,3 +600,10 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - `marcacao_online_bloqueada()`: a ficha do cliente pergunta se a política de faltas o bloqueou, sem copiar a regra para o TypeScript (a regra continua em `pode_marcar_online()`); só a equipa da barbearia do cliente.
 - Migração 06, as mesmas funções em `docs/esquema/02_funcoes.sql`, 16 testes em `docs/esquema/testes/80_painel.sql`.
 
+
+## D-122 · 22/10/2026 · Clube de assinatura na base de dados (Fase 4) — técnica
+- Inscrever e renovar passam por funções SQL (os créditos decidem o que se grava): `inscrever_clube()` cria a subscrição e o primeiro ciclo por pagar, com os créditos do plano; `renovar_subscricao()` abre o ciclo seguinte; `abrir_ciclo_clube()` é interna (sem permissão de execução).
+- A renovação é no mesmo dia do mês da inscrição: a próxima data calcula-se a partir do início (início + n meses), para que o dia 31 volte a 31 depois de fevereiro.
+- Com «transitar crédito», o que ficou por usar num ciclo pago soma-se aos créditos do ciclo seguinte.
+- Sem tarefas agendadas (D-26): as subscrições com renovação automática renovam quando o gestor abre o clube; as manuais, com «Renovar ciclo».
+- 8 testes em `docs/esquema/testes/80_painel.sql` (436 no total).

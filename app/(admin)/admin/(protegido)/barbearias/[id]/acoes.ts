@@ -20,21 +20,21 @@ import { alterarServico, criarServicos } from "@/lib/repositorios/admin/servicos
 import { criarClienteServico } from "@/lib/supabase/servico";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { ESQUEMAS_SEPARADOR, type SeparadorComFormulario } from "@/lib/validacao/ficha-barbearia";
+import type { EsquemaFormulario, ResultadoFicha } from "@/lib/validacao/formularios";
 
 // Ações da ficha da barbearia (E.1). Só o super_admin com dois fatores; o RLS volta a verificar.
 
 const id = z.string().uuid();
-export type ResultadoFicha = { ok: true } | { ok: false; erro: string; campo?: string };
 
 const caminho = (inquilinoId: string) => `/admin/barbearias/${inquilinoId}`;
 
 export async function guardarSeparador(
   inquilinoId: string,
-  separador: SeparadorComFormulario,
+  separador: EsquemaFormulario,
   dados: Record<string, unknown>,
 ): Promise<ResultadoFicha> {
   await exigirSuperAdmin();
-  const esquema = ESQUEMAS_SEPARADOR[separador];
+  const esquema = ESQUEMAS_SEPARADOR[separador as SeparadorComFormulario];
   if (!esquema || !id.safeParse(inquilinoId).success) return { ok: false, erro: "obrigatorio" };
   const v = esquema.safeParse(dados);
   if (!v.success) {

@@ -4844,6 +4844,7 @@ export type Database = {
       };
     };
     Functions: {
+      abrir_ciclo_clube: { Args: { p_inicio: string; p_subscricao: string }; Returns: string };
       abrir_lembrete_vencimento: { Args: { p_id: string }; Returns: undefined };
       anonimizar_cliente: { Args: { p_cliente: string }; Returns: undefined };
       apagar_leads_inativos: { Args: { p_meses?: number }; Returns: number };
@@ -4965,6 +4966,10 @@ export type Database = {
       hoje_lisboa: { Args: Record<PropertyKey, never>; Returns: string };
       hora_local: { Args: { p: string }; Returns: string };
       inquilinos_onde: { Args: { p_papeis: string[]; p_so_ativos?: boolean }; Returns: string[] };
+      inscrever_clube: {
+        Args: { p_cliente: string; p_clube: string; p_inicio: string };
+        Returns: string;
+      };
       instante_lisboa: { Args: { p_dia: string; p_hora: string }; Returns: string };
       ler_convite_adesao: { Args: { p_token: string }; Returns: Json };
       levantar_pedido: { Args: { p_pedido: string }; Returns: undefined };
@@ -5033,6 +5038,7 @@ export type Database = {
         };
         Returns: undefined;
       };
+      renovar_subscricao: { Args: { p_subscricao: string }; Returns: string };
       reservar_vaga: {
         Args: { p_inicio: string; p_inquilino: string; p_profissional?: string; p_servico: string };
         Returns: {

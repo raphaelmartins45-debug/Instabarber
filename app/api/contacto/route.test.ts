@@ -60,7 +60,9 @@ describe("POST /api/contacto · fase 1", () => {
     expect(resposta.text).toContain(json.ref);
     expect(resposta.text).toContain("Olá Miguel,");
     expect(resposta.replyTo).toBe("comercial@instabarber.pt");
-    expect(resposta.text).toContain("Com os melhores cumprimentos,\n\nComercial InstaBarber\n+351 900 000 000");
+    expect(resposta.text).toContain(
+      "Com os melhores cumprimentos,\n\nComercial InstaBarber\n+351 900 000 000",
+    );
     expect(resposta.html).toContain("<strong>Comercial InstaBarber</strong>");
     expect(resposta.html).toContain("https://instabarber.pt/marca/logo-horizontal-dourado.png");
     expect(resposta.html).toContain("comercial@instabarber.pt");

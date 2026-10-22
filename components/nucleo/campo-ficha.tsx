@@ -2,7 +2,7 @@
 
 import type { UseFormReturn } from "react-hook-form";
 import { Campo } from "@/components/nucleo/campo";
-import type { CampoFicha } from "@/lib/admin/ficha";
+import type { CampoFicha as DefinicaoCampo } from "@/lib/admin/ficha";
 import { textos } from "@/lib/i18n/pt-PT";
 import { cn } from "@/lib/utils";
 
@@ -18,23 +18,26 @@ const TIPOS_INPUT: Record<string, string> = {
 };
 
 /** Um campo da ficha, desenhado conforme o tipo. */
-export function CampoSeparador({
+export function CampoFicha({
   campo,
   form,
   erro,
 }: {
-  campo: CampoFicha;
+  campo: DefinicaoCampo;
   form: UseFormReturn<Record<string, unknown>>;
   erro?: string;
 }) {
-  const rotulo = rotulos[campo.nome] ?? campo.nome;
+  const rotulo = campo.rotulo ?? rotulos[campo.nome] ?? campo.nome;
   const id = `campo-${campo.nome}`;
   if (campo.tipo === "booleano") {
     return (
-      <label className="flex min-h-11 items-center gap-3 rounded-lg border bg-card px-3 text-sm sm:col-span-2">
-        <input id={id} type="checkbox" className="size-5" {...form.register(campo.nome)} />
-        {rotulo}
-      </label>
+      <div className="grid gap-1 sm:col-span-2">
+        <label className="flex min-h-11 items-center gap-3 rounded-lg border bg-card px-3 text-sm">
+          <input id={id} type="checkbox" className="size-5" {...form.register(campo.nome)} />
+          {rotulo}
+        </label>
+        {campo.ajuda ? <p className="text-xs text-muted-foreground">{campo.ajuda}</p> : null}
+      </div>
     );
   }
   if (campo.tipo === "dias") {
