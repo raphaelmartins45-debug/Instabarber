@@ -509,3 +509,10 @@ O favicon e os ícones simples passam a um «IB» em que o «I» é um poste de 
 
 ## D-111 · 22/10/2026 · Fotos de produto na loja de demonstração
 A loja de demonstração da landing mostra uma foto por produto (`public/marca/loja/`, JPEG 360 px), numa moldura clara com cantos redondos, sombra suave e brilho, dentro do cartão em vidro do redesenho (D-109). Produto esgotado fica a preto e branco. Atenção: as três fotos (pomada Kemon, óleo Proraso, champô Dr.EA) são imagens de terceiros com marcas visíveis, fornecidas pelo dono como exemplo. Antes de manter na página pública, confirmar o direito de uso ou trocar por fotos próprias ou genéricas; basta substituir os três ficheiros, sem mexer no código.
+
+## D-130 · 22/10/2026 · SEO da landing: título, descrição e palavras de pesquisa — dono
+- Título aprovado pelo dono: «Sistema Completo para Gestão de Barbearias | InstaBarber» (56 caracteres, a palavra-chave primeiro e a marca no fim). Descrição (152 caracteres): «Sistema completo para gestão de barbearias em Portugal: marcação online, agenda, clientes, equipa e financeiro num só sítio. Experimenta a demonstração.» As partilhas (Open Graph e Twitter) seguem a mesma mensagem.
+- Linha «Sistema de gestão para barbearias» dentro do H1, por cima do slogan, em letra pequena: a pesquisa encontra-a e o desenho quase não muda.
+- Sem `meta keywords` (o Google ignora-a): as variações de pesquisa vão nos dados estruturados (`alternateName`, `keywords`) e no texto (a primeira resposta das perguntas frequentes diz «programa para barbearias… como uma app»).
+- Dados estruturados: `SoftwareApplication` com os preços (de 24,59 € a 47,97 € por mês, com IVA) e `FAQPage` com as seis perguntas da página. O sitemap passa a levar a data da publicação (`lastmod`).
+- Feito no `main` com autorização do dono (a outra sessão tinha terminado).
