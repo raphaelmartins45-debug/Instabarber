@@ -381,3 +381,6 @@ O topo tinha cinco chamadas (três caixas e dois botões) e dois botões com o m
 
 ## D-79 · Botão «Compara os planos» no topo (22/10/2026)
 O topo ganha «Compara os planos» (#planos) ao lado de «Experimentar a demo». Ordem: demo, planos, falar connosco. Em ecrãs estreitos os botões empilham.
+
+## D-80 · Ícone e descrição da página (22/10/2026)
+Ícone do separador refeito (barbeiro dourado sobre fundo da marca, a ocupar 90 % da altura): favicon.ico (16, 32 e 48 px), PNG 32, 192 e 512, apple-touch-icon. Descrição para pesquisa: «Agenda, clientes, equipa e financeiro num só sistema, com marcação online e WhatsApp para recuperar clientes. Para barbearias em Portugal. Experimenta a demo.» Acrescentados og:image:alt e as etiquetas twitter:title, description e image. As ligações de partilha apontam para instabarber.pt: a pré-visualização só aparece depois de o domínio estar ligado.
