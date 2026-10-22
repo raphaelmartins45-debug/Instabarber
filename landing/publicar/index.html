@@ -220,6 +220,7 @@ details .ans a { color: var(--gold); }
 .sim-eq b { font-size: clamp(40px, 6vw, 56px); line-height: 1; color: var(--green); font-variant-numeric: tabular-nums; }
 .sim-eq span { color: var(--cream); font-weight: 700; }
 .sim-sub { margin: 0; color: var(--mute); font-size: 15px; }
+.sim-note { margin: 4px 0 0; padding-top: 10px; border-top: 1px solid var(--line); color: var(--mute); font-size: 13px; }
 .sim-hi { background: var(--gold); color: var(--ink); padding: clamp(20px, 3vw, 32px); display: grid; gap: 8px; align-content: center; }
 .sim-hi .k { color: var(--ink); opacity: .75; }
 .sim-hi h3 { font-size: clamp(20px, 2.6vw, 24px); }
@@ -392,7 +393,6 @@ footer .links a:hover { color: var(--gold); }
   .pt { grid-template-columns: minmax(0, 1fr); }
   .row2, .calc-body { grid-template-columns: minmax(0, 1fr); }
   .slotx { grid-template-columns: 52px minmax(0, 1fr); }
-  #receitabox { grid-template-columns: minmax(0, 1fr) !important; }
   .prow { grid-template-columns: minmax(0, 1fr) auto; }
   .prow > :last-child { grid-column: 1 / -1; justify-self: start; }
   .slotx > :last-child { grid-column: 1 / -1; justify-self: start; }
@@ -459,7 +459,7 @@ footer .links a:hover { color: var(--gold); }
           <small>Encomendas na página, pagas ao balcão</small>
         </div>
         <div class="pub-two">
-          <div class="pub-card"><b>Clube</b><small>Plano Cabelo, 25 €/mês</small></div>
+          <div class="pub-card"><b>Clube</b><small>Plano Cabelo, 35 €/mês</small></div>
           <div class="pub-card"><b>Selos</b><div class="pub-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
         </div>
         <div class="pub-foot">Cartões oferta · Livro de Reclamações</div>
@@ -590,7 +590,7 @@ footer .links a:hover { color: var(--gold); }
     <div class="feats f4">
       <div class="feat"><span class="k">Receita</span><h3>Dinheiro certo todos os meses</h3><p>Cada subscritor é uma mensalidade garantida. Fazes as contas do mês antes de abrires a porta.</p></div>
       <div class="feat"><span class="k">Fidelidade</span><h3>Clientes que voltam</h3><p>Quem já pagou o mês tem um bom motivo para vir cortar contigo, e não à porta do lado.</p></div>
-      <div class="feat"><span class="k">Controlo</span><h3>O plano é teu</h3><p>Defines o nome, o preço e os serviços incluídos. Por exemplo, 2 cortes por 25 € ao mês.</p></div>
+      <div class="feat"><span class="k">Controlo</span><h3>O plano é teu</h3><p>Defines o nome, o preço e os serviços incluídos. Por exemplo, até 4 cortes por 35 € ao mês.</p></div>
       <div class="feat"><span class="k">Sem trabalho</span><h3>O sistema faz as contas</h3><p>Controla o ciclo, os cortes que restam a cada cliente e quem está por pagar. O pagamento regista-se ao balcão: o sistema não cobra.</p></div>
     </div>
   </section>
@@ -599,8 +599,9 @@ footer .links a:hover { color: var(--gold); }
     <div class="box sim">
       <div class="sim-main">
         <span class="k">Clube de assinatura · a conta</span>
-        <div class="sim-eq"><span>10 clientes</span> × <span>25 € por mês</span> = <b>250 €</b></div>
-        <p class="sim-sub">por mês, no teu bolso antes de os clientes se sentarem na cadeira. Cada um tem 2 cortes incluídos e o pagamento regista-se ao balcão: o sistema não cobra nada a ninguém.</p>
+        <div class="sim-eq"><span>10 clientes</span> × <span>35 € por mês</span> = <b>350 €</b></div>
+        <p class="sim-sub">por mês, no teu bolso antes de os clientes se sentarem na cadeira. Cada um tem até 4 cortes incluídos e o pagamento regista-se ao balcão: o sistema não cobra nada a ninguém.</p>
+        <p class="sim-note">Exemplo ilustrativo: o plano é totalmente personalizável. Tu defines o nome, o preço, o número de cortes e os serviços incluídos.</p>
       </div>
       <div class="sim-hi">
         <span class="k">A vantagem</span>
@@ -608,20 +609,7 @@ footer .links a:hover { color: var(--gold); }
         <p>Os subscritores marcam nos dias e nas horas de menos movimento. É uma cadeira que ficava vazia a render, com o dinheiro do mês já garantido.</p>
       </div>
     </div>
-    <div class="row2" id="receitabox" style="grid-template-columns: repeat(2, minmax(0, 1fr))">
-      <div class="box" id="clube">
-        <div class="box-head"><b>Clube de assinatura</b></div>
-        <p class="hintx">«Plano Cabelo»: 25 € por mês, com 2 cortes incluídos (preço de tabela 12 €).</p>
-        <div class="calc"><div class="fields" style="grid-column: 1 / -1"><label for="cl-n">Quantos clientes subscrevem?<input id="cl-n" type="number" inputmode="numeric" min="0" max="500" value="10"></label></div></div>
-        <div class="stat"><span class="k">Receita previsível</span><b id="cl-rec">250 €</b><span>por mês, antes de o cliente entrar na cadeira</span></div>
-        <div class="lost">
-          <div class="lost-top"><b>Marco R.</b><strong id="cl-est" class="prize"></strong></div>
-          <small id="cl-cred"></small>
-          <div><button class="mini" id="cl-pago" type="button">Marcar ciclo como pago</button> <button class="mini" id="cl-usar" type="button" disabled>Usar crédito do clube</button></div>
-          <div class="msgx" id="cl-msg" hidden></div>
-        </div>
-        <p class="hintx">O crédito só vale depois de marcares «Pago». Sem crédito, o serviço é cobrado normalmente.</p>
-      </div>
+    <div class="row2" id="receitabox" style="grid-template-columns: minmax(0, 1fr); max-width: 560px">
       <div class="box" id="cartao">
         <div class="box-head"><b>Cartão oferta</b></div>
         <p class="hintx">Vende ao balcão, o cliente leva para oferecer. O sistema gera o código e o cartão com a tua marca.</p>
@@ -1170,25 +1158,6 @@ footer .links a:hover { color: var(--gold); }
     pintarLoja();
   });
   pintarLoja();
-
-  /* clube de assinatura */
-  var clube = { pago: false, cred: 2 };
-  function pintarClube() {
-    var n = Math.min(500, Math.max(0, Math.round(parseFloat($("cl-n").value) || 0)));
-    $("cl-rec").textContent = eur(n * 25);
-    $("cl-est").textContent = clube.pago ? "Ciclo pago" : "Ciclo por pagar";
-    $("cl-cred").textContent = clube.pago ? clube.cred + " de 2 cortes por usar neste ciclo" : "Os 2 cortes só valem depois de marcares o pagamento.";
-    $("cl-pago").disabled = clube.pago; $("cl-usar").disabled = !clube.pago;
-  }
-  $("cl-n").addEventListener("input", pintarClube);
-  $("cl-pago").addEventListener("click", function () { clube.pago = true; $("cl-msg").hidden = true; pintarClube(); });
-  $("cl-usar").addEventListener("click", function () {
-    var m = $("cl-msg"); m.hidden = false;
-    if (clube.cred > 0) { clube.cred -= 1; m.textContent = "Corte concluído: cobrado 0,00 € (valor de tabela 12,00 €, crédito descontado)."; }
-    else { m.textContent = "Sem crédito neste ciclo: o corte é cobrado normalmente, 12,00 €."; }
-    pintarClube();
-  });
-  pintarClube();
 
   /* cartão oferta */
   var gc = { saldo: 0, ativo: false };

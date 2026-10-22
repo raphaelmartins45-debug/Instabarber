@@ -415,3 +415,8 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 - A calculadora passa de clara a cinza médio (mais claro que os módulos escuros, sem destoar).
 - Rótulos: «Deixa de perder clientes para a concorrência» (calculadora) e «O que vais ter no sistema».
 - O cabeçalho do bloco «Experimenta · plano Pro» foi substituído por um cartão fixo com a conta de 10 clientes × 25 € = 250 € por mês e a vantagem «Enche os teus dias mais fracos». As caixas interativas do Clube e do Cartão oferta mantêm-se por baixo.
+
+## D-90 · 22/10/2026 · Clube: só o cartão fixo, exemplo de 35 €
+- Removida a caixa interativa do Clube (e o seu JavaScript). Fica o cartão fixo: 10 clientes × 35 € = 350 € por mês, com até 4 cortes incluídos.
+- O cartão diz que é um exemplo ilustrativo e que o plano é totalmente personalizável (nome, preço, cortes, serviços). O exemplo do Plano Cabelo passou de 25 € para 35 € em todos os sítios da landing.
+- O Cartão oferta interativo mantém-se por baixo, numa só coluna.
