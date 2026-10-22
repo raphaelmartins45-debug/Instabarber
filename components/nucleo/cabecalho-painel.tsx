@@ -29,32 +29,32 @@ export function CabecalhoPainel({
       <div className="flex h-16 items-center gap-2 px-4 sm:gap-3 md:gap-4 md:px-6">
         {/* Logótipo horizontal a partir de 640 px; no telemóvel, só o ícone, para caber o nome. */}
         <Image
-          src="/marca/logo-horizontal-dourado.png"
+          src="/marca/logo-escuro.png"
           alt={textos.marca.nome}
-          width={120}
-          height={28}
-          className="hidden h-7 w-auto sm:block claro:sm:hidden"
+          width={704}
+          height={360}
+          className="hidden h-9 w-auto sm:block claro:sm:hidden"
         />
         <Image
-          src="/marca/logo-horizontal-preto.png"
+          src="/marca/logo-claro.png"
           alt={textos.marca.nome}
-          width={120}
-          height={28}
-          className="hidden h-7 w-auto claro:sm:block"
+          width={724}
+          height={360}
+          className="hidden h-9 w-auto claro:sm:block"
         />
         <Image
-          src="/marca/icone-dourado.png"
+          src="/marca/icone-escuro.png"
           alt={textos.marca.nome}
-          width={28}
-          height={28}
-          className="size-7 sm:hidden claro:hidden"
+          width={191}
+          height={360}
+          className="h-8 w-auto sm:hidden claro:hidden"
         />
         <Image
-          src="/marca/icone-preto.png"
+          src="/marca/icone-claro.png"
           alt={textos.marca.nome}
-          width={28}
-          height={28}
-          className="hidden size-7 claro:block claro:sm:hidden"
+          width={186}
+          height={360}
+          className="hidden h-8 w-auto claro:block claro:sm:hidden"
         />
         <span aria-hidden className="hidden h-6 w-px bg-border sm:block" />
         <div className="min-w-0 flex-1">
