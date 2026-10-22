@@ -54,6 +54,18 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 4. **Revogar as chaves** que passaram pelo chat quando as fases acabarem: token do Supabase, palavra-passe da base de dados, chave de serviço do Supabase, chave do Resend e token da Vercel.
 5. Registar o domínio no Google Search Console e submeter o sitemap (trabalho paralelo, SEO).
 
+**Decisões da Fase 4 que tomei sem especificação (aplicadas; confirmar ou mudar):**
+
+6. **Textos das mensagens por WhatsApp** (lembrete, pós-venda, convite a regressar, reativação, parabéns) em `lib/i18n/pt-PT/agenda.ts` → `mensagensWhatsApp`. Tom formal («Olá João! Lembramos a sua marcação…»). Validar o texto.
+7. **Resumo do mês do Financeiro:** resultado = receita da barbearia (F.4.11) − custos fixos − despesas; margem = resultado ÷ receita. A faturação de serviços e as comissões aparecem como informação.
+8. **Custos fixos recorrentes:** ao carregar em «Paguei», cria-se logo o custo do mês seguinte, por pagar, com o mesmo valor.
+9. **Cancelar marcação na agenda** (com confirmação). A E.2 não o lista, mas sem isso a agenda do balcão fica sem saída.
+10. **Contas a pagar no Início:** custos fixos por pagar com vencimento até ao fim do mês e todas as despesas por pagar.
+11. **«Passar para o Pro»** (chamada de upgrade, D.2) abre um e-mail para apoio@, sem botão de ativação.
+12. **Envio em lote** (clientes e «Lembretes em lote») fica para a Fase 6, com o registo completo das mensagens. As mensagens individuais já ficam registadas na tabela `mensagens` nesta fase (F.4.10).
+13. **Menu:** as entradas «Relatório» (Fase 6) aparecem quando a funcionalidade está ligada; até à Fase 6 a página ainda não existe.
+14. **Registar serviço ao balcão:** marca e conclui de seguida, na hora indicada (por omissão a hora atual), com o valor editável.
+
 ## Próximo passo
 
 Fase 4 (Painel da barbearia) em curso, sem esperar pela confirmação da Fase 3 (D-120).
