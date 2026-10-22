@@ -35,6 +35,7 @@ O dono fala em «página tal». Tradução (confirmar os caminhos reais na fase 
 | --- | --- | --- | --- |
 | «a página da landing», «o site» | Apresentação da InstaBarber | `landing/index.html`, servido em `/` por `app/(institucional)/route.ts` | — |
 | «o formulário de contacto da landing» | Pedido de contacto em dois passos (D-50) | `app/api/contacto/route.ts`; validação em `lib/validacao/contacto.ts`; e-mails em `lib/email/contacto.ts`; textos em `lib/i18n/pt-PT.ts` | — |
+| «o SEO», «o Google», «o sitemap» | Título e descrição em `landing/index.html`; sitemap e robots (D-105) | `landing/index.html` (title, description, JSON-LD); `app/sitemap.ts`; `app/robots.ts` | — |
 | «as contagens da landing» | Visitas, radar e «Continuar» (D-100) | `app/api/medicao/route.ts` (registos da Vercel até à Fase 3B) | — |
 | «o formulário de adesão» | Pedido de adesão em quatro passos | `app/(adesao)/adesao/` | — |
 | «o admin», «o meu painel» | Painel da Performa LAB | `app/(admin)/admin/` | 1 |

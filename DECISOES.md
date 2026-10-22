@@ -488,3 +488,6 @@ O Gmail do iPhone em modo escuro inverteu a faixa preta do cabeçalho (logo ileg
 
 ## D-104 · 22/10/2026 · Ícones no rodapé do e-mail timbrado
 O rodapé passa a duas linhas alinhadas (ícone + texto): envelope junto do e-mail comercial e ícone do Instagram junto de @instabarberpt. Os ícones são PNG dourados (`public/marca/icone-email-dourado.png` e `icone-instagram-dourado.png`), porque os clientes de e-mail não suportam SVG.
+
+## D-105 · 22/10/2026 · SEO da landing
+Título, descrição e og:description passam a levar as palavras que as pessoas pesquisam («sistema de gestão para barbearias em Portugal», «software para barbeiros», agenda e marcação online). Sem «clientes perdidos» na descrição, por pedido do dono. Acrescentados JSON-LD (SoftwareApplication, sem preços), `app/sitemap.ts` e `app/robots.ts` (bloqueia só `/api/`). Cabe ao dono registar o domínio no Google Search Console e submeter o sitemap.
