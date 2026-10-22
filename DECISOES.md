@@ -428,3 +428,7 @@ O módulo da calculadora passa a ter fundo claro, barra de aplicação no topo (
 ## D-92 · 22/10/2026 · Demonstração: «Painel financeiro» no lugar de «Clientes perdidos»
 - O separador «Clientes perdidos» da demonstração passou a «Painel financeiro»: objetivo do período com barra de progresso, faturado, lucro estimado, despesas, serviços feitos e ticket médio, com escolha entre Hoje, Esta semana e Este mês. Valores de exemplo; o texto lembra que o dinheiro é registado, nunca cobrado, e que não é documento fiscal.
 - Os clientes perdidos continuam no card «Radar de clientes» mais abaixo. O botão «Enviar mensagem» desse card passou a mostrar a mensagem preparada no próprio card (o envio real é sempre confirmado à mão).
+
+## D-93 · 22/10/2026 · Título e subtítulo da demonstração
+- Título: «Experimenta aqui um pouco do que o sistema te oferece.»
+- Subtítulo: «Marca uma vaga, traz um cliente de volta e controla o dinheiro todo: é assim que funciona no dia a dia, com a gestão da barbearia na palma da mão.»
