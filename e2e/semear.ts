@@ -1,6 +1,7 @@
 import {
   BARBEARIA_A,
   BARBEARIA_B,
+  BARBEARIA_SUSPENSA,
   contas,
   PALAVRA_PASSE,
   PROJETOS,
@@ -67,6 +68,13 @@ export default async function semear() {
       estado: "ativo",
       cidade: "Porto",
     },
+    {
+      ...BARBEARIA_SUSPENSA,
+      plano: "basic",
+      profissionais_contratados: 1,
+      estado: "suspenso",
+      cidade: "Braga",
+    },
   ]);
   for (const b of [BARBEARIA_A, BARBEARIA_B]) {
     const { error } = await bd.rpc("aplicar_pacote", { p_inquilino: b.id });
@@ -97,6 +105,13 @@ export default async function semear() {
     await perfil(bd, await criarConta(bd, c.admin), "super_admin", null, c.admin);
     await perfil(bd, await criarConta(bd, c.adminAdesao), "super_admin", null, c.adminAdesao);
     await perfil(bd, await criarConta(bd, c.adminModulos), "super_admin", null, c.adminModulos);
+    await perfil(
+      bd,
+      await criarConta(bd, c.donoSuspenso),
+      "proprietario",
+      BARBEARIA_SUSPENSA.id,
+      c.donoSuspenso,
+    );
     await perfil(bd, await criarConta(bd, c.dono), "proprietario", BARBEARIA_A.id, c.dono);
 
     const barbeiro = await criarConta(bd, c.barbeiro);

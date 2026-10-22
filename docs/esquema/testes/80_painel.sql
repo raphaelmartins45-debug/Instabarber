@@ -71,8 +71,9 @@ select teste.erro($$select vender_cartao_oferta('aaaaaaaa-0000-0000-0000-0000000
 
 -- Política de faltas: duas faltas (o limite por omissão) bloqueiam a marcação online.
 reset role;
-update marcacoes set inicio = now() - interval '2 days' where id = '50000000-0000-0000-0000-000000000002';
-update marcacoes set estado = 'falta' where id = '50000000-0000-0000-0000-000000000002';
+-- Na mesma instrução: uma falta não passa pela validação do horário (o teste corre a qualquer hora).
+update marcacoes set inicio = now() - interval '2 days', estado = 'falta'
+ where id = '50000000-0000-0000-0000-000000000002';
 insert into marcacoes (inquilino_id, cliente_id, profissional_id, servico_id, inicio, origem, estado)
 values ('aaaaaaaa-0000-0000-0000-000000000000', '40000000-0000-0000-0000-000000000002',
         '20000000-0000-0000-0000-000000000002', '30000000-0000-0000-0000-000000000002',

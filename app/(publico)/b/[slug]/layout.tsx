@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
+import { BarbeariaIndisponivel } from "@/components/publico/barbearia-indisponivel";
+import { barbeariaSuspensa, obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
 
 // Camada 4: rota interna. O público chega pelo subdomínio, pelo domínio próprio ou por
-// /<slug>; nunca vê «/b/» (L.4). Slug inexistente ou barbearia não ativa: não encontrada.
+// /<slug>; nunca vê «/b/» (L.4). Slug inexistente: não encontrada. Barbearia suspensa: um aviso
+// neutro, sem a razão nem dados (M.4).
 
 export default async function LayoutBarbearia({
   children,
@@ -13,6 +15,7 @@ export default async function LayoutBarbearia({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (!(await obterBarbeariaDoEndereco(slug))) notFound();
-  return children;
+  if (await obterBarbeariaDoEndereco(slug)) return children;
+  if (await barbeariaSuspensa(slug)) return <BarbeariaIndisponivel />;
+  notFound();
 }

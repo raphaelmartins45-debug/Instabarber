@@ -4908,6 +4908,7 @@ export type Database = {
         Returns: undefined;
       };
       avisar_fila_espera: { Args: { p_entrada: string }; Returns: string };
+      barbearia_suspensa: { Args: { p_slug: string }; Returns: boolean };
       calcular_preco: {
         Args: { p_inicio: string; p_inquilino: string; p_servico: string };
         Returns: {

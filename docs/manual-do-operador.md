@@ -288,6 +288,8 @@ Um problema de nível 3 num sábado à noite passa à frente de tudo.
    supabase db dump --db-url "$URL_PRODUCAO" -f data.sql --use-copy --data-only
    ```
 
+   No repositório, o mesmo numa linha (os três ficheiros, sem as tabelas internas do Storage, e a soma de verificação `SHA256SUMS`): `SUPABASE_DB_URL="$URL_PRODUCAO" scripts/copia-seguranca.sh` (D-127). A pasta `copias/` nunca vai para o Git.
+
 2. **Ficheiros do Storage** (logótipos, galerias, portfólios, fichas técnicas): o `db dump` não os inclui. Descarregar os buckets `publico` e `fichas` com `supabase storage cp` (comando experimental da CLI) ou pelo painel do Supabase.
 3. Comprimir a pasta num ficheiro cifrado com palavra-passe forte (guardada no gestor de palavras-passe).
 4. Guardar no disco ou na nuvem cifrados da Performa LAB, na UE.
@@ -313,6 +315,8 @@ Um problema de nível 3 num sábado à noite passa à frente de tudo.
      --command 'SET session_replication_role = replica' \
      --file data.sql --dbname "$URL_ENSAIO"
    ```
+
+   No repositório: `ALVO_DB_URL="$URL" scripts/restaurar-copia.sh --completo copias/<data>` num **projeto novo e vazio**; ou, sem `--completo`, num projeto que já tem as mesmas migrações (esvazia primeiro os dados de referência). No fim mostra o RLS (`sem_rls` tem de ser 0) e as contagens das tabelas principais, para comparar com a origem (`scripts/sql/contagens.sql`). Com `PRODUCAO_DB_HOST` definido, recusa restaurar sobre a produção. Ensaiado no Supabase local a 22/10/2026 (D-127).
 
 4. Verificar: número de barbearias, clientes e marcações igual ao da produção; RLS ativo em todas as tabelas; entrar como uma barbearia de ensaio.
 5. Registar a data, o tempo que demorou e qualquer problema. Limpar o projeto de ensaio no fim.

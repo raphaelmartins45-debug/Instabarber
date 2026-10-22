@@ -1753,6 +1753,13 @@ create view publico_clubes as
     from public.clubes c join public.inquilinos i on i.id = c.inquilino_id
    where c.ativo and i.estado = 'ativo' and public.funcionalidade_ativa(c.inquilino_id, 'clube_assinatura');
 
+-- Barbearia suspensa (M.4): a página pública mostra só um aviso neutro, sem expor a razão nem
+-- dados; o slug diz apenas se existe uma barbearia suspensa com ele (Fase 7, D-127).
+create or replace function public.barbearia_suspensa(p_slug text) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (select 1 from public.inquilinos where slug = p_slug and estado = 'suspenso')
+$$;
+
 -- -----------------------------------------------------------------------------
 -- 9 · Quem pode executar o quê
 --     O Postgres dá EXECUTE a todos por omissão, e o Supabase expõe as funções
@@ -1832,3 +1839,4 @@ grant execute on function public.posicao_fila_espera(uuid), public.estado_fila_p
 grant execute on function public.avisar_fila_espera(uuid) to authenticated;
 revoke all on publico_clubes from anon, authenticated;
 grant select on publico_clubes to anon, authenticated;
+grant execute on function public.barbearia_suspensa(text) to anon, authenticated;

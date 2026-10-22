@@ -38,6 +38,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(app)/app/(painel)/sistema/[seccao]/page.tsx`
 - `app/(app)/app/(painel)/sistema/page.tsx`
 - `app/(app)/app/escolher/page.tsx`
+- `app/(app)/app/suspensa/page.tsx`
 - `app/(auth)/entrar/confirmar/route.ts`
 - `app/(auth)/entrar/definir/page.tsx`
 - `app/(auth)/entrar/page.tsx`
@@ -177,6 +178,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `auditar_interruptor()`
 - `auditar_modulo_plataforma()`
 - `avisar_fila_espera()`
+- `barbearia_suspensa()`
 - `calcular_preco()`
 - `campos_alterados()`
 - `cancelar_lembrete_vencimento()`

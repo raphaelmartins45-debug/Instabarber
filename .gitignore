@@ -8,3 +8,5 @@ next-env.d.ts
 *.tsbuildinfo
 playwright-report/
 test-results/
+# Cópias de segurança (L.7): têm dados pessoais, nunca vão para o Git.
+copias/

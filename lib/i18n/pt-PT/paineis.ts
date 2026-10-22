@@ -75,7 +75,14 @@ export const paineis = {
     souBarbeiro: "Sou o barbeiro",
     naoEncontrada: "Barbearia não encontrada",
     naoEncontradaTexto: "Este endereço não corresponde a nenhuma barbearia ativa.",
+    indisponivel: "Temporariamente indisponível para marcações",
+    indisponivelTexto: "Para marcar, contacte a barbearia diretamente.",
     rodape: "Com InstaBarber",
   },
   naoEncontrado: { titulo: "Página não encontrada", voltar: "Voltar ao início" },
+  suspensa: {
+    titulo: "Acesso suspenso",
+    texto:
+      "O acesso da equipa a esta barbearia está suspenso. Nenhum dado foi apagado: tudo volta como estava quando o pagamento for regularizado.",
+  },
 } as const;

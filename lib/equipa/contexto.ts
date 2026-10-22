@@ -44,6 +44,9 @@ export const obterContextoEquipa = cache(async (): Promise<ContextoEquipa> => {
       p.papel !== "super_admin" && p.inquilino?.estado === "ativo",
   );
   if (daEquipa.length === 0) {
+    // Barbearia suspensa (M.4): o gestor só vê o plano e as faturas, para regularizar.
+    if (perfis.some((p) => p.papel === "proprietario" && p.inquilino?.estado === "suspenso"))
+      redirect("/app/suspensa");
     if (perfis.some((p) => p.papel === "super_admin")) {
       const apoio = await contextoDeApoio(bd, user.id);
       if (apoio) return apoio;

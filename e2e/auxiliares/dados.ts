@@ -19,6 +19,13 @@ export const BARBEARIA_B = {
   nome: "Barbearia Beta",
 };
 
+/** Barbearia suspensa por falta de pagamento (M.4): só o aviso e o plano do gestor. */
+export const BARBEARIA_SUSPENSA = {
+  id: "e2e00000-0000-4000-8000-00000000000c",
+  slug: "barbearia-suspensa",
+  nome: "Barbearia Gama",
+};
+
 /** Uma conta por projeto do Playwright (computador, telemóvel), para não se pisarem. */
 export const contas = (projeto: string) => ({
   admin: `admin-${projeto}@teste.instabarber.pt`,
@@ -31,6 +38,7 @@ export const contas = (projeto: string) => ({
   donoAdesao: `dono-adesao-${projeto}@teste.instabarber.pt`,
   // Super_admin do ensaio dos módulos desligados (Fase 6).
   adminModulos: `admin-modulos-${projeto}@teste.instabarber.pt`,
+  donoSuspenso: `dono-suspenso-${projeto}@teste.instabarber.pt`,
 });
 
 /** Telefones dos clientes de teste, também por projeto. */

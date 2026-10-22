@@ -14,3 +14,10 @@ export const obterBarbeariaDoEndereco = cache(
     return obterBarbeariaPublica(await criarClienteServidor(), slug);
   },
 );
+
+/** A barbearia deste slug está suspensa (M.4)? Só isso: nenhum dado dela. */
+export async function barbeariaSuspensa(slug: string): Promise<boolean> {
+  if (!slugValido(slug)) return false;
+  const { data } = await (await criarClienteServidor()).rpc("barbearia_suspensa", { p_slug: slug });
+  return data === true;
+}
