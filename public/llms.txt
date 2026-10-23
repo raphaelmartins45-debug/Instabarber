@@ -1,0 +1,42 @@
+# InstaBarber
+
+> InstaBarber é um sistema completo para gestão de barbearias em Portugal: marcação online, agenda, clientes, equipa e financeiro num só sítio. Funciona no browser, como uma app, no telemóvel e no computador, sem instalar nada. Preço fixo por mês, sem custo por mensagem.
+
+Também conhecido como software para barbearias, programa para barbearia, sistema para barbearias, agenda para barbeiros, marcação online para barbearias e app para barbearia.
+
+## O que faz
+
+- Página própria da barbearia com marcação online: o cliente escolhe o serviço, o barbeiro e a hora, sem criar conta.
+- Agenda sem sobreposições, com vários barbeiros, faltas e fila de espera.
+- Gestão de clientes: histórico, ficha técnica e radar de clientes em risco ou perdidos, com o valor em euros.
+- Mensagens de WhatsApp preparadas pelo sistema (lembretes, convites a regressar, aniversários): o barbeiro envia com um toque, sem custo por mensagem.
+- Fidelização com selos, clube de subscrição e cartões oferta.
+- Financeiro: faturação, despesas, objetivos, comissões e acertos com cada barbeiro, relatório mensal em PDF.
+- Loja de produtos com encomendas pela página da barbearia.
+- Entrada por QR code na barbearia (fila presencial).
+
+## Planos (preço final, IVA incluído)
+
+- Basic: 24,59 € por mês ou 245,88 € por ano. 1 profissional.
+- Pro: 47,97 € por mês ou 479,70 € por ano. 3 profissionais incluídos; 12,30 € por mês por cada profissional a partir do 4.º.
+- Domínio próprio: +6,15 € por mês, em qualquer plano.
+- Sem contrato de fidelização: cancela-se quando se quiser e os dados são exportados.
+
+## O que não faz
+
+- Não cobra aos clientes da barbearia nem emite faturas ou outros documentos fiscais: regista o que entra na caixa, e a barbearia continua a faturar como já faz.
+
+## Dados e privacidade
+
+- A barbearia é a responsável pelos dados dos seus clientes. Os servidores estão na União Europeia e, no fim do contrato, a barbearia recebe a exportação completa.
+
+## Ligações
+
+- [Página principal e demonstração](https://instabarber.pt/): o sistema explicado, com demonstração interativa e perguntas frequentes.
+- [Instagram](https://www.instagram.com/instabarberpt/)
+
+## Contacto
+
+- Comercial: comercial@instabarber.pt
+- Apoio às barbearias: apoio@instabarber.pt
+- Privacidade e direitos do RGPD: privacidade@instabarber.pt
