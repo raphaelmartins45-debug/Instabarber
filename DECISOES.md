@@ -684,3 +684,8 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - **Contrastes corrigidos face ao prompt: aceites** (terciário escuro `#8B8B94`, terciário claro `#65656E`, ligações Ouro no claro `#945C00`, Neon no claro `#087A40`; D-134).
 - **Catálogo de design em `/admin/design`: aceite.** O prompt dizia `/administracao/design`; o Admin vive em `/admin` e o catálogo segue-o. Só o super_admin com 2FA o vê, como o resto do Admin. Registado no mapa do sistema.
 - **Etiquetas financeiras com os nomes do esquema: aceites.** «Pago» e «Por pagar» (contas e ciclos do clube), «A pagar», «A receber» e «Liquidado» (acertos), «Em atraso» (mensalidades). Não se usam «Pendente», «A acertar» nem «Acertado». «Pago» quer sempre dizer registado ao balcão: o sistema nunca cobra.
+
+## D-136 · 23/10/2026 · `llms.txt` na raiz do domínio — técnica
+- `public/llms.txt` (formato de llmstxt.org): o que o InstaBarber faz, planos com o preço final, o que não faz (não cobra nem fatura), dados na UE, ligações e contactos. Serve-se em `https://instabarber.pt/llms.txt`; não se submete no Search Console (o Google não o lê: é para os assistentes de IA).
+- Os preços repetem a tabela da CLAUDE.md §6; se os preços mudarem, muda-se também este ficheiro (está no mapa do sistema).
+- No `main` (produção) vai sem as ligações aos Termos e à Privacidade, que ainda só existem neste ramo; voltam com o merge.
