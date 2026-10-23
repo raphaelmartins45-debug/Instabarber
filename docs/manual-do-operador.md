@@ -110,16 +110,17 @@ palavras-passe da Performa LAB, com acesso de emergência:
 
 **Quando:** chega o e-mail «Nova adesão» ao geral@ ou o pedido aparece no painel.
 
-1. Abrir `Admin → Pedidos` e o pedido pendente.
-2. **Verificar os dados:** nome, NIF (nove dígitos), morada, telefone e WhatsApp, horário, serviços (duração e preço), equipa (nomes e e-mails válidos).
-3. **Verificar as imagens:** logótipo com fundo transparente e legível em círculo; fachada em 16:9. Se o logótipo tiver fundo branco, pedir uma versão transparente antes de aprovar (ou aprovar e trocar depois no separador Marca).
-4. **Verificar a mensalidade:** plano, periodicidade e número de profissionais; o valor tem de bater com os exemplos da D.5.
-5. **Escolher o endereço (slug):** curto, minúsculas, sem acentos, com hífenes (`barbearia-central`). O sistema recusa slugs reservados.
-6. Decidir:
+1. **Só na primeira barbearia real:** antes de aprovar, passar a empresa Performa LAB no Supabase para o plano Pro (cópias diárias, sem pausas; D-137). Até lá, cópia à mão (P-13).
+2. Abrir `Admin → Pedidos` e o pedido pendente.
+3. **Verificar os dados:** nome, NIF (nove dígitos), morada, telefone e WhatsApp, horário, serviços (duração e preço), equipa (nomes e e-mails válidos).
+4. **Verificar as imagens:** logótipo com fundo transparente e legível em círculo; fachada em 16:9. Se o logótipo tiver fundo branco, pedir uma versão transparente antes de aprovar (ou aprovar e trocar depois no separador Marca).
+5. **Verificar a mensalidade:** plano, periodicidade e número de profissionais; o valor tem de bater com os exemplos da D.5.
+6. **Escolher o endereço (slug):** curto, minúsculas, sem acentos, com hífenes (`barbearia-central`). O sistema recusa slugs reservados.
+7. Decidir:
    - **Aprovar** — cria a barbearia, aplica o pacote, cria a conta do dono e envia-lhe o e-mail de boas-vindas.
    - **Ajustar** — abre a ficha completa para corrigir antes de aprovar.
    - **Rejeitar** — escrever o motivo (obrigatório); o dono recebe a resposta por e-mail.
-7. Ver a preferência de pagamento no cartão do pedido e responder como indicado (P-08).
+8. Ver a preferência de pagamento no cartão do pedido e responder como indicado (P-08).
 
 **Confirmar:** a barbearia aparece em `Admin → Barbearias` como ativa; a página pública abre em `instabarber.pt/<slug>`; o dono recebeu o e-mail (ver no Resend se não chegar).
 

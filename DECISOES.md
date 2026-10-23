@@ -689,3 +689,8 @@ Alterado primeiro em `docs/esquema/02_funcoes.sql` e `03_rls.sql`, com 16 testes
 - `public/llms.txt` (formato de llmstxt.org): o que o InstaBarber faz, planos com o preço final, o que não faz (não cobra nem fatura), dados na UE, ligações e contactos. Serve-se em `https://instabarber.pt/llms.txt`; não se submete no Search Console (o Google não o lê: é para os assistentes de IA).
 - Os preços repetem a tabela da CLAUDE.md §6; se os preços mudarem, muda-se também este ficheiro (está no mapa do sistema).
 - No `main` (produção) vai sem as ligações aos Termos e à Privacidade, que ainda só existem neste ramo; voltam com o merge.
+
+## D-137 · 23/10/2026 · Supabase de produção no plano gratuito até à primeira barbearia — dono
+- O projeto de produção (Frankfurt, empresa Performa LAB) começa no plano gratuito; passa a Pro **antes** de a primeira barbearia real entrar (prevalece sobre o item 35, que pedia Pro desde o início).
+- Riscos aceites enquanto for gratuito: o projeto pausa após uma semana sem uso (volta ao reativar no painel) e não há cópias diárias. Enquanto isso, a cópia faz-se à mão com `scripts/copia-seguranca.sh` antes de cada alteração de esquema (P-13). O plano gratuito permite dois projetos ativos por empresa: ensaio e produção ocupam os dois.
+- Passar a Pro faz parte da lista da entrada da primeira barbearia (manual do operador).
