@@ -421,6 +421,20 @@ footer .links a:hover { color: var(--gold); }
   .form .two { grid-template-columns: minmax(0, 1fr); }
   .slot { grid-template-columns: 48px minmax(0, 1fr) auto; padding: 10px 12px; }
 }
+
+/* botão fixo contextual (D-137) */
+.dock .btn { position: relative; overflow: hidden; }
+.dock .dk-t { display: inline-block; transition: transform .22s var(--ease), opacity .22s; }
+.dock .dk-t.out { transform: translateY(-9px); opacity: 0; }
+.dock .dk-t.in { transform: translateY(9px); opacity: 0; transition: none; }
+.dock .dk-a { display: none; margin-left: 8px; transition: transform .3s var(--ease); }
+.dock .btn.go .dk-a { display: inline-block; }
+.dock .btn.go:hover .dk-a, .dock .btn.go.pulse .dk-a { transform: translateX(4px); }
+.dock .btn.hot { box-shadow: 0 0 0 1px rgba(var(--ac-rgb),.5), 0 10px 34px -6px rgba(var(--ac-rgb),.75); }
+.dock .btn.calm { background: rgba(var(--ac-rgb),.08); color: var(--gold); box-shadow: inset 0 0 0 1.5px rgba(var(--ac-rgb),.7); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.dock .btn.pulse { animation: dkp .7s var(--ease) 1; }
+@keyframes dkp { 0% { box-shadow: 0 0 0 0 rgba(var(--ac-rgb),.65); } 100% { box-shadow: 0 0 0 16px rgba(var(--ac-rgb),0); } }
+@media (prefers-reduced-motion: reduce) { .dock .dk-t, .dock .dk-a { transition: none; } .dock .btn.pulse { animation: none; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .btn { transition: none; }
@@ -1454,6 +1468,7 @@ footer { border-top-color: var(--line); }
 })();
 </script>
 
+<div class="dock" id="dock"><a class="btn btn-gold" href="#contacto"><span class="dk-t">Quero ver como funciona</span><span class="dk-a" aria-hidden="true">→</span></a></div>
 <script>
 /* animações e tema: isolado da lógica da demonstração */
 (function () {
@@ -1499,11 +1514,50 @@ footer { border-top-color: var(--line); }
     var vis = { h: true, c: false };
     function atualiza() { dock.classList.toggle("off", vis.h || vis.c); }
     new IntersectionObserver(function (es) { vis.h = es[0].isIntersecting; atualiza(); }).observe(hero);
-    if (ct) { new IntersectionObserver(function (es) { vis.c = es[0].isIntersecting; atualiza(); }).observe(ct); }
+    if (ct) { new IntersectionObserver(function (es) { vis.c = es[0].isIntersecting; atualiza(); }, { rootMargin: "0px 0px -30% 0px" }).observe(ct); }
     atualiza();
+
+    /* o texto acompanha a secção visível (nunca repete o botão do topo) */
+    var DEF = { t: "Quero ver como funciona", c: "" };
+    var MAPA = [
+      ["demo", "Quero ver como funciona", ""],
+      ["loja", "Quero isto na minha", ""],
+      ["clube-assinatura", "Quero isto na minha", ""],
+      ["receita", "Quero isto na minha", ""],
+      ["calculadora", "Quero recuperar clientes", "hot"],
+      [".radar", "Quanto estou a perder?", "hot"],
+      ["planos", "Começar com o Pro", "go"],
+      ["desafio", "Aceito o desafio", "go"],
+      ["perguntas", "Tenho uma dúvida", "calm"]
+    ];
+    var btn = dock.querySelector(".btn"), tx = dock.querySelector(".dk-t"), atual = DEF.t, ativos = {}, tmr = 0;
+    var reduz = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function aplica(t, c) {
+      if (t === atual && btn.className.indexOf(c) > -1) return;
+      var mudou = t !== atual; atual = t;
+      function poe() {
+        tx.textContent = t;
+        btn.className = "btn btn-gold" + (c ? " " + c : "");
+        if (mudou && !reduz) { tx.classList.add("in"); void tx.offsetWidth; tx.classList.remove("in"); btn.classList.remove("pulse"); void btn.offsetWidth; btn.classList.add("pulse"); }
+      }
+      if (mudou && !reduz) { tx.classList.add("out"); clearTimeout(tmr); tmr = setTimeout(function () { tx.classList.remove("out"); poe(); }, 140); }
+      else { poe(); }
+    }
+    function escolhe() {
+      var t = DEF.t, c = DEF.c;
+      for (var i = 0; i < MAPA.length; i++) if (ativos[i]) { t = MAPA[i][1]; c = MAPA[i][2]; }
+      aplica(t, c);
+    }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { ativos[e.target.__dk] = e.isIntersecting; });
+      escolhe();
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    MAPA.forEach(function (m, i) {
+      var el = m[0].charAt(0) === "." ? document.querySelector(m[0]) : document.getElementById(m[0]);
+      if (el) { el.__dk = i; io.observe(el); }
+    });
   }
 })();
 </script>
-<div class="dock" id="dock"><a class="btn btn-gold" href="#contacto">Experimenta online já</a></div>
 </body>
 </html>

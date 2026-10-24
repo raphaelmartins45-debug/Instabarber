@@ -716,3 +716,9 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Super_admin** `raphaelmartins@instabarber.pt` (perfil `super_admin`, nome «Performa LAB») criado sem palavra-passe conhecida: define-a pela ligação segura (B9) e inscreve o TOTP na primeira entrada.
 - **Chaves novas do Supabase:** a produção usa a chave publicável (`sb_publishable_…`) como `NEXT_PUBLIC_SUPABASE_ANON_KEY` e a secreta (`sb_secret_…`) como `SUPABASE_SERVICE_ROLE_KEY`; o supabase-js aceita as duas. A secreta foi lida pela API e nunca passou pelo chat.
 - **Vercel (Production):** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (sensível) e `ROOT_DOMAIN=instabarber.pt`. Com as que já lá estavam, a Production tem todas as variáveis que a aplicação lê.
+
+## D-143 · 24/10/2026 · Botão fixo da landing no telemóvel: texto por secção — dono
+
+- O botão fixo (só abaixo de 768 px) deixa de repetir «Experimenta online já», que já é o botão do topo. O texto acompanha a secção que está a meio do ecrã: «Quero ver como funciona» (início e reserva), «Quero isto na minha» (loja, clube, receita), «Quero recuperar clientes» (calculadora), «Quanto estou a perder?» (radar), «Começar com o Pro» (planos), «Aceito o desafio» (desafio), «Tenho uma dúvida» (perguntas). Destino sempre `#contacto`.
+- Troca com texto a subir e a desvanecer, uma pulsação de brilho e variantes de estilo (`hot`, `go`, `calm`). Sem movimento com `prefers-reduced-motion`. Segue o tema Ouro/Neon.
+- Correção: o botão estava no HTML depois do script, que não o encontrava; por isso nunca se escondia no topo nem no formulário. Passou para antes do script. Esconde-se no topo e quando o formulário de contacto aparece.
