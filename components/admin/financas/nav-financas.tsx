@@ -11,6 +11,7 @@ const t = textos.financas;
 const SEPARADORES = [
   { id: "resumo", href: "/admin/financas" },
   { id: "custos", href: "/admin/financas/custos" },
+  { id: "vencimentos", href: "/admin/financas/vencimentos" },
 ] as const;
 
 /** Separadores das Finanças; no telemóvel deslizam na horizontal. */

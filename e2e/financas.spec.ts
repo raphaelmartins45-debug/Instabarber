@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { contas, temSupabase } from "./auxiliares/dados";
+import { BARBEARIA_B, contas, servico, temSupabase } from "./auxiliares/dados";
 import { entrarEquipa } from "./auxiliares/entrar";
 import { codigoTotp } from "./auxiliares/totp";
 
@@ -8,10 +8,13 @@ import { codigoTotp } from "./auxiliares/totp";
 
 test.skip(!temSupabase, "Precisa do Supabase local (scripts/e2e-local.sh)");
 
-const lisboa = (deslocamentoDias: number) =>
-  new Date(Date.now() + deslocamentoDias * 86_400_000).toLocaleDateString("sv-SE", {
-    timeZone: "Europe/Lisbon",
-  });
+/** Hoje em Lisboa mais n dias de calendário (sem somar horas, por causa da mudança da hora). */
+const lisboa = (deslocamentoDias: number) => {
+  const hoje = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Lisbon" });
+  const d = new Date(`${hoje}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + deslocamentoDias);
+  return d.toISOString().slice(0, 10);
+};
 
 async function entrarAdmin(page: Page, email: string) {
   await entrarEquipa(page, email);
@@ -83,6 +86,32 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   await expect(conta("Contabilista Ensaio")).toHaveCount(0);
   await page.getByRole("link", { name: "Todas" }).click();
   await expect(conta("Contabilista Ensaio")).toContainText("Paga");
+
+  // Vencimentos: a Barbearia Beta vence daqui a 3 dias. WhatsApp aberto e confirmado à mão;
+  // o e-mail falha nos ensaios (chave do Resend errada), pode tentar-se outra vez ou cancelar.
+  await servico()
+    .from("inquilinos")
+    .update({ proximo_vencimento: lisboa(3), whatsapp: "+351912000111", email: "beta@ensaio.pt" })
+    .eq("id", BARBEARIA_B.id);
+  await page.getByRole("link", { name: "Vencimentos" }).click();
+  const beta = page.getByTestId("vencimento").filter({ hasText: "Barbearia Beta" });
+  await expect(beta).toContainText("Faltam 3 dias");
+  await expect(beta.getByLabel("Texto da mensagem")).toHaveValue(/vence a .*MB WAY/s);
+  const ligacao = beta.getByRole("link", { name: "WhatsApp" });
+  await expect(ligacao).toHaveAttribute("href", /^https:\/\/wa\.me\/351912000111\?text=/);
+  const conversa = page.context().waitForEvent("page");
+  await ligacao.click();
+  await (await conversa).close();
+  await expect(beta).toContainText("WhatsApp aberto · por confirmar");
+  await beta.getByRole("button", { name: "Confirmei o envio" }).click();
+  await expect(beta).toContainText("WhatsApp confirmado");
+  await expect(beta).toContainText("Último lembrete:");
+  await beta.getByRole("button", { name: "E-mail", exact: true }).click();
+  await expect(beta).toContainText("E-mail falhou");
+  await expect(beta.getByRole("button", { name: "Tentar outra vez" })).toBeVisible();
+  await beta.getByRole("button", { name: "Cancelar lembrete" }).click();
+  await expect(beta).toContainText("Cancelado");
+  await page.getByRole("link", { name: "Custos e contas" }).click();
 
   // Dar fim a um custo tira-o do total do mês seguinte, mas fica no histórico.
   await page

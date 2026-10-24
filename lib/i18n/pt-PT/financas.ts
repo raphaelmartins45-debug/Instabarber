@@ -141,6 +141,74 @@ export const financas = {
     escolherMistura: "Percentagem de Basic na mistura (sem barbearias ativas)",
     aplicar: "Aplicar",
   },
+  vencimentos: {
+    ajuda:
+      "O sistema prepara a mensagem; quem envia é o operador. O WhatsApp só fica confirmado depois de carregar em «Confirmei o envio»; o e-mail sai de apoio@ no momento.",
+    vazio: "Nenhum vencimento com este filtro.",
+    filtros: {
+      "7": "Próximos 7 dias",
+      "15": "Próximos 15 dias",
+      atraso: "Em atraso",
+      todos: "Todos",
+    } as Record<string, string>,
+    dias: (n: number) =>
+      n === 0
+        ? "Vence hoje"
+        : n > 0
+          ? n === 1
+            ? "Falta 1 dia"
+            : `Faltam ${n} dias`
+          : n === -1
+            ? "1 dia em atraso"
+            : `${-n} dias em atraso`,
+    valor: (v: string) => `${v} com IVA`,
+    ultimo: (d: string) => `Último lembrete: ${d}`,
+    nenhum: "Ainda sem lembrete para este vencimento.",
+    texto: "Texto da mensagem",
+    whatsapp: "WhatsApp",
+    email: "E-mail",
+    confirmar: "Confirmei o envio",
+    repetir: "Tentar outra vez",
+    cancelar: "Cancelar lembrete",
+    estados: {
+      preparada: "Preparado",
+      ligacao_aberta: "WhatsApp aberto · por confirmar",
+      envio_confirmado_manualmente: "WhatsApp confirmado",
+      enviado: "E-mail enviado",
+      falhou: "E-mail falhou",
+      cancelada: "Cancelado",
+    } as Record<string, string>,
+    semWhatsapp: "Sem WhatsApp nem telefone na ficha.",
+    semEmail: "Sem e-mail na ficha.",
+    assunto: (barbearia: string, data: string) =>
+      `InstaBarber · mensalidade de ${barbearia} (vencimento ${data})`,
+    pagamento: "Pode pagar por MB WAY ou por transferência bancária.",
+    modelos: {
+      aviso: (nome: string, barbearia: string, plano: string, valor: string, data: string) =>
+        `Olá ${nome}, um lembrete amigável: a mensalidade do InstaBarber da ${barbearia} (plano ${plano}, ${valor} com IVA) vence a ${data}.`,
+      hoje: (nome: string, barbearia: string, plano: string, valor: string) =>
+        `Olá ${nome}, a mensalidade do InstaBarber da ${barbearia} (plano ${plano}, ${valor} com IVA) vence hoje.`,
+      atraso: (nome: string, barbearia: string, plano: string, valor: string, data: string) =>
+        `Olá ${nome}, a mensalidade do InstaBarber da ${barbearia} (plano ${plano}, ${valor} com IVA) venceu a ${data} e ainda não a recebemos.`,
+      atrasoPedido: (dias: number) =>
+        dias <= 7
+          ? "Se já pagou, ignore esta mensagem. Se não, diga-nos quando conta pagar, por favor."
+          : dias <= 15
+            ? "Pedimos que nos responda hoje, para combinarmos o pagamento."
+            : "Sem pagamento ou resposta, o acesso à plataforma pode ser suspenso. Fale connosco, por favor.",
+      obrigado: "Obrigado.",
+    },
+    erros: {
+      sem_whatsapp: "A barbearia não tem WhatsApp nem telefone na ficha.",
+      sem_email: "A barbearia não tem e-mail na ficha.",
+      sem_vencimento: "A barbearia não tem vencimento definido.",
+      inquilino_sem_contrato_ativo: "A barbearia não está ativa nem suspensa.",
+      texto_obrigatorio: "Escreva o texto da mensagem.",
+      estado_invalido: "Este lembrete já não se pode alterar.",
+      abrir_primeiro: "Abra o WhatsApp primeiro.",
+      generico: "Não foi possível concluir. Tente outra vez.",
+    } as Record<string, string>,
+  },
   alertas: {
     aVencer: (n: number) =>
       n === 1

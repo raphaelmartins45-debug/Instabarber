@@ -53,7 +53,9 @@ export default async function PainelGeral() {
     a.suspensas
       ? { texto: t.suspensas(a.suspensas), href: "/admin/barbearias?estado=suspenso" }
       : null,
-    a.vencimentos ? { texto: t.vencimentos(a.vencimentos), href: "/admin/pagamentos" } : null,
+    a.vencimentos
+      ? { texto: t.vencimentos(a.vencimentos), href: "/admin/financas/vencimentos" }
+      : null,
     faltamFeriados(hoje, feriados) ? { texto: t.feriados(proximoAno), href: "/admin" } : null,
     parados
       ? { texto: textos.comercial.alertas.leadsParados(parados), href: "/admin/comercial" }
