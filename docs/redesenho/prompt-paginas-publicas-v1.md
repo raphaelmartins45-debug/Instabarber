@@ -48,7 +48,7 @@ Sem escrever código de produto. Resultado: um relatório em `docs/redesenho/aud
 - **Desempenho:** capa sem imagens pesadas por defeito, fotografias do inquilino em formatos leves com reserva de espaço (sem saltos de layout), `loading="lazy"` abaixo da primeira dobra.
 - Os 3 idiomas (PT, EN, FR) têm de caber em todos os modelos sem partir a composição.
 
-## 4 · O catálogo (mínimo 6 modelos; este prompt pede 7 modelos e 9 aspetos)
+## 4 · O catálogo (mínimo 6 modelos; este prompt pede 8 modelos e 10 aspetos)
 
 Todos têm os **mesmos blocos**: capa com nome, estado aberto/fechado e «Marcar agora» em destaque; fila digital («2 pessoas à tua frente, cerca de 15 min»); serviços e preços; equipa; loja com fotos; clube e selos; cartões oferta; localização e horário; avaliação; Livro de Reclamações; idiomas. Para cada modelo entrega, na maquete: capa, lista de serviços, equipa, loja, marcação em 3 passos e «Minha área».
 
@@ -73,9 +73,10 @@ O atual não convence. Refaz o modelo como um **cartaz de barbearia antiga**: pa
 - **Street** (urbano): grelha forte e visível, tipografia enorme em maiúsculas, contraste alto, etiquetas e «autocolantes» a ligeiro ângulo, faixas de aviso, cor da marca em blocos chapados. Ideal para barbearias de rua, fades e públicos jovens.
 - **Maison** (luxo discreto): preto profundo ou marfim, linhas finas, muito ar, números e palavras de peso leve, realce metálico derivado da cor da marca (ouro, prata ou bronze), fotografia grande. Ideal para marcas premium e barbearias de hotel.
 - **Oficina** (artesanal): tons de couro, madeira e ferro derivados da cor da marca, texturas subtis em SVG (costura, rebites, veios), cartões como etiquetas de oficina, fundo quente. Ideal para barbearias de ofício e produtos feitos à mão.
+- **Industrial** (arquitetura industrial): betão com grão, aço e vigas à vista, parafusos e rebites, malha de janelas de fábrica no topo, cabeçalhos de secção como perfis de viga, preços em placas, botão em «tinta de segurança» com canto cortado, números de lote em estêncil. A cor da marca é a tinta de sinalização. Ideal para barbearias em armazéns, lofts e antigas fábricas, e para cinzentos e pretos fosco.
 Se a auditoria justificar, troca um destes por **Foto** (a capa é uma fotografia grande do espaço ou da equipa, com a cor da marca em sobreposição), mas só se a carga de imagem se mantiver leve.
 
-**Resumo:** Noir, Atelier, Vivo (×3), Clássico, Street, Maison e Oficina = **7 modelos, 9 aspetos**.
+**Resumo:** Noir, Atelier, Vivo (×3), Clássico, Street, Maison, Oficina e Industrial = **8 modelos, 10 aspetos**.
 
 ## 5 · Personalização pelo inquilino (dentro de cada modelo)
 
@@ -90,7 +91,7 @@ O inquilino vê tudo numa **pré-visualização viva com a sua própria marca**,
 
 ## 6 · Garantias obrigatórias (testadas)
 
-- **Matriz de compatibilidade** (teste Playwright e unitário): 12 cores × 7 modelos (9 aspetos) × 3 tipos de logótipo. Em cada célula: contraste AA, logótipo legível e sem corte, sem rolagem horizontal em 390 px, botão «Marcar agora» visível sem rolar. Para cada cor e tipo de logótipo, **pelo menos um aspeto fica excelente** e o sistema recomenda-o.
+- **Matriz de compatibilidade** (teste Playwright e unitário): 12 cores × 8 modelos (10 aspetos) × 3 tipos de logótipo. Em cada célula: contraste AA, logótipo legível e sem corte, sem rolagem horizontal em 390 px, botão «Marcar agora» visível sem rolar. Para cada cor e tipo de logótipo, **pelo menos um aspeto fica excelente** e o sistema recomenda-o.
 - **Catálogo interno** em `/admin/design/modelos` (só super_admin com 2FA) com a matriz visual, para eu ver tudo de uma vez nos temas e em 390, 768 e 1440 px.
 - `typecheck`, `lint`, `test`, `build` sem erros e os testes Playwright a passar, no computador e no telemóvel. Sem alterações em esquema, migrações, repositórios, regras ou API (mostra o `git diff --stat`).
 - Acessibilidade: contraste AA, alvos de toque de 44 px, foco visível, ordem de tabulação lógica, nomes acessíveis, `prefers-reduced-motion`, e leitura correta em PT, EN e FR.
@@ -99,7 +100,7 @@ O inquilino vê tudo numa **pré-visualização viva com a sua própria marca**,
 
 - **Lote F1:** Fase 1 (auditoria + maquetes). **Pára e espera o meu «sim».**
 - **Lote F2:** arquitetura (helpers, tokens, placa de logótipo, seletor com pré-visualização) e os modelos **Noir, Atelier e Vivo (×3)**.
-- **Lote F3:** **Clássico** restilizado (depois da minha resposta sobre a fonte) e **Street, Maison e Oficina**.
+- **Lote F3:** **Clássico** restilizado (depois da minha resposta sobre a fonte) e **Street, Maison, Oficina e Industrial**.
 - **Lote F4:** personalização, recomendação automática, catálogo `/admin/design/modelos`, matriz de testes e `impeccable polish`.
 Em cada lote: ramo próprio, Preview da Vercel verde, capturas em 390, 768 e 1440 px, inventário de paridade, o `git diff --stat` das áreas protegidas e uma lista curta do que a `ui-ux-pro-max` e o `impeccable` acharam e foi corrigido. **Só há merge depois do meu «sim».**
 
