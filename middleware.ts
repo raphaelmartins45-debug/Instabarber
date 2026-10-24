@@ -72,5 +72,7 @@ function entradaPara(
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|marca/|manifest.webmanifest).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|apple-touch-icon|marca/|manifest.webmanifest).*)",
+  ],
 };

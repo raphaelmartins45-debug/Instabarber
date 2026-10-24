@@ -5,7 +5,7 @@
 @custom-variant claro (&:where([data-modo="claro"], [data-modo="claro"] *));
 
 /*
- * Sistema de design (D-134), irmão da landing (D-131): cinzentos profundos, um só destaque,
+ * Sistema de design (D-134), irmão da landing (D-139): cinzentos profundos, um só destaque,
  * bordas de 1 px, vidro só em camadas flutuantes, números tabulares. Estes são os únicos valores:
  * os componentes usam os tokens do @theme, nunca hexadecimais. O teste
  * lib/design/tokens.test.ts confere o contraste AA de cada par de texto.
