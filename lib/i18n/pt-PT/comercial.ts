@@ -50,6 +50,11 @@ export const comercial = {
       ultimo: "Último contacto",
     },
     semAcao: "Sem próxima ação",
+    apagarInativos: "Apagar leads inativos (12 meses)",
+    apagarTitulo: "Apagar os leads inativos?",
+    apagarTexto:
+      "Apaga os leads sem contacto há mais de 12 meses, que não estejam ganhos nem tenham contrato (N.9). Não se desfaz; fica registado na auditoria.",
+    apagados: (n: number) => (n === 1 ? "1 lead apagado." : `${n} leads apagados.`),
   },
   ficha: {
     voltar: "Voltar aos leads",
@@ -317,6 +322,7 @@ export const comercial = {
       nif: "NIF inválido.",
       morada: "Escreva a morada da sede.",
       representante: "Escreva o nome do representante.",
+      cargo: "Escreva o cargo do representante.",
       data_inicio: "Indique a data de início.",
       email: "E-mail inválido.",
       token_fraco: "Não foi possível criar o convite. Tente outra vez.",

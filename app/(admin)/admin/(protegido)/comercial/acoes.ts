@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { exigirSuperAdmin } from "@/lib/admin/contexto";
 import {
+  apagarLeadsInativos,
   atualizarLead,
   criarLead,
   mudarEstadoLead,
@@ -68,4 +69,13 @@ export async function registarEvento(id: string, dados: DadosEvento): Promise<Re
     return { ok: false, erro: "generico" };
   revalidar(id);
   return { ok: true };
+}
+
+export async function apagarInativos(): Promise<
+  { ok: true; n: number } | { ok: false; erro: string }
+> {
+  await exigirSuperAdmin();
+  const n = await apagarLeadsInativos(await criarClienteServidor());
+  revalidar();
+  return n === null ? { ok: false, erro: "generico" } : { ok: true, n };
 }

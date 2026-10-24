@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import {
   BARBEARIA_A,
   BARBEARIA_B,
@@ -106,7 +107,20 @@ export default async function semear() {
     await perfil(bd, await criarConta(bd, c.adminAdesao), "super_admin", null, c.adminAdesao);
     await perfil(bd, await criarConta(bd, c.adminModulos), "super_admin", null, c.adminModulos);
     await perfil(bd, await criarConta(bd, c.adminDesign), "super_admin", null, c.adminDesign);
-    await perfil(bd, await criarConta(bd, c.adminComercial), "super_admin", null, c.adminComercial);
+    const comercial = await criarConta(bd, c.adminComercial);
+    await perfil(bd, comercial, "super_admin", null, c.adminComercial);
+    // Comercial (N.8): o modelo de contrato base já aprovado, para os dois projetos gerarem
+    // contratos sem corrida na aprovação; a importação pelo ecrã ensaia-se com a das condições.
+    if (projeto === PROJETOS[0])
+      await inserir(bd, "modelos_documento", {
+        tipo: "contrato",
+        versao: 1,
+        titulo: "Contrato de Prestação de Serviços InstaBarber",
+        corpo: readFileSync("docs/comercial/modelo-contrato.md", "utf8"),
+        estado: "aprovado",
+        aprovado_por: comercial,
+        aprovado_em: new Date().toISOString(),
+      });
     await perfil(
       bd,
       await criarConta(bd, c.donoSuspenso),

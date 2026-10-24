@@ -464,11 +464,12 @@ Seguir a M.6. Resumo para o operador:
 
 **Quando:** a proposta foi aceite. **Pré-requisito:** existe um modelo de contrato **aprovado** (N.8) com parecer jurídico.
 
-1. Na proposta aceite, **Gerar contrato**. Confirmar firma, NIF, morada e representante da barbearia.
+0. Só da primeira vez (ou quando o jurista rever o texto): em `Admin → Gestão do negócio → Comercial → Modelos`, **Importar o rascunho base** de cada tipo (vem de `docs/comercial/`), ler a pré-visualização, corrigir no rascunho se for preciso e **Aprovar**. O aprovado anterior fica arquivado; para mudar um aprovado, «Nova versão a partir desta».
+1. Na ficha do lead, secção **Contratos**, confirmar os dados do contratante (vêm do briefing): firma, NIF, morada, representante, cargo, e-mail e data de início. **Gerar contrato.**
 2. Abrir o PDF, ler-o e enviá-lo; **Marcar como enviado**.
 3. Assinar fora do sistema (Chave Móvel Digital ou impressão e digitalização). Receber o PDF assinado.
 4. **Registar assinatura**: data e PDF assinado. O lead passa a Ganho.
-5. **Criar convite de adesão** e enviar a ligação ao dono: o formulário abre preenchido e ele completa o resto.
+5. **Criar convite de adesão** e enviar a ligação ao dono (copiar ou abrir o WhatsApp com o texto pronto): o formulário abre preenchido e ele completa o resto. A ligação só aparece uma vez, vale 14 dias e serve uma só vez; se se perder, criar outra (a anterior deixa de valer).
 6. Quando o pedido chegar, seguir o P-03. Na aprovação, o contrato fica ligado à barbearia.
 
 **Confirmar:** contrato «assinado» com PDF, lead «ganho», pedido de adesão ligado ao contrato.
@@ -479,8 +480,8 @@ Seguir a M.6. Resumo para o operador:
 
 **Quando:** todos os meses, no dia 1. **Disponível a partir da Fase 3B.**
 
-1. Em `Admin → Comercial → Leads`, filtrar por «sem contacto há mais de 12 meses» e confirmar que nenhum tem contrato.
-2. Executar **Apagar leads inativos (12 meses)** e anotar quantos foram apagados.
+1. Em `Admin → Comercial → Leads`, no fim da lista, **Apagar leads inativos (12 meses)** e confirmar. Só se apagam os leads sem contacto há mais de 12 meses, que não estão ganhos nem têm contrato (a base de dados confere).
+2. Anotar quantos foram apagados (o ecrã diz o número).
 3. Para um pedido de apagamento de um lead, ver o P-12.
 
 **Confirmar:** o número apagado está registado na auditoria.

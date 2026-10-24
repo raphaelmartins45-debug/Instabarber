@@ -136,3 +136,9 @@ export async function registarEventoLead(
   });
   return !error;
 }
+
+/** Rotina mensal (N.9): apaga os leads parados há mais do prazo, sem contrato. Devolve quantos. */
+export async function apagarLeadsInativos(bd: ClienteBD, meses = 12): Promise<number | null> {
+  const { data, error } = await bd.rpc("apagar_leads_inativos", { p_meses: meses });
+  return error ? null : data;
+}

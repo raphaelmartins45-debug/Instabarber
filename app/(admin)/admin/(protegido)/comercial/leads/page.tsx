@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ApagarInativos } from "@/components/admin/comercial/apagar-inativos";
 import { Etiqueta } from "@/components/nucleo/etiqueta";
 import { type Coluna, TabelaCartoes } from "@/components/nucleo/tabela-cartoes";
 import { Button } from "@/components/ui/button";
@@ -144,6 +145,7 @@ export default async function Leads({
         vazio={t.leads.vazio}
         testId="lead"
       />
+      <ApagarInativos />
     </div>
   );
 }

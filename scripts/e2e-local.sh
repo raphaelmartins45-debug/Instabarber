@@ -13,5 +13,6 @@ export SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" MAILPIT_URL ROOT_DOMAIN=loc
 export RESEND_API_KEY=re_chave_invalida_dos_ensaios
 # Identificação fictícia da Prestadora para os documentos legais nos ensaios.
 export PRESTADORA_NOME="Prestadora de Ensaio" PRESTADORA_NIF=999999990 PRESTADORA_MORADA="Rua do Ensaio, Viseu"
+export PRESTADORA_QUALIDADE="empresário em nome individual" PRESTADORA_ASSINANTE="Assinante de Ensaio"
 npm run build >/dev/null
 npx playwright test "$@"

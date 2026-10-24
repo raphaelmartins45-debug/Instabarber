@@ -86,8 +86,8 @@ export const esquemaContratante = z.object({
   nif: z.string().trim().refine(nifValido, "nif"),
   morada: z.string().trim().min(1, "morada").max(240),
   representante: z.string().trim().min(1, "representante").max(120),
-  cargo: z.string().trim().max(80).default(""),
-  email: z.union([z.literal(""), z.string().trim().email("email")]).default(""),
+  cargo: z.string().trim().min(1, "cargo").max(80),
+  email: z.string().trim().email("email").max(160),
   data_inicio: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "data_inicio"),
 });
 export type DadosContratante = z.input<typeof esquemaContratante>;

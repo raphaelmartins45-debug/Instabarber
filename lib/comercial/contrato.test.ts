@@ -48,15 +48,19 @@ describe("substituirMarcadores (N.8)", () => {
 });
 
 describe("esquemaContratante", () => {
-  it("exige NIF válido, firma, morada, representante e data de início", () => {
+  it("exige NIF válido, firma, morada, representante, cargo, e-mail e data de início", () => {
     const ok = esquemaContratante.safeParse({
       razao_social: "Corte Fino, Lda.",
       nif: "123456789",
       morada: "Rua A, Braga",
       representante: "Rui Lopes",
+      cargo: "Gerente",
+      email: "rui@cortefino.pt",
       data_inicio: "2026-11-01",
     });
     expect(ok.success).toBe(true);
+    const semCargo = esquemaContratante.safeParse({ ...ok.data, cargo: "", email: "" });
+    expect(semCargo.error?.issues.map((i) => i.message)).toEqual(["cargo", "email"]);
     const mau = esquemaContratante.safeParse({
       razao_social: "",
       nif: "123456788",
