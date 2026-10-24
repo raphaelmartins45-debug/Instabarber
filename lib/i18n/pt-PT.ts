@@ -5,6 +5,7 @@ import { adesao } from "./pt-PT/adesao";
 import { agenda, inicio, mensagensWhatsApp, upgrade } from "./pt-PT/agenda";
 import { admin } from "./pt-PT/admin";
 import { clientes } from "./pt-PT/clientes";
+import { comercial } from "./pt-PT/comercial";
 import { comum } from "./pt-PT/comum";
 import { filas, mensagensLote } from "./pt-PT/filas";
 import { financeiro, plano } from "./pt-PT/financeiro";
@@ -67,6 +68,7 @@ export const textos = {
   acesso,
   paineis,
   admin,
+  comercial,
   adesao,
   agenda,
   filas,

@@ -42,3 +42,19 @@ export async function contarFeriadosNacionais(bd: ClienteBD, ano: number): Promi
   if (error) falhaDeLeitura("feriados", error);
   return count ?? 0;
 }
+
+/** Datas dos feriados nacionais entre duas datas (dias úteis do Comercial, N.3). */
+export async function datasFeriadosNacionais(
+  bd: ClienteBD,
+  de: string,
+  ate: string,
+): Promise<Set<string>> {
+  const { data, error } = await bd
+    .from("feriados")
+    .select("data")
+    .is("inquilino_id", null)
+    .gte("data", dia.parse(de))
+    .lte("data", dia.parse(ate));
+  if (error) falhaDeLeitura("feriados", error);
+  return new Set(data.map((f) => f.data));
+}

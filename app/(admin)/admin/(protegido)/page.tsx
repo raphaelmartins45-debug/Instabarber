@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { Indicador } from "@/components/nucleo/indicador";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
-import { hojeIso } from "@/lib/formatacao/datas";
+import { hojeIso, somarDias } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { contarAlertas, faltamFeriados } from "@/lib/regras/alertas-admin";
+import { leadParado, propostaAExpirar } from "@/lib/regras/comercial";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { receitaMensal } from "@/lib/regras/receita";
 import { listarBarbearias } from "@/lib/repositorios/admin/barbearias";
-import { contarFeriadosNacionais } from "@/lib/repositorios/feriados";
+import { listarLeads, validadesEnviadas } from "@/lib/repositorios/comercial/leads";
+import { contarFeriadosNacionais, datasFeriadosNacionais } from "@/lib/repositorios/feriados";
 import { listarPedidos } from "@/lib/repositorios/pedidos-adesao";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
@@ -20,11 +22,22 @@ export default async function PainelGeral() {
   const bd = await criarClienteServidor();
   const hoje = hojeIso();
   const proximoAno = Number(hoje.slice(0, 4)) + 1;
-  const [barbearias, pendentes, feriados] = await Promise.all([
+  const [barbearias, pendentes, feriados, leads, validades, feriadosRecentes] = await Promise.all([
     listarBarbearias(bd),
     listarPedidos(bd),
     contarFeriadosNacionais(bd, proximoAno),
+    listarLeads(bd),
+    validadesEnviadas(bd),
+    datasFeriadosNacionais(bd, somarDias(hoje, -60), hoje),
   ]);
+  const parados = leads.filter((l) =>
+    leadParado(
+      { estado: l.estado, criadoEm: hojeIso(new Date(l.criado_em)) },
+      hoje,
+      feriadosRecentes,
+    ),
+  ).length;
+  const aExpirar = validades.filter((v) => propostaAExpirar(v, hoje)).length;
   const mrr = receitaMensal(barbearias, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA));
   const adesoesMes = barbearias.filter(
     (b) => b.aprovado_em && hojeIso(new Date(b.aprovado_em)).slice(0, 7) === hoje.slice(0, 7),
@@ -37,6 +50,12 @@ export default async function PainelGeral() {
       : null,
     a.vencimentos ? { texto: t.vencimentos(a.vencimentos), href: "/admin/pagamentos" } : null,
     faltamFeriados(hoje, feriados) ? { texto: t.feriados(proximoAno), href: "/admin" } : null,
+    parados
+      ? { texto: textos.comercial.alertas.leadsParados(parados), href: "/admin/comercial" }
+      : null,
+    aExpirar
+      ? { texto: textos.comercial.alertas.propostasAExpirar(aExpirar), href: "/admin/comercial" }
+      : null,
   ].filter((x) => x !== null);
 
   return (

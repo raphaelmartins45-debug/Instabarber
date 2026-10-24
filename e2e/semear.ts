@@ -106,6 +106,7 @@ export default async function semear() {
     await perfil(bd, await criarConta(bd, c.adminAdesao), "super_admin", null, c.adminAdesao);
     await perfil(bd, await criarConta(bd, c.adminModulos), "super_admin", null, c.adminModulos);
     await perfil(bd, await criarConta(bd, c.adminDesign), "super_admin", null, c.adminDesign);
+    await perfil(bd, await criarConta(bd, c.adminComercial), "super_admin", null, c.adminComercial);
     await perfil(
       bd,
       await criarConta(bd, c.donoSuspenso),

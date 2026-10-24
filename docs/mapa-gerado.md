@@ -9,8 +9,11 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/barbearias/[id]/exportar/route.ts`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/leads/[id]/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/leads/novo/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/leads/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/page.tsx`
 - `app/(admin)/admin/(protegido)/design/page.tsx`
-- `app/(admin)/admin/(protegido)/funcionalidades/page.tsx`
 - `app/(admin)/admin/(protegido)/modulos/page.tsx`
 - `app/(admin)/admin/(protegido)/pagamentos/page.tsx`
 - `app/(admin)/admin/(protegido)/page.tsx`
@@ -163,7 +166,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Textos (lib/i18n)
 
-- `lib/i18n/pt-PT.ts`: 33 chaves
+- `lib/i18n/pt-PT.ts`: 34 chaves
 
 ## Tabelas
 
