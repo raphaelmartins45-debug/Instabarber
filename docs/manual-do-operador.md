@@ -298,6 +298,8 @@ Um problema de nível 3 num sábado à noite passa à frente de tudo.
 
 **Confirmar:** os três ficheiros têm tamanho maior do que zero e o `data.sql` cresce de semana para semana. Registar a data da cópia.
 
+**Alternativa sem a porta 5432 (D-144), a que o Claude Code usa:** `SUPABASE_COPIA_REF=<ref> SUPABASE_COPIA_TOKEN=<token> COPIA_SENHA=<palavra-passe> python3 scripts/copia-api.py copias` lê os dados pela Management API (public, contas, Storage) e gera um único ficheiro `instabarber-copia-<data>.tar.gz.gpg`, cifrado com AES-256. O esquema não vai na cópia: vem das migrações indicadas no manifesto. O ficheiro guarda-se no Google Drive da Performa LAB, pasta **«InstaBarber · Cópias de segurança»**; a palavra-passe (`COPIA_SENHA`) fica no gestor de palavras-passe, nunca na mesma pasta. Primeira cópia: 24/10/2026.
+
 **A cópia contém dados pessoais:** nunca por e-mail, nunca em pastas partilhadas sem cifra.
 
 ---
@@ -321,6 +323,8 @@ Um problema de nível 3 num sábado à noite passa à frente de tudo.
 
 4. Verificar: número de barbearias, clientes e marcações igual ao da produção; RLS ativo em todas as tabelas; entrar como uma barbearia de ensaio.
 5. Registar a data, o tempo que demorou e qualquer problema. Limpar o projeto de ensaio no fim.
+
+**Restauro da cópia feita pela API (D-144):** com o Supabase local acabado de repor (`npx supabase db reset`), `ALVO_DB_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres COPIA_SENHA=… python3 scripts/restaurar-copia-api.py <ficheiro>.gpg`. Decifra, confere as somas, repõe tudo numa transação e compara as contagens com o manifesto; recusa a produção. Ensaiado a 24/10/2026 com a cópia da produção: 64 tabelas, 127 linhas, RLS ativo nas 59.
 
 ---
 

@@ -9,6 +9,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/barbearias/[id]/exportar/route.ts`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/page.tsx`
+- `app/(admin)/admin/(protegido)/design/page.tsx`
 - `app/(admin)/admin/(protegido)/funcionalidades/page.tsx`
 - `app/(admin)/admin/(protegido)/modulos/page.tsx`
 - `app/(admin)/admin/(protegido)/pagamentos/page.tsx`
@@ -64,41 +65,101 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Variáveis CSS (app/globals.css)
 
-- `--preto: #12100e;`
-- `--dourado: #f5a623;`
-- `--dourado-escuro: #c9821a;`
-- `--amarelo-claro: #fdf3e3;`
-- `--fundo: #f7f5f1;`
-- `--linha: #e6e1d8;`
-- `--verde: #1f8a5f;`
-- `--vermelho: #c0392b;`
-- `--cinza-texto: #8a847c;`
-- `--branco: #ffffff;`
-- `--raio: 16px;`
-- `--color-background: var(--fundo);`
-- `--color-foreground: var(--preto);`
-- `--color-card: var(--branco);`
-- `--color-card-foreground: var(--preto);`
-- `--color-popover: var(--branco);`
-- `--color-popover-foreground: var(--preto);`
-- `--color-primary: var(--preto);`
-- `--color-primary-foreground: var(--branco);`
-- `--color-secondary: var(--branco);`
-- `--color-secondary-foreground: var(--preto);`
-- `--color-muted: var(--fundo);`
-- `--color-muted-foreground: var(--cinza-texto);`
-- `--color-accent: var(--amarelo-claro);`
-- `--color-accent-foreground: var(--preto);`
-- `--color-destructive: var(--vermelho);`
-- `--color-sucesso: var(--verde);`
-- `--color-destaque: var(--dourado);`
-- `--color-ligacao: var(--dourado-escuro);`
-- `--color-border: var(--linha);`
-- `--color-input: var(--linha);`
-- `--color-ring: var(--dourado);`
-- `--radius-lg: var(--raio);`
-- `--radius-md: calc(var(--raio) - 4px);`
-- `--radius-sm: calc(var(--raio) - 8px);`
+- `--sup-fundo: #09090b;`
+- `--sup-cartao: #121214;`
+- `--sup-elevado: #18181b;`
+- `--sup-camada: #1f1f23;`
+- `--borda: rgba(255, 255, 255, 0.08);`
+- `--borda-forte: rgba(255, 255, 255, 0.14);`
+- `--texto: #f4f4f5;`
+- `--texto-2: #a1a1aa;`
+- `--texto-3: #8b8b94;`
+- `--vidro: rgba(18, 18, 20, 0.72);`
+- `--sucesso: #3dbe8b;`
+- `--alerta: #f2b134;`
+- `--perda: #f0786b;`
+- `--info: #8fb3ff;`
+- `--sombra-cartao: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 16px 40px -28px rgba(0, 0, 0, 0.9);`
+- `--sombra-flutuante: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 24px 60px -24px rgba(0, 0, 0, 0.85);`
+- `--brilho-cartao: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 40%);`
+- `--ac: #f5a623;`
+- `--ac-hi: #ffb63d;`
+- `--ac-sobre: #17120a;`
+- `--ac-rgb: 245, 166, 35;`
+- `--ac-texto: #f5a623;`
+- `--ease: cubic-bezier(0.22, 1, 0.36, 1);`
+- `--sup-fundo: #fafaf9;`
+- `--sup-cartao: #ffffff;`
+- `--sup-elevado: #f4f4f5;`
+- `--sup-camada: #ececee;`
+- `--borda: rgba(9, 9, 11, 0.08);`
+- `--borda-forte: rgba(9, 9, 11, 0.14);`
+- `--texto: #09090b;`
+- `--texto-2: #52525b;`
+- `--texto-3: #65656e;`
+- `--vidro: rgba(255, 255, 255, 0.72);`
+- `--sucesso: #14804f;`
+- `--alerta: #9a5b00;`
+- `--perda: #c4372a;`
+- `--info: #2459c9;`
+- `--sombra-cartao: 0 1px 2px rgba(9, 9, 11, 0.04), 0 12px 32px -24px rgba(9, 9, 11, 0.22);`
+- `--sombra-flutuante: 0 2px 6px rgba(9, 9, 11, 0.06), 0 24px 60px -24px rgba(9, 9, 11, 0.28);`
+- `--brilho-cartao: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 40%);`
+- `--ac-texto: #945c00;`
+- `--ac: #2dff8a;`
+- `--ac-hi: #7dffb4;`
+- `--ac-sobre: #03140a;`
+- `--ac-rgb: 45, 255, 138;`
+- `--ac-texto: #2dff8a;`
+- `--sucesso: #2dff8a;`
+- `--ac-texto: #087a40;`
+- `--sucesso: #087a40;`
+- `--ac: var(--marca-escuro, #f5a623);`
+- `--ac-hi: var(--marca-escuro-hi, #ffb63d);`
+- `--ac-sobre: var(--marca-escuro-sobre, #17120a);`
+- `--ac-rgb: var(--marca-escuro-rgb, 245, 166, 35);`
+- `--ac-texto: var(--marca-escuro-texto, #f5a623);`
+- `--ac: var(--marca-claro, #f5a623);`
+- `--ac-hi: var(--marca-claro-hi, #ffb63d);`
+- `--ac-sobre: var(--marca-claro-sobre, #17120a);`
+- `--ac-rgb: var(--marca-claro-rgb, 245, 166, 35);`
+- `--ac-texto: var(--marca-claro-texto, #945c00);`
+- `--color-background: var(--sup-fundo);`
+- `--color-foreground: var(--texto);`
+- `--color-card: var(--sup-cartao);`
+- `--color-card-foreground: var(--texto);`
+- `--color-popover: var(--sup-elevado);`
+- `--color-popover-foreground: var(--texto);`
+- `--color-primary: var(--ac);`
+- `--color-primary-foreground: var(--ac-sobre);`
+- `--color-secondary: var(--sup-elevado);`
+- `--color-secondary-foreground: var(--texto);`
+- `--color-muted: var(--sup-camada);`
+- `--color-muted-foreground: var(--texto-2);`
+- `--color-terciario: var(--texto-3);`
+- `--color-accent: rgba(var(--ac-rgb), 0.12);`
+- `--color-accent-foreground: var(--texto);`
+- `--color-elevado: var(--sup-elevado);`
+- `--color-destructive: var(--perda);`
+- `--color-sucesso: var(--sucesso);`
+- `--color-alerta: var(--alerta);`
+- `--color-info: var(--info);`
+- `--color-destaque: var(--ac);`
+- `--color-ligacao: var(--ac-texto);`
+- `--color-border: var(--borda);`
+- `--color-borda-forte: var(--borda-forte);`
+- `--color-input: var(--borda-forte);`
+- `--color-ring: var(--ac);`
+- `--radius-sm: 8px;`
+- `--radius-md: 12px;`
+- `--radius-lg: 16px;`
+- `--radius-xl: 20px;`
+- `--radius-2xl: 24px;`
+- `--shadow-cartao: var(--sombra-cartao);`
+- `--shadow-flutuante: var(--sombra-flutuante);`
+- `--ease-sistema: var(--ease);`
+- `--animate-entrada: entrada 0.5s var(--ease) both;`
+- `--animate-brilho: brilho 2.4s ease-in-out infinite;`
 
 ## Textos (lib/i18n)
 
