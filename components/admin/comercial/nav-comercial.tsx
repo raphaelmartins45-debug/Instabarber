@@ -11,6 +11,7 @@ const t = textos.comercial;
 const SEPARADORES = [
   { id: "funil", href: "/admin/comercial" },
   { id: "leads", href: "/admin/comercial/leads" },
+  { id: "propostas", href: "/admin/comercial/propostas" },
 ] as const;
 
 /** Separadores do Comercial; no telemóvel deslizam na horizontal. */

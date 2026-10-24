@@ -66,4 +66,32 @@ test("pedido do site no CRM, lead à mão, contacto, estado e funil", async ({ p
   await page.goto("/admin/comercial");
   await expect(page.getByTestId("coluna-demonstracao")).toContainText(`Navalha ${sufixo}`);
   await expect(page.getByTestId("coluna-novo")).toContainText(`Corte Ensaio ${sufixo}`);
+
+  // Camada 2: briefing em passos, proposta em PDF, enviada e aceite.
+  await page.getByTestId("coluna-demonstracao").getByText(`Navalha ${sufixo}`).click();
+  await page.getByRole("link", { name: "Abrir o briefing" }).click();
+  await page.getByRole("button", { name: "Seguinte" }).click();
+  await page.getByLabel("N.º de barbeiros *").fill("3");
+  await page.getByRole("button", { name: "Seguinte" }).click();
+  await page.getByLabel("WhatsApp", { exact: true }).check();
+  await page.getByLabel("Clientes ativos (estimativa) *").fill("400");
+  await page.getByLabel("Valor médio de uma visita (€) *").fill("15");
+  await page.getByRole("button", { name: "Seguinte" }).click();
+  await page.getByLabel("Faltas", { exact: true }).check();
+  await page.getByLabel("Objetivo principal nos próximos três meses *").fill("Reduzir as faltas");
+  await page.getByRole("button", { name: "Seguinte" }).click();
+  await expect(page.getByTestId("preco-briefing")).toContainText("47,97");
+  await page.getByRole("button", { name: "Gerar proposta" }).click();
+
+  await expect(page.getByTestId("propostas-lead")).toContainText("Rascunho");
+  const pdf = await page.request.get(
+    (await page.getByRole("link", { name: "Descarregar PDF" }).getAttribute("href"))!,
+  );
+  expect(pdf.status()).toBe(200);
+  expect(pdf.headers()["content-type"]).toBe("application/pdf");
+  await page.getByRole("button", { name: "Marcar como enviada" }).click();
+  await expect(page.getByTestId("propostas-lead")).toContainText("Enviada");
+  await page.getByRole("button", { name: "Aceite", exact: true }).click();
+  await expect(page.getByTestId("propostas-lead")).toContainText("Aceite");
+  await expect(page.getByTestId("historico-lead")).toContainText("aceite.");
 });

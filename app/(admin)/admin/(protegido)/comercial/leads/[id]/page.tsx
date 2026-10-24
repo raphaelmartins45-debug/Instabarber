@@ -2,13 +2,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FormularioLead } from "@/components/admin/comercial/formulario-lead";
 import { HistoricoLead } from "@/components/admin/comercial/historico-lead";
+import { ListaPropostas } from "@/components/admin/comercial/lista-propostas";
 import { MudarEstadoLead } from "@/components/admin/comercial/mudar-estado-lead";
 import { RegistarEventoLead } from "@/components/admin/comercial/registar-evento-lead";
 import { Etiqueta } from "@/components/nucleo/etiqueta";
+import { Button } from "@/components/ui/button";
 import { Secao } from "@/components/nucleo/secao";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
 import { eventosDoLead, obterLead } from "@/lib/repositorios/comercial/leads";
+import { propostasDoLead } from "@/lib/repositorios/comercial/propostas";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import type { DadosLead } from "@/lib/validacao/comercial";
 
@@ -21,7 +24,7 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
   const bd = await criarClienteServidor();
   const lead = await obterLead(bd, id);
   if (!lead) notFound();
-  const eventos = await eventosDoLead(bd, id);
+  const [eventos, propostas] = await Promise.all([eventosDoLead(bd, id), propostasDoLead(bd, id)]);
   const inicial: DadosLead = {
     nome_contacto: lead.nome_contacto,
     nome_barbearia: lead.nome_barbearia ?? "",
@@ -55,6 +58,14 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
         <div className="grid content-start gap-5">
           <Secao id="lead-dados" titulo={t.ficha.dados}>
             <FormularioLead id={lead.id} inicial={inicial} />
+          </Secao>
+          <Secao id="propostas" titulo={t.propostas.titulo}>
+            <div className="grid gap-3">
+              <Button asChild variant="outline" className="justify-self-start">
+                <Link href={`/admin/comercial/leads/${lead.id}/briefing`}>{t.briefing.abrir}</Link>
+              </Button>
+              <ListaPropostas lead={lead} propostas={propostas} />
+            </div>
           </Secao>
           <Secao id="lead-historico" titulo={t.ficha.historico}>
             <HistoricoLead eventos={eventos} />
