@@ -39,6 +39,13 @@ export const MENU_ADMIN: ItemMontado[] = [
         chave: null,
         estado: "ativo",
       },
+      {
+        id: "financas",
+        rotulo: m.financas,
+        href: "/admin/financas",
+        chave: null,
+        estado: "ativo",
+      },
     ],
   },
 ];

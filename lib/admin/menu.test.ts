@@ -12,6 +12,7 @@ describe("separadorAtual", () => {
   it("reconhece as entradas de dentro da pasta «Gestão do negócio»", () => {
     expect(separadorAtual("/admin/comercial")).toBe("comercial");
     expect(separadorAtual("/admin/comercial/leads/abc")).toBe("comercial");
+    expect(separadorAtual("/admin/financas/custos")).toBe("financas");
   });
 });
 

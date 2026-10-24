@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Indicador } from "@/components/nucleo/indicador";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
+import { alertasContas } from "@/lib/financas/custos";
 import { hojeIso, somarDias } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
@@ -11,6 +12,7 @@ import { receitaMensal } from "@/lib/regras/receita";
 import { listarBarbearias } from "@/lib/repositorios/admin/barbearias";
 import { listarLeads, validadesEnviadas } from "@/lib/repositorios/comercial/leads";
 import { contarFeriadosNacionais, datasFeriadosNacionais } from "@/lib/repositorios/feriados";
+import { listarContas } from "@/lib/repositorios/financas";
 import { listarPedidos } from "@/lib/repositorios/pedidos-adesao";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
@@ -22,14 +24,17 @@ export default async function PainelGeral() {
   const bd = await criarClienteServidor();
   const hoje = hojeIso();
   const proximoAno = Number(hoje.slice(0, 4)) + 1;
-  const [barbearias, pendentes, feriados, leads, validades, feriadosRecentes] = await Promise.all([
-    listarBarbearias(bd),
-    listarPedidos(bd),
-    contarFeriadosNacionais(bd, proximoAno),
-    listarLeads(bd),
-    validadesEnviadas(bd),
-    datasFeriadosNacionais(bd, somarDias(hoje, -60), hoje),
-  ]);
+  const [barbearias, pendentes, feriados, leads, validades, feriadosRecentes, contas] =
+    await Promise.all([
+      listarBarbearias(bd),
+      listarPedidos(bd),
+      contarFeriadosNacionais(bd, proximoAno),
+      listarLeads(bd),
+      validadesEnviadas(bd),
+      datasFeriadosNacionais(bd, somarDias(hoje, -60), hoje),
+      listarContas(bd),
+    ]);
+  const contasAlerta = alertasContas(contas, somarDias(hoje, 7));
   const parados = leads.filter((l) =>
     leadParado(
       { estado: l.estado, criadoEm: hojeIso(new Date(l.criado_em)) },
@@ -55,6 +60,18 @@ export default async function PainelGeral() {
       : null,
     aExpirar
       ? { texto: textos.comercial.alertas.propostasAExpirar(aExpirar), href: "/admin/comercial" }
+      : null,
+    contasAlerta.atrasadas
+      ? {
+          texto: textos.financas.alertas.atrasadas(contasAlerta.atrasadas),
+          href: "/admin/financas/custos#contas",
+        }
+      : null,
+    contasAlerta.aVencer
+      ? {
+          texto: textos.financas.alertas.aVencer(contasAlerta.aVencer),
+          href: "/admin/financas/custos#contas",
+        }
       : null,
   ].filter((x) => x !== null);
 

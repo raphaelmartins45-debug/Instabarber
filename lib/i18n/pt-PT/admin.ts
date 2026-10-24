@@ -9,6 +9,7 @@ export const admin = {
     modulos: "Módulos",
     negocio: "Gestão do negócio",
     comercial: "Comercial",
+    financas: "Finanças",
   },
   estados: { pendente: "Pendente", ativo: "Ativa", suspenso: "Suspensa", cancelado: "Cancelada" },
   estadosPagamento: { em_dia: "Em dia", em_atraso: "Em atraso" },

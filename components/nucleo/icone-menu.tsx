@@ -7,6 +7,7 @@ import {
   Handshake,
   House,
   Inbox,
+  Landmark,
   Puzzle,
   type LucideIcon,
   Receipt,
@@ -43,6 +44,7 @@ const ICONES: Record<string, LucideIcon> = {
   modulos: Puzzle,
   negocio: BriefcaseBusiness,
   comercial: Handshake,
+  financas: Landmark,
 };
 
 export function IconeMenu({ id, className }: { id: string; className?: string }) {
