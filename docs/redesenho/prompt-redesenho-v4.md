@@ -337,3 +337,5 @@ Objetivo final, para não te esqueceres: **quando um dono de barbearia em Lisboa
 **Fim de cada lote:** corre a auditoria da `ui-ux-pro-max` e, se existir, `/impeccable critique` e `/impeccable polish`; corrige o que falhar e anexa à entrega a lista do que foi corrigido.
 
 **Ficha de histórico de cortes (a decidir antes do lote D e do lote E).** O dono quer um histórico por cliente, uma entrada por serviço com até duas fotos e uma nota, visível ao barbeiro (antes de o cliente se sentar) e ao cliente (Minha área). A ficha técnica já existe (F.4.14), mas ligar cada ficha à marcação e ter duas fotos exige **alterar o esquema** (`docs/esquema/`, com testes). Isso é back-end e pára: apresenta a proposta (campo `marcacao_id`, segunda foto, consentimento do cliente e separação entre nota interna e nota visível) e espera o «sim» do dono antes de construir. Entretanto, desenha os ecrãs com a ficha existente.
+
+**Páginas públicas (setor F):** substituído pelo prompt dedicado `docs/redesenho/prompt-paginas-publicas-v1.md` (auditoria primeiro, 7 modelos e 9 aspetos, personalização). Quando chegares ao setor F, segue esse ficheiro.
