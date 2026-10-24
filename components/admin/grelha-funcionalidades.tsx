@@ -5,7 +5,7 @@ import { useMemo, useState, useTransition } from "react";
 import {
   guardarFuncionalidades,
   reporPacote,
-} from "@/app/(admin)/admin/(protegido)/funcionalidades/acoes";
+} from "@/app/(admin)/admin/(protegido)/barbearias/[id]/acoes-funcionalidades";
 import { Aviso } from "@/components/nucleo/aviso";
 import { ConfirmarAcao } from "@/components/nucleo/confirmar-acao";
 import { Button } from "@/components/ui/button";

@@ -33,7 +33,6 @@ export async function guardarFuncionalidades(
     .filter((a) => atuais.get(a.chave)?.ativa !== a.ativa)
     .map((a) => ({ chave: a.chave, ativa: a.ativa, bonus: a.ativa && !doPlano.has(a.chave) }));
   const ok = await guardarGrelha(bd, v.data.inquilinoId, alteracoes, admin.userId);
-  revalidatePath("/admin/funcionalidades");
   revalidatePath(`/admin/barbearias/${v.data.inquilinoId}`, "layout");
   return { ok };
 }
@@ -42,7 +41,6 @@ export async function reporPacote(inquilinoId: string): Promise<{ ok: boolean }>
   await exigirSuperAdmin();
   if (!z.string().uuid().safeParse(inquilinoId).success) return { ok: false };
   const ok = await aplicarPacote(await criarClienteServidor(), inquilinoId);
-  revalidatePath("/admin/funcionalidades");
   revalidatePath(`/admin/barbearias/${inquilinoId}`, "layout");
   return { ok };
 }

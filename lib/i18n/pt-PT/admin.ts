@@ -5,7 +5,6 @@ export const admin = {
     inicio: "Painel geral",
     barbearias: "Barbearias",
     pedidos: "Pedidos",
-    funcionalidades: "Funcionalidades",
     pagamentos: "Pagamentos",
     modulos: "Módulos",
   },
@@ -244,9 +243,6 @@ export const admin = {
     estados: { pendente: "Pendente", aprovado: "Aprovado", rejeitado: "Rejeitado" },
   },
   funcionalidades: {
-    titulo: "Funcionalidades",
-    barbearia: "Barbearia",
-    escolher: "Escolha uma barbearia",
     grupos: {
       operacao: "Operação",
       presenca: "Presença",

@@ -16,13 +16,6 @@ export const MENU_ADMIN: ItemMontado[] = [
   },
   { id: "pedidos", rotulo: m.pedidos, href: "/admin/pedidos", chave: null, estado: "ativo" },
   {
-    id: "funcionalidades",
-    rotulo: m.funcionalidades,
-    href: "/admin/funcionalidades",
-    chave: null,
-    estado: "ativo",
-  },
-  {
     id: "pagamentos",
     rotulo: m.pagamentos,
     href: "/admin/pagamentos",
