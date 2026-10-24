@@ -15,12 +15,15 @@ const VISIVEIS = 5;
  * entradas; o resto num menu «Mais». Alvos de toque com 44 px no mínimo.
  */
 export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atual: string }) {
-  const itens = planificar(menu);
   const [aberto, setAberto] = useState(false);
-  const cabem = itens.length <= VISIVEIS;
-  const fixos = cabem ? itens : itens.slice(0, VISIVEIS - 1);
-  const resto = cabem ? [] : itens.slice(VISIVEIS - 1);
-  const restoAtivo = resto.some((i) => i.id === atual);
+  // As pastas (ex.: «Gestão do negócio») vão sempre para o «Mais», com o título e as entradas
+  // de dentro por baixo, como num menu de banco; as entradas soltas enchem a barra.
+  const simples = menu.filter((i) => !i.filhos);
+  const pastas = menu.filter((i) => i.filhos);
+  const cabem = !pastas.length && simples.length <= VISIVEIS;
+  const fixos = cabem ? simples : simples.slice(0, VISIVEIS - 1);
+  const resto = cabem ? [] : simples.slice(VISIVEIS - 1);
+  const restoAtivo = [...resto, ...planificar(pastas)].some((i) => i.id === atual);
 
   return (
     <nav
@@ -28,10 +31,25 @@ export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atu
       className="vidro fixed inset-x-0 bottom-0 z-40 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden"
     >
       {aberto ? (
-        <ul className="grid gap-1 border-b p-2">
+        <ul className="grid max-h-[60dvh] gap-1 overflow-y-auto border-b bg-elevado p-2">
           {resto.map((item) => (
             <li key={item.id} data-menu={item.id}>
               <Entrada item={item} atual={atual} horizontal />
+            </li>
+          ))}
+          {pastas.map((pasta) => (
+            <li key={pasta.id} className="grid gap-1 pt-2" data-menu={pasta.id}>
+              <span className="flex min-h-11 items-center gap-3 px-3 text-sm font-semibold">
+                <IconeMenu id={pasta.id} className="size-5" />
+                {pasta.rotulo}
+              </span>
+              <ul className="grid gap-1">
+                {pasta.filhos!.map((f) => (
+                  <li key={f.id} data-menu={f.id} className="pl-6">
+                    <Entrada item={f} atual={atual} horizontal />
+                  </li>
+                ))}
+              </ul>
             </li>
           ))}
         </ul>
@@ -42,7 +60,7 @@ export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atu
             <Entrada item={item} atual={atual} />
           </li>
         ))}
-        {resto.length ? (
+        {!cabem ? (
           <li className="flex-1">
             <button
               type="button"
