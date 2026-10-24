@@ -119,7 +119,7 @@ export function PaletaComandos({ itens }: { itens: ItemMontado[] }) {
             aria-modal="true"
             aria-label={t.titulo}
             data-testid="paleta-comandos"
-            className="vidro animate-entrada w-full max-w-lg overflow-hidden rounded-2xl shadow-flutuante"
+            className="flutuante animate-entrada w-full max-w-lg overflow-hidden rounded-2xl shadow-flutuante"
           >
             <div className="flex items-center gap-3 border-b border-border px-4">
               <Search aria-hidden className="size-4 text-terciario" />

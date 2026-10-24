@@ -193,6 +193,12 @@
     -webkit-backdrop-filter: blur(16px) saturate(1.4);
     backdrop-filter: blur(16px) saturate(1.4);
   }
+  /* Popups e diálogos: superfície sólida. Dentro de uma barra de vidro, o desfoque não chega à
+     página por trás e o vidro ficaria só transparente. */
+  .flutuante {
+    background: var(--sup-elevado);
+    border: 1px solid var(--borda-forte);
+  }
   /* Números financeiros e contagens: algarismos tabulares, nunca «tremem». */
   .numero {
     font-variant-numeric: tabular-nums;

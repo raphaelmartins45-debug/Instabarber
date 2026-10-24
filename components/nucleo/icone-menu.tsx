@@ -5,6 +5,7 @@ import {
   HandCoins,
   House,
   Inbox,
+  Puzzle,
   type LucideIcon,
   Receipt,
   Settings,
@@ -37,6 +38,7 @@ const ICONES: Record<string, LucideIcon> = {
   pedidos: Inbox,
   funcionalidades: ToggleRight,
   pagamentos: Receipt,
+  modulos: Puzzle,
 };
 
 export function IconeMenu({ id, className }: { id: string; className?: string }) {

@@ -70,7 +70,7 @@ export function SeletorAparencia() {
       {aberto ? (
         <div
           data-testid="seletor-aparencia"
-          className="vidro animate-entrada absolute right-0 top-12 z-50 grid w-64 gap-4 rounded-2xl p-4 shadow-flutuante"
+          className="flutuante animate-entrada absolute right-0 top-12 z-50 grid w-64 gap-4 rounded-2xl p-4 shadow-flutuante"
         >
           <p className="text-sm font-semibold">{t.titulo}</p>
           <Grupo
