@@ -8,7 +8,10 @@ import { cn } from "@/lib/utils";
 const t = textos.financas;
 
 // Separadores das Finanças (O.2). Entram à medida que cada camada da Fase 3C fica pronta.
-const SEPARADORES = [{ id: "custos", href: "/admin/financas/custos" }] as const;
+const SEPARADORES = [
+  { id: "resumo", href: "/admin/financas" },
+  { id: "custos", href: "/admin/financas/custos" },
+] as const;
 
 /** Separadores das Finanças; no telemóvel deslizam na horizontal. */
 export function NavFinancas() {

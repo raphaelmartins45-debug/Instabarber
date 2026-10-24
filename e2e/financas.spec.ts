@@ -39,8 +39,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
     page.getByTestId("conta").filter({ visible: true, hasText: nome });
 
   if (info.project.name === "telemovel") {
-    await page.goto("/admin/financas");
-    await expect(page).toHaveURL("/admin/financas/custos");
+    await page.goto("/admin/financas/custos");
     await novaConta(page, "Fornecedor Telemóvel", lisboa(3));
     await expect(conta("Fornecedor Telemóvel")).toContainText("Pendente");
     await conta("Fornecedor Telemóvel").getByRole("button", { name: "Marcar paga hoje" }).click();
@@ -51,12 +50,22 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   // A entrada no menu fica dentro da pasta «Gestão do negócio», que abre ao carregar.
   await page.getByRole("button", { name: "Gestão do negócio" }).filter({ visible: true }).click();
   await page.getByRole("link", { name: "Finanças" }).filter({ visible: true }).click();
-  await expect(page).toHaveURL("/admin/financas/custos");
+  await expect(page).toHaveURL("/admin/financas");
+  await page.getByRole("link", { name: "Custos e contas" }).click();
   await page.getByRole("button", { name: "Carregar os custos de partida (L.6)" }).click();
   // 17 € + 1 € por mês e quatro domínios a 10 € por ano (83 cêntimos por mês cada).
   await expect(page.getByTestId("custos-mes")).toHaveText(
     "Fixos 21,32 € · variáveis 0,00 € por mês",
   );
+
+  // Resumo: os indicadores aparecem e o ponto de equilíbrio bate com a conta à mão
+  // (21,32 € de fixos ÷ 39,00 € = 1 barbearia Pro; ÷ 19,99 € = 2 Basic).
+  await page.getByRole("link", { name: "Resumo" }).click();
+  await expect(page.getByTestId("resumo")).toContainText("Custos do mês");
+  await expect(page.getByTestId("resumo")).toContainText("21,32 €");
+  await expect(page.getByTestId("equilibrio-pro")).toContainText("1 barbearia");
+  await expect(page.getByTestId("equilibrio-basic")).toContainText("2 barbearias");
+  await page.getByRole("link", { name: "Custos e contas" }).click();
 
   await page.getByRole("button", { name: "Gerar as contas do próximo mês" }).click();
   await expect(page.getByText("2 contas geradas.")).toBeVisible();

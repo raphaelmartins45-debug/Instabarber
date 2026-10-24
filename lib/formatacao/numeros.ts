@@ -8,3 +8,13 @@ const formatador = new Intl.NumberFormat(regiao.idioma, { maximumFractionDigits:
 export function formatarNumero(n: number): string {
   return formatador.format(n);
 }
+
+const percentagem = new Intl.NumberFormat(regiao.idioma, {
+  style: "percent",
+  maximumFractionDigits: 1,
+});
+
+/** 0.472 → «47,2 %». */
+export function formatarPercentagem(fracao: number): string {
+  return percentagem.format(fracao);
+}

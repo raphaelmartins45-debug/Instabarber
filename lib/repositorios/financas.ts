@@ -1,5 +1,7 @@
 import { z } from "zod";
 import type { ContaNova, Custo } from "@/lib/financas/custos";
+import type { BarbeariaFin, RecebimentoFin } from "@/lib/financas/indicadores";
+import { hojeIso } from "@/lib/formatacao/datas";
 import { centimosDeNumeric, numericParaGravar } from "@/lib/formatacao/dinheiro";
 import type { ClienteBD } from "@/lib/supabase/tipos";
 import type { ContaValidada, CustoValidado } from "@/lib/validacao/financas";
@@ -150,4 +152,48 @@ export async function inserirContasGeradas(bd: ClienteBD, contas: ContaNova[]) {
     })),
   );
   return !error;
+}
+
+/**
+ * Barbearias para as Finanças, com o dia da última mudança de estado das canceladas (a
+ * auditoria regista que o estado mudou; numa cancelada, a última mudança é a saída).
+ */
+export async function barbeariasParaFinancas(bd: ClienteBD): Promise<BarbeariaFin[]> {
+  const { data, error } = await bd
+    .from("inquilinos")
+    .select(
+      "id, plano, periodicidade, profissionais_contratados, dominio_proprio, estado, estado_pagamento, aprovado_em",
+    )
+    .neq("estado", "pendente");
+  if (error) falhaDeLeitura("inquilinos", error);
+  const canceladas = data.filter((b) => b.estado === "cancelado").map((b) => b.id);
+  const saidas = new Map<string, string>();
+  if (canceladas.length) {
+    const { data: audit, error: e2 } = await bd
+      .from("auditoria")
+      .select("inquilino_id, criado_em")
+      .eq("accao", "inquilino_alterado")
+      .in("inquilino_id", canceladas)
+      .contains("detalhes", { campos: ["estado"] })
+      .order("criado_em", { ascending: false });
+    if (e2) falhaDeLeitura("auditoria", e2);
+    for (const a of audit)
+      if (a.inquilino_id && !saidas.has(a.inquilino_id))
+        saidas.set(a.inquilino_id, hojeIso(new Date(a.criado_em)));
+  }
+  return data.map((b) => ({
+    ...b,
+    aprovadaEm: b.aprovado_em ? hojeIso(new Date(b.aprovado_em)) : null,
+    canceladaEm: saidas.get(b.id) ?? null,
+  }));
+}
+
+export async function recebimentosDesde(bd: ClienteBD, desde: string): Promise<RecebimentoFin[]> {
+  const { data, error } = await bd
+    .from("recebimentos")
+    .select("valor, data")
+    .gte("data", desde)
+    .order("data");
+  if (error) falhaDeLeitura("recebimentos", error);
+  return data.map((r) => ({ valorCent: centimosDeNumeric(r.valor), data: r.data }));
 }
