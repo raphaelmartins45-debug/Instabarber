@@ -12,3 +12,6 @@ test-results/
 copias/
 # Ficheiros de trabalho da taste-skill (capturas, folhas de direção)
 .taste-skill/
+
+# Capturas do plugin Playwright (só locais)
+.playwright-mcp/
