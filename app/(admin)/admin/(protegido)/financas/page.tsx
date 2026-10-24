@@ -9,11 +9,19 @@ import {
   serieMensal,
   valorMedio,
 } from "@/lib/financas/indicadores";
-import { mesAnterior, mesAtual, nomeDoMes, ultimosMeses } from "@/lib/formatacao/datas";
+import { previsaoPorOmissao } from "@/lib/financas/previsao-base";
+import {
+  mesAnterior,
+  mesAtual,
+  mesPorExtenso,
+  nomeDoMes,
+  ultimosMeses,
+} from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { formatarPercentagem } from "@/lib/formatacao/numeros";
 import { textos } from "@/lib/i18n/pt-PT";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
+import { mesDoEquilibrio, projetar } from "@/lib/regras/previsao";
 import {
   barbeariasParaFinancas,
   listarContas,
@@ -59,6 +67,21 @@ export default async function Resumo({
   const percentBasic =
     r.arpu === null ? Math.min(100, Math.max(0, Number(basic ?? 50) || 0)) : null;
   const vazio = t.resumo.semValor;
+  // O mês em que a previsão base (O.8, pressupostos por omissão) chega ao equilíbrio.
+  const base = previsaoPorOmissao(barbearias, custos, mes, r.saidas);
+  const previsto = mesDoEquilibrio(
+    projetar(
+      r.mrr,
+      {
+        novas: base.novas,
+        saidas: base.saidas,
+        valorMedio: valorMedio(r.arpu, percentBasic ?? 50, regime),
+      },
+      base.meses,
+      base.custos,
+    ),
+  );
+
   return (
     <div className="grid gap-6">
       <p className="text-sm text-muted-foreground">{t.resumo.semIva}</p>
@@ -128,6 +151,7 @@ export default async function Resumo({
             ativas={r.ativas}
             percentBasic={percentBasic}
             regime={regime}
+            mesPrevisto={previsto ? mesPorExtenso(previsto) : null}
           />
           {percentBasic !== null ? (
             <form className="flex flex-wrap items-end gap-3">

@@ -46,3 +46,10 @@ export const esquemaConta = z
   });
 export type DadosConta = z.input<typeof esquemaConta>;
 export type ContaValidada = z.output<typeof esquemaConta>;
+
+export const esquemaMeta = z.object({
+  mes: z.string().regex(/^\d{4}-\d{2}$/, "data"),
+  valor_sem_iva: euros.refine((v) => v > 0, "valor"),
+  base: z.enum(["mrr", "recebido"]),
+});
+export type DadosMeta = z.input<typeof esquemaMeta>;

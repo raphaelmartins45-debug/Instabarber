@@ -12,6 +12,7 @@ import {
   atualizarCusto,
   criarConta,
   criarCustos,
+  guardarMeta,
   inserirContasGeradas,
   listarContas,
   listarCustos,
@@ -22,8 +23,10 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 import {
   type DadosConta,
   type DadosCusto,
+  type DadosMeta,
   esquemaConta,
   esquemaCusto,
+  esquemaMeta,
 } from "@/lib/validacao/financas";
 
 // Custos e contas a pagar (O.4). Só o super_admin com dois fatores; o RLS confere outra vez.
@@ -110,4 +113,16 @@ export async function gerarContasDoProximoMes(): Promise<Resultado> {
   const ok = await inserirContasGeradas(bd, novas);
   revalidar();
   return ok ? { ok: true, n: novas.length } : { ok: false, erro: "generico" };
+}
+
+export async function guardarMetaDoMes(dados: DadosMeta): Promise<Resultado> {
+  const v = esquemaMeta.safeParse(dados);
+  if (!v.success) return { ok: false, erro: erroDe(v.error.issues) };
+  return correr(async () =>
+    guardarMeta(await criarClienteServidor(), {
+      mes: `${v.data.mes}-01`,
+      valorCent: v.data.valor_sem_iva,
+      base: v.data.base,
+    }),
+  );
 }

@@ -197,3 +197,26 @@ export async function recebimentosDesde(bd: ClienteBD, desde: string): Promise<R
   if (error) falhaDeLeitura("recebimentos", error);
   return data.map((r) => ({ valorCent: centimosDeNumeric(r.valor), data: r.data }));
 }
+
+export type Meta = { mes: string; valorCent: number; base: "mrr" | "recebido" };
+
+export async function listarMetas(bd: ClienteBD): Promise<Meta[]> {
+  const { data, error } = await bd.from("metas_faturacao").select("mes, valor_sem_iva, base");
+  if (error) falhaDeLeitura("metas_faturacao", error);
+  return data.map((m) => ({
+    mes: m.mes,
+    valorCent: centimosDeNumeric(m.valor_sem_iva),
+    base: m.base as Meta["base"],
+  }));
+}
+
+/** Uma meta por mês: gravar outra vez o mesmo mês substitui-a. */
+export async function guardarMeta(bd: ClienteBD, m: Meta) {
+  const { error } = await bd
+    .from("metas_faturacao")
+    .upsert(
+      { mes: m.mes, valor_sem_iva: numericParaGravar(m.valorCent), base: m.base },
+      { onConflict: "mes" },
+    );
+  return !error;
+}

@@ -68,6 +68,23 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   await expect(page.getByTestId("resumo")).toContainText("21,32 €");
   await expect(page.getByTestId("equilibrio-pro")).toContainText("1 barbearia");
   await expect(page.getByTestId("equilibrio-basic")).toContainText("2 barbearias");
+  await expect(page.getByTestId("equilibrio-previsto")).toContainText("previsão base");
+
+  // Objetivo e previsões: meta do mês, quantas faltam e a projeção que recalcula sem gravar.
+  await page.getByRole("link", { name: "Objetivo e previsões" }).click();
+  await expect(page.getByTestId("meta-atual")).toHaveText("Ainda sem objetivo definido.");
+  await page.getByText("Definir o objetivo").click();
+  await page.getByLabel("Valor sem IVA (€)").fill("1000");
+  await page.getByRole("button", { name: "Guardar objetivo" }).click();
+  await expect(page.getByTestId("meta-atual")).toContainText("1000,00 € de receita recorrente");
+  await expect(page.getByTestId("faltam-pro")).toContainText("barbearias");
+  await expect(page.getByTestId("previsao")).toContainText("Não é uma promessa.");
+  await page.getByLabel("Número de barbearias Pro").fill("10");
+  await expect(page.getByTestId("previsao-ese")).toContainText("MRR 390,00 €");
+  await page.getByLabel("Novas barbearias por mês").fill("0");
+  await page.getByLabel("Saídas mensais (%)").fill("0");
+  const base = await page.getByTestId("previsao-base").textContent();
+  await expect(page.getByTestId("previsao-otimista")).toHaveText(base!);
   await page.getByRole("link", { name: "Custos e contas" }).click();
 
   await page.getByRole("button", { name: "Gerar as contas do próximo mês" }).click();

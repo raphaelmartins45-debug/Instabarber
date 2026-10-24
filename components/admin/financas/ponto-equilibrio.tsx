@@ -16,6 +16,7 @@ export function PontoEquilibrio({
   ativas,
   percentBasic,
   regime,
+  mesPrevisto,
 }: {
   fixos: number;
   variavelPorBarbearia: number;
@@ -23,6 +24,8 @@ export function PontoEquilibrio({
   ativas: number;
   percentBasic: number | null;
   regime: RegimeIva;
+  /** O mês em que a previsão base (O.8) chega ao equilíbrio, por extenso, ou nulo. */
+  mesPrevisto: string | null;
 }) {
   const respostas = [
     {
@@ -67,6 +70,9 @@ export function PontoEquilibrio({
           </li>
         ))}
       </ul>
+      <p className="text-sm" data-testid="equilibrio-previsto">
+        {mesPrevisto ? t.previsto(mesPrevisto) : t.previstoNunca}
+      </p>
     </div>
   );
 }
