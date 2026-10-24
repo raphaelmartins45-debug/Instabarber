@@ -386,6 +386,8 @@ Um problema de nível 3 num sábado à noite passa à frente de tudo.
 3. Atualizar o `.env.local` de quem desenvolve.
 4. Ver a auditoria e os registos do Supabase à procura de uso indevido; se houver, seguir a P-19.
 
+
+**Atenção (D-143):** ao copiar a configuração do Auth de um projeto do Supabase para outro pela API, a palavra-passe do SMTP não vem (a API devolve um resumo). Põe-se à parte, com a chave do Resend, e testa-se logo um «Esqueci-me da palavra-passe».
 ---
 
 ### P-18 · Saída de uma barbearia: exportar e eliminar
