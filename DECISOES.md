@@ -722,3 +722,8 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - O botão fixo (só abaixo de 768 px) deixa de repetir «Experimenta online já», que já é o botão do topo. O texto acompanha a secção que está a meio do ecrã: «Quero ver como funciona» (início e reserva), «Quero isto na minha» (loja, clube, receita), «Quero recuperar clientes» (calculadora), «Quanto estou a perder?» (radar), «Começar com o Pro» (planos), «Aceito o desafio» (desafio), «Tenho uma dúvida» (perguntas). Destino sempre `#contacto`.
 - Troca com texto a subir e a desvanecer, uma pulsação de brilho e variantes de estilo (`hot`, `go`, `calm`). Sem movimento com `prefers-reduced-motion`. Segue o tema Ouro/Neon.
 - Correção: o botão estava no HTML depois do script, que não o encontrava; por isso nunca se escondia no topo nem no formulário. Passou para antes do script. Esconde-se no topo e quando o formulário de contacto aparece.
+
+## D-144 · 24/10/2026 · Skills do redesenho e ordem dos lotes — dono
+- O dono autorizou instalar skills de desenho no repositório. Entra `ui-ux-pro-max` (MIT, consulta local em Python, sem dependências nem rede) em `.claude/skills/`, como **verificador** de acessibilidade, toque e estados; não manda em cores nem tipografia. O `impeccable` (Apache 2.0) instala-se com o instalador oficial no Code, que o revê; não se copiou à mão.
+- Ordem dos lotes: Equipa (barbeiro) → Gestão e financeiro → Minha área → páginas públicas → Administração → transversais. Prioridade entre skills e regra de desempate na secção 14 do `docs/redesenho/prompt-redesenho-v4.md`.
+- O histórico de cortes por serviço (até duas fotos, visível ao barbeiro e ao cliente) mexe no esquema: aguarda decisão do dono antes de construir.

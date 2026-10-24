@@ -314,3 +314,26 @@ Aplica estes «momentos de assinatura», com bom gosto e sem excesso:
 **Cadência:** no fim de cada lote manda-me um resumo curto em português de Portugal: o que ficou, capturas, o inventário de paridade funcional, o `git diff --stat` das áreas protegidas, e as «Sugestões para decidir». Mantém o `PROGRESSO.md` e o `DECISOES.md` (D-112 em diante) atualizados.
 
 Objetivo final, para não te esqueceres: **quando um dono de barbearia em Lisboa, Londres ou São Paulo vir isto, tem de querer mudar já.**
+
+---
+
+## 14 · Ordem dos lotes e skills (decisão do dono, 24/10/2026)
+
+**Ordem de execução.** Começa pelo **painel da Equipa (setor D, o barbeiro)** e segue pela ordem: D → C (Gestão, com o financeiro do setor B) → E (Minha área) → F (páginas públicas, os 4 modelos) → G (Administração) → H (transversais). Continua até tudo ficar ao nível do resto. O lote A (fundação) já está feito. Cada lote termina como diz a secção 13: ramo, Preview verde, capturas em 390, 768 e 1440 px nos temas Ouro e Neon, e só há merge depois do «sim» do dono.
+
+**Skills disponíveis em `.claude/skills/` e ordem de prioridade:**
+
+| Ordem | Skill | Papel |
+| --- | --- | --- |
+| 1 | `taste-skill` | Direção de arte e composição |
+| 2 | `redesign-skill` | Auditar um ecrã existente e tirar o ar genérico |
+| 3 | `ui-ux-pro-max` | **Verificador**: contraste, alvos de 44 px, estados vazios e de erro, movimento reduzido, formulários e navegação. Consulta com `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<consulta>" --domain ux` |
+| 4 | `impeccable` (se instalada: `/impeccable critique` e `/impeccable polish` no fim de cada lote) | Crítica de UX e passagem final |
+| 5 | `dataviz` (se disponível) | Só gráficos e KPIs do financeiro |
+| — | `brandkit` | Só identidade (logótipos, ícones), nunca painéis |
+
+**Regra de desempate:** a especificação deste prompt e o CLAUDE.md ganham sempre. Os hexadecimais da Parte I, a Inter, os destaques Ouro, Neon e Marca, o português de Portugal e o âmbito só de front-end não se mudam por sugestão de nenhuma skill. As skills de estética **propõem**; a `ui-ux-pro-max` **audita**. Quando duas discordam, decide esta regra e registas a escolha no `DECISOES.md`. A `ui-ux-pro-max` sugere paletas e fontes próprias: usa-a só como lista de verificação, nunca para trocar cores nem tipografia.
+
+**Fim de cada lote:** corre a auditoria da `ui-ux-pro-max` e, se existir, `/impeccable critique` e `/impeccable polish`; corrige o que falhar e anexa à entrega a lista do que foi corrigido.
+
+**Ficha de histórico de cortes (a decidir antes do lote D e do lote E).** O dono quer um histórico por cliente, uma entrada por serviço com até duas fotos e uma nota, visível ao barbeiro (antes de o cliente se sentar) e ao cliente (Minha área). A ficha técnica já existe (F.4.14), mas ligar cada ficha à marcação e ter duas fotos exige **alterar o esquema** (`docs/esquema/`, com testes). Isso é back-end e pára: apresenta a proposta (campo `marcacao_id`, segunda foto, consentimento do cliente e separação entre nota interna e nota visível) e espera o «sim» do dono antes de construir. Entretanto, desenha os ecrãs com a ficha existente.
