@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ContratosLead } from "@/components/admin/comercial/contratos-lead";
 import { FormularioLead } from "@/components/admin/comercial/formulario-lead";
 import { HistoricoLead } from "@/components/admin/comercial/historico-lead";
 import { ListaPropostas } from "@/components/admin/comercial/lista-propostas";
@@ -11,20 +12,31 @@ import { Secao } from "@/components/nucleo/secao";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
 import { eventosDoLead, obterLead } from "@/lib/repositorios/comercial/leads";
-import { propostasDoLead } from "@/lib/repositorios/comercial/propostas";
+import { contratosDoLead } from "@/lib/repositorios/comercial/contratos";
+import {
+  lerBriefing,
+  modeloAprovado,
+  propostasDoLead,
+} from "@/lib/repositorios/comercial/propostas";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import type { DadosLead } from "@/lib/validacao/comercial";
 
 const t = textos.comercial;
 export const metadata = { title: `${t.separadores.leads} · ${t.titulo}` };
 
-/** Ficha do lead (N.3): dados, estado, registar contacto e o histórico. */
+/** Ficha do lead (N.3): dados, estado, propostas, contratos, registar contacto e o histórico. */
 export default async function FichaLead({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const bd = await criarClienteServidor();
   const lead = await obterLead(bd, id);
   if (!lead) notFound();
-  const [eventos, propostas] = await Promise.all([eventosDoLead(bd, id), propostasDoLead(bd, id)]);
+  const [eventos, propostas, contratos, briefing, modelo] = await Promise.all([
+    eventosDoLead(bd, id),
+    propostasDoLead(bd, id),
+    contratosDoLead(bd, id),
+    lerBriefing(bd, id),
+    modeloAprovado(bd, "contrato"),
+  ]);
   const inicial: DadosLead = {
     nome_contacto: lead.nome_contacto,
     nome_barbearia: lead.nome_barbearia ?? "",
@@ -66,6 +78,15 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
               </Button>
               <ListaPropostas lead={lead} propostas={propostas} />
             </div>
+          </Secao>
+          <Secao id="contratos" titulo={t.contratos.titulo}>
+            <ContratosLead
+              lead={lead}
+              briefing={briefing}
+              propostas={propostas}
+              contratos={contratos}
+              haModelo={!!modelo}
+            />
           </Secao>
           <Secao id="lead-historico" titulo={t.ficha.historico}>
             <HistoricoLead eventos={eventos} />

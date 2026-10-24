@@ -3,17 +3,31 @@ import Image from "next/image";
 import { FormularioAdesao } from "@/components/adesao/formulario-adesao";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
+import { valoresComConvite } from "@/lib/adesao/convite";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { listarFuncionalidades, listarPacotes } from "@/lib/repositorios/funcionalidades";
+import { lerConviteAdesao } from "@/lib/repositorios/pedidos-adesao";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 export const metadata = { title: `${textos.adesao.titulo} · ${textos.marca.nome}` };
 export const dynamic = "force-dynamic";
 
-/** Formulário de adesão (D.8). A lista do que cada plano inclui vem da grelha (D.9). */
-export default async function PaginaAdesao() {
+/**
+ * Formulário de adesão (D.8). A lista do que cada plano inclui vem da grelha (D.9). Com
+ * ?convite= válido (N.7), abre já preenchido com os dados do contrato.
+ */
+export default async function PaginaAdesao({
+  searchParams,
+}: {
+  searchParams: Promise<{ convite?: string }>;
+}) {
+  const { convite } = await searchParams;
   const bd = await criarClienteServidor();
-  const [catalogo, pacotes] = await Promise.all([listarFuncionalidades(bd), listarPacotes(bd)]);
+  const [catalogo, pacotes, dadosConvite] = await Promise.all([
+    listarFuncionalidades(bd),
+    listarPacotes(bd),
+    convite ? lerConviteAdesao(bd, convite.slice(0, 100)) : null,
+  ]);
   return (
     <div className="min-h-dvh">
       <header className="bg-primary px-4 py-4">
@@ -38,6 +52,8 @@ export default async function PaginaAdesao() {
           regime={lerRegimeIva(process.env.PRESTADORA_REGIME_IVA)}
           pasta={randomUUID()}
           hoje={dataCurta(new Date())}
+          inicial={dadosConvite ? valoresComConvite(dadosConvite) : undefined}
+          convite={dadosConvite ? convite : undefined}
         />
       </main>
     </div>

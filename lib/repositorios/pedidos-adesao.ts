@@ -58,3 +58,22 @@ export async function decidirPedido(
     .select("id");
   return !error && data.length === 1;
 }
+
+/** Dados de um convite de adesão válido (N.7), ou nulo se o código for errado, usado ou expirado. */
+export async function lerConviteAdesao(bd: ClienteBD, token: string): Promise<unknown> {
+  const { data, error } = await bd.rpc("ler_convite_adesao", { p_token: token });
+  return error ? null : data;
+}
+
+/** Liga o pedido acabado de submeter ao contrato do convite e gasta o convite. */
+export async function usarConviteAdesao(
+  bd: ClienteBD,
+  token: string,
+  pedidoId: string,
+): Promise<boolean> {
+  const { data, error } = await bd.rpc("usar_convite_adesao", {
+    p_token: token,
+    p_pedido: pedidoId,
+  });
+  return !error && data === true;
+}

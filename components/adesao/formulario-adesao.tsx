@@ -6,6 +6,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Aviso } from "@/components/nucleo/aviso";
 import { Button } from "@/components/ui/button";
 import { dadosDoResumo, type Catalogo, type Pacotes } from "@/lib/adesao/resumo";
+import { VALORES_VAZIOS } from "@/lib/adesao/convite";
 import { textoErro } from "@/lib/adesao/erros";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { DadosResumo } from "@/lib/pdf/resumo-contratacao";
@@ -28,6 +29,9 @@ export function FormularioAdesao(props: {
   regime: RegimeIva;
   pasta: string;
   hoje: string;
+  /** Valores do convite do Comercial (N.7) e o código, que segue no envio. */
+  inicial?: DadosPedidoAdesao;
+  convite?: string;
 }) {
   const [passo, setPasso] = useState(0);
   const [erro, setErro] = useState<string>();
@@ -35,43 +39,7 @@ export function FormularioAdesao(props: {
   const [aEnviar, iniciar] = useTransition();
   const form = useForm<DadosPedidoAdesao>({
     resolver: zodResolver(esquemaPedidoAdesao),
-    defaultValues: {
-      identidade: {
-        nome: "",
-        responsavel: "",
-        nif: "",
-        ano_abertura: "",
-        descricao: "",
-        logo_path: "",
-        capa_path: "",
-        galeria_paths: [],
-      },
-      contactos: {
-        telefone: "",
-        whatsapp: "",
-        email: "",
-        cidade: "",
-        morada: "",
-        hora_abertura: "09:00",
-        hora_fecho: "19:30",
-        dias_descanso: [0, 1],
-      },
-      servicos: {
-        servicos: [{ nome: "", duracao_min: "30", preco: "" }],
-        equipa: [],
-        modelo_caixa: "A",
-      },
-      contratacao: {
-        plano: "pro",
-        periodicidade: "mensal",
-        profissionais: 3,
-        preferencia_pagamento: "mbway",
-        email_acesso: "",
-        observacoes: "",
-        aceitou_termos: false as unknown as true,
-      },
-      website: "",
-    },
+    defaultValues: props.inicial ?? VALORES_VAZIOS,
   });
 
   const avancar = async () => {
@@ -90,7 +58,7 @@ export function FormularioAdesao(props: {
       const resposta = await fetch("/api/adesoes", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(dados),
+        body: JSON.stringify(props.convite ? { ...dados, convite: props.convite } : dados),
       });
       if (!resposta.ok) return setErro(textoErro(resposta.status === 429 ? "limite" : "envio"));
       const v = esquemaPedidoAdesao.parse(dados);

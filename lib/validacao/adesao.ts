@@ -139,6 +139,8 @@ export const esquemaPedidoAdesao = z.object({
   servicos: passoServicos,
   contratacao: passoContratacao,
   website: z.string().max(200).optional().default(""),
+  /** Código do convite de adesão do Comercial (N.7), quando a pessoa veio por ele. */
+  convite: z.string().max(100).optional(),
 });
 
 export type PedidoAdesao = z.output<typeof esquemaPedidoAdesao>;

@@ -5,13 +5,13 @@ import { ipDoPedido, origemDoPedido } from "@/lib/inquilino/endereco";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { paraSubmissao, precoDoPedido } from "@/lib/regras/pedido-adesao";
 import { consumirLimite, LIMITES } from "@/lib/repositorios/limites";
-import { submeterPedidoAdesao } from "@/lib/repositorios/pedidos-adesao";
+import { submeterPedidoAdesao, usarConviteAdesao } from "@/lib/repositorios/pedidos-adesao";
 import { criarClienteServico } from "@/lib/supabase/servico";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { esquemaPedidoAdesao } from "@/lib/validacao/adesao";
 
 // Pedido de adesão (D.8, D.8.2): limite por IP e por e-mail, campo-isco, submeter_pedido_adesao()
-// e aviso curto à Performa LAB. Não se cria conta nenhuma até à aprovação.
+// convite do Comercial (N.7) e aviso curto à Performa LAB. Não se cria conta nenhuma até à aprovação.
 
 const TAMANHO_MAXIMO = 40_000;
 
@@ -42,8 +42,12 @@ export async function POST(pedido: Request) {
     (await consumirLimite(servico, `adesao:email:${email}`, LIMITES.adesaoEmail));
   if (!dentro) return NextResponse.json({ erro: "limite" }, { status: 429 });
 
-  const id = await submeterPedidoAdesao(await criarClienteServidor(), paraSubmissao(v.data));
+  const bd = await criarClienteServidor();
+  const id = await submeterPedidoAdesao(bd, paraSubmissao(v.data));
   if (!id) return NextResponse.json({ erro: "envio" }, { status: 502 });
+  // Veio por convite do Comercial (N.7): o pedido fica ligado ao contrato assinado. Um convite
+  // inválido não impede o pedido; só não fica ligado.
+  if (v.data.convite) await usarConviteAdesao(bd, v.data.convite, id);
 
   const preco = precoDoPedido(v.data, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA));
   const ligacao = `${await origemDoPedido()}/admin/pedidos/${id}`;

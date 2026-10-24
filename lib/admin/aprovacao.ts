@@ -15,6 +15,7 @@ import {
   slugsComPrefixo,
 } from "@/lib/repositorios/admin/barbearias";
 import { registarAcaoAdmin } from "@/lib/repositorios/admin/auditoria";
+import { ligarContratoInquilino } from "@/lib/repositorios/comercial/contratos";
 import { criarServicos } from "@/lib/repositorios/admin/servicos";
 import { publicarImagem } from "@/lib/repositorios/imagens-adesao";
 import {
@@ -135,6 +136,8 @@ export async function aprovarPedido(
   }
 
   await decidirPedido(bd, pedidoId, { estado: "aprovado", inquilinoId, revistoPor: admin.userId });
+  // Pedido que veio por convite do Comercial (N.7): o contrato e o lead ficam com a barbearia.
+  if (pedido.contrato_id) await ligarContratoInquilino(bd, pedido.contrato_id, inquilinoId);
   await registarAcaoAdmin(bd, {
     inquilinoId,
     accao: "adesao_aprovada",

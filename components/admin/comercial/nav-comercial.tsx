@@ -7,11 +7,13 @@ import { cn } from "@/lib/utils";
 
 const t = textos.comercial;
 
-// Separadores do Comercial (N.2). Entram à medida que cada camada da Fase 3B fica pronta.
+// Separadores do Comercial (N.2).
 const SEPARADORES = [
   { id: "funil", href: "/admin/comercial" },
   { id: "leads", href: "/admin/comercial/leads" },
   { id: "propostas", href: "/admin/comercial/propostas" },
+  { id: "contratos", href: "/admin/comercial/contratos" },
+  { id: "modelos", href: "/admin/comercial/modelos" },
 ] as const;
 
 /** Separadores do Comercial; no telemóvel deslizam na horizontal. */
