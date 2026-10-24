@@ -9,6 +9,8 @@ import type { Email } from "./enviar";
 // Modelos dos e-mails do pedido de contacto da landing (D-46, D-50). Só texto simples.
 
 const t = textos.contacto;
+// Os leads do site ficam no CRM do Admin (N.3), só no domínio principal.
+const ENDERECO_CRM = `https://${DOMINIO}/admin/comercial/leads`;
 
 function linhas(pares: [string, string][]): string {
   return pares.map(([rotulo, valor]) => `${rotulo}: ${valor || t.vazio}`).join("\n");
@@ -31,6 +33,7 @@ export function avisoComercialFase1(ref: string, p: PedidoContactoFase1): Email 
       ]),
       "",
       t.avisoComercial.responder,
+      t.avisoComercial.crm(ENDERECO_CRM),
       "",
       textos.marca.assinatura,
     ].join("\n"),
@@ -58,6 +61,8 @@ export function avisoComercialFase2(p: PedidoContactoFase2): Email {
         [t.campos.dificuldade, p.dificuldade],
         [t.campos.calculadora, p.calculadora],
       ]),
+      "",
+      t.avisoComercial.crm(ENDERECO_CRM),
       "",
       textos.marca.assinatura,
     ].join("\n"),

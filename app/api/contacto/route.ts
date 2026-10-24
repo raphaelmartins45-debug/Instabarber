@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { avisoComercialFase1, avisoComercialFase2, respostaVisitante } from "@/lib/email/contacto";
 import { enviarEmail } from "@/lib/email/enviar";
+import { ipDoPedido } from "@/lib/inquilino/endereco";
+import { gravarLeadDoSite } from "@/lib/repositorios/comercial/site";
 import { esquemaContacto, gerarRef } from "@/lib/validacao/contacto";
 
-// Pedido de contacto da landing (D-46, D-50). Fase 0: não grava nada; avisa o comercial@ pelo Resend.
-// A gravação no CRM e o limite por IP são da camada 1A da Fase 3B (submeter_lead, consumir_limite).
+// Pedido de contacto da landing (D-46, D-50): fica no CRM (submeter_lead, N.3, D-146) e avisa o
+// comercial@ pelo Resend. Com o limite por IP esgotado, recusa sem gravar nem enviar.
 
 const TAMANHO_MAXIMO = 8_000;
 
@@ -32,6 +34,9 @@ export async function POST(pedido: Request) {
   // Campo-isco preenchido: responde como se tivesse corrido bem e não envia nada.
   if (dados.website)
     return NextResponse.json({ ok: true, ...(dados.fase === 1 ? { ref: gerarRef() } : {}) });
+
+  if ((await gravarLeadDoSite(await ipDoPedido(), dados)) === "limite_ip")
+    return NextResponse.json({ ok: false, erro: "limite" }, { status: 429 });
 
   if (dados.fase === 1) {
     const ref = gerarRef();

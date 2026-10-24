@@ -9,6 +9,10 @@ vi.mock("resend", () => ({
   },
 }));
 
+const gravar = vi.fn();
+vi.mock("@/lib/repositorios/comercial/site", () => ({ gravarLeadDoSite: gravar }));
+vi.mock("@/lib/inquilino/endereco", () => ({ ipDoPedido: async () => "203.0.113.7" }));
+
 const { POST } = await import("./route");
 
 function pedido(corpo: unknown) {
@@ -28,6 +32,8 @@ const fase1 = {
 };
 
 beforeEach(() => {
+  gravar.mockReset();
+  gravar.mockResolvedValue("gravado");
   enviar.mockReset();
   enviar.mockResolvedValue({ data: { id: "x" }, error: null });
   vi.stubEnv("RESEND_API_KEY", "re_teste");
@@ -183,5 +189,33 @@ describe("POST /api/contacto · fase 2", () => {
   it("responde erro se o Resend falhar", async () => {
     enviar.mockResolvedValue({ data: null, error: { name: "x" } });
     expect((await POST(pedido(fase2))).status).toBe(502);
+  });
+});
+
+describe("POST /api/contacto · CRM (D-146)", () => {
+  it("grava o pedido no CRM e o aviso leva a ligação para os leads", async () => {
+    const r = await POST(pedido(fase1));
+    expect(r.status).toBe(200);
+    expect(gravar).toHaveBeenCalledWith("203.0.113.7", expect.objectContaining({ fase: 1 }));
+    expect(enviar.mock.calls[0]![0].text).toContain("/admin/comercial/leads");
+  });
+
+  it("com o limite por IP esgotado, recusa sem enviar nada", async () => {
+    gravar.mockResolvedValue("limite_ip");
+    const r = await POST(pedido(fase1));
+    expect(r.status).toBe(429);
+    expect(enviar).not.toHaveBeenCalled();
+  });
+
+  it("se a base falhar, o comercial recebe o e-mail na mesma", async () => {
+    gravar.mockResolvedValue("falhou");
+    const r = await POST(pedido(fase1));
+    expect(r.status).toBe(200);
+    expect(enviar).toHaveBeenCalledTimes(2);
+  });
+
+  it("o campo-isco não chega ao CRM", async () => {
+    await POST(pedido({ ...fase1, website: "spam" }));
+    expect(gravar).not.toHaveBeenCalled();
   });
 });

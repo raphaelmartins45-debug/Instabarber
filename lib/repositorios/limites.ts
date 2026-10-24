@@ -11,6 +11,8 @@ export const LIMITES = {
   adesaoIp: { maximo: 3, janelaSegundos: 3600 },
   adesaoEmail: { maximo: 3, janelaSegundos: 3600 },
   carregamentoIp: { maximo: 40, janelaSegundos: 3600 },
+  // Formulário de contacto da landing (N.3): os dois passos contam, por isso 10 por hora.
+  contactoIp: { maximo: 10, janelaSegundos: 3600 },
 } as const;
 
 /** Verdadeiro se o pedido pode seguir. */

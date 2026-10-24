@@ -7,6 +7,8 @@ export const admin = {
     pedidos: "Pedidos",
     pagamentos: "Pagamentos",
     modulos: "Módulos",
+    negocio: "Gestão do negócio",
+    comercial: "Comercial",
   },
   estados: { pendente: "Pendente", ativo: "Ativa", suspenso: "Suspensa", cancelado: "Cancelada" },
   estadosPagamento: { em_dia: "Em dia", em_atraso: "Em atraso" },

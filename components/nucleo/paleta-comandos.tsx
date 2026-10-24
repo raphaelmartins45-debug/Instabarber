@@ -3,7 +3,7 @@
 import { CalendarPlus, Search, UserSearch } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import type { ItemMontado } from "@/lib/funcionalidades/menus";
+import { type ItemMontado, planificar } from "@/lib/funcionalidades/menus";
 import { textos } from "@/lib/i18n/pt-PT";
 import { cn } from "@/lib/utils";
 import { IconeMenu } from "./icone-menu";
@@ -16,7 +16,7 @@ const normalizar = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toL
 
 /** Lista da paleta: os ecrãs ativos e as ações que esses ecrãs permitem. */
 function montarOpcoes(itens: ItemMontado[], busca: string): Opcao[] {
-  const ativos = itens.filter((i) => i.estado === "ativo");
+  const ativos = planificar(itens).filter((i) => i.estado === "ativo");
   const q = normalizar(busca.trim());
   const ecras: Opcao[] = ativos.map((i) => ({
     id: i.id,

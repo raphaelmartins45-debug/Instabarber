@@ -14,7 +14,15 @@ export type ItemMenu = {
   chave: string | null;
 };
 
-export type ItemMontado = ItemMenu & { estado: "ativo" | "upgrade" };
+export type ItemMontado = ItemMenu & {
+  estado: "ativo" | "upgrade";
+  /** Entradas dentro de uma pasta do menu (ex.: «Gestão do negócio» no Admin). */
+  filhos?: ItemMontado[];
+};
+
+/** O menu sem pastas: as entradas de dentro de cada pasta, pela ordem (telemóvel, procura). */
+export const planificar = (itens: ItemMontado[]): ItemMontado[] =>
+  itens.flatMap((i) => (i.filhos ? i.filhos : [i]));
 
 /** Abas do painel da barbearia (D.3). */
 export const MENU_GESTAO: readonly ItemMenu[] = [

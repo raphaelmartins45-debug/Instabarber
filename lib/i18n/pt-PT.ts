@@ -44,6 +44,7 @@ export const textos = {
       introducao: "Pedido de contacto feito na landing (instabarber.pt).",
       introducaoPasso2: "O visitante completou o passo 2 do pedido de contacto.",
       responder: "Responder a este e-mail escreve diretamente ao visitante.",
+      crm: (endereco: string) => `No CRM: ${endereco}`,
     },
     respostaVisitante: {
       assunto: (ref: string) => `Recebemos o teu pedido de contacto · ${ref}`,

@@ -1,8 +1,10 @@
 import {
   BadgeCheck,
+  BriefcaseBusiness,
   CalendarDays,
   FileBarChart,
   HandCoins,
+  Handshake,
   House,
   Inbox,
   Puzzle,
@@ -39,6 +41,8 @@ const ICONES: Record<string, LucideIcon> = {
   funcionalidades: ToggleRight,
   pagamentos: Receipt,
   modulos: Puzzle,
+  negocio: BriefcaseBusiness,
+  comercial: Handshake,
 };
 
 export function IconeMenu({ id, className }: { id: string; className?: string }) {

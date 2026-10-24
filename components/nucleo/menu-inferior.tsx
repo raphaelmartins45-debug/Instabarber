@@ -3,7 +3,7 @@
 import { Ellipsis } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import type { ItemMontado } from "@/lib/funcionalidades/menus";
+import { type ItemMontado, planificar } from "@/lib/funcionalidades/menus";
 import { textos } from "@/lib/i18n/pt-PT";
 import { cn } from "@/lib/utils";
 import { IconeMenu } from "./icone-menu";
@@ -14,7 +14,8 @@ const VISIVEIS = 5;
  * Navegação inferior abaixo de 768 px (I.3.1): ícone e rótulo curto, no máximo cinco
  * entradas; o resto num menu «Mais». Alvos de toque com 44 px no mínimo.
  */
-export function MenuInferior({ itens, atual }: { itens: ItemMontado[]; atual: string }) {
+export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atual: string }) {
+  const itens = planificar(menu);
   const [aberto, setAberto] = useState(false);
   const cabem = itens.length <= VISIVEIS;
   const fixos = cabem ? itens : itens.slice(0, VISIVEIS - 1);
