@@ -516,3 +516,9 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - Sem `meta keywords` (o Google ignora-a): as variações de pesquisa vão nos dados estruturados (`alternateName`, `keywords`) e no texto (a primeira resposta das perguntas frequentes diz «programa para barbearias… como uma app»).
 - Dados estruturados: `SoftwareApplication` com os preços (de 24,59 € a 47,97 € por mês, com IVA) e `FAQPage` com as seis perguntas da página. O sitemap passa a levar a data da publicação (`lastmod`).
 - Feito no `main` com autorização do dono (a outra sessão tinha terminado).
+
+## D-137 · 24/10/2026 · Botão fixo da landing no telemóvel: texto por secção — dono
+
+- O botão fixo (só abaixo de 768 px) deixa de repetir «Experimenta online já», que já é o botão do topo. O texto acompanha a secção que está a meio do ecrã: «Quero ver como funciona» (início e reserva), «Quero isto na minha» (loja, clube, receita), «Quero recuperar clientes» (calculadora), «Quanto estou a perder?» (radar), «Começar com o Pro» (planos), «Aceito o desafio» (desafio), «Tenho uma dúvida» (perguntas). Destino sempre `#contacto`.
+- Troca com texto a subir e a desvanecer, uma pulsação de brilho e variantes de estilo (`hot`, `go`, `calm`). Sem movimento com `prefers-reduced-motion`. Segue o tema Ouro/Neon.
+- Correção: o botão estava no HTML depois do script, que não o encontrava; por isso nunca se escondia no topo nem no formulário. Passou para antes do script. Esconde-se no topo e quando o formulário de contacto aparece.
