@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LinhaMarcacao } from "@/components/barbearia/agenda/linha-marcacao";
 import { ClientesContactar } from "@/components/barbearia/inicio/clientes-contactar";
+import { ComunicadosInicio } from "@/components/barbearia/inicio/comunicados-inicio";
 import { ContasPendentes } from "@/components/barbearia/inicio/contas-pendentes";
 import { IndicadoresInicio } from "@/components/barbearia/inicio/indicadores-inicio";
 import { PainelGestor } from "@/components/barbearia/painel-gestor";
@@ -18,6 +19,7 @@ import { mensagemLembrete } from "@/lib/regras/mensagens";
 import { ligacaoWhatsApp } from "@/lib/regras/whatsapp";
 import { listarMarcacoes } from "@/lib/repositorios/painel/agenda";
 import { listarCustos, listarDespesas } from "@/lib/repositorios/painel/financeiro";
+import { meusComunicados } from "@/lib/repositorios/painel/comunicados";
 import { listarPedidosAcesso } from "@/lib/repositorios/codigos-acesso";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { vertical } from "@/lib/vertical/barbearia";
@@ -33,17 +35,20 @@ export default async function InicioGestor() {
   const grelha = await lerGrelha(id);
   const tem = (chave: string) => grelha.ativas.has(chave);
   const dias = diasDoMes(mesAtual());
-  const [indicadores, pedidos, marcacoes, custos, despesas, radar, pagina] = await Promise.all([
-    indicadoresDia(bd, id),
-    listarPedidosAcesso(bd, id),
-    listarMarcacoes(bd, id, intervaloDoDia(hojeIso())),
-    tem("contas_a_pagar")
-      ? listarCustos(bd, id, { ate: dias[dias.length - 1], soPorPagar: true })
-      : [],
-    tem("contas_a_pagar") ? listarDespesas(bd, id, { soPorPagar: true }) : [],
-    tem("gestao_clientes") ? radarClientes(bd, id, null) : null,
-    paginaPublica(contexto.barbearia.slug),
-  ]);
+  const [indicadores, pedidos, marcacoes, custos, despesas, radar, pagina, comunicados] =
+    await Promise.all([
+      indicadoresDia(bd, id),
+      listarPedidosAcesso(bd, id),
+      listarMarcacoes(bd, id, intervaloDoDia(hojeIso())),
+      tem("contas_a_pagar")
+        ? listarCustos(bd, id, { ate: dias[dias.length - 1], soPorPagar: true })
+        : [],
+      tem("contas_a_pagar") ? listarDespesas(bd, id, { soPorPagar: true }) : [],
+      tem("gestao_clientes") ? radarClientes(bd, id, null) : null,
+      paginaPublica(contexto.barbearia.slug),
+      // Na vista de apoio (super_admin, só leitura) não há gestor a quem mostrar os comunicados.
+      contexto.apoio ? [] : meusComunicados(bd, id),
+    ]);
   const agora = new Date();
   const lembrete = (m: (typeof marcacoes)[number]) =>
     tem("lembretes_marcacao") && m.telefone && m.cliente
@@ -61,6 +66,7 @@ export default async function InicioGestor() {
 
   return (
     <PainelGestor atual="inicio">
+      <ComunicadosInicio comunicados={comunicados} />
       <div className="flex flex-wrap gap-2">
         <Button asChild className="h-11">
           <Link href="/app/agenda/marcar?modo=registar">{textos.agenda.balcao.registar}</Link>

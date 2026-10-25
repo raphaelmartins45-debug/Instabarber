@@ -1,6 +1,7 @@
 // Tabelas que entram na exportação dos dados de uma barbearia (E.1, P-12). São os dados que a
 // barbearia trata como responsável; as tabelas da plataforma (faturação da Performa LAB, adesão,
-// auditoria, comercial, módulos desligados, códigos de acesso efémeros) ficam de fora.
+// auditoria, comercial, apoio e comunicados, módulos desligados, códigos de acesso efémeros) ficam de
+// fora.
 
 export const TABELAS_DA_BARBEARIA = [
   "perfis",
@@ -51,6 +52,9 @@ export const TABELAS_DA_PLATAFORMA = [
   "leads",
   "contratos",
   "lembretes_vencimento",
+  "apoio_registos",
+  "comunicados",
+  "comunicado_leituras",
 ] as const;
 
 /** As tabelas da barbearia com coluna cliente_id: a exportação de um só cliente. */

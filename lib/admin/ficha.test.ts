@@ -19,8 +19,8 @@ function forma(esquema: z.ZodTypeAny): Record<string, unknown> {
 }
 
 describe("ficha da barbearia (E.1)", () => {
-  it("tem dez separadores", () => {
-    expect(SEPARADORES).toHaveLength(10);
+  it("tem onze separadores (o registo de apoio, D-160)", () => {
+    expect(SEPARADORES).toHaveLength(11);
   });
 
   it("cada campo de formulário existe no esquema do seu separador", () => {

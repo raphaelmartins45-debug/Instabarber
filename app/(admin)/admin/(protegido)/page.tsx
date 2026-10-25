@@ -10,6 +10,7 @@ import { contarAlertas, faltamFeriados } from "@/lib/regras/alertas-admin";
 import { leadParado, propostaAExpirar } from "@/lib/regras/comercial";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { receitaMensal } from "@/lib/regras/receita";
+import { apoioEmAberto } from "@/lib/repositorios/admin/apoio";
 import { listarBarbearias } from "@/lib/repositorios/admin/barbearias";
 import { listarLeads, validadesEnviadas } from "@/lib/repositorios/comercial/leads";
 import { contarFeriadosNacionais, datasFeriadosNacionais } from "@/lib/repositorios/feriados";
@@ -25,7 +26,7 @@ export default async function PainelGeral() {
   const bd = await criarClienteServidor();
   const hoje = hojeIso();
   const proximoAno = Number(hoje.slice(0, 4)) + 1;
-  const [barbearias, pendentes, feriados, leads, validades, feriadosRecentes, contas] =
+  const [barbearias, pendentes, feriados, leads, validades, feriadosRecentes, contas, apoio] =
     await Promise.all([
       listarBarbearias(bd),
       listarPedidos(bd),
@@ -34,6 +35,7 @@ export default async function PainelGeral() {
       validadesEnviadas(bd),
       datasFeriadosNacionais(bd, somarDias(hoje, -60), hoje),
       listarContas(bd),
+      apoioEmAberto(bd),
     ]);
   const contasAlerta = alertasContas(contas, somarDias(hoje, 7));
   const parados = leads.filter((l) =>
@@ -63,6 +65,15 @@ export default async function PainelGeral() {
       : null,
     aExpirar
       ? { texto: textos.comercial.alertas.propostasAExpirar(aExpirar), href: "/admin/comercial" }
+      : null,
+    apoio.n
+      ? {
+          texto: textos.gestao.apoio.abertos(apoio.n),
+          href:
+            apoio.barbearias.length === 1
+              ? `/admin/barbearias/${apoio.barbearias[0]}/apoio`
+              : "/admin/barbearias",
+        }
       : null,
     contasAlerta.atrasadas
       ? {

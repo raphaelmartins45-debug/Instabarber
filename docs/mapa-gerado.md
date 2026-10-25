@@ -21,6 +21,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/comercial/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/propostas/[id]/pdf/route.ts`
 - `app/(admin)/admin/(protegido)/comercial/propostas/page.tsx`
+- `app/(admin)/admin/(protegido)/comunicados/page.tsx`
 - `app/(admin)/admin/(protegido)/design/page.tsx`
 - `app/(admin)/admin/(protegido)/financas/custos/page.tsx`
 - `app/(admin)/admin/(protegido)/financas/exportar/ficheiro/route.ts`
@@ -188,6 +189,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 ## Tabelas
 
 - `acertos`
+- `apoio_registos`
 - `auditoria`
 - `ausencias`
 - `briefings`
@@ -198,6 +200,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `clubes`
 - `codigos_acesso`
 - `comissoes_servico`
+- `comunicado_leituras`
+- `comunicados`
 - `contas_pagar`
 - `contratos`
 - `convites_adesao`
@@ -267,6 +271,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `cancelar_minha_marcacao()`
 - `cliente_por_telefone()`
 - `clientes_do_profissional()`
+- `comunicado_para()`
 - `concluir_marcacao()`
 - `confirmar_lembrete_vencimento()`
 - `confirmar_reserva()`
@@ -282,6 +287,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `entrar_fila_presencial()`
 - `estado_fila_presencial()`
 - `evento_lead()`
+- `exigir_gestor()`
 - `exigir_super_admin()`
 - `funcionalidade_ativa()`
 - `gerar_contrato()`
@@ -297,12 +303,14 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `limitar_profissionais()`
 - `marcacao_online_bloqueada()`
 - `marcacoes_antes_gravar()`
+- `marcar_comunicado_lido()`
 - `marcar_contrato_enviado()`
 - `marcar_falta()`
 - `marcar_proposta_enviada()`
 - `meu_cartao_selos()`
 - `meu_codigo_convite()`
 - `meus_clientes()`
+- `meus_comunicados()`
 - `meus_profissionais()`
 - `modulo_ativo()`
 - `mudar_estado_lead()`

@@ -15,7 +15,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 const t = textos.admin;
 
-/** Ficha do inquilino: cabeçalho, mensalidade (D.7), ações rápidas e os dez separadores (E.1). */
+/** Ficha do inquilino: cabeçalho, mensalidade (D.7), ações rápidas e os separadores (E.1 e o registo de apoio, D-160). */
 export default async function FichaBarbearia({
   children,
   params,

@@ -1193,3 +1193,49 @@ create view contas_pagar_com_estado with (security_invoker = true) as
               else 'pendente' end as estado_efetivo
     from contas_pagar c;
 -- A vista vencimentos_proximos está em 02_funcoes.sql (secção 8C), porque usa e_super_admin().
+
+-- Apoio às barbearias (D-160): o histórico de cada contacto da Performa LAB com uma barbearia.
+-- Só o super_admin vê e escreve; a barbearia não vê nada.
+create table apoio_registos (
+  id            uuid primary key default gen_random_uuid(),
+  inquilino_id  uuid not null references inquilinos(id) on delete cascade,
+  tipo          text not null check (tipo in ('chamada','whatsapp','email','visita','nota')),
+  assunto       text not null check (length(trim(assunto)) between 1 and 200),
+  texto         text check (length(texto) <= 5000),
+  estado        text not null default 'aberto' check (estado in ('aberto','resolvido')),
+  resolvido_em  timestamptz,
+  criado_por    uuid references auth.users(id) on delete set null,
+  criado_em     timestamptz not null default now(),
+  check ((estado = 'resolvido') = (resolvido_em is not null))
+);
+create index apoio_registos_inquilino on apoio_registos (inquilino_id, criado_em desc);
+create index apoio_registos_abertos on apoio_registos (estado) where estado = 'aberto';
+
+-- Comunicados da InstaBarber aos gestores das barbearias (D-160): para todas, para um plano ou
+-- para uma barbearia, entre o início e o fim. O gestor lê pela função meus_comunicados() e
+-- marca «Li» por marcar_comunicado_lido(); a leitura conta por barbearia.
+create table comunicados (
+  id            uuid primary key default gen_random_uuid(),
+  titulo        text not null check (length(trim(titulo)) between 1 and 120),
+  texto         text not null check (length(trim(texto)) between 1 and 3000),
+  destino       text not null check (destino in ('todas','plano','barbearia')),
+  plano         text check (plano in ('basic','pro')),
+  inquilino_id  uuid references inquilinos(id) on delete cascade,
+  inicio        timestamptz not null default now(),
+  fim           timestamptz,
+  criado_por    uuid references auth.users(id) on delete set null,
+  criado_em     timestamptz not null default now(),
+  check ((destino = 'todas' and plano is null and inquilino_id is null)
+      or (destino = 'plano' and plano is not null and inquilino_id is null)
+      or (destino = 'barbearia' and inquilino_id is not null and plano is null)),
+  check (fim is null or fim > inicio)
+);
+create index comunicados_inicio on comunicados (inicio desc);
+
+create table comunicado_leituras (
+  comunicado_id  uuid not null references comunicados(id) on delete cascade,
+  inquilino_id   uuid not null references inquilinos(id) on delete cascade,
+  lido_por       uuid references auth.users(id) on delete set null,
+  lido_em        timestamptz not null default now(),
+  primary key (comunicado_id, inquilino_id)
+);

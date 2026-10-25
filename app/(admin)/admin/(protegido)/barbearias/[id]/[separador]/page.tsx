@@ -4,6 +4,7 @@ import { FormularioFicha } from "@/components/nucleo/formulario-ficha";
 import { guardarSeparador } from "../acoes";
 import { GrelhaFuncionalidades } from "@/components/admin/grelha-funcionalidades";
 import { ListasPagamentos } from "@/components/admin/listas-pagamentos";
+import { SeparadorApoio } from "@/components/admin/gestao/separador-apoio";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
 import { SeparadorEquipa } from "@/components/admin/separadores/separador-equipa";
 import { ImagensMarca } from "@/components/admin/separadores/imagens-marca";
@@ -119,5 +120,6 @@ export default async function SeparadorFicha({
       </div>
     );
   }
+  if (s === "apoio") return <SeparadorApoio inquilinoId={b.id} />;
   return <SeparadorAuditoria inquilinoId={b.id} />;
 }

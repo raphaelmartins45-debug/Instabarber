@@ -45,6 +45,7 @@ export const contas = (projeto: string) => ({
   adminComercial: `admin-comercial-${projeto}@teste.instabarber.pt`,
   adminFinancas: `admin-financas-${projeto}@teste.instabarber.pt`,
   adminGestao: `admin-gestao-${projeto}@teste.instabarber.pt`,
+  adminApoio: `admin-apoio-${projeto}@teste.instabarber.pt`,
 });
 
 /** Telefones dos clientes de teste, também por projeto. */

@@ -9,6 +9,7 @@ import {
   House,
   Inbox,
   Landmark,
+  Megaphone,
   Puzzle,
   TrendingUp,
   type LucideIcon,
@@ -49,6 +50,7 @@ const ICONES: Record<string, LucideIcon> = {
   financas: Landmark,
   saude: Activity,
   metricas: TrendingUp,
+  comunicados: Megaphone,
 };
 
 export function IconeMenu({ id, className }: { id: string; className?: string }) {

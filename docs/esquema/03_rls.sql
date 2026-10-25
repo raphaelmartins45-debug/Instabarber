@@ -447,6 +447,13 @@ create policy contas_pagar_admin on contas_pagar for all
 create policy metas_faturacao_admin on metas_faturacao for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 
+-- Apoio e comunicados (D-160): só o super_admin com dois fatores escreve e lê.
+-- comunicado_leituras só se escreve por marcar_comunicado_lido() (leitura pela política *_admin_ler).
+create policy apoio_registos_admin on apoio_registos for all
+  using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+create policy comunicados_admin on comunicados for all
+  using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+
 create policy storage_comercial on storage.objects for all
   using (bucket_id = 'comercial' and (select public.e_super_admin()))
   with check (bucket_id = 'comercial' and (select public.e_super_admin()));

@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 const t = textos.admin.ficha;
 
-/** Dez separadores no computador; no telemóvel, fluxo de passos com indicador de posição (I.3.1). */
+/** Os separadores no computador; no telemóvel, fluxo de passos com indicador de posição (I.3.1). */
 export function NavSeparadores({ inquilinoId }: { inquilinoId: string }) {
   const atual = usePathname().split("/")[4] ?? "identidade";
   const indice = Math.max(0, SEPARADORES.indexOf(atual as (typeof SEPARADORES)[number]));

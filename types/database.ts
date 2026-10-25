@@ -117,6 +117,65 @@ export type Database = {
           },
         ];
       };
+      apoio_registos: {
+        Row: {
+          assunto: string;
+          criado_em: string;
+          criado_por: string | null;
+          estado: string;
+          id: string;
+          inquilino_id: string;
+          resolvido_em: string | null;
+          texto: string | null;
+          tipo: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          assunto: string;
+          criado_em?: string;
+          criado_por?: string | null;
+          estado?: string;
+          id?: string;
+          inquilino_id: string;
+          resolvido_em?: string | null;
+          texto?: string | null;
+          tipo: string;
+        };
+        Update: {
+          assunto?: string;
+          criado_em?: string;
+          criado_por?: string | null;
+          estado?: string;
+          id?: string;
+          inquilino_id?: string;
+          resolvido_em?: string | null;
+          texto?: string | null;
+          tipo?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "apoio_registos_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "apoio_registos_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "publico_inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "apoio_registos_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "vencimentos_proximos";
+            referencedColumns: ["inquilino_id"];
+          },
+        ];
+      };
       auditoria: {
         Row: {
           accao: string;
@@ -785,6 +844,119 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "servicos";
             referencedColumns: ["inquilino_id", "id"];
+          },
+        ];
+      };
+      comunicado_leituras: {
+        Row: {
+          comunicado_id: string;
+          inquilino_id: string;
+          lido_em: string;
+          lido_por: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          comunicado_id: string;
+          inquilino_id: string;
+          lido_em?: string;
+          lido_por?: string | null;
+        };
+        Update: {
+          comunicado_id?: string;
+          inquilino_id?: string;
+          lido_em?: string;
+          lido_por?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comunicado_leituras_comunicado_id_fkey";
+            columns: ["comunicado_id"];
+            isOneToOne: false;
+            referencedRelation: "comunicados";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comunicado_leituras_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comunicado_leituras_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "publico_inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comunicado_leituras_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "vencimentos_proximos";
+            referencedColumns: ["inquilino_id"];
+          },
+        ];
+      };
+      comunicados: {
+        Row: {
+          criado_em: string;
+          criado_por: string | null;
+          destino: string;
+          fim: string | null;
+          id: string;
+          inicio: string;
+          inquilino_id: string | null;
+          plano: string | null;
+          texto: string;
+          titulo: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          criado_em?: string;
+          criado_por?: string | null;
+          destino: string;
+          fim?: string | null;
+          id?: string;
+          inicio?: string;
+          inquilino_id?: string | null;
+          plano?: string | null;
+          texto: string;
+          titulo: string;
+        };
+        Update: {
+          criado_em?: string;
+          criado_por?: string | null;
+          destino?: string;
+          fim?: string | null;
+          id?: string;
+          inicio?: string;
+          inquilino_id?: string | null;
+          plano?: string | null;
+          texto?: string;
+          titulo?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comunicados_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comunicados_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "publico_inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comunicados_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "vencimentos_proximos";
+            referencedColumns: ["inquilino_id"];
           },
         ];
       };
@@ -4937,6 +5109,7 @@ export type Database = {
         Returns: string;
       };
       clientes_do_profissional: { Args: Record<PropertyKey, never>; Returns: string[] };
+      comunicado_para: { Args: { p_comunicado: string; p_inquilino: string }; Returns: boolean };
       concluir_marcacao: {
         Args: { p_marcacao: string; p_modo?: string; p_valor_cobrado?: number };
         Returns: string;
@@ -5024,6 +5197,7 @@ export type Database = {
         Args: { p_detalhes?: Json; p_lead: string; p_texto: string; p_tipo: string };
         Returns: undefined;
       };
+      exigir_gestor: { Args: { p_inquilino: string }; Returns: undefined };
       exigir_super_admin: { Args: Record<PropertyKey, never>; Returns: undefined };
       funcionalidade_ativa: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };
       gerar_contrato: {
@@ -5045,6 +5219,10 @@ export type Database = {
         Returns: undefined;
       };
       marcacao_online_bloqueada: { Args: { p_cliente: string }; Returns: boolean };
+      marcar_comunicado_lido: {
+        Args: { p_comunicado: string; p_inquilino: string };
+        Returns: undefined;
+      };
       marcar_contrato_enviado: { Args: { p_contrato: string }; Returns: undefined };
       marcar_falta: { Args: { p_marcacao: string }; Returns: undefined };
       marcar_proposta_enviada: { Args: { p_proposta: string }; Returns: undefined };
@@ -5058,6 +5236,15 @@ export type Database = {
       };
       meu_codigo_convite: { Args: { p_inquilino: string }; Returns: string };
       meus_clientes: { Args: Record<PropertyKey, never>; Returns: string[] };
+      meus_comunicados: {
+        Args: { p_inquilino: string };
+        Returns: {
+          id: string;
+          inicio: string;
+          texto: string;
+          titulo: string;
+        }[];
+      };
       meus_profissionais: { Args: Record<PropertyKey, never>; Returns: string[] };
       modulo_ativo: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };
       mudar_estado_lead: {

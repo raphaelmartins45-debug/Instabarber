@@ -41,6 +41,7 @@ que mexa num procedimento atualiza este manual no mesmo dia.
 | P-26 | Registar custos e contas a pagar, rever o resumo e o objetivo | Todos os meses |
 | P-27 | Exportar os números para o contabilista | Fim de cada mês ou trimestre |
 | P-28 | Monitorizar a disponibilidade (objetivo de 99,5 %) | Uma vez, e ao fim de cada mês |
+| P-29 | Registar um contacto de apoio e publicar um comunicado | Cada contacto; cada aviso às barbearias |
 
 ---
 
@@ -546,3 +547,26 @@ Seguir a M.6. Resumo para o operador:
 
 **Confirmar:** as três verificações estão verdes e chega um e-mail de teste do serviço.
 
+---
+
+### P-29 · Registar um contacto de apoio e publicar um comunicado
+
+**Quando:** sempre que uma barbearia contacta ou é contactada, e sempre que é preciso avisar os gestores (manutenção, novidade, mudança de preço já comunicada no contrato). **Disponível desde a D-160.**
+
+**Apoio**
+
+1. `Admin → Barbearias →` a barbearia `→ Registo de apoio`.
+2. Escolher o tipo (chamada, WhatsApp, e-mail, visita, nota), escrever o assunto e, se for preciso, o detalhe. Guardar.
+3. Quando estiver tratado, carregar em «Marcar resolvido». Os pedidos em aberto aparecem nos alertas do painel.
+
+Só a Performa LAB vê este registo; não entra na exportação dos dados da barbearia.
+
+**Comunicado**
+
+1. `Admin → Gestão do negócio → Comunicados`.
+2. Título, texto, para quem (todas, um plano ou uma barbearia), primeiro e último dia. Publicar.
+3. O aviso aparece no Início do gestor (só o gestor, não os barbeiros) até ele carregar em «Li». No admin vê-se quantas barbearias já leram.
+4. Para quem ainda não leu, «Avisar por WhatsApp» abre a conversa com a mensagem pronta; o envio é à mão.
+5. «Terminar agora» tira o aviso do painel e guarda as leituras; «Apagar» tira-o de vez.
+
+**Confirmar:** o comunicado aparece «Em vigor» e a contagem de leituras sobe quando os gestores carregam em «Li».

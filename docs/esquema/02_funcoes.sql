@@ -1569,6 +1569,54 @@ begin
 end $$;
 
 -- -----------------------------------------------------------------------------
+-- 8D · Comunicados aos gestores (D-160). A tabela só se lê pelo super_admin (RLS);
+--      o gestor (proprietário) lê e marca como lidos os da sua barbearia por estas funções.
+-- -----------------------------------------------------------------------------
+create or replace function public.comunicado_para(p_comunicado uuid, p_inquilino uuid) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (
+    select 1 from public.comunicados c join public.inquilinos i on i.id = p_inquilino
+     where c.id = p_comunicado and c.inicio <= now() and (c.fim is null or c.fim > now())
+       and (c.destino = 'todas' or (c.destino = 'plano' and c.plano = i.plano)
+            or (c.destino = 'barbearia' and c.inquilino_id = i.id)))
+$$;
+
+create or replace function public.exigir_gestor(p_inquilino uuid) returns void
+language plpgsql stable security definer set search_path = '' as $$
+begin
+  if p_inquilino is null
+     or p_inquilino not in (select public.inquilinos_onde(array['proprietario'])) then
+    raise exception 'sem_permissao' using errcode = '42501';
+  end if;
+end $$;
+
+-- Os comunicados em vigor para a barbearia que o gestor ainda não marcou como lidos.
+create or replace function public.meus_comunicados(p_inquilino uuid)
+returns table (id uuid, titulo text, texto text, inicio timestamptz)
+language plpgsql stable security definer set search_path = '' as $$
+begin
+  perform public.exigir_gestor(p_inquilino);
+  return query
+    select c.id, c.titulo, c.texto, c.inicio from public.comunicados c
+     where public.comunicado_para(c.id, p_inquilino)
+       and not exists (select 1 from public.comunicado_leituras l
+                        where l.comunicado_id = c.id and l.inquilino_id = p_inquilino)
+     order by c.inicio desc;
+end $$;
+
+create or replace function public.marcar_comunicado_lido(p_comunicado uuid, p_inquilino uuid) returns void
+language plpgsql security definer set search_path = '' as $$
+begin
+  perform public.exigir_gestor(p_inquilino);
+  if not public.comunicado_para(p_comunicado, p_inquilino) then
+    raise exception 'comunicado_invalido' using errcode = 'P0001';
+  end if;
+  insert into public.comunicado_leituras (comunicado_id, inquilino_id, lido_por)
+  values (p_comunicado, p_inquilino, auth.uid())
+  on conflict (comunicado_id, inquilino_id) do nothing;
+end $$;
+
+-- -----------------------------------------------------------------------------
 -- 8C · Finanças da Performa LAB (Parte O): lembretes de vencimento
 --      As tabelas de custos, contas e metas escrevem-se por RLS (só super_admin).
 --      Os lembretes só se escrevem por estas funções, que fazem cumprir os estados.
@@ -1878,3 +1926,8 @@ grant execute on function public.avisar_fila_espera(uuid) to authenticated;
 revoke all on publico_clubes from anon, authenticated;
 grant select on publico_clubes to anon, authenticated;
 grant execute on function public.barbearia_suspensa(text) to anon, authenticated;
+
+-- Comunicados (D-160): cada função verifica o gestor da barbearia.
+revoke all on function public.comunicado_para(uuid, uuid), public.exigir_gestor(uuid) from public, anon, authenticated;
+grant execute on function public.meus_comunicados(uuid), public.marcar_comunicado_lido(uuid, uuid)
+  to authenticated;

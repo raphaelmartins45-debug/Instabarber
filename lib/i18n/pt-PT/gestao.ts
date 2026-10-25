@@ -1,4 +1,5 @@
-// Gestão do negócio (D-145, D-159): saúde das barbearias, arranque das novas e crescimento.
+// Gestão do negócio (D-145, D-159, D-160): saúde das barbearias, arranque das novas, crescimento,
+// registo de apoio e comunicados aos gestores.
 
 export const gestao = {
   saude: {
@@ -70,5 +71,85 @@ export const gestao = {
       `${g} ganhos · ${p} perdidos · ${a} em aberto`,
     conversaoTaxa: (t: string) => `Taxa de conversão: ${t}`,
     conversaoPoucos: "A taxa mostra-se com 10 ou mais leads decididos.",
+  },
+  apoio: {
+    titulo: "Registo de apoio",
+    ajuda: "Cada contacto com esta barbearia. Só a Performa LAB vê este registo.",
+    novo: "Novo registo",
+    tipos: {
+      chamada: "Chamada",
+      whatsapp: "WhatsApp",
+      email: "E-mail",
+      visita: "Visita",
+      nota: "Nota",
+    } as Record<string, string>,
+    campos: { tipo: "Tipo", assunto: "Assunto", texto: "Detalhe (opcional)" },
+    guardar: "Guardar registo",
+    guardado: "Registo guardado.",
+    estados: { aberto: "Em aberto", resolvido: "Resolvido" } as Record<string, string>,
+    resolver: "Marcar resolvido",
+    reabrir: "Reabrir",
+    vazio: "Sem registos de apoio.",
+    abertos: (n: number) =>
+      n === 1 ? "1 pedido de apoio em aberto" : `${n} pedidos de apoio em aberto`,
+    erros: {
+      assunto: "Escreva o assunto (até 200 caracteres).",
+      texto: "O detalhe tem no máximo 5000 caracteres.",
+      generico: "Não foi possível guardar. Tente outra vez.",
+    } as Record<string, string>,
+  },
+  comunicados: {
+    titulo: "Comunicados",
+    ajuda:
+      "Avisos da InstaBarber aos gestores. Aparecem no Início do gestor até ele carregar em «Li». Nada é enviado automaticamente.",
+    novo: "Novo comunicado",
+    campos: {
+      titulo: "Título",
+      texto: "Texto",
+      destino: "Para quem",
+      plano: "Plano",
+      barbearia: "Barbearia",
+      inicio: "Mostrar a partir de",
+      fim: "Mostrar até (opcional)",
+    },
+    destinos: {
+      todas: "Todas as barbearias",
+      plano: "Um plano",
+      barbearia: "Uma barbearia",
+    },
+    guardar: "Publicar comunicado",
+    guardado: "Comunicado publicado.",
+    vazio: "Ainda não há comunicados.",
+    para: (d: string) => `Para: ${d}`,
+    periodo: (inicio: string, fim: string | null) =>
+      fim ? `De ${inicio} a ${fim}` : `Desde ${inicio}`,
+    leituras: (lidas: number, total: number) => `Lido por ${lidas} de ${total} barbearias`,
+    estados: { agendado: "Agendado", ativo: "Em vigor", terminado: "Terminado" } as Record<
+      string,
+      string
+    >,
+    terminar: "Terminar agora",
+    apagar: "Apagar",
+    confirmarApagar: {
+      titulo: "Apagar o comunicado?",
+      texto: "Sai do painel de todas as barbearias e as leituras perdem-se.",
+    },
+    whatsapp: "Avisar por WhatsApp quem ainda não leu",
+    whatsappAjuda: "Abre a conversa com a mensagem pronta; o envio é seu.",
+    mensagemWhatsapp: (barbearia: string, titulo: string) =>
+      `Olá, ${barbearia}! Há um aviso novo da InstaBarber no seu painel: «${titulo}». InstaBarber · Performa LAB`,
+    semWhatsapp: "sem WhatsApp registado",
+    erros: {
+      titulo: "Escreva o título (até 120 caracteres).",
+      texto: "Escreva o texto (até 3000 caracteres).",
+      plano: "Escolha o plano.",
+      barbearia: "Escolha a barbearia.",
+      fim: "O fim tem de ser depois do início.",
+      generico: "Não foi possível guardar. Tente outra vez.",
+    } as Record<string, string>,
+    painel: {
+      titulo: "Aviso da InstaBarber",
+      li: "Li",
+    },
   },
 } as const;

@@ -13,6 +13,7 @@ export const SEPARADORES = [
   "funcionalidades",
   "pagamentos",
   "importacao",
+  "apoio",
   "auditoria",
 ] as const;
 export type Separador = (typeof SEPARADORES)[number];

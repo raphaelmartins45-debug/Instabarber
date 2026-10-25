@@ -40,3 +40,48 @@ test("saúde, arranque e crescimento a partir da pasta Gestão do negócio", asy
   await expect(page.getByTestId("origens")).toBeVisible();
   await expect(page.getByTestId("conversao")).toContainText("ganhos");
 });
+
+test("registo de apoio e comunicado lido pelo gestor", async ({ page, browser }, info) => {
+  test.setTimeout(2 * 60_000);
+  const projeto = info.project.name;
+  const titulo = `Manutenção ${projeto}`;
+  await entrarAdmin(page, contas(projeto).adminApoio);
+
+  // Apoio (D-160): regista-se na ficha da barbearia e marca-se resolvido.
+  await page.goto(`/admin/barbearias/${BARBEARIA_A.id}/apoio`);
+  await page.getByLabel("Assunto").fill(`Dúvida ${projeto}`);
+  await page.getByRole("button", { name: "Guardar registo" }).click();
+  await expect(page.getByText("Registo guardado.")).toBeVisible();
+  const registo = page.getByTestId("apoio").filter({ hasText: `Dúvida ${projeto}` });
+  await expect(registo).toContainText("Em aberto");
+  await registo.getByRole("button", { name: "Marcar resolvido" }).click();
+  await expect(registo).toContainText("Resolvido");
+
+  // Comunicado só para a Barbearia Alfa.
+  await page.goto("/admin/comunicados");
+  await page.getByLabel("Título").fill(titulo);
+  await page.getByLabel("Texto").fill("O sistema fica parado 10 minutos esta noite.");
+  await page.getByLabel("Para quem").selectOption("barbearia");
+  await page.getByLabel("Barbearia", { exact: true }).selectOption(BARBEARIA_A.id);
+  await page.getByRole("button", { name: "Publicar comunicado" }).click();
+  await expect(page.getByText("Comunicado publicado.")).toBeVisible();
+  const cartao = page.getByTestId("comunicado").filter({ hasText: titulo });
+  await expect(cartao).toContainText("Em vigor");
+  await expect(cartao).toContainText("Lido por 0 de 1 barbearias");
+
+  // O gestor vê o aviso no Início e carrega em «Li».
+  const gestor = await browser.newPage();
+  await entrarEquipa(gestor, contas(projeto).dono);
+  await gestor.goto("/app");
+  const aviso = gestor.getByTestId("comunicado-painel").filter({ hasText: titulo });
+  await expect(aviso).toBeVisible();
+  await aviso.getByRole("button", { name: "Li" }).click();
+  await expect(aviso).toHaveCount(0);
+  await gestor.close();
+
+  await page.reload();
+  await expect(cartao).toContainText("Lido por 1 de 1 barbearias");
+  await cartao.getByRole("button", { name: "Apagar" }).click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Apagar" }).click();
+  await expect(cartao).toHaveCount(0);
+});
