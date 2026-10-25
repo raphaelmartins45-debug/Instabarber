@@ -10,6 +10,8 @@ export const admin = {
     negocio: "Gestão do negócio",
     comercial: "Comercial",
     financas: "Finanças",
+    saude: "Saúde das barbearias",
+    metricas: "Crescimento",
   },
   estados: { pendente: "Pendente", ativo: "Ativa", suspenso: "Suspensa", cancelado: "Cancelada" },
   estadosPagamento: { em_dia: "Em dia", em_atraso: "Em atraso" },

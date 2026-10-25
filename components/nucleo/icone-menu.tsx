@@ -1,4 +1,5 @@
 import {
+  Activity,
   BadgeCheck,
   BriefcaseBusiness,
   CalendarDays,
@@ -9,6 +10,7 @@ import {
   Inbox,
   Landmark,
   Puzzle,
+  TrendingUp,
   type LucideIcon,
   Receipt,
   Settings,
@@ -45,6 +47,8 @@ const ICONES: Record<string, LucideIcon> = {
   negocio: BriefcaseBusiness,
   comercial: Handshake,
   financas: Landmark,
+  saude: Activity,
+  metricas: TrendingUp,
 };
 
 export function IconeMenu({ id, className }: { id: string; className?: string }) {

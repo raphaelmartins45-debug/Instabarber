@@ -2,6 +2,7 @@ import {
   addDays,
   addMonths,
   differenceInCalendarDays,
+  differenceInMonths,
   differenceInMinutes,
   format,
   getDaysInMonth,
@@ -54,6 +55,12 @@ const meioDia = (dataIso: string) => new Date(`${dataIso}T12:00:00Z`);
 export function diasEntreDatas(a: string, b: string): number {
   if (!DIA.test(a) || !DIA.test(b)) throw new Error(`Data inválida: ${a} / ${b}`);
   return differenceInCalendarDays(meioDia(b), meioDia(a));
+}
+
+/** Meses completos entre duas datas «AAAA-MM-DD» (negativo se b for antes de a). */
+export function mesesEntreDatas(a: string, b: string): number {
+  if (!DIA.test(a) || !DIA.test(b)) throw new Error(`Data inválida: ${a} / ${b}`);
+  return differenceInMonths(meioDia(b), meioDia(a));
 }
 
 /** Dias de calendário, no fuso da região, desde um instante até agora. */

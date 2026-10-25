@@ -160,7 +160,7 @@ export async function inserirContasGeradas(bd: ClienteBD, contas: ContaNova[]) {
  */
 export async function barbeariasParaFinancas(
   bd: ClienteBD,
-): Promise<(BarbeariaFin & { nome: string })[]> {
+): Promise<(BarbeariaFin & { id: string; nome: string })[]> {
   const { data, error } = await bd
     .from("inquilinos")
     .select(

@@ -810,3 +810,11 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 ## D-158 · 25/10/2026 · Sem DPA da Vercel por agora — dono
 - O dono não pode assinar planos pagos agora. A Vercel fica sem acordo de tratamento de dados (DPA) até à passagem ao Pro (CLAUDE.md §8, D-15). Os DPA a tratar são os da Supabase (prioritário: guarda todos os dados), do Resend (já em vigor desde a criação da conta; guardar o PDF) e da Zoho.
 - Risco aceite pelo dono e registado: a Vercel não guarda os dados das barbearias, mas os pedidos passam pelas funções da aplicação (Frankfurt), o que para o RGPD também é tratamento; o Acordo de Subcontratação diz que os subcontratantes ulteriores ficam sujeitos às mesmas obrigações. Resolve-se com o Pro, que traz o DPA e permite uso comercial.
+
+## D-159 · 25/10/2026 · Saúde, arranque e crescimento na «Gestão do negócio» (sugestões A, B e E) — dono e técnica
+- Autorizado pelo dono («o resto segue tudo»). Sem esquema novo: tudo se calcula com o que já está registado e lê-se com a sessão do super_admin (RLS).
+- **Saúde (A), `/admin/saude`:** cada barbearia ativa ou suspensa fica «Em risco», «Atenção» ou «Bem». Risco: mensalidade em atraso, barbearia suspensa ou mais de 14 dias sem marcações (depois dos primeiros 14 dias). Atenção: marcações dos últimos 30 dias em metade ou menos das 30 anteriores (com base de pelo menos 10) ou arranque abaixo de 50 % depois de 30 dias. São sinais para contactar a tempo, não previsões.
+- **Arranque (B):** oito passos (logótipo, serviços, equipa registada, equipa com acesso, clientes, primeira marcação, primeira marcação online, primeiro serviço concluído), em percentagem; mostra-se para as barbearias com menos de 60 dias ou com o arranque por concluir.
+- **Crescimento (E), `/admin/metricas`:** novas, saídas e ativas por mês (12 meses, gráfico), saídas mensais médias (só com mais de 10 barbearias, como no Resumo das Finanças), tempo médio como cliente, origem (a do lead ligado à barbearia ou «adesão direta») e conversão dos leads (taxa só com 10 ou mais decididos). A data de saída de uma cancelada vem da auditoria, como nas Finanças.
+- Regras puras com testes em `lib/admin/saude.ts` e `lib/admin/metricas.ts`; ensaio `e2e/gestao.spec.ts` (computador e telemóvel).
+

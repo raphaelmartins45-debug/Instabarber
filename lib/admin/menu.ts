@@ -46,6 +46,8 @@ export const MENU_ADMIN: ItemMontado[] = [
         chave: null,
         estado: "ativo",
       },
+      { id: "saude", rotulo: m.saude, href: "/admin/saude", chave: null, estado: "ativo" },
+      { id: "metricas", rotulo: m.metricas, href: "/admin/metricas", chave: null, estado: "ativo" },
     ],
   },
 ];

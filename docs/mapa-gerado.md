@@ -28,11 +28,13 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/financas/objetivo/page.tsx`
 - `app/(admin)/admin/(protegido)/financas/page.tsx`
 - `app/(admin)/admin/(protegido)/financas/vencimentos/page.tsx`
+- `app/(admin)/admin/(protegido)/metricas/page.tsx`
 - `app/(admin)/admin/(protegido)/modulos/page.tsx`
 - `app/(admin)/admin/(protegido)/pagamentos/page.tsx`
 - `app/(admin)/admin/(protegido)/page.tsx`
 - `app/(admin)/admin/(protegido)/pedidos/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/pedidos/page.tsx`
+- `app/(admin)/admin/(protegido)/saude/page.tsx`
 - `app/(admin)/admin/dois-passos/page.tsx`
 - `app/(app)/app/(painel)/agenda/marcar/page.tsx`
 - `app/(app)/app/(painel)/agenda/page.tsx`
