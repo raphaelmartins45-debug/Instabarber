@@ -7,12 +7,13 @@ import { cn } from "@/lib/utils";
 
 const t = textos.financas;
 
-// Separadores das Finanças (O.2). Entram à medida que cada camada da Fase 3C fica pronta.
+// Os cinco separadores das Finanças (O.2).
 const SEPARADORES = [
   { id: "resumo", href: "/admin/financas" },
   { id: "custos", href: "/admin/financas/custos" },
   { id: "objetivo", href: "/admin/financas/objetivo" },
   { id: "vencimentos", href: "/admin/financas/vencimentos" },
+  { id: "exportar", href: "/admin/financas/exportar" },
 ] as const;
 
 /** Separadores das Finanças; no telemóvel deslizam na horizontal. */

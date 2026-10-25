@@ -22,6 +22,12 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/comercial/propostas/[id]/pdf/route.ts`
 - `app/(admin)/admin/(protegido)/comercial/propostas/page.tsx`
 - `app/(admin)/admin/(protegido)/design/page.tsx`
+- `app/(admin)/admin/(protegido)/financas/custos/page.tsx`
+- `app/(admin)/admin/(protegido)/financas/exportar/ficheiro/route.ts`
+- `app/(admin)/admin/(protegido)/financas/exportar/page.tsx`
+- `app/(admin)/admin/(protegido)/financas/objetivo/page.tsx`
+- `app/(admin)/admin/(protegido)/financas/page.tsx`
+- `app/(admin)/admin/(protegido)/financas/vencimentos/page.tsx`
 - `app/(admin)/admin/(protegido)/modulos/page.tsx`
 - `app/(admin)/admin/(protegido)/pagamentos/page.tsx`
 - `app/(admin)/admin/(protegido)/page.tsx`

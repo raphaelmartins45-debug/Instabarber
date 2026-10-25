@@ -158,11 +158,13 @@ export async function inserirContasGeradas(bd: ClienteBD, contas: ContaNova[]) {
  * Barbearias para as Finanças, com o dia da última mudança de estado das canceladas (a
  * auditoria regista que o estado mudou; numa cancelada, a última mudança é a saída).
  */
-export async function barbeariasParaFinancas(bd: ClienteBD): Promise<BarbeariaFin[]> {
+export async function barbeariasParaFinancas(
+  bd: ClienteBD,
+): Promise<(BarbeariaFin & { nome: string })[]> {
   const { data, error } = await bd
     .from("inquilinos")
     .select(
-      "id, plano, periodicidade, profissionais_contratados, dominio_proprio, estado, estado_pagamento, aprovado_em",
+      "id, nome, plano, periodicidade, profissionais_contratados, dominio_proprio, estado, estado_pagamento, aprovado_em",
     )
     .neq("estado", "pendente");
   if (error) falhaDeLeitura("inquilinos", error);
@@ -219,4 +221,20 @@ export async function guardarMeta(bd: ClienteBD, m: Meta) {
       { onConflict: "mes" },
     );
   return !error;
+}
+
+/** Recebimentos de um intervalo, com o nome da barbearia (exportação, O.10). */
+export async function recebimentosComBarbearia(bd: ClienteBD, desde: string, ate: string) {
+  const { data, error } = await bd
+    .from("recebimentos")
+    .select("valor, data, inquilinos(nome)")
+    .gte("data", desde)
+    .lte("data", ate)
+    .order("data");
+  if (error) falhaDeLeitura("recebimentos", error);
+  return data.map((r) => ({
+    valorCent: centimosDeNumeric(r.valor),
+    data: r.data,
+    barbearia: r.inquilinos?.nome ?? "",
+  }));
 }

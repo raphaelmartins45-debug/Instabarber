@@ -507,9 +507,9 @@ Seguir a M.6. Resumo para o operador:
 
 **Quando:** no início de cada mês. **Disponível a partir da Fase 3C.**
 
-1. `Admin → Finanças → Custos e contas`: confirmar os custos fixos ativos e acrescentar os novos (valor **sem IVA**, em euros).
+1. `Admin → Gestão do negócio → Finanças → Custos e contas`: confirmar os custos fixos ativos e acrescentar os novos (valor **sem IVA**, em euros). Da primeira vez, «Carregar os custos de partida (L.6)» e corrigir cada valor pela fatura. Quando um serviço muda de plano (por exemplo, Vercel Hobby → Pro), «Dar fim hoje» no antigo e criar o novo.
 2. Carregar em «Gerar as contas do próximo mês» e conferir os valores com as faturas dos fornecedores.
-3. Registar a data de pagamento das contas pagas.
+3. «Marcar paga hoje» nas contas pagas (ou editar a conta para outra data).
 4. Abrir o **Resumo**: ler receita recorrente, custos, lucro estimado e lucro de caixa; verificar o que está em atraso.
 5. Em **Objetivo e previsões**: definir ou ajustar o objetivo do mês, rever os pressupostos e anotar quantas barbearias faltam.
 

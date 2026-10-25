@@ -7,6 +7,7 @@ import { codigoTotp } from "./auxiliares/totp";
 // barbearia), por isso o que depende de totais corre só no computador.
 
 test.skip(!temSupabase, "Precisa do Supabase local (scripts/e2e-local.sh)");
+test.setTimeout(2 * 60_000);
 
 /** Hoje em Lisboa mais n dias de calendário (sem somar horas, por causa da mudança da hora). */
 const lisboa = (deslocamentoDias: number) => {
@@ -63,7 +64,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
 
   // Resumo: os indicadores aparecem e o ponto de equilíbrio bate com a conta à mão
   // (21,32 € de fixos ÷ 39,00 € = 1 barbearia Pro; ÷ 19,99 € = 2 Basic).
-  await page.getByRole("link", { name: "Resumo" }).click();
+  await page.getByRole("link", { name: "Resumo", exact: true }).click();
   await expect(page.getByTestId("resumo")).toContainText("Custos do mês");
   await expect(page.getByTestId("resumo")).toContainText("21,32 €");
   await expect(page.getByTestId("equilibrio-pro")).toContainText("1 barbearia");
@@ -110,7 +111,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
     .from("inquilinos")
     .update({ proximo_vencimento: lisboa(3), whatsapp: "+351912000111", email: "beta@ensaio.pt" })
     .eq("id", BARBEARIA_B.id);
-  await page.getByRole("link", { name: "Vencimentos" }).click();
+  await page.getByRole("link", { name: "Vencimentos", exact: true }).click();
   const beta = page.getByTestId("vencimento").filter({ hasText: "Barbearia Beta" });
   await expect(beta).toContainText("Faltam 3 dias");
   await expect(beta.getByLabel("Texto da mensagem")).toHaveValue(/vence a .*MB WAY/s);
@@ -128,6 +129,23 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   await expect(beta.getByRole("button", { name: "Tentar outra vez" })).toBeVisible();
   await beta.getByRole("button", { name: "Cancelar lembrete" }).click();
   await expect(beta).toContainText("Cancelado");
+  await page.getByRole("link", { name: "Custos e contas" }).click();
+
+  // Exportar: CSV com BOM e «;» e PDF, ambos com «Não é documento fiscal».
+  await page.getByRole("link", { name: "Exportar", exact: true }).click();
+  const csv = await page.request.get(
+    (await page.getByRole("link", { name: "Descarregar CSV" }).getAttribute("href"))!,
+  );
+  expect(csv.status()).toBe(200);
+  expect(csv.headers()["content-type"]).toContain("text/csv");
+  const texto = await csv.text();
+  expect(texto.charCodeAt(0)).toBe(0xfeff);
+  expect(texto).toContain("Não é documento fiscal.");
+  expect(texto).toContain("Contabilista Ensaio;");
+  const pdf = await page.request.get(
+    (await page.getByRole("link", { name: "Descarregar PDF" }).getAttribute("href"))!,
+  );
+  expect(pdf.headers()["content-type"]).toBe("application/pdf");
   await page.getByRole("link", { name: "Custos e contas" }).click();
 
   // Dar fim a um custo tira-o do total do mês seguinte, mas fica no histórico.
