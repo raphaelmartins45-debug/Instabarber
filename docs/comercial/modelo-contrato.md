@@ -1,6 +1,6 @@
 <!-- RASCUNHO PARA REVISÃO JURÍDICA (N.8, D-38, D-42). Escrito com base na lei portuguesa e europeia aplicável (ver notas-para-o-jurista.md).
      Versão 2 (25/10/2026): revista segundo a análise preliminar do jurista (cláusulas 6, 9.2, 11, 14, 16, 17, 18, 19, 21.3 e anexos).
-     Os campos entre [ ] que ficam são só os que o dono decide; sem eles, o sistema não gera o contrato (D-154).
+     Valores e cláusulas decididos pelo dono a 25/10/2026 (D-154): sem campos em aberto.
      Não aprovar no sistema nem usar com um cliente real antes do parecer final do jurista, com os Anexos II e III.
      Os textos entre [parênteses retos] são pontos em aberto ou valores propostos. Os marcadores {{…}} são preenchidos pelo sistema. -->
 
@@ -34,14 +34,14 @@ Têm entre si justo e acordado o presente contrato, que se rege pelas cláusulas
 
 3.1. O Cliente não pode ter mais profissionais ativos do que os contratados. Para os aumentar, ou para mudar de plano ou de periodicidade, pede-o por escrito; a alteração produz efeitos na data acordada e reflete-se na Mensalidade.
 3.2. As credenciais são pessoais e intransmissíveis. O Cliente responde pela guarda e pelo uso que os seus Utilizadores fizerem delas e deve avisar a Performa LAB, sem demora, de qualquer uso indevido de que tenha conhecimento.
-3.3. Só a Performa LAB ativa ou desativa funcionalidades. Funcionalidades oferecidas a título de bónus não alteram o preço e podem ser retiradas com aviso de [30] dias.
+3.3. Só a Performa LAB ativa ou desativa funcionalidades. Funcionalidades oferecidas a título de bónus não alteram o preço e podem ser retiradas com aviso de 30 dias.
 
 ## 4. Obrigações da Performa LAB
 
 A Performa LAB obriga-se a:
 a) prestar o Serviço com a diligência profissional exigível e de acordo com o plano contratado;
 b) manter medidas técnicas e organizativas adequadas de segurança, incluindo isolamento dos dados de cada cliente, alojamento na União Europeia e cópias de segurança com retenção de 30 dias;
-c) dar suporte pelo endereço apoio@instabarber.pt, em dias úteis, [horário e prazo de resposta a definir];
+c) dar suporte pelo endereço apoio@instabarber.pt, de segunda-feira a sábado, das 8h00 às 20h00, e, ao domingo, apenas para situações de emergência que impeçam o funcionamento essencial da Plataforma, respondendo com a brevidade razoavelmente possível; o tempo de resolução depende da natureza do problema;
 d) avisar com antecedência razoável as manutenções que possam interromper o Serviço;
 e) tratar os dados pessoais nos termos da cláusula 10 e do Anexo III;
 f) entregar ao Cliente os seus dados quando o contrato cessar, nos termos da cláusula 11.
@@ -59,27 +59,27 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 
 6.1. O preço é de **{{valor_com_iva}}** por período de faturação (periodicidade **{{periodicidade}}**), preço final. Valor sem IVA: {{valor_sem_iva}}. {{iva_texto}}
 6.2. Condições de lançamento acordadas: {{condicoes_lancamento}}
-6.3. A Performa LAB só pode alterar os preços com aviso escrito de, pelo menos, [60] dias, e a alteração não se aplica ao período já pago. Se não concordar, o Cliente pode denunciar o contrato, sem qualquer encargo, até à data de entrada em vigor do novo preço.
+6.3. A Performa LAB só pode alterar os preços com aviso escrito de, pelo menos, 60 dias, e a alteração não se aplica ao período já pago. Se não concordar, o Cliente pode denunciar o contrato, sem qualquer encargo, até à data de entrada em vigor do novo preço.
 6.4. O preço final acordado é o da cláusula 6.1, incluindo o IVA à taxa legal aplicável, quando devido. Qualquer alteração do enquadramento fiscal da Prestadora será refletida na faturação nos termos legalmente aplicáveis, sem prejuízo das condições de alteração de preços previstas na cláusula 6.3. A presente disposição não permite cobrar ao Cliente um montante superior ao preço contratualmente acordado sem fundamento legal ou contratual válido.
 
 ## 7. Faturação e pagamento
 
-7.1. A Performa LAB emite a fatura, no seu programa de faturação certificado, e envia-a por e-mail. A Mensalidade paga-se **antecipadamente**, até à data de vencimento indicada na fatura, por MB WAY, transferência bancária ou numerário, [prazo entre a emissão e o vencimento a definir; nunca superior a 60 dias].
+7.1. A Performa LAB emite a fatura, no seu programa de faturação certificado, e envia-a por e-mail. A Mensalidade paga-se **antecipadamente**, até à data de vencimento indicada na fatura, por MB WAY, transferência bancária ou numerário, com vencimento a 15 dias da data de emissão da fatura.
 7.2. O Cliente indica na adesão a sua forma de pagamento preferida. Não há débito direto nem cobrança automática.
-7.3. O Cliente pode contestar uma fatura por escrito, no prazo de [15] dias após a receção; a parte não contestada paga-se no prazo.
+7.3. O Cliente pode contestar uma fatura por escrito, no prazo de 15 dias após a receção; a parte não contestada paga-se no prazo.
 
 ## 8. Atraso, suspensão e resolução
 
 8.1. Em caso de atraso, são devidos juros de mora à taxa legal aplicável às transações comerciais e a indemnização de 40 € pelos custos de cobrança, nos termos do regime dos atrasos de pagamento nas transações comerciais, sem prejuízo de indemnização superior se os custos comprovados o justificarem.
-8.2. Passados [30] dias de atraso, e depois de aviso escrito com [8] dias, a Performa LAB pode **suspender** o acesso da equipa. Durante a suspensão a página pública mostra «Temporariamente indisponível para marcações», o proprietário continua a poder consultar o seu plano e as faturas, e **nenhum dado é apagado**. O Serviço é reativado com o pagamento.
-8.3. Passados [60] dias de atraso, e novo aviso escrito com [15] dias, a Performa LAB pode resolver o contrato, aplicando-se a cláusula 11.
+8.2. Passados 10 dias de atraso, e depois de aviso escrito com 8 dias de antecedência, a Performa LAB pode **suspender** o acesso da equipa. Durante a suspensão a página pública mostra «Temporariamente indisponível para marcações», o proprietário continua a poder consultar o seu plano e as faturas, e **nenhum dado é apagado**. O Serviço é reativado com o pagamento.
+8.3. Passados 40 dias de atraso, e novo aviso escrito com 15 dias de antecedência, a Performa LAB pode resolver o contrato, aplicando-se a cláusula 11.
 8.4. A suspensão não dispensa o pagamento das mensalidades vencidas.
 
 ## 9. Duração e cessação
 
 9.1. O contrato inicia-se em {{data_inicio}} e vigora por tempo indeterminado, **sem período de fidelização**.
-9.2. Qualquer das partes pode **denunciá-lo**, sem invocar motivo e sem penalização, por comunicação escrita com [30] dias de antecedência. A denúncia produz efeitos no último dia do período de faturação em que terminar esse aviso: até essa data o Serviço mantém-se e o preço é devido; a partir dela não há mais faturação. Os valores de períodos já iniciados não são reembolsáveis, salvo nos casos da cláusula 6.3 e de incumprimento da Performa LAB.
-9.3. Qualquer das partes pode **resolver** o contrato em caso de incumprimento grave da outra que não seja sanado no prazo de [15] dias após interpelação escrita, ou de insolvência da outra.
+9.2. Qualquer das partes pode **denunciá-lo**, sem invocar motivo e sem penalização, por comunicação escrita com 30 dias de antecedência. A denúncia produz efeitos no último dia do período de faturação em que terminar esse aviso: até essa data o Serviço mantém-se e o preço é devido; a partir dela não há mais faturação. Os valores de períodos já iniciados não são reembolsáveis, salvo nos casos da cláusula 6.3 e de incumprimento da Performa LAB.
+9.3. Qualquer das partes pode **resolver** o contrato em caso de incumprimento grave da outra que não seja sanado no prazo de 15 dias após interpelação escrita, ou de insolvência da outra.
 9.4. A cessação não afeta as obrigações já vencidas nem as que, pela sua natureza, subsistem (confidencialidade, proteção de dados, responsabilidade e cláusula 11).
 
 ## 10. Proteção de dados pessoais
@@ -94,8 +94,8 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 11.1. **Dados exportáveis.** São exportáveis todos os Dados do Cliente: clientes finais e respetivos consentimentos, marcações e histórico, serviços e preços, equipa, fichas técnicas, registos financeiros, mensagens registadas e ficheiros carregados (logótipo, fotografias). Ficam fora o código, os segredos comerciais e os dados técnicos próprios da Performa LAB.
 11.2. **Formato.** A exportação é feita em formato estruturado, de uso corrente e legível por máquina (CSV e, para ficheiros, os formatos originais).
 11.3. **Pedido.** O Cliente pode pedir, a qualquer momento, por escrito, a exportação dos seus dados ou a mudança para outro prestador de serviços. O pedido de mudança faz-se com um aviso máximo de dois meses.
-11.4. **Entrega e período de transição.** A Performa LAB entrega os dados, **sem custos**, sem demora injustificada e, em qualquer caso, no prazo máximo de [30] dias a contar do pedido ou da cessação. Durante um período de transição de [30] dias, prorrogável por acordo, mantém o Serviço ou o acesso aos dados e presta a assistência razoável para a mudança.
-11.5. **Recuperação.** Depois da entrega, o Cliente dispõe de, pelo menos, [30] dias para verificar e recolher os dados.
+11.4. **Entrega e período de transição.** A Performa LAB entrega os dados, **sem custos**, sem demora injustificada e, em qualquer caso, no prazo máximo de 30 dias a contar do pedido ou da cessação. Durante um período de transição de 30 dias, prorrogável por acordo, mantém o Serviço ou o acesso aos dados e presta a assistência razoável para a mudança.
+11.5. **Recuperação.** Depois da entrega, o Cliente dispõe de, pelo menos, 30 dias para verificar e recolher os dados.
 11.6. **Eliminação.** Terminado o prazo de recuperação, a Performa LAB elimina os Dados do Cliente da Plataforma, e as cópias de segurança extinguem-se no prazo de 30 dias. Só conserva o que a lei a obrigue a conservar (nomeadamente os seus próprios documentos de faturação) e confirma a eliminação por escrito, a pedido.
 11.7. **Cessação.** O contrato cessa nos termos da cláusula 9. Os prazos desta cláusula aplicam-se a seguir à cessação e não a prolongam; durante eles não há faturação, salvo se o Cliente pedir expressamente a continuação do Serviço.
 11.8. Não há encargos de saída nem de mudança.
@@ -107,33 +107,36 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 
 ## 13. Confidencialidade
 
-Cada parte guarda sigilo sobre a informação confidencial da outra a que aceda por força do contrato, enquanto este vigorar e durante [2] anos após a cessação, salvo imposição legal ou autoridade competente.
+Cada parte guarda sigilo sobre a informação confidencial da outra a que aceda por força do contrato, enquanto este vigorar e durante 2 anos após a cessação, salvo imposição legal ou autoridade competente.
 
 ## 14. Responsabilidade
 
-14.1. A Performa LAB presta o Serviço com os meios razoáveis ao seu alcance, mas **não garante** que funcione sem interrupções ou erros. [Objetivo de disponibilidade, se se quiser assumir: a definir.]
+14.1. **Disponibilidade do Serviço.** A Performa LAB envidará esforços comercialmente razoáveis para assegurar a disponibilidade da Plataforma, tendo como objetivo uma disponibilidade mensal de 99,5%. Este valor constitui um objetivo de serviço, não uma garantia absoluta de funcionamento ininterrupto. A disponibilidade será calculada mensalmente, considerando o período em que as funcionalidades essenciais da Plataforma estejam acessíveis e operacionais, excluindo períodos de manutenção previamente comunicados, situações de força maior e falhas de redes, infraestruturas ou serviços de terceiros que estejam fora do controlo razoável da Performa LAB. A Performa LAB procurará minimizar o impacto dessas situações e restabelecer o Serviço com a maior brevidade razoavelmente possível. O presente número não exclui nem limita a responsabilidade da Performa LAB nos casos em que tal exclusão ou limitação não seja legalmente admissível.
 14.2. A Performa LAB responde, nos termos gerais, pelo incumprimento, pela mora e pelo cumprimento defeituoso das suas obrigações. Nenhuma cláusula deste contrato exclui ou limita a responsabilidade da Performa LAB por dolo ou culpa grave, por danos à vida, à integridade física, à saúde ou à liberdade das pessoas, nem nos demais casos em que a lei o não permita.
-14.3. **Danos diretos.** Fora dos casos da cláusula 14.2, a indemnização por danos diretos limita-se ao valor pago pelo Cliente nos [12] meses anteriores ao facto.
+14.3. **Danos diretos.** Fora dos casos da cláusula 14.2, a indemnização por danos diretos limita-se ao valor pago pelo Cliente nos 12 meses anteriores ao facto.
 14.4. **Danos indiretos.** Fora dos casos da cláusula 14.2, não são indemnizáveis os lucros cessantes nem os danos indiretos.
 14.5. A Performa LAB não responde por: dados inexatos introduzidos pelo Cliente; uso indevido de credenciais por quem as detenha; mensagens que o Cliente envie e o seu conteúdo; falhas de redes, do WhatsApp ou de outros serviços fora do seu controlo.
 14.6. O Cliente responde pelos danos que cause à Performa LAB ou a terceiros por violação do contrato ou da lei, em especial das regras de proteção de dados e de comunicações eletrónicas, e mantém a Performa LAB indemne perante reclamações de terceiros resultantes desse incumprimento, **na medida em que a culpa lhe seja imputável**.
 
 ## 15. Força maior
 
-Nenhuma parte responde pelo incumprimento ou atraso causado por facto que não lhe seja imputável e que não possa razoavelmente prevenir ou superar (por exemplo, falha geral de energia ou de internet, ataque informático apesar das medidas devidas, ato de autoridade), enquanto durar. Se durar mais de [30] dias seguidos, qualquer parte pode denunciar o contrato sem penalização.
+15.1. Nenhuma das partes será responsável pelo incumprimento ou atraso no cumprimento das suas obrigações contratuais na medida em que resulte diretamente de um acontecimento que esteja fora do seu controlo razoável, que não lhe seja imputável e cujos efeitos não pudesse razoavelmente evitar ou superar, incluindo, a título exemplificativo, catástrofes naturais, atos de autoridade pública, conflitos armados ou interrupções generalizadas de serviços essenciais.
+15.2. A parte afetada deverá informar a outra parte, por escrito e sem demora injustificada, da ocorrência do evento, dos seus efeitos previsíveis e, quando possível, da duração estimada, envidando esforços razoáveis para limitar as consequências e retomar o cumprimento das suas obrigações.
+15.3. Se a situação de força maior impedir materialmente a prestação do Serviço durante 30 dias consecutivos, qualquer das partes poderá denunciar o contrato, mediante comunicação escrita, sem penalização ou indemnização pela cessação antecipada, sem prejuízo das obrigações vencidas até à data efetiva da cessação e dos direitos que legalmente subsistam.
+15.4. A presente cláusula não exclui a responsabilidade por incumprimentos anteriores ao evento, nem se aplica a situações que, nos termos da lei, não constituam fundamento legítimo de exoneração de responsabilidade.
 
 ## 16. Alterações
 
 16.1. **Atualizações técnicas.** A Performa LAB pode atualizar a Plataforma (correções, segurança, desempenho, melhorias e novas funcionalidades) sem aviso prévio, desde que não reduza o que foi contratado.
-16.2. **Alterações materiais.** Se uma alteração retirar ou reduzir de forma relevante uma funcionalidade do plano contratado, a Performa LAB avisa o Cliente por escrito com [60] dias de antecedência, e o Cliente pode denunciar o contrato sem encargos até à data em que a alteração produz efeitos.
+16.2. **Alterações materiais.** Se uma alteração retirar ou reduzir de forma relevante uma funcionalidade do plano contratado, a Performa LAB avisa o Cliente por escrito com 60 dias de antecedência, e o Cliente pode denunciar o contrato sem encargos até à data em que a alteração produz efeitos.
 16.3. Qualquer alteração ao contrato só vale se for feita por escrito e aceite pelas duas partes. A mudança de plano, de periodicidade ou de profissionais faz-se nos termos da cláusula 3.1.
 
 ## 17. Comunicações
 
-17.1. As comunicações entre as partes fazem-se por escrito e por correio eletrónico: para a Performa LAB, **apoio@instabarber.pt** (suporte e pedidos), **comercial@instabarber.pt** (contrato e preços) e **privacidade@instabarber.pt** (proteção de dados); para o Cliente, **{{contratante.email}}**.
-17.2. Uma comunicação por correio eletrónico considera-se recebida quando chega ao endereço do destinatário em condições de ser lida; se chegar fora de um dia útil ou depois das 18h00, no dia útil seguinte. Se o envio falhar, o remetente usa outro meio.
-17.3. Os avisos de suspensão, resolução e denúncia enviam-se também [por carta registada com aviso de receção ou com pedido de confirmação de leitura].
-17.4. Cada parte avisa a outra de qualquer mudança de contacto.
+17.1. As comunicações operacionais e os pedidos de suporte podem ser efetuados por correio eletrónico para os endereços indicados no presente contrato: para a Performa LAB, **apoio@instabarber.pt** (suporte e pedidos), **comercial@instabarber.pt** (contrato e preços) e **privacidade@instabarber.pt** (proteção de dados); para o Cliente, **{{contratante.email}}**.
+17.2. As comunicações relativas à denúncia ou resolução do contrato, à suspensão do Serviço por incumprimento, à alteração de preços e a outras situações que, pela sua natureza, exijam prova formal do envio e da receção devem ser efetuadas por carta registada com aviso de receção ou por correio eletrónico que permita comprovar o envio e a receção pelo destinatário.
+17.3. Para efeitos do número anterior, a confirmação de leitura do correio eletrónico pode constituir elemento de prova da receção, sem prejuízo de outros meios legalmente admissíveis. A ausência de confirmação de leitura não equivale, por si só, à prova de que a comunicação não foi recebida.
+17.4. Cada parte deve comunicar por escrito qualquer alteração dos seus contactos. As comunicações enviadas para os últimos contactos validamente indicados serão consideradas atendíveis, sem prejuízo das regras legais aplicáveis à sua eficácia e receção.
 
 ## 18. Cláusulas contratuais gerais
 
@@ -149,13 +152,13 @@ Nenhuma parte responde pelo incumprimento ou atraso causado por facto que não l
 ## 20. Lei aplicável e resolução de litígios
 
 20.1. O contrato rege-se pela lei portuguesa.
-20.2. As partes tentam resolver qualquer litígio de boa-fé e por acordo, no prazo de [30] dias, antes de recorrerem a tribunal.
+20.2. As partes tentam resolver qualquer litígio de boa-fé e por acordo, no prazo de 30 dias, antes de recorrerem a tribunal.
 
 ## 21. Disposições finais
 
 21.1. O contrato e os anexos formam o acordo completo entre as partes. Em caso de conflito, prevalece o texto do contrato, salvo quanto a dados pessoais, em que prevalece o Anexo III.
 21.2. Se uma cláusula for nula ou ineficaz, as restantes mantêm-se, e as partes substituem-na por outra com efeito económico equivalente.
-21.3. O contrato é assinado por um dos seguintes meios: [escolher: assinatura eletrónica qualificada (por exemplo, Chave Móvel Digital); assinatura manuscrita, com troca do exemplar digitalizado e envio do original a pedido]. A assinatura eletrónica qualificada tem o valor da assinatura manuscrita, nos termos da lei.
+21.3. O contrato pode ser assinado por assinatura eletrónica qualificada (por exemplo, Chave Móvel Digital) ou por assinatura manuscrita, com troca do exemplar digitalizado e envio do original a pedido. A assinatura eletrónica qualificada tem o valor da assinatura manuscrita, nos termos da lei.
 21.4. A Performa LAB conserva o exemplar assinado, em formato PDF, durante a vigência do contrato e pelo prazo legal de conservação depois da cessação, e entrega cópia ao Cliente.
 
 ## Assinaturas
