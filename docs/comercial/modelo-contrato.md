@@ -78,7 +78,7 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 ## 9. Duração e cessação
 
 9.1. O contrato inicia-se em {{data_inicio}} e vigora por tempo indeterminado, **sem período de fidelização**.
-9.2. Qualquer das partes pode **denunciá-lo**, sem invocar motivo e sem penalização, por comunicação escrita com 30 dias de antecedência. A denúncia produz efeitos no último dia do período de faturação em que terminar esse aviso: até essa data o Serviço mantém-se e o preço é devido; a partir dela não há mais faturação. Os valores de períodos já iniciados não são reembolsáveis, salvo nos casos da cláusula 6.3 e de incumprimento da Performa LAB.
+9.2. Qualquer das partes pode **denunciá-lo**, sem invocar motivo e sem penalização, por comunicação escrita com 30 dias de antecedência. A denúncia produz efeitos no último dia do período de faturação em que terminar esse aviso (no plano anual, no fim do período anual pago): até essa data o Serviço mantém-se e o preço é devido; a partir dela não há mais faturação. Os valores de períodos já iniciados não são reembolsáveis, salvo nos casos da cláusula 6.3 e de incumprimento da Performa LAB.
 9.3. Qualquer das partes pode **resolver** o contrato em caso de incumprimento grave da outra que não seja sanado no prazo de 15 dias após interpelação escrita, ou de insolvência da outra.
 9.4. A cessação não afeta as obrigações já vencidas nem as que, pela sua natureza, subsistem (confidencialidade, proteção de dados, responsabilidade e cláusula 11).
 
@@ -86,19 +86,19 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 
 10.1. Quanto aos dados pessoais dos **clientes finais e da equipa do Cliente**, o Cliente é o responsável pelo tratamento e a Performa LAB é subcontratante, e trata-os segundo as instruções do Cliente, nos termos do **Acordo de Subcontratação (Anexo III)**, que cumpre o artigo 28.º do Regulamento (UE) 2016/679 (RGPD).
 10.2. Quanto aos dados pessoais do representante e dos Utilizadores do Cliente (identificação, contacto, faturação, registos de acesso), a Performa LAB é responsável pelo tratamento, para gerir o contrato, faturar, prestar suporte, garantir a segurança e cumprir obrigações legais. A informação completa consta da Política de Privacidade (Anexo II).
-10.3. Os dados são alojados na União Europeia. Qualquer transferência para fora do Espaço Económico Europeu depende das garantias do capítulo V do RGPD.
+10.3. A Performa LAB procura manter os dados pessoais no Espaço Económico Europeu, de acordo com a configuração dos serviços utilizados. Qualquer transferência para países terceiros, incluindo acessos remotos que constituam transferência, depende das garantias do capítulo V do RGPD e, quanto aos dados tratados por conta do Cliente, das suas instruções (Anexo III).
 10.4. Cada parte colabora com a outra no exercício de direitos dos titulares e na comunicação de violações de dados, nos prazos do Anexo III.
 
 ## 11. Saída, portabilidade e eliminação dos dados
 
 11.1. **Dados exportáveis.** São exportáveis todos os Dados do Cliente: clientes finais e respetivos consentimentos, marcações e histórico, serviços e preços, equipa, fichas técnicas, registos financeiros, mensagens registadas e ficheiros carregados (logótipo, fotografias). Ficam fora o código, os segredos comerciais e os dados técnicos próprios da Performa LAB.
 11.2. **Formato.** A exportação é feita em formato estruturado, de uso corrente e legível por máquina (CSV e, para ficheiros, os formatos originais).
-11.3. **Pedido.** O Cliente pode pedir, a qualquer momento, por escrito, a exportação dos seus dados ou a mudança para outro prestador de serviços. O pedido de mudança faz-se com um aviso máximo de dois meses.
+11.3. **Pedido.** O Cliente pode pedir, a qualquer momento, por escrito, a exportação dos seus dados ou a mudança para outro prestador de serviços e, no termo do contrato, escolher entre a devolução e a eliminação dos dados (Anexo III, cláusula 9). O pedido de mudança faz-se com um aviso máximo de dois meses.
 11.4. **Entrega e período de transição.** A Performa LAB entrega os dados, **sem custos**, sem demora injustificada e, em qualquer caso, no prazo máximo de 30 dias a contar do pedido ou da cessação. Durante um período de transição de 30 dias, prorrogável por acordo, mantém o Serviço ou o acesso aos dados e presta a assistência razoável para a mudança.
-11.5. **Recuperação.** Depois da entrega, o Cliente dispõe de, pelo menos, 30 dias para verificar e recolher os dados.
+11.5. **Recuperação.** Depois da entrega, o Cliente dispõe de, pelo menos, 30 dias para verificar e recolher os dados. Durante esse período, a Performa LAB não elimina os dados exportáveis, salvo pedido expresso de eliminação pelo Cliente ou obrigação legal em contrário.
 11.6. **Eliminação.** Terminado o prazo de recuperação, a Performa LAB elimina os Dados do Cliente da Plataforma, e as cópias de segurança extinguem-se no prazo de 30 dias. Só conserva o que a lei a obrigue a conservar (nomeadamente os seus próprios documentos de faturação) e confirma a eliminação por escrito, a pedido.
 11.7. **Cessação.** O contrato cessa nos termos da cláusula 9. Os prazos desta cláusula aplicam-se a seguir à cessação e não a prolongam; durante eles não há faturação, salvo se o Cliente pedir expressamente a continuação do Serviço.
-11.8. Não há encargos de saída nem de mudança.
+11.8. Não há encargos de saída nem de mudança. Estas regras não prejudicam os direitos de recuperação ou de transição que resultem de normas legais imperativas.
 
 ## 12. Propriedade intelectual
 

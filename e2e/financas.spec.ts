@@ -56,6 +56,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   await page.getByRole("link", { name: "Finanças" }).filter({ visible: true }).click();
   await expect(page).toHaveURL("/admin/financas");
   await page.getByRole("link", { name: "Custos e contas" }).click();
+  await expect(page).toHaveURL(/\/admin\/financas\/custos/);
   await page.getByRole("button", { name: "Carregar os custos de partida (L.6)" }).click();
   // 17 € + 1 € por mês e quatro domínios a 10 € por ano (83 cêntimos por mês cada).
   await expect(page.getByTestId("custos-mes")).toHaveText(
@@ -65,6 +66,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   // Resumo: os indicadores aparecem e o ponto de equilíbrio bate com a conta à mão
   // (21,32 € de fixos ÷ 39,00 € = 1 barbearia Pro; ÷ 19,99 € = 2 Basic).
   await page.getByRole("link", { name: "Resumo", exact: true }).click();
+  await expect(page).toHaveURL(/\/admin\/financas$/);
   await expect(page.getByTestId("resumo")).toContainText("Custos do mês");
   await expect(page.getByTestId("resumo")).toContainText("21,32 €");
   await expect(page.getByTestId("equilibrio-pro")).toContainText("1 barbearia");
@@ -73,6 +75,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
 
   // Objetivo e previsões: meta do mês, quantas faltam e a projeção que recalcula sem gravar.
   await page.getByRole("link", { name: "Objetivo e previsões" }).click();
+  await expect(page).toHaveURL(/\/admin\/financas\/objetivo/);
   await expect(page.getByTestId("meta-atual")).toHaveText("Ainda sem objetivo definido.");
   await page.getByText("Definir o objetivo").click();
   await page.getByLabel("Valor sem IVA (€)").fill("1000");
@@ -87,6 +90,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   const base = await page.getByTestId("previsao-base").textContent();
   await expect(page.getByTestId("previsao-otimista")).toHaveText(base!);
   await page.getByRole("link", { name: "Custos e contas" }).click();
+  await expect(page).toHaveURL(/\/admin\/financas\/custos/);
 
   await page.getByRole("button", { name: "Gerar as contas do próximo mês" }).click();
   await expect(page.getByText("2 contas geradas.")).toBeVisible();
@@ -112,6 +116,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
     .update({ proximo_vencimento: lisboa(3), whatsapp: "+351912000111", email: "beta@ensaio.pt" })
     .eq("id", BARBEARIA_B.id);
   await page.getByRole("link", { name: "Vencimentos", exact: true }).click();
+  await expect(page).toHaveURL(/\/admin\/financas\/vencimentos/);
   const beta = page.getByTestId("vencimento").filter({ hasText: "Barbearia Beta" });
   await expect(beta).toContainText("Faltam 3 dias");
   await expect(beta.getByLabel("Texto da mensagem")).toHaveValue(/vence a .*MB WAY/s);
@@ -130,9 +135,11 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   await beta.getByRole("button", { name: "Cancelar lembrete" }).click();
   await expect(beta).toContainText("Cancelado");
   await page.getByRole("link", { name: "Custos e contas" }).click();
+  await expect(page).toHaveURL(/\/admin\/financas\/custos/);
 
   // Exportar: CSV com BOM e «;» e PDF, ambos com «Não é documento fiscal».
   await page.getByRole("link", { name: "Exportar", exact: true }).click();
+  await expect(page).toHaveURL(/\/admin\/financas\/exportar/);
   const csv = await page.request.get(
     (await page.getByRole("link", { name: "Descarregar CSV" }).getAttribute("href"))!,
   );
@@ -147,6 +154,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   );
   expect(pdf.headers()["content-type"]).toBe("application/pdf");
   await page.getByRole("link", { name: "Custos e contas" }).click();
+  await expect(page).toHaveURL(/\/admin\/financas\/custos/);
 
   // Dar fim a um custo tira-o do total do mês seguinte, mas fica no histórico.
   await page

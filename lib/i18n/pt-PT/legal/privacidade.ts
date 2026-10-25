@@ -2,10 +2,11 @@ import type { DocumentoLegal, Prestadora } from "./tipos";
 
 // Política de Privacidade (H.1, H.4): as duas situações — a barbearia e quem fala com a
 // Performa LAB (responsável: Performa LAB) e o cliente final (responsável: a barbearia).
+// Revista com o jurista (D-155).
 
 export const privacidade = (p: Prestadora): DocumentoLegal => ({
   titulo: "Política de Privacidade",
-  versao: "Versão de 22 de outubro de 2026",
+  versao: "Versão de 25 de outubro de 2026",
   introducao: [
     `Esta Política explica como são tratados os dados pessoais no InstaBarber, fornecido por ${p.nome}, NIF ${p.nif}, com domicílio profissional em ${p.morada}, que atua sob a designação comercial «Performa LAB». Contacto para proteção de dados: privacidade@instabarber.pt.`,
     "Há duas situações diferentes, e em cada uma o responsável pelo tratamento é outro.",
@@ -16,8 +17,10 @@ export const privacidade = (p: Prestadora): DocumentoLegal => ({
       paragrafos: [
         "A Performa LAB é responsável pelos dados das pessoas que pedem informação no site instabarber.pt, das barbearias que aderem (nome, NIF, contactos, morada, dados de faturação e preferência de pagamento) e dos utilizadores das barbearias (nome, e-mail e registos de acesso).",
         "Finalidades e bases jurídicas: responder a pedidos de informação e propor a contratação (diligências pré-contratuais a pedido do titular); gerir a adesão e o contrato, faturar e prestar suporte (execução do contrato); garantir a segurança da Plataforma, registar ações sensíveis e prevenir abusos (interesse legítimo); cumprir obrigações legais, nomeadamente fiscais (obrigação legal). Não enviamos publicidade sem consentimento.",
-        "Conservação: pedidos de informação sem contrato, até 12 meses depois do último contacto; dados do contrato e de faturação, pelo prazo legal de conservação dos documentos fiscais; registos de segurança, pelo tempo necessário à sua finalidade.",
-        "O site não usa cookies de publicidade nem ferramentas de análise: contamos visitas e cliques sem dados pessoais. A Plataforma usa apenas os cookies estritamente necessários para manter a sessão iniciada.",
+        "Conservação: pedidos de informação sem contrato, até 12 meses depois do último contacto; dados do contrato e de faturação, pelo prazo legal de conservação dos documentos fiscais; os registos de segurança são conservados durante o período definido na política interna de retenção, proporcional às finalidades de segurança, investigação de incidentes e defesa de direitos, sendo eliminados ou anonimizados quando deixem de ser necessários, salvo obrigação legal de conservação ou necessidade legítima de preservação de prova.",
+        "O site e a Plataforma utilizam os cookies e tecnologias de armazenamento estritamente necessários ao funcionamento, à autenticação e à segurança do Serviço. As preferências que a própria pessoa escolhe (como o tema claro ou escuro) ficam guardadas apenas no seu dispositivo.",
+        "As estatísticas de utilização são realizadas apenas nos termos da implementação técnica efetivamente utilizada: hoje, o site conta visitas e cliques registando só o nome do evento, sem cookies, sem guardar o endereço IP e sem identificadores. Quando forem utilizados identificadores ou outros elementos que permitam identificar ou singularizar utilizadores, a respetiva utilização e o tratamento de dados pessoais serão descritos nesta Política e sujeitos às exigências legais aplicáveis.",
+        "Não são utilizados cookies ou tecnologias de rastreio para publicidade comportamental, salvo se essa finalidade vier a ser introduzida e previamente comunicada nos termos legalmente exigíveis.",
       ],
     },
     {
@@ -41,10 +44,16 @@ export const privacidade = (p: Prestadora): DocumentoLegal => ({
       ],
     },
     {
+      titulo: "3.1. Lista de prestadores",
+      paragrafos: [
+        "A lista de prestadores é mantida atualizada pela Performa LAB. A informação relativa a cada prestador identifica a função desempenhada no Serviço e a localização de tratamento aplicável, de acordo com os contratos e a configuração efetiva dos serviços utilizados. Qualquer alteração relevante é comunicada nos termos do Acordo de Subcontratação e da legislação aplicável.",
+      ],
+    },
+    {
       titulo: "4. Onde ficam os dados e como são protegidos",
       paragrafos: [
-        "Os dados ficam alojados na União Europeia. Não há transferências para fora do Espaço Económico Europeu sem as garantias do capítulo V do RGPD.",
-        "Medidas de segurança: isolamento dos dados de cada barbearia na própria base de dados, cifragem em trânsito, autenticação de dois fatores para o acesso administrativo, controlo de acessos por papéis, registo das ações sensíveis e cópias de segurança com retenção de 30 dias. Nenhuma palavra-passe é enviada por e-mail nem fica visível: cada pessoa define a sua por ligação segura.",
+        "A Performa LAB procura manter os dados pessoais no Espaço Económico Europeu, de acordo com a configuração dos serviços utilizados. Qualquer transferência de dados pessoais para países terceiros, incluindo acessos remotos que constituam uma transferência abrangida pelo RGPD, depende do cumprimento dos requisitos do capítulo V do RGPD e das instruções aplicáveis ao tratamento por conta do Cliente.",
+        "Medidas de segurança: isolamento dos dados de cada barbearia na própria base de dados, cifragem em trânsito, autenticação de dois fatores para o acesso administrativo, controlo de acessos por papéis, registo das ações sensíveis e cópias de segurança com retenção de 30 dias. Nenhuma palavra-passe é enviada por e-mail nem fica visível: cada pessoa define a sua por ligação segura, e as palavras-passe guardam-se apenas como resumo criptográfico (hash).",
       ],
     },
     {

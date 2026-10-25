@@ -1,68 +1,134 @@
-<!-- RASCUNHO PARA REVISÃO JURÍDICA (D-42). Anexo III do contrato. Conteúdo mínimo do artigo 28.º, n.º 3, do RGPD. -->
+<!-- ANEXO III DO CONTRATO (N.6, H.1). Mesmo texto do Acordo publicado em instabarber.pt/termos/subcontratacao
+     (lib/i18n/pt-PT/legal/subcontratacao.ts), revisto com o jurista a 25/10/2026 (D-155). Os marcadores {{…}} são preenchidos pelo sistema. -->
 
 # Anexo III · Acordo de Subcontratação de dados pessoais
 
 **Responsável pelo tratamento:** {{contratante.razao_social}}, NIF {{contratante.nif}} («Cliente»).
-**Subcontratante:** {{prestadora.nome}}, NIF {{prestadora.nif}}, morada profissional em {{prestadora.morada}}, que atua sob a designação comercial «Performa LAB» («Performa LAB»).
-Faz parte do contrato n.º {{contrato.numero}}.
+**Subcontratante:** {{prestadora.nome}}, NIF {{prestadora.nif}}, com domicílio profissional em {{prestadora.morada}}, que exerce a atividade sob a designação comercial «Performa LAB» («Performa LAB»).
+
+Este acordo cumpre o artigo 28.º do Regulamento (UE) 2016/679 (RGPD) e faz parte do contrato n.º {{contrato.numero}}.
 
 ## 1. Objeto, natureza e duração
 
-A Performa LAB trata dados pessoais por conta do Cliente, para lhe prestar o Serviço InstaBarber (agenda, clientes, equipa, financeiro, fidelização, mensagens registadas e página pública), durante a vigência do contrato e até à eliminação prevista na cláusula 9.
+A Performa LAB trata dados pessoais por conta do Cliente para disponibilizar e manter o serviço InstaBarber, incluindo a gestão de agenda, clientes, equipa, serviços, registos financeiros internos, fidelização, mensagens registadas e página pública de marcação, de acordo com o plano contratado.
+
+O tratamento pode incluir a recolha, registo, organização, consulta, utilização, conservação, exportação, retificação, eliminação e outras operações tecnicamente necessárias à prestação do Serviço, sempre de acordo com as instruções documentadas do Cliente e com o presente Acordo.
+
+O tratamento inicia-se com a disponibilização do Serviço ao Cliente e mantém-se durante a vigência da relação contratual, terminando nos termos da cláusula 9, sem prejuízo das obrigações legais de conservação e das disposições que devam subsistir após a cessação.
 
 ## 2. Tipos de dados e titulares
 
-**Titulares:** clientes finais da barbearia; profissionais e outros Utilizadores do Cliente.
-**Dados:** nome, telefone, e-mail, NIF (opcional), data de nascimento (opcional), notas e fichas técnicas, marcações e histórico de visitas, consentimentos, mensagens registadas, dados de acesso (palavra-passe cifrada, nunca visível).
-**Não são admitidos** dados de saúde nem outras categorias especiais.
+Os titulares dos dados são os clientes finais da barbearia, os profissionais que nela trabalham e os restantes utilizadores autorizados pelo Cliente.
+
+Os dados tratados podem incluir nome, telefone, endereço eletrónico, NIF quando facultado, data de nascimento quando facultada, marcações, histórico de visitas, serviços registados, preferências relacionadas com os serviços, notas operacionais, dados relativos à fidelização, consentimentos, mensagens registadas e registos de acesso.
+
+Os dados de autenticação são tratados segundo as medidas de segurança implementadas na Plataforma, não sendo as palavras-passe disponibilizadas em texto legível aos administradores.
+
+O Cliente não deve introduzir dados pessoais de categorias especiais, incluindo dados de saúde, nem utilizar os campos de notas para registar informações dessa natureza. A Plataforma indica junto desses campos que não se destinam a dados de saúde; a Performa LAB não garante a deteção automática desses dados.
 
 ## 3. Instruções
 
-A Performa LAB só trata os dados segundo as instruções documentadas do Cliente: as do contrato, deste acordo e as que o Cliente der através da Plataforma. Se entender que uma instrução viola a lei, informa o Cliente de imediato.
+A Performa LAB trata os dados pessoais exclusivamente segundo as instruções documentadas do Cliente, constantes do contrato, do presente Acordo e das operações que o Cliente execute através da Plataforma, incluindo as instruções relativas à exportação, alteração ou eliminação dos dados.
+
+Se considerar que uma instrução viola o RGPD ou outras disposições aplicáveis em matéria de proteção de dados, a Performa LAB informa o Cliente sem demora injustificada e pode suspender a execução da instrução em causa até que seja esclarecida, sem prejuízo das obrigações legais aplicáveis.
+
+A Performa LAB não utiliza os dados tratados por conta do Cliente para finalidades próprias incompatíveis com o presente Acordo.
 
 ## 4. Confidencialidade
 
-As pessoas autorizadas a tratar os dados estão sujeitas a dever de confidencialidade. O acesso da Performa LAB aos dados é limitado ao necessário, só através de contas pessoais com autenticação reforçada, e as consultas de suporte ficam registadas.
+As pessoas autorizadas a tratar os dados estão sujeitas a dever de confidencialidade. O acesso da Performa LAB aos dados é limitado ao necessário, só através de contas pessoais com autenticação de dois fatores, e as consultas de suporte ficam registadas, com justificação.
 
-## 5. Segurança (artigo 32.º do RGPD)
+O dever de confidencialidade mantém-se após o termo das funções, da autorização de acesso ou da relação contratual, enquanto a informação em causa conservar natureza confidencial ou estiver sujeita a dever legal de sigilo.
 
-A Performa LAB mantém, no mínimo: isolamento dos dados de cada cliente na base de dados; cifragem em trânsito; autenticação de dois fatores para o acesso administrativo; cópias de segurança com retenção de 30 dias; registo de ações sensíveis; alojamento na União Europeia; controlo de acessos por papéis. As medidas são revistas periodicamente.
+## 5. Segurança
+
+A Performa LAB aplica medidas técnicas e organizativas adequadas ao risco, tendo em conta a natureza dos dados, o contexto do tratamento, os riscos para os titulares e os meios técnicos disponíveis.
+
+As medidas incluem, de acordo com a arquitetura efetivamente implementada:
+
+- controlo de acessos e atribuição de permissões segundo o princípio do menor privilégio;
+- separação lógica dos dados dos diferentes Clientes;
+- cifragem das comunicações em trânsito;
+- autenticação reforçada para acessos administrativos;
+- registo e análise de ações relevantes para a segurança;
+- cópias de segurança e procedimentos de recuperação;
+- revisão periódica das medidas de segurança e dos acessos autorizados.
+
+## 5.1. Eficácia das medidas
+
+A Performa LAB mantém procedimentos adequados para testar a eficácia das medidas e restabelecer a disponibilidade e o acesso aos dados em caso de incidente técnico ou físico. A descrição das medidas corresponde à implementação efetiva e é atualizada quando ocorram alterações relevantes.
 
 ## 6. Subcontratantes ulteriores
 
-6.1. O Cliente dá **autorização geral** para a Performa LAB recorrer aos seguintes subcontratantes ulteriores, que ficam sujeitos às mesmas obrigações deste acordo:
+O Cliente dá autorização geral para a Performa LAB recorrer aos seguintes subcontratantes ulteriores, sujeitos às mesmas obrigações deste acordo:
 
-| Subcontratante | Função | Localização |
-| --- | --- | --- |
-| Supabase | Base de dados, autenticação e ficheiros | União Europeia (Frankfurt) |
-| Vercel | Alojamento da aplicação | União Europeia (Frankfurt) |
-| Resend | Envio de e-mails transacionais | União Europeia |
-| Zoho | Correio eletrónico da Performa LAB | [a confirmar] |
+- Supabase — base de dados, autenticação e ficheiros — União Europeia;
+- Vercel — alojamento da aplicação — União Europeia;
+- Resend — envio de e-mails transacionais — União Europeia;
+- Zoho — correio eletrónico da Performa LAB — centro de dados europeu.
 
-6.2. A Performa LAB avisa o Cliente, por escrito, com [30] dias de antecedência de qualquer acréscimo ou substituição. O Cliente pode opor-se por motivo fundado; se não houver alternativa, qualquer parte pode denunciar o contrato sem encargos (cláusula 9.2 do contrato).
-6.3. A Performa LAB responde perante o Cliente pelo cumprimento dos subcontratantes ulteriores.
+## 6.1. Alterações à lista
+
+A Performa LAB avisa o Cliente, por escrito, com 30 dias de antecedência de qualquer acréscimo ou substituição. O Cliente pode opor-se por motivo fundado; se não houver alternativa, qualquer parte pode denunciar o contrato sem encargos (cláusula 9.2 do contrato). A Performa LAB responde perante o Cliente pelo cumprimento dos subcontratantes ulteriores.
+
+O aviso é enviado por correio eletrónico para o contacto contratual do Cliente e identifica o subcontratante a adicionar ou substituir, a função prevista e a data estimada de entrada em operação. O Cliente pode apresentar oposição fundamentada dentro do prazo indicado no aviso, nos termos do presente Acordo.
+
+## 6.2. Informação sobre os subcontratantes
+
+Para cada subcontratante ulterior, a Performa LAB mantém informação atualizada sobre a entidade prestadora, a função desempenhada, as categorias de dados tratados e a localização relevante do tratamento, incluindo eventuais transferências internacionais abrangidas pelo RGPD.
+
+A Performa LAB disponibiliza ao Cliente a informação necessária para compreender a intervenção dos subcontratantes ulteriores e para exercer os direitos previstos na cláusula 6.1.
 
 ## 7. Direitos dos titulares
 
-A Performa LAB presta ao Cliente a assistência técnica para responder a pedidos de acesso, retificação, apagamento, limitação, portabilidade e oposição. Se receber um pedido diretamente, reencaminha-o ao Cliente no prazo de [2] dias úteis, sem lhe responder, salvo instrução em contrário. A Plataforma permite exportar e anonimizar os dados de um cliente final.
+A Performa LAB presta ao Cliente assistência técnica e organizativa razoável, tendo em conta a natureza do tratamento, para que este possa responder aos pedidos de exercício dos direitos dos titulares previstos no RGPD.
 
-## 8. Violação de dados
+Se receber diretamente um pedido relativo aos dados tratados por conta do Cliente, a Performa LAB reencaminha-o para o Cliente sem demora injustificada e, em regra, no prazo máximo de dois dias úteis, sem responder ao pedido em nome do Cliente, salvo instrução documentada ou obrigação legal em contrário.
 
-A Performa LAB notifica o Cliente **sem demora injustificada e, se possível, no prazo de [48] horas** após ter conhecimento de uma violação de dados pessoais, com a natureza da violação, os dados e titulares afetados, as consequências prováveis e as medidas tomadas ou propostas, para o Cliente cumprir os artigos 33.º e 34.º do RGPD. Presta ainda assistência nas avaliações de impacto e consultas prévias que o Cliente tenha de fazer (artigos 35.º e 36.º).
+A Plataforma disponibiliza as funcionalidades de exportação, retificação e anonimização dos dados de um cliente final que estão efetivamente implementadas. A anonimização substitui os dados identificativos de forma irreversível e não se confunde com a simples ocultação de identificadores visíveis.
+
+## 8. Violação de dados pessoais
+
+A Performa LAB notifica o Cliente de qualquer violação de dados pessoais de que tenha conhecimento e que afete dados tratados por conta deste, sem demora injustificada e, sempre que possível, no prazo máximo de 24 horas após ter conhecimento do incidente.
+
+A notificação inclui, na medida da informação disponível, a natureza da violação, as categorias e o número aproximado de titulares e registos afetados, as consequências prováveis, as medidas já adotadas e as medidas propostas para conter e corrigir o incidente.
+
+Quando não seja possível disponibilizar toda a informação na primeira comunicação, a Performa LAB fornece-a progressivamente, sem demora injustificada.
+
+A Performa LAB presta assistência razoável ao Cliente para este avaliar a necessidade de notificação à autoridade de controlo ou aos titulares e cumprir as obrigações legais aplicáveis, incluindo as relativas à segurança do tratamento, avaliações de impacto e consultas prévias.
 
 ## 9. Termo do tratamento
 
-9.1. Quando o contrato cessar, a Performa LAB entrega os dados ao Cliente nos termos da cláusula 11 do contrato e, depois do prazo aí previsto, **elimina-os** e elimina as cópias de segurança no prazo de 30 dias, salvo se a lei exigir a conservação.
-9.2. Confirma a eliminação por escrito, a pedido.
+Após a cessação do contrato, a Performa LAB, segundo a opção documentada do Cliente, devolve os dados pessoais tratados por sua conta ou procede à sua eliminação, salvo se a conservação for exigida pelo direito da União ou do Estado-Membro aplicável.
+
+Quando o Cliente optar pela devolução, a Performa LAB disponibiliza os dados exportáveis em formato estruturado e legível por máquina, sem demora injustificada e dentro do prazo máximo contratual de 30 dias, sem prejuízo de prazos de transição diferentes que sejam legalmente exigíveis.
+
+O Cliente dispõe de pelo menos 30 dias após a disponibilização da exportação para verificar e recolher os dados. Terminado esse período, a Performa LAB elimina os dados remanescentes da Plataforma e assegura a eliminação das cópias de segurança no prazo máximo de 30 dias, salvo obrigação legal de conservação.
+
+Quando a eliminação não possa ser imediata por razões técnicas devidamente justificadas, os dados ficam protegidos, deixam de ser utilizados para as finalidades do Serviço e são eliminados assim que cesse o impedimento.
+
+A Performa LAB confirma por escrito a devolução ou eliminação, a pedido do Cliente, sem prejuízo da conservação legalmente obrigatória.
 
 ## 10. Demonstração do cumprimento e auditorias
 
-A Performa LAB disponibiliza ao Cliente a informação necessária para demonstrar o cumprimento deste acordo e permite auditorias, incluindo inspeções, realizadas por ele ou por auditor por ele mandatado, com aviso de [30] dias, durante o horário normal e sem prejudicar a segurança de outros clientes. [Custos a definir.]
+A Performa LAB disponibiliza ao Cliente a informação razoavelmente necessária para demonstrar o cumprimento das obrigações previstas no presente Acordo e coopera nas auditorias e inspeções legalmente exigíveis.
 
-## 11. Transferências
+As auditorias são realizadas pelo Cliente ou por auditor independente sujeito a dever de confidencialidade, mediante aviso prévio razoável, em horário acordado e de modo a não comprometer a segurança, a continuidade do Serviço ou os dados de outros Clientes.
 
-Não há transferência de dados para fora do Espaço Económico Europeu sem instrução do Cliente e sem as garantias do capítulo V do RGPD.
+Em caso de incidente de segurança relevante, suspeita fundamentada de incumprimento ou exigência de autoridade competente, as partes acordam um prazo de acesso compatível com a urgência e com as obrigações legais aplicáveis.
+
+As auditorias limitam-se ao necessário para verificar o cumprimento das obrigações de proteção de dados, sem acesso injustificado a informações confidenciais de terceiros.
+
+## 11. Transferências internacionais
+
+A Performa LAB não transfere dados pessoais tratados por conta do Cliente para países terceiros ou organizações internacionais, nem permite acessos que constituam transferências abrangidas pelo RGPD, sem fundamento e garantias adequados nos termos do capítulo V do RGPD e sem respeitar as instruções documentadas do Cliente, salvo quando a transferência seja exigida pelo direito da União ou do Estado-Membro aplicável.
+
+Quando legalmente possível, a Performa LAB informa previamente o Cliente da transferência e disponibiliza a informação necessária sobre o mecanismo de transferência utilizado e as garantias aplicáveis.
 
 ## 12. Responsabilidade
 
-Aplicam-se as regras da cláusula 14 do contrato, sem prejuízo do artigo 82.º do RGPD e dos direitos dos titulares.
+A responsabilidade das partes é determinada pelo contrato principal, pelo presente Acordo e pela legislação aplicável, incluindo o artigo 82.º do RGPD.
+
+Nenhuma disposição do presente Acordo exclui ou limita direitos dos titulares, competências das autoridades de controlo ou responsabilidades que não possam ser validamente excluídas ou limitadas por contrato.
+
+A eventual repartição interna de responsabilidades entre o Cliente e a Performa LAB não prejudica os direitos de terceiros nem as regras legais aplicáveis à responsabilidade de cada parte.
