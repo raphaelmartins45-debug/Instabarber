@@ -2,7 +2,7 @@ import { type ItemMontado, planificar } from "@/lib/funcionalidades/menus";
 import { textos } from "@/lib/i18n/pt-PT";
 
 // Separadores do InstaBarber Admin (E.1). Não dependem da grelha: o super_admin vê tudo.
-// O que é da empresa (CRM, finanças…) fica dentro da pasta «Gestão do negócio» (D-145).
+// O que é da empresa (CRM, finanças…) fica dentro da pasta «Gestão do negócio» (D-149).
 
 const m = textos.admin.menu;
 
@@ -24,7 +24,7 @@ export const MENU_ADMIN: ItemMontado[] = [
     estado: "ativo",
   },
   { id: "modulos", rotulo: m.modulos, href: "/admin/modulos", chave: null, estado: "ativo" },
-  // A empresa InstaBarber, separada da gestão da plataforma (D-145).
+  // A empresa InstaBarber, separada da gestão da plataforma (D-149).
   {
     id: "negocio",
     rotulo: m.negocio,

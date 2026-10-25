@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cópia de segurança pela Management API do Supabase (L.7, P-13; D-144).
+"""Cópia de segurança pela Management API do Supabase (L.7, P-13; D-148).
 
 Para quando não há acesso à porta 5432 (D-111): lê os dados de public, das contas (auth.users,
 identities, mfa_factors) e do Storage (buckets e metadados dos objetos) em JSON, tabela a tabela,

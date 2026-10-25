@@ -14,7 +14,7 @@ export type LeadLinha = Lead & { temPasso2: boolean };
 
 const uuid = z.string().uuid();
 
-/** Ids dos leads que completaram o passo 2 do formulário do site (D-146). */
+/** Ids dos leads que completaram o passo 2 do formulário do site (D-150). */
 async function comPasso2(bd: ClienteBD): Promise<Set<string>> {
   const { data, error } = await bd
     .from("lead_eventos")

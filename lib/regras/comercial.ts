@@ -35,6 +35,6 @@ export const propostaAExpirar = (validaAte: string, hoje: string, dias = 3) => {
   return falta >= 0 && falta <= dias;
 };
 
-/** Lead do site sem o passo 2 do formulário (aba «Incompletos», D-50, D-146). */
+/** Lead do site sem o passo 2 do formulário (aba «Incompletos», D-50, D-150). */
 export const leadIncompleto = (lead: { origem: string; temPasso2: boolean }) =>
   lead.origem === "landing" && !lead.temPasso2;

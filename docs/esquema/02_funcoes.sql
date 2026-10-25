@@ -1227,7 +1227,7 @@ $$;
 -- exista ou não já um lead com o mesmo contacto.
 -- O formulário tem dois passos (D-50): o passo 1 cria o lead; o passo 2 («passo»: 2) completa
 -- só os campos ainda vazios do lead aberto e regista a dificuldade e o distrito no histórico.
--- Um lead do site sem o evento do passo 2 está «incompleto» (D-146).
+-- Um lead do site sem o evento do passo 2 está «incompleto» (D-150).
 create or replace function public.submeter_lead(p jsonb) returns boolean
 language plpgsql security definer set search_path = '' as $$
 declare

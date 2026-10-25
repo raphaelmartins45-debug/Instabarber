@@ -192,7 +192,7 @@ describe("POST /api/contacto · fase 2", () => {
   });
 });
 
-describe("POST /api/contacto · CRM (D-146)", () => {
+describe("POST /api/contacto · CRM (D-150)", () => {
   it("grava o pedido no CRM e o aviso leva a ligação para os leads", async () => {
     const r = await POST(pedido(fase1));
     expect(r.status).toBe(200);

@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 // Rascunhos base dos modelos (N.8): a fonte única é docs/comercial/ (revistos pelo jurista).
-// O ecrã Modelos importa-os como versão nova em rascunho; só o dono os aprova (D-148).
+// O ecrã Modelos importa-os como versão nova em rascunho; só o dono os aprova (D-152).
 
 const FICHEIROS = {
   contrato: "modelo-contrato.md",

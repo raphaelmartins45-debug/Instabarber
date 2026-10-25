@@ -1,5 +1,5 @@
 -- =============================================================================
--- Testes do formulário do site em dois passos no CRM (Fase 3B, D-146): o passo 1 cria o
+-- Testes do formulário do site em dois passos no CRM (Fase 3B, D-150): o passo 1 cria o
 -- lead; o passo 2 completa só os campos vazios do lead aberto e fica no histórico; um lead
 -- do site sem o passo 2 é «incompleto».
 -- =============================================================================

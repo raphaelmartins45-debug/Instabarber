@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Restauro de uma cópia feita por scripts/copia-api.py (L.7, P-14; D-144).
+"""Restauro de uma cópia feita por scripts/copia-api.py (L.7, P-14; D-148).
 
 O alvo é uma base vazia com as mesmas migrações (o Supabase local depois de `supabase db reset`,
 ou um projeto novo). Nunca a produção: recusa se o endereço tiver PRODUCAO_DB_HOST ou o ref da

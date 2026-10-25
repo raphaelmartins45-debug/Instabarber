@@ -5,7 +5,7 @@ import { consumirLimite, LIMITES } from "@/lib/repositorios/limites";
 import { criarClienteServico } from "@/lib/supabase/servico";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
-// O pedido de contacto da landing grava-se no CRM (N.3, D-146): o limite por IP conta-se com a
+// O pedido de contacto da landing grava-se no CRM (N.3, D-150): o limite por IP conta-se com a
 // chave de serviço (CLAUDE.md §3); o lead entra por submeter_lead(), que o visitante pode chamar
 // e que aplica o limite por contacto.
 

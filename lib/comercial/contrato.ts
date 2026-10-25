@@ -42,7 +42,7 @@ export const OPCIONAIS: readonly Marcador[] = [
 
 /**
  * Preenchidos depois de gerar: o número dá-o a base de dados (gerar_contrato) e a data de
- * assinatura escreve-se à mão no papel ou fica na assinatura digital (D-148).
+ * assinatura escreve-se à mão no papel ou fica na assinatura digital (D-152).
  */
 export const DEPOIS: readonly Marcador[] = ["contrato.numero", "data_assinatura"];
 

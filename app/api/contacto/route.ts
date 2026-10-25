@@ -5,7 +5,7 @@ import { ipDoPedido } from "@/lib/inquilino/endereco";
 import { gravarLeadDoSite } from "@/lib/repositorios/comercial/site";
 import { esquemaContacto, gerarRef } from "@/lib/validacao/contacto";
 
-// Pedido de contacto da landing (D-46, D-50): fica no CRM (submeter_lead, N.3, D-146) e avisa o
+// Pedido de contacto da landing (D-46, D-50): fica no CRM (submeter_lead, N.3, D-150) e avisa o
 // comercial@ pelo Resend. Com o limite por IP esgotado, recusa sem gravar nem enviar.
 
 const TAMANHO_MAXIMO = 8_000;
