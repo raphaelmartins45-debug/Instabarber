@@ -1,7 +1,6 @@
-import Image from "next/image";
+import { LogotipoMarca } from "@/components/nucleo/logotipo-marca";
 import type { ReactNode } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { textos } from "@/lib/i18n/pt-PT";
 
 /** Moldura dos ecrãs de entrada: marca, título e o formulário ao centro. */
 export function CartaoAcesso({
@@ -23,14 +22,7 @@ export function CartaoAcesso({
           {marca ? (
             <p className="text-sm font-semibold tracking-wide text-ligacao uppercase">{marca}</p>
           ) : (
-            <Image
-              src="/marca/logo-horizontal-preto.png"
-              alt={textos.marca.nome}
-              width={140}
-              height={32}
-              className="h-8 w-auto"
-              priority
-            />
+            <LogotipoMarca className="h-8" priority />
           )}
           <CardTitle className="text-xl">{titulo}</CardTitle>
           {descricao ? <CardDescription>{descricao}</CardDescription> : null}

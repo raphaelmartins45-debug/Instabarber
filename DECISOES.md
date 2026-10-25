@@ -842,3 +842,7 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Demonstração:** `inquilinos.demonstracao` (só uma) e `preparar_demonstracao()`, que apaga e refaz a Barbearia Demonstração com 4 serviços, 3 profissionais sem conta, 40 clientes com telefones +999 (não existem), marcações concluídas nos últimos 30 dias e agendadas nos próximos 7. Abre-se na vista de apoio (só leitura). Fica fora das contas, da saúde, das métricas e dos comunicados. **Por agora só para o dono e o gestor**; dar a demonstração aos comerciais pede uma decisão (conta de demonstração própria ou vista de apoio para o comercial).
 - Migração 14 (`20261025000014_painel_comercial.sql`), 27 testes SQL novos (`96c_painel_comercial.sql`, 591 no total), Vitest (agenda, comissões, telefone para wa.me), ensaio `e2e/equipa-plataforma.spec.ts` alargado (mensagens, agenda, demonstração). Manual: P-30.
 
+## D-163 · 25/10/2026 · Logótipo conforme o modo: branco no escuro, preto no claro — dono
+- Pedido do dono (visto no telemóvel): na página escura o logótipo aparecia preto. Regra: página escura usa o logótipo branco; página clara, o preto.
+- Componente único `components/nucleo/logotipo-marca.tsx` (os dois ficheiros no HTML; o modo escolhe o visível), usado na entrada (`cartao-acesso`), nos documentos legais e na adesão. Estes dois cabeçalhos tinham o logótipo dourado sobre fundo dourado (quase invisível) e passam a ter o fundo do cartão com a mesma regra. O cabeçalho dos painéis já seguia a regra; os e-mails mantêm o timbrado dourado.
+

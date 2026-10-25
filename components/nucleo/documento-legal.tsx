@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { LogotipoMarca } from "@/components/nucleo/logotipo-marca";
 import Link from "next/link";
 import type { DocumentoLegal } from "@/lib/i18n/pt-PT/legal/tipos";
 import { textos } from "@/lib/i18n/pt-PT";
@@ -13,15 +13,9 @@ const LIGACOES = [
 export function PaginaDocumentoLegal({ documento }: { documento: DocumentoLegal }) {
   return (
     <div className="min-h-dvh">
-      <header className="bg-primary px-4 py-4">
-        <Link href="/" className="mx-auto block max-w-3xl">
-          <Image
-            src="/marca/logo-horizontal-dourado.png"
-            alt={textos.marca.nome}
-            width={140}
-            height={32}
-            className="h-8 w-auto"
-          />
+      <header className="border-b border-border bg-card px-4 py-4">
+        <Link href="/" className="mx-auto block max-w-3xl" aria-label={textos.marca.nome}>
+          <LogotipoMarca className="h-8" />
         </Link>
       </header>
       <main className="mx-auto grid max-w-3xl gap-6 px-4 py-8 leading-relaxed">

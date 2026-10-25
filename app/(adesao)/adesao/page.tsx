@@ -1,5 +1,5 @@
+import { LogotipoMarca } from "@/components/nucleo/logotipo-marca";
 import { randomUUID } from "node:crypto";
-import Image from "next/image";
 import { FormularioAdesao } from "@/components/adesao/formulario-adesao";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
@@ -30,15 +30,9 @@ export default async function PaginaAdesao({
   ]);
   return (
     <div className="min-h-dvh">
-      <header className="bg-primary px-4 py-4">
+      <header className="border-b border-border bg-card px-4 py-4">
         <div className="mx-auto max-w-2xl">
-          <Image
-            src="/marca/logo-horizontal-dourado.png"
-            alt={textos.marca.nome}
-            width={140}
-            height={32}
-            className="h-8 w-auto"
-          />
+          <LogotipoMarca className="h-8" />
         </div>
       </header>
       <main className="mx-auto grid max-w-2xl gap-6 px-4 py-8">
