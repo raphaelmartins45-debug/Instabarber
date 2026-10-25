@@ -103,7 +103,7 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 
 **Fase 7 fechada pelo dono a 24/10/2026** com duas pendências: (1) o dono troca os nameservers para `ns1.vercel-dns.com` e `ns2.vercel-dns.com`; depois ligo `*.instabarber.pt` ao projeto e confirmo site, correio e subdomínios; (2) o dono entra no `/admin` e ativa o TOTP; depois faço o ciclo completo numa barbearia de ensaio em produção com o plugin Playwright (item 43) e apago-a no fim.
 
-A seguir: **Fase 8 (Operação)**, com a primeira barbearia real, e antes dela o Supabase passa a Pro (D-137). Em paralelo, sem depender da produção: Fases 3B e 3C e os lotes seguintes do redesenho (cada lote pede o «sim» do dono antes do `main`).
+A seguir: **Fase 8 (Operação)**, com a primeira barbearia real; o Supabase fica no plano gratuito por decisão do dono de 25/10/2026 (D-157, substitui a D-137). Em paralelo, sem depender da produção: Fases 3B e 3C e os lotes seguintes do redesenho (cada lote pede o «sim» do dono antes do `main`).
 
 ### Resumo da Fase 7 (D-120)
 

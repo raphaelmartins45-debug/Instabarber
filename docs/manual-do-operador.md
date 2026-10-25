@@ -36,7 +36,7 @@ que mexa num procedimento atualiza este manual no mesmo dia.
 | P-21 | Tratar um lead no Comercial | Pedido do site ou contacto novo |
 | P-22 | Preparar e enviar uma proposta (briefing e PDF) | Depois da conversa com a barbearia |
 | P-23 | Gerar o contrato, assinar e converter em adesão | Proposta aceite |
-| P-24 | Apagar leads antigos | Todos os meses |
+| P-24 | Apagar leads antigos e auditoria antiga | Todos os meses |
 | P-25 | Lembrar uma barbearia do vencimento (WhatsApp ou e-mail) | Vencimento nos próximos 7 dias |
 | P-26 | Registar custos e contas a pagar, rever o resumo e o objetivo | Todos os meses |
 | P-27 | Exportar os números para o contabilista | Fim de cada mês ou trimestre |
@@ -278,7 +278,7 @@ Um problema de nível 3 num sábado à noite passa à frente de tudo.
 
 ### P-13 · Cópia de segurança semanal
 
-**Quando:** todas as semanas, e sempre antes de uma alteração ao esquema (P-16). Cerca de 10 minutos. O Supabase Pro já faz cópias diárias (7 dias); esta é a cópia **fora** do Supabase, guardada 30 dias.
+**Quando:** todas as semanas, e sempre antes de uma alteração ao esquema (P-16). Cerca de 10 minutos. O Supabase fica no plano gratuito por decisão do dono (D-157), que **não** faz cópias diárias: esta cópia semanal, **fora** do Supabase e guardada 30 dias, é a única. Não saltar semanas.
 
 **Precisa de:** a CLI do Supabase instalada no computador do operador e a ligação à base de dados de produção (Supabase → Connect → «Session pooler»), guardada no gestor de palavras-passe.
 
@@ -477,12 +477,13 @@ Seguir a M.6. Resumo para o operador:
 
 ---
 
-### P-24 · Apagar leads antigos
+### P-24 · Apagar leads antigos e auditoria antiga
 
 **Quando:** todos os meses, no dia 1. **Disponível a partir da Fase 3B.**
 
 1. Em `Admin → Comercial → Leads`, no fim da lista, **Apagar leads inativos (12 meses)** e confirmar. Só se apagam os leads sem contacto há mais de 12 meses, que não estão ganhos nem têm contrato (a base de dados confere).
 2. Anotar quantos foram apagados (o ecrã diz o número).
+3. No painel geral do Admin, em «Atividade recente», **Apagar auditoria com mais de 24 meses** e confirmar (prazo de conservação dos registos de segurança, D-157). A base de dados nunca aceita menos de 12 meses e regista o próprio apagamento.
 3. Para um pedido de apagamento de um lead, ver o P-12.
 
 **Confirmar:** o número apagado está registado na auditoria.

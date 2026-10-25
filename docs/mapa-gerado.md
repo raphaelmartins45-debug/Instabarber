@@ -250,6 +250,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `abrir_ciclo_clube()`
 - `abrir_lembrete_vencimento()`
 - `anonimizar_cliente()`
+- `apagar_auditoria_antiga()`
 - `apagar_leads_inativos()`
 - `aplicar_pacote()`
 - `assinar_contrato()`

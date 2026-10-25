@@ -47,3 +47,9 @@ export async function registarAcaoAdmin(
   });
   if (error) throw new Error(`Auditoria falhou: ${error.message}`);
 }
+
+/** Rotina mensal (P-24, D-157): apaga a auditoria com mais do prazo. Devolve quantos registos. */
+export async function apagarAuditoriaAntiga(bd: ClienteBD, meses = 24): Promise<number | null> {
+  const { data, error } = await bd.rpc("apagar_auditoria_antiga", { p_meses: meses });
+  return error ? null : data;
+}

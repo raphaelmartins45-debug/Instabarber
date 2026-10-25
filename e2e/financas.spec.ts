@@ -102,6 +102,13 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   await expect(conta("Contabilista Ensaio")).toContainText("Atrasada");
   await page.goto("/admin");
   await expect(page.getByText("1 conta a pagar atrasada")).toBeVisible();
+  // Retenção da auditoria (D-157): nada tem mais de 24 meses nos ensaios.
+  await page.getByRole("button", { name: "Apagar auditoria com mais de 24 meses" }).click();
+  await page
+    .getByRole("alertdialog")
+    .getByRole("button", { name: "Apagar auditoria com mais de 24 meses" })
+    .click();
+  await expect(page.getByText("0 registos apagados.")).toBeVisible();
 
   await page.goto("/admin/financas/custos");
   await conta("Contabilista Ensaio").getByRole("button", { name: "Marcar paga hoje" }).click();

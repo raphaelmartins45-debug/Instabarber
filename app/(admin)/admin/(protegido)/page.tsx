@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Indicador } from "@/components/nucleo/indicador";
+import { ApagarAuditoria } from "@/components/admin/apagar-auditoria";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
 import { alertasContas } from "@/lib/financas/custos";
 import { hojeIso, somarDias } from "@/lib/formatacao/datas";
@@ -119,6 +120,7 @@ export default async function PainelGeral() {
       <section className="grid gap-2">
         <h2 className="text-[15px] font-bold text-ligacao">{t.atividade}</h2>
         <SeparadorAuditoria limite={10} />
+        <ApagarAuditoria />
       </section>
     </section>
   );

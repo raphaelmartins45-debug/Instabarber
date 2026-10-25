@@ -4901,6 +4901,7 @@ export type Database = {
       abrir_ciclo_clube: { Args: { p_inicio: string; p_subscricao: string }; Returns: string };
       abrir_lembrete_vencimento: { Args: { p_id: string }; Returns: undefined };
       anonimizar_cliente: { Args: { p_cliente: string }; Returns: undefined };
+      apagar_auditoria_antiga: { Args: { p_meses?: number }; Returns: number };
       apagar_leads_inativos: { Args: { p_meses?: number }; Returns: number };
       aplicar_pacote: { Args: { p_inquilino: string }; Returns: undefined };
       assinar_contrato: {

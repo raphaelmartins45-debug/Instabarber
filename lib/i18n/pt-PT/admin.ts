@@ -30,6 +30,12 @@ export const admin = {
     feriados: (ano: number) => `Feriados nacionais de ${ano} por carregar`,
     atividade: "Atividade recente",
     semAtividade: "Ainda sem atividade.",
+    apagarAuditoria: "Apagar auditoria com mais de 24 meses",
+    apagarAuditoriaTitulo: "Apagar os registos de auditoria antigos?",
+    apagarAuditoriaTexto:
+      "Apaga os registos de auditoria com mais de 24 meses (prazo de conservação, D-157). Não se desfaz; o próprio apagamento fica registado.",
+    auditoriaApagada: (n: number) => (n === 1 ? "1 registo apagado." : `${n} registos apagados.`),
+    erroGenerico: "Não foi possível concluir. Tente outra vez.",
   },
   barbearias: {
     titulo: "Barbearias",
