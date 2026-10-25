@@ -101,6 +101,9 @@ create table inquilinos (
   estado_pagamento              text not null default 'em_dia' check (estado_pagamento in ('em_dia','em_atraso')),
   proximo_vencimento            date,
   dominio_proprio               text unique,
+  -- Desconto na mensalidade vindo da proposta aceite (D-161); 0 enquanto os descontos estiverem desligados.
+  desconto_mensalidade_pct      numeric(5,2) not null default 0
+                                check (desconto_mensalidade_pct between 0 and 100),
   aprovado_em                   timestamptz,
   criado_em                     timestamptz not null default now(),
 
@@ -122,15 +125,20 @@ create table perfis (
   id            uuid primary key default gen_random_uuid(),
   user_id       uuid not null references auth.users(id) on delete cascade,
   inquilino_id  uuid references inquilinos(id) on delete cascade,
-  papel         text not null check (papel in ('super_admin','proprietario','profissional')),
+  -- super_admin: o dono da InstaBarber; gestor_plataforma: administrador que não gere contas;
+  -- comercial: só os seus leads (D-161). Os três não pertencem a nenhuma barbearia.
+  papel         text not null
+                check (papel in ('super_admin','gestor_plataforma','comercial','proprietario','profissional')),
   nome          text,
   email         text,
   ativo         boolean not null default true,
   criado_em     timestamptz not null default now(),
-  check ((papel = 'super_admin') = (inquilino_id is null)),
+  constraint perfis_check check ((papel in ('super_admin','gestor_plataforma','comercial')) = (inquilino_id is null)),
   unique nulls not distinct (user_id, inquilino_id, papel)
 );
 create index perfis_user on perfis (user_id) where ativo;
+-- Cada pessoa da equipa InstaBarber tem um só papel na plataforma.
+create unique index perfis_um_papel_plataforma on perfis (user_id) where inquilino_id is null;
 
 -- -----------------------------------------------------------------------------
 -- 3 · Profissionais, horários e ausências
@@ -987,6 +995,8 @@ create table leads (
   proxima_acao_em     date,
   ultimo_contacto_em  timestamptz not null default now(),
   inquilino_id        uuid references inquilinos(id) on delete set null,
+  responsavel_id      uuid references auth.users(id) on delete set null,   -- o comercial (D-161)
+  criado_por          uuid references auth.users(id) on delete set null,
   criado_em           timestamptz not null default now(),
   atualizado_em       timestamptz not null default now(),
   check (telefone is not null or email is not null),
@@ -995,6 +1005,7 @@ create table leads (
 create index leads_funil on leads (estado, proxima_acao_em);
 create index leads_email on leads (lower(email)) where email is not null;
 create index leads_telefone on leads (telefone) where telefone is not null;
+create index leads_responsavel on leads (responsavel_id, estado);
 
 create table lead_eventos (
   id          bigint generated always as identity primary key,
@@ -1061,6 +1072,10 @@ create table propostas (
   validade_dias           integer not null default 15 check (validade_dias between 1 and 90),
   valida_ate              date,
   dados                   jsonb not null default '{}',   -- fotografia completa do que foi proposto
+  -- Desconto na mensalidade e taxa de migração já com o desconto (D-161), desligados por omissão
+  desconto_mensalidade_pct numeric(5,2) not null default 0 check (desconto_mensalidade_pct between 0 and 100),
+  taxa_migracao_sem_iva   numeric(10,2) not null default 0 check (taxa_migracao_sem_iva >= 0),
+  desconto_taxa_pct       numeric(5,2) not null default 0 check (desconto_taxa_pct between 0 and 100),
   pdf_path                text,
   enviada_em              timestamptz,
   decidida_em             timestamptz,
@@ -1238,4 +1253,31 @@ create table comunicado_leituras (
   lido_por       uuid references auth.users(id) on delete set null,
   lido_em        timestamptz not null default now(),
   primary key (comunicado_id, inquilino_id)
+);
+
+-- Condições comerciais (D-161): uma só linha. Os descontos e a taxa de migração estão
+-- desligados até a Performa LAB os ligar; os limites valem para o comercial.
+create table configuracao_comercial (
+  id                            boolean primary key default true check (id),
+  descontos_ativos              boolean not null default false,
+  desconto_max_mensalidade_pct  numeric(5,2) not null default 20
+                                check (desconto_max_mensalidade_pct between 0 and 100),
+  taxa_migracao_ativa           boolean not null default false,
+  taxa_migracao_sem_iva         numeric(10,2) not null default 0 check (taxa_migracao_sem_iva >= 0),
+  desconto_max_taxa_pct         numeric(5,2) not null default 50
+                                check (desconto_max_taxa_pct between 0 and 100),
+  atualizado_por                uuid references auth.users(id) on delete set null,
+  atualizado_em                 timestamptz not null default now()
+);
+
+-- Metas mensais de cada comercial (D-161): a Performa LAB define, o comercial vê as suas.
+create table metas_comerciais (
+  id           uuid primary key default gen_random_uuid(),
+  user_id      uuid not null references auth.users(id) on delete cascade,
+  mes          date not null check (extract(day from mes) = 1),
+  leads_novos  integer not null default 0 check (leads_novos >= 0),
+  propostas    integer not null default 0 check (propostas >= 0),
+  ganhos       integer not null default 0 check (ganhos >= 0),
+  criado_em    timestamptz not null default now(),
+  unique (user_id, mes)
 );

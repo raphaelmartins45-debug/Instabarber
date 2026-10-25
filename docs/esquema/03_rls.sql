@@ -50,8 +50,15 @@ create policy perfis_ler on perfis for select using (
   user_id = auth.uid()
   or inquilino_id in (select public.inquilinos_onde(array['proprietario']))
   or (select public.e_super_admin()));
-create policy perfis_escrever on perfis for all using ((select public.e_super_admin()))
-  with check ((select public.e_super_admin()));
+-- Equipa InstaBarber (D-161). Os perfis das barbearias escrevem-se pelos administradores; os
+-- da equipa InstaBarber só pelo dono. O comercial trabalha só os leads de que é responsável.
+create policy perfis_escrever_barbearia on perfis for all
+  using (inquilino_id is not null and (select public.e_super_admin()))
+  with check (inquilino_id is not null and (select public.e_super_admin()));
+create policy perfis_escrever_plataforma on perfis for all
+  using (inquilino_id is null and (select public.e_dono_plataforma()))
+  with check (inquilino_id is null and (select public.e_dono_plataforma()));
+
 
 -- -----------------------------------------------------------------------------
 -- Equipa, horários, ausências, feriados
@@ -453,6 +460,41 @@ create policy apoio_registos_admin on apoio_registos for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 create policy comunicados_admin on comunicados for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+
+-- Comercial (D-161)
+create policy leads_comercial_ler on leads for select
+  using (id in (select public.meus_leads()));
+create policy leads_comercial_criar on leads for insert
+  with check ((select public.e_comercial()) and responsavel_id = (select auth.uid()));
+create policy leads_comercial_alterar on leads for update
+  using (id in (select public.meus_leads()))
+  with check (responsavel_id = (select auth.uid()));
+create policy lead_eventos_comercial_ler on lead_eventos for select
+  using (lead_id in (select public.meus_leads()));
+create policy lead_eventos_comercial_criar on lead_eventos for insert
+  with check (lead_id in (select public.meus_leads()) and criado_por = (select auth.uid()));
+create policy briefings_comercial on briefings for all
+  using (lead_id in (select public.meus_leads()))
+  with check (lead_id in (select public.meus_leads()));
+create policy propostas_comercial_ler on propostas for select
+  using (lead_id in (select public.meus_leads()));
+create policy contratos_comercial_ler on contratos for select
+  using (lead_id in (select public.meus_leads()));
+create policy modelos_comercial_ler on modelos_documento for select
+  using (estado = 'aprovado' and (select public.e_comercial()));
+
+create policy configuracao_comercial_admin on configuracao_comercial for all
+  using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+create policy configuracao_comercial_ler on configuracao_comercial for select
+  using ((select public.e_comercial()));
+create policy metas_comerciais_admin on metas_comerciais for all
+  using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+create policy metas_comerciais_ler on metas_comerciais for select
+  using (user_id = (select auth.uid()) and (select public.e_comercial()));
+
+create policy storage_comercial_leads on storage.objects for all
+  using (bucket_id = 'comercial' and (select public.e_comercial()) and public.pasta_lead_acessivel(name))
+  with check (bucket_id = 'comercial' and (select public.e_comercial()) and public.pasta_lead_acessivel(name));
 
 create policy storage_comercial on storage.objects for all
   using (bucket_id = 'comercial' and (select public.e_super_admin()))

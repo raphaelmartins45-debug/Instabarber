@@ -960,6 +960,40 @@ export type Database = {
           },
         ];
       };
+      configuracao_comercial: {
+        Row: {
+          atualizado_em: string;
+          atualizado_por: string | null;
+          desconto_max_mensalidade_pct: number;
+          desconto_max_taxa_pct: number;
+          descontos_ativos: boolean;
+          id: boolean;
+          taxa_migracao_ativa: boolean;
+          taxa_migracao_sem_iva: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          atualizado_em?: string;
+          atualizado_por?: string | null;
+          desconto_max_mensalidade_pct?: number;
+          desconto_max_taxa_pct?: number;
+          descontos_ativos?: boolean;
+          id?: boolean;
+          taxa_migracao_ativa?: boolean;
+          taxa_migracao_sem_iva?: number;
+        };
+        Update: {
+          atualizado_em?: string;
+          atualizado_por?: string | null;
+          desconto_max_mensalidade_pct?: number;
+          desconto_max_taxa_pct?: number;
+          descontos_ativos?: boolean;
+          id?: boolean;
+          taxa_migracao_ativa?: boolean;
+          taxa_migracao_sem_iva?: number;
+        };
+        Relationships: [];
+      };
       contas_pagar: {
         Row: {
           criado_em: string;
@@ -2045,6 +2079,7 @@ export type Database = {
           criado_em: string;
           desconto_aniversario_ativo: boolean;
           desconto_aniversario_percent: number | null;
+          desconto_mensalidade_pct: number;
           descricao: string | null;
           dias_descanso: number[];
           dominio_proprio: string | null;
@@ -2107,6 +2142,7 @@ export type Database = {
           criado_em?: string;
           desconto_aniversario_ativo?: boolean;
           desconto_aniversario_percent?: number | null;
+          desconto_mensalidade_pct?: number;
           descricao?: string | null;
           dias_descanso?: number[];
           dominio_proprio?: string | null;
@@ -2168,6 +2204,7 @@ export type Database = {
           criado_em?: string;
           desconto_aniversario_ativo?: boolean;
           desconto_aniversario_percent?: number | null;
+          desconto_mensalidade_pct?: number;
           descricao?: string | null;
           dias_descanso?: number[];
           dominio_proprio?: string | null;
@@ -2277,6 +2314,7 @@ export type Database = {
           atualizado_em: string;
           cidade: string | null;
           criado_em: string;
+          criado_por: string | null;
           email: string | null;
           estado: string;
           id: string;
@@ -2288,6 +2326,7 @@ export type Database = {
           origem: string;
           proxima_acao: string | null;
           proxima_acao_em: string | null;
+          responsavel_id: string | null;
           telefone: string | null;
           ultimo_contacto_em: string;
         };
@@ -2296,6 +2335,7 @@ export type Database = {
           atualizado_em?: string;
           cidade?: string | null;
           criado_em?: string;
+          criado_por?: string | null;
           email?: string | null;
           estado?: string;
           id?: string;
@@ -2307,6 +2347,7 @@ export type Database = {
           origem?: string;
           proxima_acao?: string | null;
           proxima_acao_em?: string | null;
+          responsavel_id?: string | null;
           telefone?: string | null;
           ultimo_contacto_em?: string;
         };
@@ -2314,6 +2355,7 @@ export type Database = {
           atualizado_em?: string;
           cidade?: string | null;
           criado_em?: string;
+          criado_por?: string | null;
           email?: string | null;
           estado?: string;
           id?: string;
@@ -2325,6 +2367,7 @@ export type Database = {
           origem?: string;
           proxima_acao?: string | null;
           proxima_acao_em?: string | null;
+          responsavel_id?: string | null;
           telefone?: string | null;
           ultimo_contacto_em?: string;
         };
@@ -2770,6 +2813,37 @@ export type Database = {
             referencedColumns: ["inquilino_id", "id"];
           },
         ];
+      };
+      metas_comerciais: {
+        Row: {
+          criado_em: string;
+          ganhos: number;
+          id: string;
+          leads_novos: number;
+          mes: string;
+          propostas: number;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          criado_em?: string;
+          ganhos?: number;
+          id?: string;
+          leads_novos?: number;
+          mes: string;
+          propostas?: number;
+          user_id: string;
+        };
+        Update: {
+          criado_em?: string;
+          ganhos?: number;
+          id?: string;
+          leads_novos?: number;
+          mes?: string;
+          propostas?: number;
+          user_id?: string;
+        };
+        Relationships: [];
       };
       metas_faturacao: {
         Row: {
@@ -3947,6 +4021,8 @@ export type Database = {
           dados: NonNullable<Json>;
           decidida_em: string | null;
           desafio_90: boolean;
+          desconto_mensalidade_pct: number;
+          desconto_taxa_pct: number;
           dominio_proprio: boolean;
           enviada_em: string | null;
           estado: string;
@@ -3960,6 +4036,7 @@ export type Database = {
           periodicidade: string;
           plano: string;
           profissionais: number;
+          taxa_migracao_sem_iva: number;
           valida_ate: string | null;
           validade_dias: number;
           valor_periodo_com_iva: number;
@@ -3974,6 +4051,8 @@ export type Database = {
           dados?: NonNullable<Json>;
           decidida_em?: string | null;
           desafio_90?: boolean;
+          desconto_mensalidade_pct?: number;
+          desconto_taxa_pct?: number;
           dominio_proprio?: boolean;
           enviada_em?: string | null;
           estado?: string;
@@ -3987,6 +4066,7 @@ export type Database = {
           periodicidade?: string;
           plano: string;
           profissionais: number;
+          taxa_migracao_sem_iva?: number;
           valida_ate?: string | null;
           validade_dias?: number;
           valor_periodo_com_iva: number;
@@ -4000,6 +4080,8 @@ export type Database = {
           dados?: NonNullable<Json>;
           decidida_em?: string | null;
           desafio_90?: boolean;
+          desconto_mensalidade_pct?: number;
+          desconto_taxa_pct?: number;
           dominio_proprio?: boolean;
           enviada_em?: string | null;
           estado?: string;
@@ -4013,6 +4095,7 @@ export type Database = {
           periodicidade?: string;
           plano?: string;
           profissionais?: number;
+          taxa_migracao_sem_iva?: number;
           valida_ate?: string | null;
           validade_dias?: number;
           valor_periodo_com_iva?: number;
@@ -4484,6 +4567,8 @@ export type Database = {
           dados: Json | null;
           decidida_em: string | null;
           desafio_90: boolean | null;
+          desconto_mensalidade_pct: number | null;
+          desconto_taxa_pct: number | null;
           dominio_proprio: boolean | null;
           enviada_em: string | null;
           estado: string | null;
@@ -4498,6 +4583,7 @@ export type Database = {
           periodicidade: string | null;
           plano: string | null;
           profissionais: number | null;
+          taxa_migracao_sem_iva: number | null;
           valida_ate: string | null;
           validade_dias: number | null;
           valor_periodo_com_iva: number | null;
@@ -4512,6 +4598,8 @@ export type Database = {
           dados?: Json | null;
           decidida_em?: string | null;
           desafio_90?: boolean | null;
+          desconto_mensalidade_pct?: number | null;
+          desconto_taxa_pct?: number | null;
           dominio_proprio?: boolean | null;
           enviada_em?: string | null;
           estado?: string | null;
@@ -4526,6 +4614,7 @@ export type Database = {
           periodicidade?: string | null;
           plano?: string | null;
           profissionais?: number | null;
+          taxa_migracao_sem_iva?: number | null;
           valida_ate?: string | null;
           validade_dias?: number | null;
           valor_periodo_com_iva?: number | null;
@@ -4539,6 +4628,8 @@ export type Database = {
           dados?: Json | null;
           decidida_em?: string | null;
           desafio_90?: boolean | null;
+          desconto_mensalidade_pct?: number | null;
+          desconto_taxa_pct?: number | null;
           dominio_proprio?: boolean | null;
           enviada_em?: string | null;
           estado?: string | null;
@@ -4553,6 +4644,7 @@ export type Database = {
           periodicidade?: string | null;
           plano?: string | null;
           profissionais?: number | null;
+          taxa_migracao_sem_iva?: number | null;
           valida_ate?: string | null;
           validade_dias?: number | null;
           valor_periodo_com_iva?: number | null;
@@ -5096,6 +5188,18 @@ export type Database = {
         Args: { p_marcacao: string; p_motivo?: string };
         Returns: undefined;
       };
+      carteira_comercial: {
+        Args: { p_user?: string };
+        Returns: {
+          aprovado_em: string;
+          estado: string;
+          estado_pagamento: string;
+          inquilino_id: string;
+          lead_id: string;
+          nome: string;
+          plano: string;
+        }[];
+      };
       cliente_por_telefone: {
         Args: {
           p_consentimento?: boolean;
@@ -5151,6 +5255,8 @@ export type Database = {
         Args: { p_aceite: boolean; p_motivo?: string; p_proposta: string };
         Returns: undefined;
       };
+      e_comercial: { Args: Record<PropertyKey, never>; Returns: boolean };
+      e_dono_plataforma: { Args: Record<PropertyKey, never>; Returns: boolean };
       e_sistema: { Args: Record<PropertyKey, never>; Returns: boolean };
       e_super_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       eliminar_inquilino: {
@@ -5197,7 +5303,9 @@ export type Database = {
         Args: { p_detalhes?: Json; p_lead: string; p_texto: string; p_tipo: string };
         Returns: undefined;
       };
+      exigir_comercial_ou_admin: { Args: Record<PropertyKey, never>; Returns: undefined };
       exigir_gestor: { Args: { p_inquilino: string }; Returns: undefined };
+      exigir_lead: { Args: { p_lead: string }; Returns: undefined };
       exigir_super_admin: { Args: Record<PropertyKey, never>; Returns: undefined };
       funcionalidade_ativa: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };
       gerar_contrato: {
@@ -5212,6 +5320,7 @@ export type Database = {
         Returns: string;
       };
       instante_lisboa: { Args: { p_dia: string; p_hora: string }; Returns: string };
+      lead_acessivel: { Args: { p_lead: string }; Returns: boolean };
       ler_convite_adesao: { Args: { p_token: string }; Returns: Json };
       levantar_pedido: { Args: { p_pedido: string }; Returns: undefined };
       ligar_contrato_inquilino: {
@@ -5245,6 +5354,7 @@ export type Database = {
           titulo: string;
         }[];
       };
+      meus_leads: { Args: Record<PropertyKey, never>; Returns: string[] };
       meus_profissionais: { Args: Record<PropertyKey, never>; Returns: string[] };
       modulo_ativo: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };
       mudar_estado_lead: {
@@ -5252,6 +5362,7 @@ export type Database = {
         Returns: undefined;
       };
       nif_valido: { Args: { p_nif: string }; Returns: boolean };
+      pasta_lead_acessivel: { Args: { p_nome: string }; Returns: boolean };
       pedir_codigo_acesso: {
         Args: { p_inquilino: string; p_telefone: string };
         Returns: undefined;

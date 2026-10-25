@@ -91,3 +91,6 @@ insert into storage.buckets (id, name, public) values
   ('fichas',  'fichas',  false),
   ('comercial', 'comercial', false)
 on conflict (id) do nothing;
+
+-- Condições comerciais (D-161): descontos e taxa de migração desligados.
+insert into configuracao_comercial default values on conflict (id) do nothing;

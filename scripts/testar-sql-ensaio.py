@@ -20,7 +20,7 @@ from pathlib import Path
 PASTA = Path(__file__).resolve().parent.parent / "docs" / "esquema" / "testes"
 FICHEIROS = ["10_isolamento", "20_agenda", "30_regras", "40_comercial", "50_financas",
              "60_expansao", "70_admin", "80_painel", "90_cliente", "95_mensagens_filas",
-             "96_apoio_comunicados", "97_suspensao", "98_comercial_site", "99_retencao"]
+             "96_apoio_comunicados", "96b_equipa_plataforma", "97_suspensao", "98_comercial_site", "99_retencao"]
 
 
 def consultar(sql: str) -> None:
