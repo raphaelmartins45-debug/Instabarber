@@ -1,5 +1,6 @@
 "use client";
 
+import { CampoFicheiro } from "@/components/nucleo/campo-ficheiro";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { definirImagemMarca } from "@/app/(admin)/admin/(protegido)/barbearias/[id]/acoes";
@@ -83,16 +84,16 @@ export function ImagensMarca({
               <img key={u} src={u} alt="" className="size-20 rounded-md border object-contain" />
             ))}
           </div>
-          <p className="text-xs text-muted-foreground">{img.ajuda}</p>
-          <label className="text-sm">
-            <input
-              type="file"
-              className="text-sm"
-              accept={REGRAS_IMAGEM[img.tipo].formatos.join(",")}
-              disabled={aCarregar}
-              onChange={(e) => carregar(img, e.target.files?.[0])}
-            />
-          </label>
+          <CampoFicheiro
+            rotulo={
+              img.urls.length ? textos.ficheiros.trocarImagem : textos.ficheiros.escolherImagem
+            }
+            ajuda={img.ajuda}
+            accept={REGRAS_IMAGEM[img.tipo].formatos.join(",")}
+            imagem
+            aCarregar={aCarregar}
+            aoEscolher={(f) => carregar(img, f)}
+          />
           {img.urls.length ? (
             <Button
               variant="ghost"

@@ -1,5 +1,8 @@
 "use client";
 
+import { IMAGEM_PUBLICA } from "@/lib/repositorios/painel/imagens";
+import { descreverFicheiro } from "@/lib/formatacao/ficheiros";
+import { CampoFicheiro } from "@/components/nucleo/campo-ficheiro";
 import { useRef, useState, useTransition } from "react";
 import {
   acrescentarAoPortfolio,
@@ -69,16 +72,25 @@ export function Portfolio({
         ))}
       </ul>
       {fotos.length < MAXIMO ? (
-        <form ref={formulario} action={acrescentar} className="flex flex-wrap items-center gap-2">
+        <form ref={formulario} action={acrescentar} className="grid gap-2">
           <input type="hidden" name="profissionalId" value={profissionalId} />
-          <input
-            name="foto"
-            type="file"
+          <CampoFicheiro
+            rotulo={t.acrescentarFoto}
+            ajuda={descreverFicheiro({
+              formatos: ["image/jpeg", "image/webp"],
+              maxBytes: IMAGEM_PUBLICA.maxBytes,
+            })}
             accept="image/jpeg,image/webp"
-            className="text-sm"
+            name="foto"
             required
+            imagem
           />
-          <Button type="submit" variant="outline" className="h-11" disabled={aGuardar}>
+          <Button
+            type="submit"
+            variant="outline"
+            className="h-11 justify-self-start"
+            disabled={aGuardar}
+          >
             {t.acrescentarFoto}
           </Button>
         </form>

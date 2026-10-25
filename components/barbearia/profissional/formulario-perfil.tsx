@@ -1,5 +1,8 @@
 "use client";
 
+import { IMAGEM_PUBLICA } from "@/lib/repositorios/painel/imagens";
+import { descreverFicheiro } from "@/lib/formatacao/ficheiros";
+import { CampoFicheiro } from "@/components/nucleo/campo-ficheiro";
 import { useState, useTransition } from "react";
 import { guardarPerfil } from "@/app/(app)/app/(painel)/equipa/[id]/perfil/acoes";
 import { Aviso } from "@/components/nucleo/aviso";
@@ -8,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
 
 const t = textos.profissional.perfil;
-const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
 
 /** Nome apresentado e fotografia do barbeiro (a que aparece na marcação pública). */
 export function FormularioPerfil({
@@ -47,15 +49,18 @@ export function FormularioPerfil({
           // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage, tamanho fixo
           <img src={fotoUrl} alt="" className="size-16 rounded-full border object-cover" />
         ) : null}
-        <label className="grid gap-1.5">
-          <span className={etiqueta}>{t.foto}</span>
-          <input
-            name="foto"
-            type="file"
+        <div className="min-w-0 flex-1">
+          <CampoFicheiro
+            rotulo={t.foto}
+            ajuda={descreverFicheiro({
+              formatos: ["image/jpeg", "image/png", "image/webp"],
+              maxBytes: IMAGEM_PUBLICA.maxBytes,
+            })}
             accept="image/jpeg,image/webp,image/png"
-            className="text-sm"
+            name="foto"
+            imagem
           />
-        </label>
+        </div>
       </div>
       {aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null}
       <Button

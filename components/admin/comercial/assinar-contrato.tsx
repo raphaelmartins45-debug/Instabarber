@@ -1,5 +1,7 @@
 "use client";
 
+import { descreverFicheiro } from "@/lib/formatacao/ficheiros";
+import { CampoFicheiro } from "@/components/nucleo/campo-ficheiro";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import {
@@ -58,12 +60,11 @@ export function AssinarContrato({ leadId, id }: { leadId: string; id: string }) 
           rotulo={t.dataAssinatura}
           required
         />
-        <Campo
-          id={`assinatura-ficheiro-${id}`}
-          name="ficheiro"
-          type="file"
-          accept="application/pdf"
+        <CampoFicheiro
           rotulo={t.ficheiroAssinado}
+          ajuda={descreverFicheiro({ formatos: ["application/pdf"] })}
+          accept="application/pdf"
+          name="ficheiro"
           required
         />
       </div>

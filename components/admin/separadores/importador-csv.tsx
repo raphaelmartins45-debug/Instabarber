@@ -1,5 +1,7 @@
 "use client";
 
+import { descreverFicheiro } from "@/lib/formatacao/ficheiros";
+import { CampoFicheiro } from "@/components/nucleo/campo-ficheiro";
 import { useState, useTransition } from "react";
 import { importar } from "@/app/(admin)/admin/(protegido)/barbearias/[id]/acoes";
 import { Aviso } from "@/components/nucleo/aviso";
@@ -41,17 +43,12 @@ export function ImportadorCsv({
       <p className="text-sm text-muted-foreground">
         {tipo === "clientes" ? t.clientesAjuda : t.servicosAjuda}
       </p>
-      <label className="grid gap-1.5 text-sm">
-        <span className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
-          {t.escolher}
-        </span>
-        <input
-          type="file"
-          accept=".csv,text/csv"
-          className="text-sm"
-          onChange={(e) => escolher(e.target.files?.[0])}
-        />
-      </label>
+      <CampoFicheiro
+        rotulo={t.escolher}
+        ajuda={descreverFicheiro({ formatos: ["text/csv"] })}
+        accept=".csv,text/csv"
+        aoEscolher={escolher}
+      />
       {previa ? (
         <div className="grid gap-2">
           <p className="text-sm font-semibold">{t.previa(previa.validas, previa.erros.length)}</p>

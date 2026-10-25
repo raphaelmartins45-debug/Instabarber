@@ -1,5 +1,8 @@
 "use client";
 
+import { IMAGEM_PUBLICA } from "@/lib/repositorios/painel/imagens";
+import { descreverFicheiro } from "@/lib/formatacao/ficheiros";
+import { CampoFicheiro } from "@/components/nucleo/campo-ficheiro";
 import { useState, useTransition } from "react";
 import { guardarProduto } from "@/app/(app)/app/(painel)/loja/acoes";
 import { Aviso } from "@/components/nucleo/aviso";
@@ -142,12 +145,18 @@ export function FormularioProduto({ produto }: { produto: Produto | null }) {
         inputMode="numeric"
         defaultValue={String(produto?.stockMinimo ?? 0)}
       />
-      <label className="grid gap-1.5 text-sm sm:col-span-2">
-        <span className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
-          {t.produto.foto}
-        </span>
-        <input name="foto" type="file" accept="image/jpeg,image/webp" />
-      </label>
+      <div className="sm:col-span-2">
+        <CampoFicheiro
+          rotulo={t.produto.foto}
+          ajuda={descreverFicheiro({
+            formatos: ["image/jpeg", "image/webp"],
+            maxBytes: IMAGEM_PUBLICA.maxBytes,
+          })}
+          accept="image/jpeg,image/webp"
+          name="foto"
+          imagem
+        />
+      </div>
       <label className="flex min-h-11 items-center gap-2 text-sm">
         <input type="checkbox" name="ativo" defaultChecked={produto?.ativo ?? true} />
         {t.produto.ativo}

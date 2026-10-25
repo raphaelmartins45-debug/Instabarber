@@ -846,3 +846,7 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - Pedido do dono (visto no telemóvel): na página escura o logótipo aparecia preto. Regra: página escura usa o logótipo branco; página clara, o preto.
 - Componente único `components/nucleo/logotipo-marca.tsx` (os dois ficheiros no HTML; o modo escolhe o visível), usado na entrada (`cartao-acesso`), nos documentos legais e na adesão. Estes dois cabeçalhos tinham o logótipo dourado sobre fundo dourado (quase invisível) e passam a ter o fundo do cartão com a mesma regra. O cabeçalho dos painéis já seguia a regra; os e-mails mantêm o timbrado dourado.
 
+
+## D-164 · 25/10/2026 · Campo de ficheiro com botão visível, nome do ficheiro e formatos — dono
+- Pedido do dono («erro grave de ui/ux»): nos campos de carregar fotografia não aparecia o botão nem os formatos aceites.
+- Componente único `components/nucleo/campo-ficheiro.tsx`: rótulo, botão «Escolher imagem»/«Escolher ficheiro», o nome do escolhido («Nenhum ficheiro escolhido» enquanto não há) e, por baixo, formatos, tamanho máximo e dimensões mínimas, gerados por `descreverFicheiro()` em `lib/formatacao/ficheiros.ts` a partir dos mesmos limites que a validação usa (textos em `lib/i18n/pt-PT/ficheiros.ts`). Substitui os nove `<input type="file">` soltos (marca do gestor e do admin, portefólio, perfil do profissional, ficha técnica, produto da loja, importador CSV, contrato assinado). A adesão já tinha o seu carregador e fica igual.

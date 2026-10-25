@@ -1,5 +1,6 @@
 "use client";
 
+import { CampoFicheiro } from "@/components/nucleo/campo-ficheiro";
 import { useState, useTransition } from "react";
 import {
   carregarImagemMarca,
@@ -12,6 +13,13 @@ import { REGRAS_IMAGEM, verificarImagem, type TipoImagem } from "@/lib/regras/im
 
 const t = textos.sistema.marca;
 const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
+// A mesma explicação da adesão: formatos, tamanho, medidas e, no logótipo, o fundo transparente.
+const a = textos.adesao.identidade;
+const AJUDA: Record<TipoImagem, string> = {
+  logo: a.logoAjuda,
+  capa: a.capaAjuda,
+  galeria: a.galeriaAjuda,
+};
 
 /** Dimensões da imagem no browser (o SVG não tem: fica por verificar). */
 function dimensoes(ficheiro: File): Promise<{ largura?: number; altura?: number }> {
@@ -69,13 +77,14 @@ export function ImagensMarcaGestor({
           </div>
         ))}
       </div>
-      <input
-        type="file"
+      <CampoFicheiro
+        rotulo={urls.length ? textos.ficheiros.trocarImagem : rotulo}
+        ajuda={AJUDA[tipo]}
         accept={REGRAS_IMAGEM[tipo].formatos.join(",")}
-        className="text-sm"
-        disabled={aGuardar}
-        onChange={(e) => carregar(tipo, e.target.files?.[0])}
-        data-testid={`imagem-${tipo}`}
+        imagem
+        aCarregar={aGuardar}
+        aoEscolher={(f) => carregar(tipo, f)}
+        testId={`imagem-${tipo}`}
       />
     </div>
   );

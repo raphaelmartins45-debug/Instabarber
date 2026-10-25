@@ -1,5 +1,7 @@
 "use client";
 
+import { descreverFicheiro } from "@/lib/formatacao/ficheiros";
+import { CampoFicheiro } from "@/components/nucleo/campo-ficheiro";
 import { useRef, useState, useTransition } from "react";
 import { apagarNota, novaNotaTecnica } from "@/app/(app)/app/(painel)/clientes/acoes";
 import { Aviso } from "@/components/nucleo/aviso";
@@ -8,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { dataHora } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { NotaTecnica } from "@/lib/repositorios/painel/ficha-cliente";
+import { FOTO_FICHA } from "@/lib/validacao/cliente";
 
 const t = textos.clientes.tecnica;
 const erros = textos.clientes.erros;
@@ -53,15 +56,16 @@ export function FichaTecnica({
           />
           <span className="text-xs text-muted-foreground">{t.notaAjuda}</span>
         </label>
-        <label className="grid gap-1.5">
-          <span className={etiqueta}>{t.foto}</span>
-          <input
-            name="foto"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            className="text-sm"
-          />
-        </label>
+        <CampoFicheiro
+          rotulo={t.foto}
+          ajuda={descreverFicheiro({
+            formatos: Object.keys(FOTO_FICHA.tipos),
+            maxBytes: FOTO_FICHA.maxBytes,
+          })}
+          accept="image/jpeg,image/png,image/webp"
+          name="foto"
+          imagem
+        />
         {erro ? <Aviso tipo="erro">{erro}</Aviso> : null}
         <Button
           type="submit"
