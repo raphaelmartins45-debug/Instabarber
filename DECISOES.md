@@ -806,3 +806,7 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Resend:** o dono mantém o envio como está (Estados Unidos), já declarado nos documentos (D-156).
 - **Supabase fica no plano gratuito**, também com a primeira barbearia (substitui a D-137). Consequências aceites: sem cópias diárias do Supabase (a cópia semanal da P-13 é a única) e o projeto pausa ao fim de 7 dias sem pedidos; a monitorização da P-28 consulta `/api/saude` (que lê a base de dados) de 5 em 5 minutos e evita a pausa.
 - **Vercel Hobby:** a pesquisa indica que o acordo de tratamento de dados (DPA) da Vercel é para clientes com contrato (Enterprise, possivelmente Pro); no Hobby, que também não permite uso comercial (D-15), não há DPA. Fica registado como risco a resolver pelo dono com a passagem ao Pro.
+
+## D-158 · 25/10/2026 · Sem DPA da Vercel por agora — dono
+- O dono não pode assinar planos pagos agora. A Vercel fica sem acordo de tratamento de dados (DPA) até à passagem ao Pro (CLAUDE.md §8, D-15). Os DPA a tratar são os da Supabase (prioritário: guarda todos os dados), do Resend (já em vigor desde a criação da conta; guardar o PDF) e da Zoho.
+- Risco aceite pelo dono e registado: a Vercel não guarda os dados das barbearias, mas os pedidos passam pelas funções da aplicação (Frankfurt), o que para o RGPD também é tratamento; o Acordo de Subcontratação diz que os subcontratantes ulteriores ficam sujeitos às mesmas obrigações. Resolve-se com o Pro, que traz o DPA e permite uso comercial.
