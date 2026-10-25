@@ -76,6 +76,7 @@ export async function barbeariasParaComunicados(bd: ClienteBD) {
     .from("inquilinos")
     .select("id, nome, plano, estado, whatsapp, telefone")
     .in("estado", ["ativo", "suspenso"])
+    .eq("demonstracao", false)
     .order("nome");
   if (error) falhaDeLeitura("inquilinos", error);
   return data.map((b) => ({ ...b, whatsapp: b.whatsapp ?? b.telefone }));

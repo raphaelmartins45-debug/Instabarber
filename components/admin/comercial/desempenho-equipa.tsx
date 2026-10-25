@@ -11,6 +11,7 @@ export type LinhaEquipa = {
   d: Desempenho;
   meta: MetaComercial | undefined;
   carteira: number;
+  aReceberCent: number;
 };
 
 const contra = (feito: number, meta?: number) => (meta ? t.meta(feito, meta) : String(feito));
@@ -18,10 +19,10 @@ const contra = (feito: number, meta?: number) => (meta ? t.meta(feito, meta) : S
 /** O desempenho do mês de cada comercial, para o dono e o gestor (D-161). */
 export function DesempenhoEquipa({
   linhas,
-  comissaoVisivel,
+  comissoesVisiveis,
 }: {
   linhas: LinhaEquipa[];
-  comissaoVisivel: boolean;
+  comissoesVisiveis: boolean;
 }) {
   const colunas: Coluna<LinhaEquipa>[] = [
     { id: "nome", rotulo: t.colunas.comercial, valor: (l) => l.nome },
@@ -38,11 +39,11 @@ export function DesempenhoEquipa({
     { id: "ganhos", rotulo: t.colunas.ganhos, valor: (l) => contra(l.d.ganhos, l.meta?.ganhos) },
     { id: "carteira", rotulo: t.colunas.carteira, valor: (l) => String(l.carteira) },
   ];
-  if (comissaoVisivel)
+  if (comissoesVisiveis)
     colunas.push({
       id: "comissao",
       rotulo: t.colunas.comissao,
-      valor: (l) => formatarDinheiro(l.d.comissaoCent),
+      valor: (l) => formatarDinheiro(l.aReceberCent),
     });
   return (
     <TabelaCartoes

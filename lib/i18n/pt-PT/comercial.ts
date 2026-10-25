@@ -470,25 +470,17 @@ export const comercial = {
     abertos: "Leads em aberto",
     conversao: "Conversão",
     conversaoPoucos: "Com 10 leads decididos",
-    comissao: "Comissão do mês",
-    comissaoAjuda: "Taxa de migração dos contratos assinados no mês.",
     meta: (feito: number, meta: number) => `${feito} de ${meta}`,
     semMeta: "Sem meta",
     progresso: (p: number) => `${p} % da meta`,
-    carteira: "Carteira de clientes",
-    carteiraAjuda: "As barbearias dos leads que ganhou.",
     carteiraVazia: "Ainda nenhuma barbearia na carteira.",
     colunas: {
       comercial: "Comercial",
       leadsNovos: "Leads novos",
       propostas: "Propostas",
       ganhos: "Assinados",
-      comissao: "Comissão",
+      comissao: "Comissões a receber",
       carteira: "Carteira",
-      barbearia: "Barbearia",
-      plano: "Plano",
-      estado: "Estado",
-      pagamento: "Pagamento",
     },
     semComerciais: "Ainda não há comerciais. Crie as contas em «Equipa InstaBarber».",
     metas: "Metas do mês",
@@ -496,5 +488,99 @@ export const comercial = {
     guardarMeta: "Guardar metas",
     metaGuardada: "Metas guardadas.",
     erroMeta: "Use números inteiros a partir de 0.",
+  },
+  agenda: {
+    titulo: "Hoje",
+    ajuda:
+      "O que tem para fazer hoje, por ordem: clientes em risco, ações atrasadas e propostas a expirar.",
+    vazio: "Nada pendente para hoje.",
+    risco: "Barbearia da sua carteira em risco",
+    acao: (atraso: number) =>
+      atraso === 0
+        ? "Próxima ação para hoje"
+        : `Próxima ação com ${atraso} ${atraso === 1 ? "dia" : "dias"} de atraso`,
+    proposta: (numero: string, dias: number) =>
+      dias === 0
+        ? `Proposta ${numero} expira hoje`
+        : `Proposta ${numero} expira em ${dias} ${dias === 1 ? "dia" : "dias"}`,
+    abrir: "Abrir",
+    whatsapp: "WhatsApp",
+  },
+  carteiraRisco: {
+    titulo: "Carteira de clientes",
+    ajuda:
+      "As barbearias que ganhou e o estado de cada uma. Em risco ou com atenção, contacte e ajude: o cliente é seu para cuidar.",
+    colunas: { barbearia: "Barbearia", estado: "Estado", sinais: "Sinais", contacto: "Contacto" },
+    semSinais: "Sem sinais de risco",
+    contactar: "Contactar",
+  },
+  comissoes: {
+    titulo: "Comissões",
+    ajuda:
+      "A taxa de migração dos contratos que fechou. Fica pendente até a barbearia pagar a taxa; depois é paga em 10 dias.",
+    ajudaAdmin:
+      "Registe quando a barbearia pagou a taxa de migração: a comissão vence 10 dias depois. Depois marque-a paga.",
+    vazio: "Ainda não há comissões.",
+    estados: {
+      pendente: "Pendente (taxa por pagar)",
+      a_pagar: "A pagar",
+      vencida: "Vencida",
+      paga: "Paga",
+    } as Record<string, string>,
+    colunas: {
+      contrato: "Contrato",
+      barbearia: "Barbearia",
+      comercial: "Comercial",
+      valor: "Valor",
+      estado: "Estado",
+      prazo: "Prazo",
+      acoes: "",
+    },
+    vence: (data: string) => `Até ${data}`,
+    pagaEm: (data: string) => `Paga a ${data}`,
+    resumo: (pendente: string, aPagar: string) => `${pendente} pendente · ${aPagar} a receber`,
+    taxaPaga: "Taxa paga em",
+    registarTaxa: "Registar taxa paga",
+    comissaoPaga: "Comissão paga em",
+    marcarPaga: "Marcar paga",
+    guardado: "Registado.",
+    erro: "Não foi possível registar. Tente outra vez.",
+    alertaVencidas: (n: number) =>
+      n === 1 ? "1 comissão de comercial vencida" : `${n} comissões de comerciais vencidas`,
+  },
+  mensagens: {
+    titulo: "Mensagens prontas",
+    ajuda: "Abre o WhatsApp com a mensagem escrita; envie e confirme aqui para ficar no histórico.",
+    semTelefone: "Este lead não tem telemóvel.",
+    modelos: {
+      primeiro: "Primeiro contacto",
+      seguimento: "Seguimento",
+      proposta: "Lembrete da proposta",
+    } as Record<string, string>,
+    textos: {
+      primeiro: (nome: string) =>
+        `Olá ${nome}! Daqui é da InstaBarber. Recebemos o seu pedido e gostava de lhe mostrar, em 15 minutos, como pode ter agenda, clientes e faturação da barbearia num só sítio. Quando lhe dá jeito falarmos? Comercial InstaBarber`,
+      seguimento: (nome: string) =>
+        `Olá ${nome}! Sou da InstaBarber, falámos há uns dias. Ficou com alguma dúvida? Se quiser, marco uma demonstração rápida à hora que preferir. Comercial InstaBarber`,
+      proposta: (nome: string, numero: string) =>
+        `Olá ${nome}! Lembro que a proposta ${numero} da InstaBarber está quase a expirar. Quer que a revejamos juntos ou avançamos? Comercial InstaBarber`,
+      acompanhamento: (nome: string) =>
+        `Olá ${nome}! Daqui é da InstaBarber. Estou a acompanhar a sua barbearia e reparei que pode estar a aproveitar menos o sistema. Posso ajudar em alguma coisa? Comercial InstaBarber`,
+    },
+    abrir: (modelo: string) => `Abrir «${modelo}» no WhatsApp`,
+    confirmar: "Já enviei",
+    registado: "Mensagem registada no histórico.",
+    eventoTexto: (modelo: string) => `Mensagem «${modelo}» enviada por WhatsApp.`,
+  },
+  demonstracao: {
+    titulo: "Barbearia de demonstração",
+    ajuda:
+      "Uma barbearia fictícia, com agenda, clientes e serviços de exemplo, para mostrar o InstaBarber. Os dados refazem-se para hoje sempre que carregar em «Preparar».",
+    preparar: "Preparar dados de hoje",
+    preparada: "Demonstração pronta.",
+    abrirPainel: "Abrir o painel da demonstração",
+    paginaPublica: "Ver a página pública",
+    erro: "Não foi possível preparar. Tente outra vez.",
+    justificacao: "Demonstração comercial do InstaBarber.",
   },
 } as const;

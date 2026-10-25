@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ligacaoWhatsApp } from "./whatsapp";
+import { ligacaoParaTelefone, ligacaoWhatsApp } from "./whatsapp";
 
 describe("ligacaoWhatsApp", () => {
   it("tira o + e codifica a mensagem", () => {
@@ -10,5 +10,19 @@ describe("ligacaoWhatsApp", () => {
 
   it("recusa um telefone inválido", () => {
     expect(() => ligacaoWhatsApp("abc", "x")).toThrow();
+  });
+});
+
+describe("ligacaoParaTelefone", () => {
+  it("acrescenta o indicativo aos números portugueses", () => {
+    expect(ligacaoParaTelefone("912 345 678", "Olá")).toBe(
+      "https://wa.me/351912345678?text=Ol%C3%A1",
+    );
+    expect(ligacaoParaTelefone("+34612345678", "x")).toBe("https://wa.me/34612345678?text=x");
+  });
+
+  it("sem telefone ou inválido dá nulo", () => {
+    expect(ligacaoParaTelefone(null, "x")).toBeNull();
+    expect(ligacaoParaTelefone("123", "x")).toBeNull();
   });
 });

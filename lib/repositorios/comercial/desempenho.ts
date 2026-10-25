@@ -1,3 +1,4 @@
+import type { LeadAgenda, PropostaAgenda } from "@/lib/comercial/agenda";
 import type {
   ContratoDesempenho,
   LeadDesempenho,
@@ -11,19 +12,27 @@ import { falhaDeLeitura } from "../erros";
 // leem todos e definem as metas.
 
 export async function dadosDesempenho(bd: ClienteBD): Promise<{
-  leads: LeadDesempenho[];
-  propostas: PropostaDesempenho[];
+  leads: (LeadDesempenho & LeadAgenda)[];
+  propostas: (PropostaDesempenho & PropostaAgenda)[];
   contratos: ContratoDesempenho[];
 }> {
   const [l, p, c] = await Promise.all([
-    bd.from("leads").select("id, estado, responsavel_id, criado_em"),
-    bd.from("propostas").select("id, lead_id, criado_em, taxa_migracao_sem_iva"),
+    bd
+      .from("leads")
+      .select(
+        "id, estado, responsavel_id, criado_em, nome_barbearia, nome_contacto, telefone, proxima_acao, proxima_acao_em",
+      ),
+    bd.from("propostas").select("id, lead_id, criado_em, numero, estado, valida_ate"),
     bd.from("contratos").select("lead_id, proposta_id, estado, assinado_em"),
   ]);
   if (l.error) falhaDeLeitura("leads", l.error);
   if (p.error) falhaDeLeitura("propostas", p.error);
   if (c.error) falhaDeLeitura("contratos", c.error);
-  return { leads: l.data, propostas: p.data, contratos: c.data };
+  return {
+    leads: l.data.map((x) => ({ ...x, nome: x.nome_barbearia || x.nome_contacto })),
+    propostas: p.data,
+    contratos: c.data,
+  };
 }
 
 /** As metas do mês («AAAA-MM») por comercial. */

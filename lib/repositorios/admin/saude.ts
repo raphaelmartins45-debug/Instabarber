@@ -27,7 +27,8 @@ export async function dadosDeSaude(bd: ClienteBD): Promise<LinhaSaude[]> {
     bd
       .from("inquilinos")
       .select("id, nome, slug, estado, estado_pagamento, aprovado_em, logo_url")
-      .in("estado", ["ativo", "suspenso"]),
+      .in("estado", ["ativo", "suspenso"])
+      .eq("demonstracao", false),
     bd.from("servicos").select("inquilino_id, ativo"),
     bd.from("profissionais").select("inquilino_id, ativo, perfil_id"),
     bd.from("clientes").select("inquilino_id").is("anonimizado_em", null),
@@ -41,7 +42,9 @@ export async function dadosDeSaude(bd: ClienteBD): Promise<LinhaSaude[]> {
     ["marcacoes", marc],
   ] as const)
     if (r.error) falhaDeLeitura(nome, r.error);
-  const marcacoes = (marc.data ?? []).filter((m) => m.estado !== "cancelada" && m.estado !== "reservada");
+  const marcacoes = (marc.data ?? []).filter(
+    (m) => m.estado !== "cancelada" && m.estado !== "reservada",
+  );
   const dia = (iso: string) => hojeIso(new Date(iso));
   const servicos = contar(serv.data ?? [], (s) => s.ativo);
   const ativos = contar(prof.data ?? [], (p) => p.ativo);

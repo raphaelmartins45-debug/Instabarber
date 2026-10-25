@@ -590,7 +590,11 @@ Só a Performa LAB vê este registo; não entra na exportação dos dados da bar
 - **Gestor:** tudo o que o dono faz, menos gerir a equipa.
 - **Comercial:** só o Comercial dos leads de que é responsável (os que cria e os que lhe atribuem): briefing, propostas, contratos (assina os seus), convite de adesão, e «O meu desempenho» com metas, números, carteira e comissão. Não vê barbearias, finanças, modelos de contrato nem as condições comerciais.
 
-**Leads do site:** chegam sem responsável. Em `Comercial → Leads`, filtrar por «Sem responsável», abrir e escolher o comercial em «Responsável → Atribuir».
+**Leads (D-162):** enquanto não houver comerciais ativos, ficam no geral (sem responsável). O primeiro comercial que entra recebe todos os leads em aberto do geral e os novos; com dois ou mais, os novos repartem-se ao acaso. Quem é desativado passa os seus leads em aberto a outro comercial. Para mudar um lead de mãos: abrir o lead → «Responsável → Atribuir».
+
+**Comissões (D-162):** cada contrato assinado com taxa de migração gera a comissão do comercial responsável, «pendente». Em `Comercial → Desempenho → Comissões`: quando a barbearia pagar a taxa, «Registar taxa paga» (com a data); a comissão vence 10 dias depois. Depois de pagar ao comercial, «Marcar paga». As vencidas aparecem nos alertas do painel.
+
+**Demonstração (D-162):** em `Comercial` (Funil), «Preparar dados de hoje» refaz a Barbearia Demonstração com agenda, clientes e serviços fictícios (telefones +999, que não existem); «Abrir o painel da demonstração» abre-a na vista de apoio (só leitura, 30 minutos); «Ver a página pública» mostra a página de marcação. Fica fora das contas, da saúde, das métricas e dos comunicados.
 
 **Metas:** `Comercial → Desempenho → Metas do mês`: escolher o comercial e as metas (leads novos, propostas, contratos assinados).
 

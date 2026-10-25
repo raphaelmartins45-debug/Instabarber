@@ -5,6 +5,7 @@ import { ContratosLead } from "@/components/admin/comercial/contratos-lead";
 import { FormularioLead } from "@/components/admin/comercial/formulario-lead";
 import { HistoricoLead } from "@/components/admin/comercial/historico-lead";
 import { ListaPropostas } from "@/components/admin/comercial/lista-propostas";
+import { MensagensLead } from "@/components/admin/comercial/mensagens-lead";
 import { MudarEstadoLead } from "@/components/admin/comercial/mudar-estado-lead";
 import { RegistarEventoLead } from "@/components/admin/comercial/registar-evento-lead";
 import { Etiqueta } from "@/components/nucleo/etiqueta";
@@ -111,6 +112,18 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
           <Secao id="lead-estado" titulo={t.ficha.mudarEstado}>
             <div className="cartao rounded-2xl p-5">
               <MudarEstadoLead id={lead.id} atual={lead.estado} />
+            </div>
+          </Secao>
+          <Secao id="lead-mensagens" titulo={t.mensagens.titulo}>
+            <div className="cartao rounded-2xl p-5">
+              <MensagensLead
+                leadId={lead.id}
+                nome={lead.nome_contacto}
+                telefone={lead.telefone}
+                proposta={propostas.find((p) => p.estado_efetivo === "enviada")?.numero ?? null}
+                proximaAcao={lead.proxima_acao}
+                proximaAcaoEm={lead.proxima_acao_em}
+              />
             </div>
           </Secao>
           <Secao id="lead-registar" titulo={t.ficha.registar}>

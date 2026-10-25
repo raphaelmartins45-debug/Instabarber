@@ -9,9 +9,9 @@ const leads = [
   { id: "l4", estado: "novo", responsavel_id: "u-bruno", criado_em: "2026-10-06T10:00:00Z" },
 ];
 const propostas = [
-  { id: "p1", lead_id: "l1", criado_em: "2026-10-03T10:00:00Z", taxa_migracao_sem_iva: "100.00" },
-  { id: "p2", lead_id: "l2", criado_em: "2026-10-07T10:00:00Z", taxa_migracao_sem_iva: 0 },
-  { id: "p4", lead_id: "l4", criado_em: "2026-10-07T10:00:00Z", taxa_migracao_sem_iva: 50 },
+  { id: "p1", lead_id: "l1", criado_em: "2026-10-03T10:00:00Z" },
+  { id: "p2", lead_id: "l2", criado_em: "2026-10-07T10:00:00Z" },
+  { id: "p4", lead_id: "l4", criado_em: "2026-10-07T10:00:00Z" },
 ];
 const contratos = [
   { lead_id: "l1", proposta_id: "p1", estado: "assinado", assinado_em: "2026-10-20" },
@@ -20,24 +20,17 @@ const contratos = [
 
 describe("desempenhoDoMes", () => {
   it("conta só os leads do comercial, no mês", () => {
-    expect(desempenhoDoMes(ana, "2026-10", leads, propostas, contratos, true)).toEqual({
+    expect(desempenhoDoMes(ana, "2026-10", leads, propostas, contratos)).toEqual({
       leadsNovos: 2,
       propostas: 2,
       ganhos: 1,
       abertos: 1,
       conversao: null,
-      comissaoCent: 10000,
     });
   });
 
-  it("sem a taxa de migração ligada não há comissão", () => {
-    expect(desempenhoDoMes(ana, "2026-10", leads, propostas, contratos, false).comissaoCent).toBe(
-      0,
-    );
-  });
-
   it("noutro mês os números são outros", () => {
-    expect(desempenhoDoMes(ana, "2026-09", leads, propostas, contratos, true)).toMatchObject({
+    expect(desempenhoDoMes(ana, "2026-09", leads, propostas, contratos)).toMatchObject({
       leadsNovos: 1,
       propostas: 0,
       ganhos: 0,

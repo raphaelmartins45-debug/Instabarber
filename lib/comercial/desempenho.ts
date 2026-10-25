@@ -1,7 +1,5 @@
-import { centimosDeNumeric } from "@/lib/formatacao/dinheiro";
-
 // Desempenho de cada comercial (D-161), como o painel do barbeiro: números do mês contra as
-// metas, conversão e comissão (a taxa de migração dos contratos que assinou, quando ligada).
+// metas e conversão. As comissões têm tabela própria (lib/comercial/comissoes.ts, D-162).
 // Meses «AAAA-MM»; datas e instantes em ISO.
 
 export type LeadDesempenho = {
@@ -10,12 +8,7 @@ export type LeadDesempenho = {
   responsavel_id: string | null;
   criado_em: string;
 };
-export type PropostaDesempenho = {
-  id: string;
-  lead_id: string;
-  criado_em: string;
-  taxa_migracao_sem_iva: number | string;
-};
+export type PropostaDesempenho = { id: string; lead_id: string; criado_em: string };
 export type ContratoDesempenho = {
   lead_id: string;
   proposta_id: string;
@@ -30,7 +23,6 @@ export type Desempenho = {
   ganhos: number;
   abertos: number;
   conversao: number | null;
-  comissaoCent: number;
 };
 
 const doMes = (iso: string | null, mes: string) => !!iso && iso.slice(0, 7) === mes;
@@ -42,7 +34,6 @@ export function desempenhoDoMes(
   leads: LeadDesempenho[],
   propostas: PropostaDesempenho[],
   contratos: ContratoDesempenho[],
-  taxaAtiva: boolean,
 ): Desempenho {
   const meus = leads.filter((l) => l.responsavel_id === userId);
   const ids = new Set(meus.map((l) => l.id));
@@ -50,7 +41,6 @@ export function desempenhoDoMes(
     (c) => ids.has(c.lead_id) && ["assinado", "terminado"].includes(c.estado),
   );
   const assinadosNoMes = assinados.filter((c) => doMes(c.assinado_em, mes));
-  const taxa = new Map(propostas.map((p) => [p.id, centimosDeNumeric(p.taxa_migracao_sem_iva)]));
   const ganhos = meus.filter((l) => l.estado === "ganho").length;
   const decididos = ganhos + meus.filter((l) => l.estado === "perdido").length;
   return {
@@ -59,9 +49,6 @@ export function desempenhoDoMes(
     ganhos: assinadosNoMes.length,
     abertos: meus.filter((l) => !["ganho", "perdido"].includes(l.estado)).length,
     conversao: decididos >= 10 ? ganhos / decididos : null,
-    comissaoCent: taxaAtiva
-      ? assinadosNoMes.reduce((s, c) => s + (taxa.get(c.proposta_id) ?? 0), 0)
-      : 0,
   };
 }
 

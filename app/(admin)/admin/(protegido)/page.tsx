@@ -6,12 +6,14 @@ import { alertasContas } from "@/lib/financas/custos";
 import { hojeIso, somarDias } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
+import { resumoComissoes } from "@/lib/comercial/comissoes";
 import { contarAlertas, faltamFeriados } from "@/lib/regras/alertas-admin";
 import { leadParado, propostaAExpirar } from "@/lib/regras/comercial";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { receitaMensal } from "@/lib/regras/receita";
 import { apoioEmAberto } from "@/lib/repositorios/admin/apoio";
 import { listarBarbearias } from "@/lib/repositorios/admin/barbearias";
+import { listarComissoes } from "@/lib/repositorios/comercial/comissoes";
 import { listarLeads, validadesEnviadas } from "@/lib/repositorios/comercial/leads";
 import { contarFeriadosNacionais, datasFeriadosNacionais } from "@/lib/repositorios/feriados";
 import { listarContas } from "@/lib/repositorios/financas";
@@ -26,7 +28,7 @@ export default async function PainelGeral() {
   const bd = await criarClienteServidor();
   const hoje = hojeIso();
   const proximoAno = Number(hoje.slice(0, 4)) + 1;
-  const [barbearias, pendentes, feriados, leads, validades, feriadosRecentes, contas, apoio] =
+  const [todas, pendentes, feriados, leads, validades, feriadosRecentes, contas, apoio, comissoes] =
     await Promise.all([
       listarBarbearias(bd),
       listarPedidos(bd),
@@ -36,7 +38,11 @@ export default async function PainelGeral() {
       datasFeriadosNacionais(bd, somarDias(hoje, -60), hoje),
       listarContas(bd),
       apoioEmAberto(bd),
+      listarComissoes(bd),
     ]);
+  // A barbearia de demonstração não conta nas contas nem nos alertas (D-162).
+  const barbearias = todas.filter((b) => !b.demonstracao);
+  const vencidas = resumoComissoes(comissoes, hoje).vencidas;
   const contasAlerta = alertasContas(contas, somarDias(hoje, 7));
   const parados = leads.filter((l) =>
     leadParado(
@@ -73,6 +79,12 @@ export default async function PainelGeral() {
             apoio.barbearias.length === 1
               ? `/admin/barbearias/${apoio.barbearias[0]}/apoio`
               : "/admin/barbearias",
+        }
+      : null,
+    vencidas
+      ? {
+          texto: textos.comercial.comissoes.alertaVencidas(vencidas),
+          href: "/admin/comercial/desempenho#comissoes",
         }
       : null,
     contasAlerta.atrasadas

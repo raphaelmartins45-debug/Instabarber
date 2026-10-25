@@ -202,6 +202,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `clube_servicos`
 - `clubes`
 - `codigos_acesso`
+- `comissoes_comerciais`
 - `comissoes_servico`
 - `comunicado_leituras`
 - `comunicados`
@@ -286,6 +287,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `criar_pedido_loja()`
 - `criar_proposta()`
 - `decidir_proposta()`
+- `distribuir_leads_comercial()`
 - `e_comercial()`
 - `e_dono_plataforma()`
 - `e_sistema()`
@@ -293,6 +295,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `eliminar_inquilino()`
 - `entrar_fila_espera()`
 - `entrar_fila_presencial()`
+- `escolher_comercial()`
 - `estado_fila_presencial()`
 - `evento_lead()`
 - `exigir_comercial_ou_admin()`
@@ -315,6 +318,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `limitar_profissionais()`
 - `marcacao_online_bloqueada()`
 - `marcacoes_antes_gravar()`
+- `marcar_comissao_paga()`
 - `marcar_comunicado_lido()`
 - `marcar_contrato_enviado()`
 - `marcar_falta()`
@@ -334,6 +338,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `pode_criar_acesso_direto()`
 - `pode_marcar_online()`
 - `posicao_fila_espera()`
+- `preparar_demonstracao()`
 - `preparar_lead()`
 - `preparar_lembrete_vencimento()`
 - `procurar_cliente_por_telefone()`
@@ -349,8 +354,10 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `registar_email_confirmacao()`
 - `registar_email_lembrete()`
 - `registar_evento_lead()`
+- `registar_taxa_paga()`
 - `renovar_subscricao()`
 - `reservar_vaga()`
+- `saude_carteira()`
 - `submeter_lead()`
 - `submeter_pedido_adesao()`
 - `usar_cartao_oferta()`

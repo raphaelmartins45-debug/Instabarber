@@ -166,7 +166,8 @@ export async function barbeariasParaFinancas(
     .select(
       "id, nome, plano, periodicidade, profissionais_contratados, dominio_proprio, desconto_mensalidade_pct, estado, estado_pagamento, aprovado_em",
     )
-    .neq("estado", "pendente");
+    .neq("estado", "pendente")
+    .eq("demonstracao", false);
   if (error) falhaDeLeitura("inquilinos", error);
   const canceladas = data.filter((b) => b.estado === "cancelado").map((b) => b.id);
   const saidas = new Map<string, string>();

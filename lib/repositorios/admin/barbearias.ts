@@ -27,11 +27,13 @@ export type LinhaBarbearia = Pick<
   | "proximo_vencimento"
   | "profissionais_contratados"
   | "dominio_proprio"
+  | "desconto_mensalidade_pct"
+  | "demonstracao"
   | "aprovado_em"
 > & { funcionalidades_ativas: number };
 
 const COLUNAS =
-  "id, nome, slug, plano, periodicidade, estado, estado_pagamento, proximo_vencimento, profissionais_contratados, dominio_proprio, desconto_mensalidade_pct, aprovado_em, inquilino_funcionalidades(count)";
+  "id, nome, slug, plano, periodicidade, estado, estado_pagamento, proximo_vencimento, profissionais_contratados, dominio_proprio, desconto_mensalidade_pct, demonstracao, aprovado_em, inquilino_funcionalidades(count)";
 
 export async function listarBarbearias(
   bd: ClienteBD,

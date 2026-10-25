@@ -40,9 +40,12 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   await comercial.goto("/admin/comercial/leads/novo");
   await comercial.getByLabel("Nome do contacto").fill(`Contacto ${projeto}`);
   await comercial.getByLabel("Barbearia").fill(lead);
-  await comercial.getByLabel("Telemóvel").fill(`93${Date.now() % 10000000}`);
+  await comercial
+    .getByLabel("Telemóvel")
+    .fill(`93${String(Date.now() % 10000000).padStart(7, "0")}`);
   await comercial.getByRole("button", { name: "Criar lead" }).click();
   await expect(comercial.getByTestId("lead-nome")).toHaveText(lead);
+  const fichaLead = comercial.url();
   await expect(comercial.getByRole("button", { name: "Atribuir" })).toHaveCount(0);
 
   // O comercial faz o briefing e a proposta do seu lead, sem descontos (desligados).
@@ -68,15 +71,29 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   await comercial.getByRole("button", { name: "Marcar como enviada" }).click();
   await expect(comercial.getByTestId("propostas-lead")).toContainText("Enviada");
 
+  // Mensagens prontas (D-162): abre o WhatsApp e confirma à mão; fica no histórico.
+  await comercial.goto(fichaLead);
+  const [conversa] = await Promise.all([
+    comercial.context().waitForEvent("page"),
+    comercial.getByRole("link", { name: /Primeiro contacto/ }).click(),
+  ]);
+  expect(conversa.url()).toMatch(/wa\.me|whatsapp\.com/);
+  await conversa.close();
+  await comercial.getByRole("button", { name: "Já enviei" }).click();
+  await expect(comercial.getByText("Mensagem registada no histórico.")).toBeVisible();
+  await expect(comercial.getByTestId("historico-lead")).toContainText("«Primeiro contacto»");
+
+  // Só os leads dele: nunca os que o comercial do outro projeto criou.
+  const outro = projeto === "computador" ? "telemovel" : "computador";
   await comercial.goto("/admin/comercial/leads");
   await expect(comercial.getByTestId("lead").filter({ visible: true }).first()).toBeVisible();
-  // Só os leads dele: todos os que vê foram criados por ele neste ensaio.
-  for (const linha of await comercial.getByTestId("lead").filter({ visible: true }).all())
-    await expect(linha).toContainText(`Contacto ${projeto}`);
+  await expect(comercial.getByText(`Contacto ${outro}`)).toHaveCount(0);
 
   await comercial.goto("/admin/comercial/desempenho");
   await expect(comercial.getByRole("heading", { name: /O meu desempenho/ })).toBeVisible();
   await expect(comercial.getByTestId("desempenho")).toContainText("Leads novos");
+  await expect(comercial.getByRole("heading", { name: "Hoje" })).toBeVisible();
+  await expect(comercial.getByRole("heading", { name: "Carteira de clientes" })).toBeVisible();
   await comercial.context().close();
 
   // Gestor: administra, vê o lead e o responsável, mas não gere a equipa.
@@ -108,6 +125,17 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   await membro.getByRole("button", { name: "Desativar" }).click();
   await dono.getByRole("alertdialog").getByRole("button", { name: "Desativar" }).click();
   await expect(membro).toContainText("Desativada");
+
+  // Barbearia de demonstração (D-162): uma só para todos, por isso só num dos projetos.
+  if (projeto === "computador") {
+    await dono.goto("/admin/comercial");
+    await dono.getByRole("button", { name: "Preparar dados de hoje" }).click();
+    await expect(dono.getByText("Demonstração pronta.")).toBeVisible();
+    await dono.getByRole("button", { name: "Abrir o painel da demonstração" }).click();
+    await expect(dono).toHaveURL(/\/app/);
+    await expect(dono.getByText(/Barbearia Demonstração/).first()).toBeVisible();
+    await dono.goto("/admin/equipa");
+  }
 
   await dono.getByLabel("E-mail (@instabarber.pt)").fill("alguem@gmail.com");
   await dono.getByLabel("Nome").fill("Alguém");
