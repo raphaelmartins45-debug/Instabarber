@@ -497,6 +497,11 @@ create policy storage_comercial_leads on storage.objects for all
   using (bucket_id = 'comercial' and (select public.e_comercial()) and public.pasta_lead_acessivel(name))
   with check (bucket_id = 'comercial' and (select public.e_comercial()) and public.pasta_lead_acessivel(name));
 
+-- Comissões (D-162): os administradores leem (política *_admin_ler) e escrevem pelas funções;
+-- o comercial vê as suas.
+create policy comissoes_comercial_ler on comissoes_comerciais for select
+  using (comercial_id = (select auth.uid()) and (select public.e_comercial()));
+
 create policy storage_comercial on storage.objects for all
   using (bucket_id = 'comercial' and (select public.e_super_admin()))
   with check (bucket_id = 'comercial' and (select public.e_super_admin()));

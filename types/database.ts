@@ -769,6 +769,51 @@ export type Database = {
           },
         ];
       };
+      comissoes_comerciais: {
+        Row: {
+          comercial_id: string | null;
+          contrato_id: string;
+          criado_em: string;
+          estado: string;
+          id: string;
+          paga_em: string | null;
+          taxa_paga_em: string | null;
+          valor: number;
+          vence_em: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          comercial_id?: string | null;
+          contrato_id: string;
+          criado_em?: string;
+          estado?: string;
+          id?: string;
+          paga_em?: string | null;
+          taxa_paga_em?: string | null;
+          valor: number;
+          vence_em?: string | null;
+        };
+        Update: {
+          comercial_id?: string | null;
+          contrato_id?: string;
+          criado_em?: string;
+          estado?: string;
+          id?: string;
+          paga_em?: string | null;
+          taxa_paga_em?: string | null;
+          valor?: number;
+          vence_em?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comissoes_comerciais_contrato_id_fkey";
+            columns: ["contrato_id"];
+            isOneToOne: true;
+            referencedRelation: "contratos";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       comissoes_servico: {
         Row: {
           criado_em: string;
@@ -2077,6 +2122,7 @@ export type Database = {
           cidade: string | null;
           codigo_postal: string | null;
           criado_em: string;
+          demonstracao: boolean;
           desconto_aniversario_ativo: boolean;
           desconto_aniversario_percent: number | null;
           desconto_mensalidade_pct: number;
@@ -2140,6 +2186,7 @@ export type Database = {
           cidade?: string | null;
           codigo_postal?: string | null;
           criado_em?: string;
+          demonstracao?: boolean;
           desconto_aniversario_ativo?: boolean;
           desconto_aniversario_percent?: number | null;
           desconto_mensalidade_pct?: number;
@@ -2202,6 +2249,7 @@ export type Database = {
           cidade?: string | null;
           codigo_postal?: string | null;
           criado_em?: string;
+          demonstracao?: boolean;
           desconto_aniversario_ativo?: boolean;
           desconto_aniversario_percent?: number | null;
           desconto_mensalidade_pct?: number;
@@ -5289,6 +5337,7 @@ export type Database = {
           posicao: number;
         }[];
       };
+      escolher_comercial: { Args: Record<PropertyKey, never>; Returns: string };
       estado_fila_presencial: {
         Args: { p_entrada: string };
         Returns: {
@@ -5329,6 +5378,7 @@ export type Database = {
         Returns: undefined;
       };
       marcacao_online_bloqueada: { Args: { p_cliente: string }; Returns: boolean };
+      marcar_comissao_paga: { Args: { p_comissao: string; p_data: string }; Returns: undefined };
       marcar_comunicado_lido: {
         Args: { p_comunicado: string; p_inquilino: string };
         Returns: undefined;
@@ -5371,6 +5421,7 @@ export type Database = {
       pode_criar_acesso_direto: { Args: { p_cliente: string }; Returns: boolean };
       pode_marcar_online: { Args: { p_cliente: string }; Returns: boolean };
       posicao_fila_espera: { Args: { p_entrada: string }; Returns: number };
+      preparar_demonstracao: { Args: Record<PropertyKey, never>; Returns: string };
       preparar_lembrete_vencimento: {
         Args: { p_canal: string; p_conteudo: string; p_inquilino: string };
         Returns: string;
@@ -5435,6 +5486,7 @@ export type Database = {
         };
         Returns: undefined;
       };
+      registar_taxa_paga: { Args: { p_comissao: string; p_data: string }; Returns: undefined };
       renovar_subscricao: { Args: { p_subscricao: string }; Returns: string };
       reservar_vaga: {
         Args: { p_inicio: string; p_inquilino: string; p_profissional?: string; p_servico: string };
@@ -5446,6 +5498,29 @@ export type Database = {
           token: string;
           valor_cobrado: number;
           valor_tabela: number;
+        }[];
+      };
+      saude_carteira: {
+        Args: { p_user?: string };
+        Returns: {
+          aprovada_em: string;
+          clientes: number;
+          concluidas: number;
+          estado: string;
+          estado_pagamento: string;
+          inquilino_id: string;
+          marcacoes_30: number;
+          marcacoes_anteriores_30: number;
+          marcacoes_online: number;
+          marcacoes_total: number;
+          nome: string;
+          profissionais_ativos: number;
+          profissionais_com_acesso: number;
+          responsavel: string;
+          servicos_ativos: number;
+          telefone: string;
+          tem_logotipo: boolean;
+          ultima_marcacao: string;
         }[];
       };
       submeter_lead: { Args: { p: Json }; Returns: boolean };

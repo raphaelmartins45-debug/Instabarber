@@ -47,6 +47,8 @@ select teste.ok((select nome from perfis where user_id = '10000000-0000-0000-000
 insert into leads (id, nome_contacto, telefone, responsavel_id) values
   ('e0000000-0000-0000-0000-000000000001', 'Do Bruno', '912000001', '10000000-0000-0000-0000-00000000000b'),
   ('e0000000-0000-0000-0000-000000000002', 'Sem dono', '912000002', null);
+-- Com comerciais ativos o lead novo vai para um deles (D-162); este fica no geral de propósito.
+update leads set responsavel_id = null where id = 'e0000000-0000-0000-0000-000000000002';
 
 -- Comercial ------------------------------------------------------------------
 select teste.como('10000000-0000-0000-0000-00000000000a', 'aal2');

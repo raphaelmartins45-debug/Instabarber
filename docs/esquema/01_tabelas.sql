@@ -104,6 +104,8 @@ create table inquilinos (
   -- Desconto na mensalidade vindo da proposta aceite (D-161); 0 enquanto os descontos estiverem desligados.
   desconto_mensalidade_pct      numeric(5,2) not null default 0
                                 check (desconto_mensalidade_pct between 0 and 100),
+  -- A barbearia de demonstração (D-162): fora das contas, da saúde, das métricas e do sitemap.
+  demonstracao                  boolean not null default false,
   aprovado_em                   timestamptz,
   criado_em                     timestamptz not null default now(),
 
@@ -115,6 +117,8 @@ create table inquilinos (
   check (plano = 'basic' or profissionais_contratados >= 3),
   check (not desconto_aniversario_ativo or desconto_aniversario_percent is not null)
 );
+
+create unique index inquilinos_uma_demonstracao on inquilinos (demonstracao) where demonstracao;
 
 -- -----------------------------------------------------------------------------
 -- 2 · Perfis da equipa e da plataforma
@@ -1281,3 +1285,21 @@ create table metas_comerciais (
   criado_em    timestamptz not null default now(),
   unique (user_id, mes)
 );
+
+-- Comissões dos comerciais (D-162): a taxa de migração do contrato que o comercial fechou.
+-- «pendente» até a barbearia pagar a taxa; depois «a_pagar», com prazo de 10 dias; «paga».
+create table comissoes_comerciais (
+  id             uuid primary key default gen_random_uuid(),
+  contrato_id    uuid not null unique references contratos(id) on delete cascade,
+  comercial_id   uuid references auth.users(id) on delete set null,
+  valor          numeric(10,2) not null check (valor > 0),
+  estado         text not null default 'pendente' check (estado in ('pendente','a_pagar','paga')),
+  taxa_paga_em   date,
+  vence_em       date,
+  paga_em        date,
+  criado_em      timestamptz not null default now(),
+  check ((estado = 'pendente') = (taxa_paga_em is null)),
+  check ((taxa_paga_em is null) = (vence_em is null)),
+  check ((estado = 'paga') = (paga_em is not null))
+);
+create index comissoes_comercial on comissoes_comerciais (comercial_id, estado);
