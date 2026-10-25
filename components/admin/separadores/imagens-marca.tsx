@@ -85,9 +85,9 @@ export function ImagensMarca({
             ))}
           </div>
           <CampoFicheiro
-            rotulo={
-              img.urls.length ? textos.ficheiros.trocarImagem : textos.ficheiros.escolherImagem
-            }
+            rotulo={img.rotulo}
+            ocultarRotulo
+            trocar={img.tipo !== "galeria" && img.urls.length > 0}
             ajuda={img.ajuda}
             accept={REGRAS_IMAGEM[img.tipo].formatos.join(",")}
             imagem

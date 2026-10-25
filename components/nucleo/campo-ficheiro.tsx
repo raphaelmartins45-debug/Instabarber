@@ -13,23 +13,29 @@ const t = textos.ficheiros;
  */
 export function CampoFicheiro({
   rotulo,
+  ocultarRotulo,
   ajuda,
   accept,
   name,
   required,
   disabled,
   imagem,
+  trocar,
   aCarregar,
   aoEscolher,
   testId,
 }: {
   rotulo: string;
+  /** Quando já há um título por cima: o rótulo fica só para leitores de ecrã. */
+  ocultarRotulo?: boolean;
   ajuda: string;
   accept: string;
   name?: string;
   required?: boolean;
   disabled?: boolean;
   imagem?: boolean;
+  /** Já existe uma imagem: o botão diz «Trocar imagem». */
+  trocar?: boolean;
   aCarregar?: boolean;
   aoEscolher?: (ficheiro: File) => void;
   testId?: string;
@@ -45,7 +51,7 @@ export function CampoFicheiro({
   }, []);
   return (
     <div className="grid gap-1.5">
-      <label htmlFor={id} className="rotulo">
+      <label htmlFor={id} className={ocultarRotulo ? "sr-only" : "rotulo"}>
         {rotulo}
       </label>
       <div className="flex flex-wrap items-center gap-3 rounded-lg border border-dashed bg-card p-3">
@@ -75,7 +81,7 @@ export function CampoFicheiro({
           disabled={disabled || aCarregar}
           onClick={() => entrada.current?.click()}
         >
-          {imagem ? t.escolherImagem : t.escolher}
+          {trocar ? t.trocarImagem : imagem ? t.escolherImagem : t.escolher}
         </Button>
         <span className="min-w-0 truncate text-sm text-muted-foreground">
           {aCarregar ? t.aCarregar : (nome ?? t.nenhum)}
