@@ -40,6 +40,7 @@ que mexa num procedimento atualiza este manual no mesmo dia.
 | P-25 | Lembrar uma barbearia do vencimento (WhatsApp ou e-mail) | Vencimento nos próximos 7 dias |
 | P-26 | Registar custos e contas a pagar, rever o resumo e o objetivo | Todos os meses |
 | P-27 | Exportar os números para o contabilista | Fim de cada mês ou trimestre |
+| P-28 | Monitorizar a disponibilidade (objetivo de 99,5 %) | Uma vez, e ao fim de cada mês |
 
 ---
 
@@ -526,3 +527,21 @@ Seguir a M.6. Resumo para o operador:
 3. Enviar ao contabilista por e-mail (geral@). Os ficheiros dizem «Não é documento fiscal»: as faturas continuam a ser as do programa certificado.
 
 **Confirmar:** a exportação aparece na auditoria.
+
+---
+
+### P-28 · Monitorizar a disponibilidade (objetivo de 99,5 %)
+
+**Quando:** uma vez, para ligar; depois, no início de cada mês, para registar o valor do mês anterior. **Porquê:** os Termos e o contrato prometem um objetivo de 99,5 % por mês (cerca de 3 h 40 min de falha, no máximo), e o jurista pediu que só se publique o que se consegue medir (D-156).
+
+1. Criar uma conta gratuita num serviço de monitorização com relatório mensal de disponibilidade (por exemplo, UptimeRobot ou Better Stack), com o e-mail geral@instabarber.pt.
+2. Criar três verificações HTTP, de 5 em 5 minutos, a partir de um ponto na Europa:
+   - `https://instabarber.pt/api/saude` (responde 200 só quando a aplicação **e** a base de dados funcionam; 503 quando não);
+   - `https://instabarber.pt/entrar` (a entrada da equipa);
+   - a página pública de uma barbearia de ensaio, quando existir.
+3. Avisos por e-mail para apoio@ e por telemóvel ao fim de 2 falhas seguidas.
+4. Não marcar como falha as manutenções comunicadas com antecedência: no serviço, pôr a janela de manutenção antes de começar.
+5. No início de cada mês, anotar a disponibilidade do mês anterior (e as falhas, com a causa) numa nota interna. Se ficar abaixo de 99,5 %, rever a causa e, se a falha foi da Performa LAB, avisar as barbearias afetadas.
+
+**Confirmar:** as três verificações estão verdes e chega um e-mail de teste do serviço.
+

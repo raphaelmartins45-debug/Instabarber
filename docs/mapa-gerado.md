@@ -78,6 +78,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/api/manifesto/[slug]/route.ts`
 - `app/api/medicao/route.ts`
 - `app/api/relatorios/route.ts`
+- `app/api/saude/route.ts`
 - `app/api/webhooks/pagamentos/route.ts`
 
 ## Variáveis CSS (app/globals.css)

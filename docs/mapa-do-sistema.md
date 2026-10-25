@@ -34,6 +34,7 @@ O dono fala em «página tal». Tradução (confirmar os caminhos reais na fase 
 | O dono diz | O que é | Rota (B.4) | Camada |
 | --- | --- | --- | --- |
 | «a página da landing», «o site» | Apresentação da InstaBarber | `landing/index.html`, servido em `/` por `app/(institucional)/route.ts` | — |
+| «a verificação de saúde», «a disponibilidade», «o uptime» | Endereço consultado pela monitorização (D-156, P-28) | `app/api/saude/route.ts` → `lib/repositorios/saude.ts` (leitura pública mínima na base de dados); 200 ou 503, sem dados | — |
 | «o formulário de contacto da landing» | Pedido de contacto em dois passos (D-50) | `app/api/contacto/route.ts`; validação em `lib/validacao/contacto.ts`; e-mails em `lib/email/contacto.ts`; textos em `lib/i18n/pt-PT.ts` | — |
 | «o llms.txt», «aparecer nas IA» | Resumo do produto para assistentes de IA (D-136) | `public/llms.txt`; os preços acompanham a CLAUDE.md §6 | — |
 | «o SEO», «o Google», «o sitemap» | Título e descrição em `landing/index.html`; sitemap e robots (D-105) | `landing/index.html` (title, description, JSON-LD); `app/sitemap.ts`; `app/robots.ts` | — |

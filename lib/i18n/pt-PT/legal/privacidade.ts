@@ -37,10 +37,10 @@ export const privacidade = (p: Prestadora): DocumentoLegal => ({
         "Os dados são tratados por prestadores que atuam por conta da Performa LAB, com as mesmas obrigações de proteção:",
       ],
       lista: [
-        "Supabase — base de dados, autenticação e ficheiros (União Europeia);",
-        "Vercel — alojamento da aplicação (União Europeia);",
-        "Resend — envio de e-mails transacionais (União Europeia);",
-        "Zoho — caixa de correio da Performa LAB (centro de dados europeu).",
+        "Supabase — base de dados, autenticação e ficheiros (região da União Europeia, Frankfurt);",
+        "Vercel — alojamento da aplicação (funções na União Europeia, Frankfurt; a rede de distribuição de conteúdos da Vercel é global);",
+        "Resend — envio de e-mails transacionais (infraestrutura de envio nos Estados Unidos, com as garantias do capítulo V do RGPD previstas no acordo de tratamento de dados do prestador);",
+        "Zoho — caixa de correio da Performa LAB (centro de dados na União Europeia).",
       ],
     },
     {

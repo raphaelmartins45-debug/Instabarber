@@ -72,10 +72,10 @@ export const subcontratacao = (p: Prestadora): DocumentoLegal => ({
         "O Cliente dá autorização geral para a Performa LAB recorrer aos seguintes subcontratantes ulteriores, sujeitos às mesmas obrigações deste acordo:",
       ],
       lista: [
-        "Supabase — base de dados, autenticação e ficheiros — União Europeia;",
-        "Vercel — alojamento da aplicação — União Europeia;",
-        "Resend — envio de e-mails transacionais — União Europeia;",
-        "Zoho — correio eletrónico da Performa LAB — centro de dados europeu.",
+        "Supabase — base de dados, autenticação e ficheiros — região da União Europeia (Frankfurt);",
+        "Vercel — alojamento da aplicação — funções na União Europeia (Frankfurt); rede de distribuição de conteúdos global;",
+        "Resend — envio de e-mails transacionais — infraestrutura de envio nos Estados Unidos, com as garantias do capítulo V do RGPD previstas no acordo de tratamento de dados do prestador;",
+        "Zoho — correio eletrónico da Performa LAB — centro de dados na União Europeia.",
       ],
     },
     {
