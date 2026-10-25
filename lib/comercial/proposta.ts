@@ -4,8 +4,17 @@ import {
   DOMINIO_PROPRIO_CENT,
   MESES_NO_ANUAL,
   type RegimeIva,
+  TAXA_IVA,
 } from "@/lib/regras/mensalidade";
 import { type Briefing, DORES, valorParaSiCent } from "./briefing";
+
+/** Os descontos e a taxa que valem nesta proposta (lib/comercial/condicoes.ts, D-161). */
+export type DescontosDaProposta = {
+  descontoMensalidade: number;
+  descontoTaxa: number;
+  taxaCent: number;
+};
+const SEM_DESCONTOS: DescontosDaProposta = { descontoMensalidade: 0, descontoTaxa: 0, taxaCent: 0 };
 
 // A proposta (N.5) a partir do briefing: preços pela fórmula única (D.7), a fotografia que fica
 // em propostas.dados e a solução ligada às dores, só com o que o plano inclui.
@@ -31,16 +40,13 @@ export function montarProposta(
   catalogo: Catalogo,
   pacotes: Pacotes,
   regime: RegimeIva,
+  d: DescontosDaProposta = SEM_DESCONTOS,
 ) {
   const profissionais = profissionaisDoPlano(b);
-  const mensal = calcularPrecoCent(b.plano, profissionais, "mensal", b.dominio_proprio, regime);
-  const periodo = calcularPrecoCent(
-    b.plano,
-    profissionais,
-    b.periodicidade,
-    b.dominio_proprio,
-    regime,
-  );
+  const preco = (periodicidade: typeof b.periodicidade, desconto: number) =>
+    calcularPrecoCent(b.plano, profissionais, periodicidade, b.dominio_proprio, regime, desconto);
+  const mensal = preco("mensal", d.descontoMensalidade);
+  const periodo = preco(b.periodicidade, d.descontoMensalidade);
   const doPlano = new Set(pacotes[b.plano]);
   const nomes = new Map(catalogo.map((f) => [f.chave, f.nome]));
   const multiplicador = b.periodicidade === "anual" ? MESES_NO_ANUAL : 1;
@@ -58,6 +64,9 @@ export function montarProposta(
     iva_taxa: periodo.ivaTaxa,
     condicoes_lancamento: b.condicoes_lancamento,
     validade_dias: b.validade_dias,
+    desconto_mensalidade_pct: d.descontoMensalidade,
+    taxa_migracao_sem_iva: cent(d.taxaCent),
+    desconto_taxa_pct: d.descontoTaxa,
     dados: {
       briefing: b,
       decomposicao: b.dominio_proprio
@@ -74,6 +83,11 @@ export function montarProposta(
       })),
       valor_para_si_cent: valorParaSiCent(b),
       mensal_com_iva_cent: mensal.comIva,
+      // Para mostrar o preço riscado quando há desconto (D-161).
+      mensal_sem_desconto_com_iva_cent: preco("mensal", 0).comIva,
+      taxa_migracao_com_iva_cent: periodo.ivaTaxa
+        ? Math.round(d.taxaCent * (1 + TAXA_IVA))
+        : d.taxaCent,
     },
   };
 }

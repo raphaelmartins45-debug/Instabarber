@@ -4,10 +4,11 @@ import { useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { Campo } from "@/components/nucleo/campo";
 import { type DadosBriefing, MODELOS_CAIXA } from "@/lib/comercial/briefing";
+import type { CondicoesComerciais } from "@/lib/comercial/condicoes";
 import { profissionaisDoPlano } from "@/lib/comercial/proposta";
 import { centimosDeTexto, formatarDinheiro, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
-import { calcularPrecoCent, type RegimeIva } from "@/lib/regras/mensalidade";
+import { calcularPrecoCent, comDescontoCent, type RegimeIva } from "@/lib/regras/mensalidade";
 import { CaixaBriefing, CampoBriefing, EscolhasBriefing, SelecaoBriefing } from "./campos-briefing";
 
 const t = textos.comercial.briefing;
@@ -31,12 +32,25 @@ function ValorVisita({ form }: { form: Form }) {
   );
 }
 
-/** O preço do plano recomendado, em tempo real, com a fórmula única (D.7). */
-function Preco({ form, regime }: { form: Form; regime: RegimeIva }) {
+/** Percentagem inteira entre 0 e 100 (o resto fica 0 e o Zod avisa). */
+const pct = (v: unknown) => {
+  const n = Number(v ?? 0);
+  return Number.isInteger(n) && n >= 0 && n <= 100 ? n : 0;
+};
+
+/** O preço do plano recomendado, em tempo real, com a fórmula única (D.7) e o desconto (D-161). */
+function Preco({ form, regime, desconto }: { form: Form; regime: RegimeIva; desconto: number }) {
   const v = form.watch();
   const plano = v.plano ?? "pro";
   const n = profissionaisDoPlano({ plano, profissionais: Number(v.profissionais ?? 3) });
-  const p = calcularPrecoCent(plano, n, v.periodicidade ?? "mensal", !!v.dominio_proprio, regime);
+  const p = calcularPrecoCent(
+    plano,
+    n,
+    v.periodicidade ?? "mensal",
+    !!v.dominio_proprio,
+    regime,
+    desconto,
+  );
   return (
     <p
       className="numero rounded-xl bg-accent px-4 py-3 text-sm font-semibold"
@@ -52,11 +66,16 @@ export function PassoBriefing({
   form,
   passo,
   regime,
+  condicoes,
+  administrador,
 }: {
   form: Form;
   passo: number;
   regime: RegimeIva;
+  condicoes: CondicoesComerciais;
+  administrador: boolean;
 }) {
+  const desconto = condicoes.descontosAtivos ? pct(form.watch("desconto_mensalidade_pct")) : 0;
   const caixa = Object.fromEntries(MODELOS_CAIXA.map((m) => [m, m]));
   switch (passo) {
     case 0:
@@ -116,7 +135,7 @@ export function PassoBriefing({
           <SelecaoBriefing form={form} nome="periodicidade" opcoes={t.periodicidades} />
           <CaixaBriefing form={form} nome="dominio_proprio" />
           <div className="md:col-span-2">
-            <Preco form={form} regime={regime} />
+            <Preco form={form} regime={regime} desconto={desconto} />
           </div>
         </div>
       );
@@ -127,6 +146,34 @@ export function PassoBriefing({
           <CampoBriefing form={form} nome="validade_dias" tipo="number" />
           <CampoBriefing form={form} nome="data_arranque" tipo="date" />
           <CaixaBriefing form={form} nome="desafio_90" />
+          {condicoes.descontosAtivos ? (
+            <div className="grid gap-1">
+              <CampoBriefing form={form} nome="desconto_mensalidade_pct" tipo="number" />
+              {administrador ? null : (
+                <p className="text-xs text-muted-foreground">
+                  {t.limite(condicoes.descontoMaxMensalidade)}
+                </p>
+              )}
+            </div>
+          ) : null}
+          {condicoes.taxaAtiva ? (
+            <div className="grid gap-1">
+              <CampoBriefing form={form} nome="desconto_taxa_pct" tipo="number" />
+              <p className="text-xs text-muted-foreground">
+                {administrador ? null : `${t.limite(condicoes.descontoMaxTaxa)} `}
+                {t.taxa(
+                  formatarDinheiro(
+                    comDescontoCent(condicoes.taxaBaseCent, pct(form.watch("desconto_taxa_pct"))),
+                  ),
+                )}
+              </p>
+            </div>
+          ) : null}
+          {condicoes.descontosAtivos ? (
+            <div className="md:col-span-2">
+              <Preco form={form} regime={regime} desconto={desconto} />
+            </div>
+          ) : null}
         </div>
       );
     default:

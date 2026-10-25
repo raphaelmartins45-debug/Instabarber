@@ -462,12 +462,13 @@ create policy comunicados_admin on comunicados for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 
 -- Comercial (D-161)
+-- Na própria linha (e não por meus_leads()), para o comercial ler o lead que acabou de criar.
 create policy leads_comercial_ler on leads for select
-  using (id in (select public.meus_leads()));
+  using (responsavel_id = (select auth.uid()) and (select public.e_comercial()));
 create policy leads_comercial_criar on leads for insert
   with check ((select public.e_comercial()) and responsavel_id = (select auth.uid()));
 create policy leads_comercial_alterar on leads for update
-  using (id in (select public.meus_leads()))
+  using (responsavel_id = (select auth.uid()) and (select public.e_comercial()))
   with check (responsavel_id = (select auth.uid()));
 create policy lead_eventos_comercial_ler on lead_eventos for select
   using (lead_id in (select public.meus_leads()));

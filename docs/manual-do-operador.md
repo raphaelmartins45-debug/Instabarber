@@ -42,6 +42,7 @@ que mexa num procedimento atualiza este manual no mesmo dia.
 | P-27 | Exportar os números para o contabilista | Fim de cada mês ou trimestre |
 | P-28 | Monitorizar a disponibilidade (objetivo de 99,5 %) | Uma vez, e ao fim de cada mês |
 | P-29 | Registar um contacto de apoio e publicar um comunicado | Cada contacto; cada aviso às barbearias |
+| P-30 | Gerir a equipa InstaBarber (entrada e saída de gestores e comerciais), atribuir leads e definir metas | Cada entrada ou saída; início de cada mês |
 
 ---
 
@@ -570,3 +571,31 @@ Só a Performa LAB vê este registo; não entra na exportação dos dados da bar
 5. «Terminar agora» tira o aviso do painel e guarda as leituras; «Apagar» tira-o de vez.
 
 **Confirmar:** o comunicado aparece «Em vigor» e a contagem de leituras sobe quando os gestores carregam em «Li».
+
+---
+
+### P-30 · Gerir a equipa InstaBarber, atribuir leads e definir metas
+
+**Quando:** sempre que entra ou sai alguém; no início de cada mês para as metas. **Disponível desde a D-161.** Só o dono gere as contas.
+
+**Entrada de uma pessoa**
+
+1. Criar a caixa de correio `nome@instabarber.pt` na Zoho (o convite só aceita endereços @instabarber.pt).
+2. Pedir à pessoa que assine o termo de confidencialidade (vai ver nomes e contactos de leads, RGPD).
+3. `Admin → Gestão do negócio → Equipa InstaBarber → Convidar`: nome, e-mail e papel (Gestor ou Comercial).
+4. A pessoa recebe a ligação, define a palavra-passe e, na primeira entrada, ativa o código de 6 dígitos.
+
+**O que cada papel faz**
+
+- **Gestor:** tudo o que o dono faz, menos gerir a equipa.
+- **Comercial:** só o Comercial dos leads de que é responsável (os que cria e os que lhe atribuem): briefing, propostas, contratos (assina os seus), convite de adesão, e «O meu desempenho» com metas, números, carteira e comissão. Não vê barbearias, finanças, modelos de contrato nem as condições comerciais.
+
+**Leads do site:** chegam sem responsável. Em `Comercial → Leads`, filtrar por «Sem responsável», abrir e escolher o comercial em «Responsável → Atribuir».
+
+**Metas:** `Comercial → Desempenho → Metas do mês`: escolher o comercial e as metas (leads novos, propostas, contratos assinados).
+
+**Descontos e taxa de migração:** `Comercial → Condições`. Estão **desligados**. Quando a cobrança estiver pronta: ligar o interruptor, rever os limites do comercial (20 % na mensalidade, 50 % na taxa) e o valor da taxa. A taxa de migração é a comissão do comercial e aparece no desempenho dele.
+
+**Saída de uma pessoa:** `Equipa InstaBarber → Desativar` (corta o acesso na hora; os leads e o histórico ficam). Atribuir os leads dela a outro comercial e desativar a caixa de correio na Zoho.
+
+**Confirmar:** a pessoa entra e vê só o que o papel permite; na saída, deixa de conseguir entrar.

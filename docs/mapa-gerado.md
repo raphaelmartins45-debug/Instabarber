@@ -9,9 +9,11 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/barbearias/[id]/exportar/route.ts`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/condicoes/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/assinado/route.ts`
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/pdf/route.ts`
 - `app/(admin)/admin/(protegido)/comercial/contratos/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/desempenho/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/leads/[id]/briefing/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/leads/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/leads/novo/page.tsx`
@@ -23,6 +25,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/comercial/propostas/page.tsx`
 - `app/(admin)/admin/(protegido)/comunicados/page.tsx`
 - `app/(admin)/admin/(protegido)/design/page.tsx`
+- `app/(admin)/admin/(protegido)/equipa/page.tsx`
 - `app/(admin)/admin/(protegido)/financas/custos/page.tsx`
 - `app/(admin)/admin/(protegido)/financas/exportar/ficheiro/route.ts`
 - `app/(admin)/admin/(protegido)/financas/exportar/page.tsx`
@@ -202,6 +205,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `comissoes_servico`
 - `comunicado_leituras`
 - `comunicados`
+- `configuracao_comercial`
 - `contas_pagar`
 - `contratos`
 - `convites_adesao`
@@ -227,6 +231,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `limites_pedidos`
 - `marcacoes`
 - `mensagens`
+- `metas_comerciais`
 - `metas_faturacao`
 - `modelos_documento`
 - `modulos_plataforma`
@@ -269,6 +274,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `campos_alterados()`
 - `cancelar_lembrete_vencimento()`
 - `cancelar_minha_marcacao()`
+- `carteira_comercial()`
 - `cliente_por_telefone()`
 - `clientes_do_profissional()`
 - `comunicado_para()`
@@ -280,6 +286,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `criar_pedido_loja()`
 - `criar_proposta()`
 - `decidir_proposta()`
+- `e_comercial()`
+- `e_dono_plataforma()`
 - `e_sistema()`
 - `e_super_admin()`
 - `eliminar_inquilino()`
@@ -287,8 +295,11 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `entrar_fila_presencial()`
 - `estado_fila_presencial()`
 - `evento_lead()`
+- `exigir_comercial_ou_admin()`
 - `exigir_gestor()`
+- `exigir_lead()`
 - `exigir_super_admin()`
+- `fixar_texto_contrato()`
 - `funcionalidade_ativa()`
 - `gerar_contrato()`
 - `hoje_lisboa()`
@@ -296,6 +307,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `inquilinos_onde()`
 - `inscrever_clube()`
 - `instante_lisboa()`
+- `lead_acessivel()`
 - `ler_convite_adesao()`
 - `levantar_pedido()`
 - `ligar_contrato_inquilino()`
@@ -311,15 +323,18 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `meu_codigo_convite()`
 - `meus_clientes()`
 - `meus_comunicados()`
+- `meus_leads()`
 - `meus_profissionais()`
 - `modulo_ativo()`
 - `mudar_estado_lead()`
 - `nif_valido()`
 - `orfas_ao_desativar()`
+- `pasta_lead_acessivel()`
 - `pedir_codigo_acesso()`
 - `pode_criar_acesso_direto()`
 - `pode_marcar_online()`
 - `posicao_fila_espera()`
+- `preparar_lead()`
 - `preparar_lembrete_vencimento()`
 - `procurar_cliente_por_telefone()`
 - `proteger_acerto()`

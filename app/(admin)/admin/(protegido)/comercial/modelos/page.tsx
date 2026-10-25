@@ -1,3 +1,4 @@
+import { exigirSuperAdmin } from "@/lib/admin/contexto";
 import Link from "next/link";
 import { AcoesModelo, ImportarModelo } from "@/components/admin/comercial/acoes-modelo";
 import { Etiqueta } from "@/components/nucleo/etiqueta";
@@ -15,6 +16,7 @@ const TOM = { rascunho: "neutro", aprovado: "sucesso", arquivado: "neutro" } as 
 
 /** Modelos de documento (N.8): versões, rascunho editável, aprovado único por tipo. */
 export default async function Modelos() {
+  await exigirSuperAdmin();
   const modelos = await listarModelos(await criarClienteServidor());
   return (
     <div className="grid gap-5">

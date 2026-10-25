@@ -1,3 +1,4 @@
+import { ePapelPlataforma } from "@/lib/admin/acesso";
 import { redirect } from "next/navigation";
 import { CartaoAcesso } from "@/components/nucleo/cartao-acesso";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,7 @@ export default async function PaginaEscolher() {
   // Uma linha por barbearia, com os papéis que a pessoa lá tem.
   const porBarbearia = new Map<string, { nome: string; papeis: string[] }>();
   for (const p of await listarMeusPerfis(bd, user.id)) {
-    if (p.papel === "super_admin" || p.inquilino?.estado !== "ativo") continue;
+    if (ePapelPlataforma(p.papel) || p.inquilino?.estado !== "ativo") continue;
     const linha = porBarbearia.get(p.inquilino.id) ?? { nome: p.inquilino.nome, papeis: [] };
     linha.papeis.push(textos.paineis.papeis[p.papel]);
     porBarbearia.set(p.inquilino.id, linha);

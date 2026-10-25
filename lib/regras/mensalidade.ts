@@ -35,14 +35,26 @@ export type Preco = {
   ivaTaxa: 0 | 23;
 };
 
+/** Um valor com o desconto em percentagem inteira (D-161), arredondado ao cêntimo. */
+export function comDescontoCent(valorCent: number, descontoPct: number): number {
+  if (!Number.isInteger(descontoPct) || descontoPct < 0 || descontoPct > 100)
+    throw new Error("desconto_invalido");
+  return Math.round((valorCent * (100 - descontoPct)) / 100);
+}
+
 export function calcularPrecoCent(
   plano: Plano,
   nProfissionais: number,
   periodicidade: Periodicidade,
   dominioProprio = false,
   regime: RegimeIva = "normal",
+  descontoPct = 0,
 ): Preco {
-  const mensal = calcularMensalidadeCent(plano, nProfissionais, dominioProprio);
+  // O desconto da proposta aceite aplica-se à mensalidade, antes do período e do IVA (D-161).
+  const mensal = comDescontoCent(
+    calcularMensalidadeCent(plano, nProfissionais, dominioProprio),
+    descontoPct,
+  );
   const valor = periodicidade === "anual" ? mensal * MESES_NO_ANUAL : mensal;
   const final = Math.round(valor * (1 + TAXA_IVA));
   return regime === "isento"

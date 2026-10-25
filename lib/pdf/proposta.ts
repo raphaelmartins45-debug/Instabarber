@@ -26,6 +26,9 @@ export type DadosPdfProposta = {
   valorComIva: string;
   ivaTaxa: number;
   condicoesLancamento: string | null;
+  /** Desconto na mensalidade e taxa de migração sem IVA, já com o desconto (D-161). */
+  descontoPct: number;
+  taxaSemIva: string;
   dados: {
     briefing: Briefing;
     decomposicao: { rotulo: string; valorCent: number }[];
@@ -91,6 +94,13 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
   f.linha(t.profissionais, String(d.profissionais));
   for (const l of d.dados.decomposicao)
     f.linha(l.rotulo === "dominio" ? t.dominio : l.rotulo, formatarDinheiro(l.valorCent));
+  if (d.descontoPct > 0) {
+    const bruto = d.dados.decomposicao.reduce((s, l) => s + l.valorCent, 0);
+    f.linha(
+      t.desconto(d.descontoPct),
+      `−${formatarDinheiro(bruto - centimosDeNumeric(d.valorSemIva))}`,
+    );
+  }
   f.linha(t.semIva, dinheiro(d.valorSemIva));
   f.linha(t.comIva, dinheiro(d.valorComIva), true);
   f.paragrafo(
@@ -100,6 +110,7 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
           formatarDinheiro(centimosDeNumeric(d.valorComIva) - centimosDeNumeric(d.valorSemIva)),
         ),
   );
+  if (centimosDeNumeric(d.taxaSemIva) > 0) f.linha(t.taxaMigracao, dinheiro(d.taxaSemIva));
   if (d.dados.valor_para_si_cent) {
     f.titulo(t.valorParaSi);
     f.paragrafo(

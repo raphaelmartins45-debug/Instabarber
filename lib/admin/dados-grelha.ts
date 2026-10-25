@@ -1,11 +1,7 @@
 import "server-only";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
-import {
-  calcularPrecoCent,
-  lerRegimeIva,
-  type Periodicidade,
-  type Plano,
-} from "@/lib/regras/mensalidade";
+import { lerRegimeIva, type Plano } from "@/lib/regras/mensalidade";
+import { precoDaBarbearia } from "@/lib/regras/receita";
 import type { Barbearia } from "@/lib/repositorios/admin/barbearias";
 import { lerGrelhaBarbearia } from "@/lib/repositorios/admin/grelha";
 import { listarFuncionalidades, listarPacotes } from "@/lib/repositorios/funcionalidades";
@@ -18,13 +14,7 @@ export async function dadosDaGrelha(bd: ClienteBD, b: Barbearia) {
     listarPacotes(bd),
     lerGrelhaBarbearia(bd, b.id),
   ]);
-  const preco = calcularPrecoCent(
-    b.plano as Plano,
-    b.profissionais_contratados,
-    b.periodicidade as Periodicidade,
-    !!b.dominio_proprio,
-    lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
-  );
+  const preco = precoDaBarbearia(b, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA));
   return {
     inquilinoId: b.id,
     catalogo: catalogo.map(({ chave, nome, descricao, grupo }) => ({

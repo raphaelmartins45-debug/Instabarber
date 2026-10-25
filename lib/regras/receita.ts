@@ -9,6 +9,8 @@ export type BarbeariaFaturavel = {
   profissionais_contratados: number;
   dominio_proprio: string | null;
   estado: string;
+  /** Desconto da proposta aceite (D-161); 0 por omissão. */
+  desconto_mensalidade_pct?: number | string | null;
 };
 
 export function precoDaBarbearia(b: BarbeariaFaturavel, regime: RegimeIva) {
@@ -18,6 +20,7 @@ export function precoDaBarbearia(b: BarbeariaFaturavel, regime: RegimeIva) {
     b.periodicidade as Periodicidade,
     !!b.dominio_proprio,
     regime,
+    Number(b.desconto_mensalidade_pct ?? 0),
   );
 }
 

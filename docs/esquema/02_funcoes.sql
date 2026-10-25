@@ -1743,6 +1743,22 @@ begin
   end if;
 end $$;
 
+-- O texto final do contrato com o número, enquanto é rascunho (D-161): o comercial do lead
+-- também o fixa, sem poder alterar o contrato diretamente.
+create or replace function public.fixar_texto_contrato(p_contrato uuid, p_texto text) returns void
+language plpgsql security definer set search_path = '' as $$
+declare v public.contratos%rowtype;
+begin
+  perform public.exigir_comercial_ou_admin();
+  select * into v from public.contratos where id = p_contrato for update;
+  if v.id is not null then perform public.exigir_lead(v.lead_id); end if;
+  if v.id is null then raise exception 'contrato_inexistente' using errcode = 'P0001'; end if;
+  if v.estado <> 'rascunho' then raise exception 'contrato_nao_e_rascunho' using errcode = 'P0001'; end if;
+  if coalesce(trim(p_texto), '') = '' then raise exception 'texto_obrigatorio' using errcode = 'P0001'; end if;
+  update public.contratos set texto = p_texto where id = p_contrato;
+end $$;
+
+
 -- -----------------------------------------------------------------------------
 -- 8C · Finanças da Performa LAB (Parte O): lembretes de vencimento
 --      As tabelas de custos, contas e metas escrevem-se por RLS (só super_admin).
@@ -2062,6 +2078,7 @@ grant execute on function public.meus_comunicados(uuid), public.marcar_comunicad
 -- Equipa InstaBarber (D-161): cada função verifica o papel.
 revoke all on function public.preparar_lead(), public.exigir_lead(uuid),
   public.exigir_comercial_ou_admin() from public, anon, authenticated;
-grant execute on function public.e_dono_plataforma(), public.e_comercial(), public.meus_leads(),
+grant execute on function public.fixar_texto_contrato(uuid, text), public.e_dono_plataforma(),
+  public.e_comercial(), public.meus_leads(),
   public.lead_acessivel(uuid), public.pasta_lead_acessivel(text), public.carteira_comercial(uuid)
   to authenticated;

@@ -175,6 +175,22 @@ begin
   end if;
 end $$;
 
+-- O texto final do contrato com o número, enquanto é rascunho (D-161): o comercial do lead
+-- também o fixa, sem poder alterar o contrato diretamente.
+create or replace function public.fixar_texto_contrato(p_contrato uuid, p_texto text) returns void
+language plpgsql security definer set search_path = '' as $$
+declare v public.contratos%rowtype;
+begin
+  perform public.exigir_comercial_ou_admin();
+  select * into v from public.contratos where id = p_contrato for update;
+  if v.id is not null then perform public.exigir_lead(v.lead_id); end if;
+  if v.id is null then raise exception 'contrato_inexistente' using errcode = 'P0001'; end if;
+  if v.estado <> 'rascunho' then raise exception 'contrato_nao_e_rascunho' using errcode = 'P0001'; end if;
+  if coalesce(trim(p_texto), '') = '' then raise exception 'texto_obrigatorio' using errcode = 'P0001'; end if;
+  update public.contratos set texto = p_texto where id = p_contrato;
+end $$;
+
+
 -- Cria uma versão nova da proposta. As versões anteriores ainda abertas ficam «substituída».
 -- Os preços chegam calculados por lib/regras/mensalidade.ts; as restrições da tabela conferem-nos.
 -- Descontos e taxa de migração (D-161): só com o interruptor ligado em configuracao_comercial;
@@ -453,12 +469,13 @@ create policy perfis_escrever_plataforma on perfis for all
   using (inquilino_id is null and (select public.e_dono_plataforma()))
   with check (inquilino_id is null and (select public.e_dono_plataforma()));
 
+-- Na própria linha (e não por meus_leads()), para o comercial ler o lead que acabou de criar.
 create policy leads_comercial_ler on leads for select
-  using (id in (select public.meus_leads()));
+  using (responsavel_id = (select auth.uid()) and (select public.e_comercial()));
 create policy leads_comercial_criar on leads for insert
   with check ((select public.e_comercial()) and responsavel_id = (select auth.uid()));
 create policy leads_comercial_alterar on leads for update
-  using (id in (select public.meus_leads()))
+  using (responsavel_id = (select auth.uid()) and (select public.e_comercial()))
   with check (responsavel_id = (select auth.uid()));
 create policy lead_eventos_comercial_ler on lead_eventos for select
   using (lead_id in (select public.meus_leads()));
@@ -490,6 +507,7 @@ create policy storage_comercial_leads on storage.objects for all
 -- Equipa InstaBarber (D-161): cada função verifica o papel.
 revoke all on function public.preparar_lead(), public.exigir_lead(uuid),
   public.exigir_comercial_ou_admin() from public, anon, authenticated;
-grant execute on function public.e_dono_plataforma(), public.e_comercial(), public.meus_leads(),
+grant execute on function public.fixar_texto_contrato(uuid, text), public.e_dono_plataforma(),
+  public.e_comercial(), public.meus_leads(),
   public.lead_acessivel(uuid), public.pasta_lead_acessivel(text), public.carteira_comercial(uuid)
   to authenticated;

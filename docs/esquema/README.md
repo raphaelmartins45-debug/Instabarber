@@ -21,6 +21,7 @@ pela mesma ordem, sem os reescrever.
 | `testes/90_cliente.sql` | 10 testes da área de cliente (Fase 5, D-125): código de convite e cartão de selos só do próprio cliente, na barbearia certa; vista pública com antecedência de cancelamento e janela de marcação |
 | `testes/95_mensagens_filas.sql` | 21 testes da Fase 6 (D-126): posição e aviso da fila de espera com o prazo de 30 minutos, estado da fila presencial, e-mail de confirmação uma só vez e registado, clube na página pública e auditoria do interruptor geral dos módulos |
 | `testes/96_apoio_comunicados.sql` | 24 testes do registo de apoio e dos comunicados (D-160): só o super_admin com dois fatores regista e lê o apoio; o comunicado chega só ao gestor da barbearia a que se destina, dentro do prazo, e a leitura conta por barbearia |
+| `testes/96b_equipa_plataforma.sql` | 48 testes da equipa InstaBarber (D-161): o gestor administra sem gerir contas; o comercial só vê e trabalha os seus leads, propostas e contratos, com descontos só quando ligados e dentro dos limites; carteira e metas de cada um; o desconto aceite passa para a mensalidade e o dono da barbearia não o altera |
 | `testes/97_suspensao.sql` | 9 testes da suspensão sem perder dados (Fase 7, M.4, D-127): aviso público sem dados, a equipa deixa de ver, o gestor vê o plano e as faturas, e tudo volta ao reativar |
 | `testes/70_admin.sql` | 16 testes do InstaBarber Admin (Fase 3, D-116): importação de clientes, imagens públicas e auditoria pelo super_admin com dois fatores; catálogo e pacotes legíveis sem conta |
 | `testes/40_comercial.sql` | 112 testes do módulo Comercial (Parte N): NIF, numeração, leads do site, funil, propostas, contratos, convites, isolamento e retenção |
@@ -33,7 +34,7 @@ Num Postgres 15 ou 16 limpo:
 createdb ib_teste
 for f in testes/00_shim_supabase.sql 01_tabelas.sql 02_funcoes.sql 03_rls.sql \
          04_dados_iniciais.sql testes/05_dados_teste.sql \
-         testes/10_isolamento.sql testes/20_agenda.sql testes/30_regras.sql testes/40_comercial.sql testes/50_financas.sql testes/60_expansao.sql testes/70_admin.sql testes/80_painel.sql testes/90_cliente.sql testes/95_mensagens_filas.sql testes/96_apoio_comunicados.sql testes/97_suspensao.sql; do
+         testes/10_isolamento.sql testes/20_agenda.sql testes/30_regras.sql testes/40_comercial.sql testes/50_financas.sql testes/60_expansao.sql testes/70_admin.sql testes/80_painel.sql testes/90_cliente.sql testes/95_mensagens_filas.sql testes/96_apoio_comunicados.sql testes/96b_equipa_plataforma.sql testes/97_suspensao.sql; do
   psql -d ib_teste -v ON_ERROR_STOP=1 -q -f "$f" || break
 done
 ```

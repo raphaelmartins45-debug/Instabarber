@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { ApagarInativos } from "@/components/admin/comercial/apagar-inativos";
+import { FiltrosLeads } from "@/components/admin/comercial/filtros-leads";
 import { Etiqueta } from "@/components/nucleo/etiqueta";
 import { type Coluna, TabelaCartoes } from "@/components/nucleo/tabela-cartoes";
 import { Button } from "@/components/ui/button";
+import { eAdministrador } from "@/lib/admin/acesso";
+import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { dataCurta, hojeIso } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
 import { acaoVencida, leadIncompleto } from "@/lib/regras/comercial";
+import { listarComerciais } from "@/lib/repositorios/admin/equipa";
 import { type LeadLinha, listarLeads } from "@/lib/repositorios/comercial/leads";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { cn } from "@/lib/utils";
@@ -15,19 +19,31 @@ export const metadata = { title: `${t.separadores.leads} · ${t.titulo}` };
 
 const normalizar = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
-/** Leads (N.3): pesquisa, filtro por estado e a aba «Incompletos» do formulário do site (D-50). */
+/**
+ * Leads (N.3): pesquisa, filtros e a aba «Incompletos» do formulário do site (D-50). O comercial
+ * só vê os seus (RLS); os administradores veem e filtram pelo responsável (D-161).
+ */
 export default async function Leads({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; estado?: string; vista?: string }>;
+  searchParams: Promise<{ q?: string; estado?: string; vista?: string; responsavel?: string }>;
 }) {
-  const { q = "", estado = "", vista = "todos" } = await searchParams;
+  const { q = "", estado = "", vista = "todos", responsavel = "" } = await searchParams;
+  const admin = eAdministrador((await exigirEquipaPlataforma()).papel);
   const hoje = hojeIso();
   const busca = normalizar(q.trim());
-  const leads = (await listarLeads(await criarClienteServidor())).filter(
+  const bd = await criarClienteServidor();
+  const [todos, comerciais] = await Promise.all([
+    listarLeads(bd),
+    admin ? listarComerciais(bd) : [],
+  ]);
+  const nomes = new Map(comerciais.map((c) => [c.userId, c.nome]));
+  const leads = todos.filter(
     (l) =>
       (vista !== "incompletos" || leadIncompleto({ origem: l.origem, temPasso2: l.temPasso2 })) &&
       (!estado || l.estado === estado) &&
+      (!responsavel ||
+        (responsavel === "sem" ? !l.responsavel_id : l.responsavel_id === responsavel)) &&
       (!busca ||
         normalizar(
           [l.nome_contacto, l.nome_barbearia, l.cidade, l.telefone, l.email].join(" "),
@@ -78,6 +94,16 @@ export default async function Leads({
     },
     { id: "ultimo", rotulo: t.leads.colunas.ultimo, valor: (l) => dataCurta(l.ultimo_contacto_em) },
   ];
+  // Os administradores veem de quem é cada lead (D-161).
+  if (admin)
+    colunas.push({
+      id: "responsavel",
+      rotulo: t.leads.colunas.responsavel,
+      valor: (l) =>
+        (l.responsavel_id && nomes.get(l.responsavel_id)) || (
+          <span className="text-terciario">{t.leads.semResponsavel}</span>
+        ),
+    });
   return (
     <div className="grid gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -109,35 +135,13 @@ export default async function Leads({
       {vista === "incompletos" ? (
         <p className="text-sm text-muted-foreground">{t.leads.incompletosAjuda}</p>
       ) : null}
-      <form className="cartao flex flex-wrap items-end gap-3 rounded-2xl p-4">
-        <input type="hidden" name="vista" value={vista} />
-        <label className="grid min-w-56 flex-1 gap-1.5">
-          <span className="rotulo">{t.leads.pesquisar}</span>
-          <input
-            name="q"
-            defaultValue={q}
-            className="h-11 rounded-lg border border-input bg-foreground/[.03] px-3 text-sm"
-          />
-        </label>
-        <label className="grid gap-1.5">
-          <span className="rotulo">{t.leads.colunas.estado}</span>
-          <select
-            name="estado"
-            defaultValue={estado}
-            className="h-11 rounded-lg border border-input bg-card px-3 text-sm"
-          >
-            <option value="">{t.leads.todos}</option>
-            {Object.entries(t.estados).map(([v, r]) => (
-              <option key={v} value={v}>
-                {r}
-              </option>
-            ))}
-          </select>
-        </label>
-        <Button type="submit" className="h-11">
-          {t.leads.filtrar}
-        </Button>
-      </form>
+      <FiltrosLeads
+        q={q}
+        estado={estado}
+        vista={vista}
+        responsavel={responsavel}
+        comerciais={admin ? comerciais : null}
+      />
       <TabelaCartoes
         colunas={colunas}
         linhas={leads}
@@ -145,7 +149,7 @@ export default async function Leads({
         vazio={t.leads.vazio}
         testId="lead"
       />
-      <ApagarInativos />
+      {admin ? <ApagarInativos /> : null}
     </div>
   );
 }

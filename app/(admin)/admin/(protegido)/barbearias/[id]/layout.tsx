@@ -4,12 +4,8 @@ import { AcoesBarbearia } from "@/components/admin/acoes-barbearia";
 import { NavSeparadores } from "@/components/admin/nav-separadores";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
-import {
-  calcularPrecoCent,
-  lerRegimeIva,
-  type Periodicidade,
-  type Plano,
-} from "@/lib/regras/mensalidade";
+import { lerRegimeIva, type Periodicidade, type Plano } from "@/lib/regras/mensalidade";
+import { precoDaBarbearia } from "@/lib/regras/receita";
 import { obterBarbearia } from "@/lib/repositorios/admin/barbearias";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
@@ -27,13 +23,7 @@ export default async function FichaBarbearia({
   if (!/^[0-9a-f-]{36}$/.test(id)) notFound();
   const b = await obterBarbearia(await criarClienteServidor(), id);
   if (!b) notFound();
-  const preco = calcularPrecoCent(
-    b.plano as Plano,
-    b.profissionais_contratados,
-    b.periodicidade as Periodicidade,
-    !!b.dominio_proprio,
-    lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
-  );
+  const preco = precoDaBarbearia(b, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA));
   return (
     <section className="grid gap-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -48,6 +38,9 @@ export default async function FichaBarbearia({
               {t.ficha.mensalidade}: {formatarDinheiro(preco.comIva)} (
               {textos.adesao.contratacao.comIva}) · {formatarDinheiro(preco.semIva)} (
               {textos.adesao.contratacao.semIva})
+              {Number(b.desconto_mensalidade_pct) > 0
+                ? ` · ${t.ficha.comDesconto(Number(b.desconto_mensalidade_pct))}`
+                : null}
             </span>
           </p>
         </div>

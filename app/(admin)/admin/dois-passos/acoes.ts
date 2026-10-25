@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { inicioDoPapel } from "@/lib/admin/acesso";
 import { lerSuperAdmin } from "@/lib/admin/contexto";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { esquemaCodigoTotp } from "@/lib/validacao/acesso";
@@ -31,7 +32,7 @@ export async function verificarCodigo(dados: {
   fator: string;
   codigo: string;
 }): Promise<{ erro: string }> {
-  await lerSuperAdmin();
+  const { papel } = await lerSuperAdmin();
   const v = esquemaCodigoTotp.safeParse(dados);
   if (!v.success) return { erro: "codigo" };
   const bd = await criarClienteServidor();
@@ -40,5 +41,5 @@ export async function verificarCodigo(dados: {
     code: v.data.codigo,
   });
   if (error) return { erro: "codigo" };
-  redirect("/admin");
+  redirect(inicioDoPapel(papel));
 }

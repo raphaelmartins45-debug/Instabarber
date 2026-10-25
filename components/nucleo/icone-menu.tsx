@@ -51,6 +51,7 @@ const ICONES: Record<string, LucideIcon> = {
   saude: Activity,
   metricas: TrendingUp,
   comunicados: Megaphone,
+  desempenho: Target,
 };
 
 export function IconeMenu({ id, className }: { id: string; className?: string }) {

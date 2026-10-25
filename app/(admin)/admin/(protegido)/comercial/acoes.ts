@@ -1,9 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { exigirSuperAdmin } from "@/lib/admin/contexto";
+import { z } from "zod";
+import { exigirEquipaPlataforma, exigirSuperAdmin } from "@/lib/admin/contexto";
 import {
   apagarLeadsInativos,
+  atribuirResponsavel,
   atualizarLead,
   criarLead,
   mudarEstadoLead,
@@ -19,7 +21,8 @@ import {
   type DadosLead,
 } from "@/lib/validacao/comercial";
 
-// Ações do Comercial (N.3). Só o super_admin com dois fatores; a base de dados confere outra vez.
+// Ações do Comercial (N.3). A equipa InstaBarber com dois fatores: o comercial só nos seus leads,
+// e atribuir ou apagar é dos administradores (D-161); a base de dados confere outra vez.
 
 type Resultado = { ok: true; id?: string } | { ok: false; erro: string };
 
@@ -32,7 +35,7 @@ function revalidar(id?: string) {
 }
 
 export async function criar(dados: DadosLead): Promise<Resultado> {
-  const admin = await exigirSuperAdmin();
+  const admin = await exigirEquipaPlataforma();
   const v = esquemaLead.safeParse(dados);
   if (!v.success) return { ok: false, erro: erroDe(v.error.issues) };
   const id = await criarLead(await criarClienteServidor(), v.data, admin.userId);
@@ -42,7 +45,7 @@ export async function criar(dados: DadosLead): Promise<Resultado> {
 }
 
 export async function atualizar(id: string, dados: DadosLead): Promise<Resultado> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   const v = esquemaLead.safeParse(dados);
   if (!v.success) return { ok: false, erro: erroDe(v.error.issues) };
   if (!(await atualizarLead(await criarClienteServidor(), id, v.data)))
@@ -52,7 +55,7 @@ export async function atualizar(id: string, dados: DadosLead): Promise<Resultado
 }
 
 export async function mudarEstado(id: string, dados: DadosEstado): Promise<Resultado> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   const v = esquemaEstado.safeParse(dados);
   if (!v.success) return { ok: false, erro: erroDe(v.error.issues) };
   if (!(await mudarEstadoLead(await criarClienteServidor(), id, v.data)))
@@ -62,7 +65,7 @@ export async function mudarEstado(id: string, dados: DadosEstado): Promise<Resul
 }
 
 export async function registarEvento(id: string, dados: DadosEvento): Promise<Resultado> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   const v = esquemaEvento.safeParse(dados);
   if (!v.success) return { ok: false, erro: erroDe(v.error.issues) };
   if (!(await registarEventoLead(await criarClienteServidor(), id, v.data)))
@@ -78,4 +81,15 @@ export async function apagarInativos(): Promise<
   const n = await apagarLeadsInativos(await criarClienteServidor());
   revalidar();
   return n === null ? { ok: false, erro: "generico" } : { ok: true, n };
+}
+
+/** Atribui o lead a um comercial, ou tira-lho (D-161). Só o dono e o gestor. */
+export async function atribuir(id: string, responsavel: string): Promise<Resultado> {
+  await exigirSuperAdmin();
+  const v = z.union([z.literal(""), z.string().uuid()]).safeParse(responsavel);
+  if (!z.string().uuid().safeParse(id).success || !v.success)
+    return { ok: false, erro: "generico" };
+  const ok = await atribuirResponsavel(await criarClienteServidor(), id, v.data || null);
+  revalidar(id);
+  return ok ? { ok: true } : { ok: false, erro: "generico" };
 }

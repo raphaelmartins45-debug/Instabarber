@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AtribuirResponsavel } from "@/components/admin/comercial/atribuir-responsavel";
 import { ContratosLead } from "@/components/admin/comercial/contratos-lead";
 import { FormularioLead } from "@/components/admin/comercial/formulario-lead";
 import { HistoricoLead } from "@/components/admin/comercial/historico-lead";
@@ -9,8 +10,11 @@ import { RegistarEventoLead } from "@/components/admin/comercial/registar-evento
 import { Etiqueta } from "@/components/nucleo/etiqueta";
 import { Button } from "@/components/ui/button";
 import { Secao } from "@/components/nucleo/secao";
+import { eAdministrador } from "@/lib/admin/acesso";
+import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
+import { listarComerciais } from "@/lib/repositorios/admin/equipa";
 import { eventosDoLead, obterLead } from "@/lib/repositorios/comercial/leads";
 import { contratosDoLead } from "@/lib/repositorios/comercial/contratos";
 import {
@@ -27,15 +31,17 @@ export const metadata = { title: `${t.separadores.leads} · ${t.titulo}` };
 /** Ficha do lead (N.3): dados, estado, propostas, contratos, registar contacto e o histórico. */
 export default async function FichaLead({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const admin = eAdministrador((await exigirEquipaPlataforma()).papel);
   const bd = await criarClienteServidor();
   const lead = await obterLead(bd, id);
   if (!lead) notFound();
-  const [eventos, propostas, contratos, briefing, modelo] = await Promise.all([
+  const [eventos, propostas, contratos, briefing, modelo, comerciais] = await Promise.all([
     eventosDoLead(bd, id),
     propostasDoLead(bd, id),
     contratosDoLead(bd, id),
     lerBriefing(bd, id),
     modeloAprovado(bd, "contrato"),
+    admin ? listarComerciais(bd) : [],
   ]);
   const inicial: DadosLead = {
     nome_contacto: lead.nome_contacto,
@@ -93,6 +99,15 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
           </Secao>
         </div>
         <div className="grid content-start gap-5">
+          {admin ? (
+            <div className="cartao rounded-2xl p-5">
+              <AtribuirResponsavel
+                leadId={lead.id}
+                atual={lead.responsavel_id}
+                comerciais={comerciais}
+              />
+            </div>
+          ) : null}
           <Secao id="lead-estado" titulo={t.ficha.mudarEstado}>
             <div className="cartao rounded-2xl p-5">
               <MudarEstadoLead id={lead.id} atual={lead.estado} />

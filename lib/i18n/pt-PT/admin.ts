@@ -13,6 +13,8 @@ export const admin = {
     saude: "Saúde das barbearias",
     metricas: "Crescimento",
     comunicados: "Comunicados",
+    equipa: "Equipa InstaBarber",
+    desempenho: "O meu desempenho",
   },
   estados: { pendente: "Pendente", ativo: "Ativa", suspenso: "Suspensa", cancelado: "Cancelada" },
   estadosPagamento: { em_dia: "Em dia", em_atraso: "Em atraso" },
@@ -77,6 +79,7 @@ export const admin = {
     anterior: "Anterior",
     seguinte: "Seguinte",
     mensalidade: "Mensalidade",
+    comDesconto: (pct: number) => `com ${pct} % de desconto`,
     campos: {
       nome: "Nome",
       slug: "Endereço (slug)",

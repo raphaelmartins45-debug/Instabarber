@@ -27,6 +27,8 @@ const base = {
   valorComIva: "47.97",
   ivaTaxa: 23,
   condicoesLancamento: null,
+  descontoPct: 0,
+  taxaSemIva: "0",
   dados: {
     briefing,
     decomposicao: [{ rotulo: "Base Pro", valorCent: 3900 }],
@@ -53,5 +55,18 @@ describe("PDF da proposta (N.5)", () => {
   it("sem modelo de condições aprovado, o PDF avisa em vez de inventar texto jurídico", () => {
     const pdf = gerarPdfProposta({ ...base, condicoes: null }).output();
     expect(pdf).toContain("Condições por aprovar");
+  });
+});
+
+describe("desconto e taxa de migração no PDF (D-161)", () => {
+  it("mostra o desconto e a taxa quando existem", () => {
+    const texto = gerarPdfProposta({
+      ...base,
+      condicoes: null,
+      descontoPct: 20,
+      taxaSemIva: "100.00",
+    }).output();
+    expect(texto).toContain("Desconto de 20");
+    expect(texto).toContain("Taxa de migra");
   });
 });

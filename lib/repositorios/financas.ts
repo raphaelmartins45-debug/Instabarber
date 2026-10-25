@@ -164,7 +164,7 @@ export async function barbeariasParaFinancas(
   const { data, error } = await bd
     .from("inquilinos")
     .select(
-      "id, nome, plano, periodicidade, profissionais_contratados, dominio_proprio, estado, estado_pagamento, aprovado_em",
+      "id, nome, plano, periodicidade, profissionais_contratados, dominio_proprio, desconto_mensalidade_pct, estado, estado_pagamento, aprovado_em",
     )
     .neq("estado", "pendente");
   if (error) falhaDeLeitura("inquilinos", error);

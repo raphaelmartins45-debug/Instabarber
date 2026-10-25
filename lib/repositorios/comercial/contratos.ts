@@ -139,11 +139,10 @@ export async function fixarTextoContrato(
   id: string,
   texto: string,
 ): Promise<boolean> {
-  const { error } = await bd
-    .from("contratos")
-    .update({ texto })
-    .eq("id", uuid.parse(id))
-    .eq("estado", "rascunho");
+  const { error } = await bd.rpc("fixar_texto_contrato", {
+    p_contrato: uuid.parse(id),
+    p_texto: texto,
+  });
   return !error;
 }
 

@@ -1,5 +1,6 @@
 "use server";
 
+import { ePapelPlataforma } from "@/lib/admin/acesso";
 import { caminhoSeguro } from "@/lib/inquilino/encaminhar";
 import { lerEndereco, origemDoPedido } from "@/lib/inquilino/endereco";
 import { eContaCliente } from "@/lib/regras/conta-cliente";
@@ -41,7 +42,7 @@ export async function entrarEquipa(dados: DadosEntradaEquipa): Promise<Resultado
     await bd.auth.signOut();
     return { erro: "sem_acesso" };
   }
-  const soAdmin = perfis.every((p) => p.papel === "super_admin");
+  const soAdmin = perfis.every((p) => ePapelPlataforma(p.papel));
   return { destino: soAdmin ? "/admin" : caminhoSeguro(v.data.seguinte, "/app") };
 }
 

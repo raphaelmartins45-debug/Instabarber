@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FormularioBriefing } from "@/components/admin/comercial/formulario-briefing";
+import { eAdministrador } from "@/lib/admin/acesso";
+import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { textos } from "@/lib/i18n/pt-PT";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { obterLead } from "@/lib/repositorios/comercial/leads";
+import { lerCondicoes } from "@/lib/repositorios/comercial/condicoes";
 import { lerBriefing } from "@/lib/repositorios/comercial/propostas";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
@@ -13,10 +16,11 @@ export const metadata = { title: `${t.briefing.titulo} · ${t.titulo}` };
 /** Briefing do lead (N.4). Começa com o que o lead já tem (barbearia, cidade, barbeiros). */
 export default async function Briefing({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const quem = await exigirEquipaPlataforma();
   const bd = await criarClienteServidor();
   const lead = await obterLead(bd, id);
   if (!lead) notFound();
-  const b = await lerBriefing(bd, id);
+  const [b, condicoes] = await Promise.all([lerBriefing(bd, id), lerCondicoes(bd)]);
   const inicial = {
     ...b,
     nome_comercial: b.nome_comercial || lead.nome_barbearia || "",
@@ -35,6 +39,8 @@ export default async function Briefing({ params }: { params: Promise<{ id: strin
         leadId={id}
         inicial={inicial}
         regime={lerRegimeIva(process.env.PRESTADORA_REGIME_IVA)}
+        condicoes={condicoes}
+        administrador={eAdministrador(quem.papel)}
       />
     </div>
   );

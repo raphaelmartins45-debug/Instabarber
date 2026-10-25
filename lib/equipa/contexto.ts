@@ -7,6 +7,7 @@ import { listarMeusPerfis, type MeuPerfil } from "@/lib/repositorios/perfis";
 import { obterProfissionalDoPerfil } from "@/lib/repositorios/profissionais";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import type { ClienteBD } from "@/lib/supabase/tipos";
+import { eAdministrador, ePapelPlataforma } from "@/lib/admin/acesso";
 import { COOKIE_APOIO, lerApoio } from "@/lib/admin/apoio";
 import { obterBarbearia } from "@/lib/repositorios/admin/barbearias";
 
@@ -41,13 +42,14 @@ export const obterContextoEquipa = cache(async (): Promise<ContextoEquipa> => {
   const perfis = await listarMeusPerfis(bd, user.id);
   const daEquipa = perfis.filter(
     (p): p is MeuPerfil & { inquilino: NonNullable<MeuPerfil["inquilino"]> } =>
-      p.papel !== "super_admin" && p.inquilino?.estado === "ativo",
+      !ePapelPlataforma(p.papel) && p.inquilino?.estado === "ativo",
   );
   if (daEquipa.length === 0) {
     // Barbearia suspensa (M.4): o gestor só vê o plano e as faturas, para regularizar.
     if (perfis.some((p) => p.papel === "proprietario" && p.inquilino?.estado === "suspenso"))
       redirect("/app/suspensa");
-    if (perfis.some((p) => p.papel === "super_admin")) {
+    // O dono e o gestor abrem a vista de apoio; o comercial não (D-161).
+    if (perfis.some((p) => ePapelPlataforma(p.papel) && eAdministrador(p.papel))) {
       const apoio = await contextoDeApoio(bd, user.id);
       if (apoio) return apoio;
       redirect("/admin");

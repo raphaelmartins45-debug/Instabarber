@@ -5307,6 +5307,7 @@ export type Database = {
       exigir_gestor: { Args: { p_inquilino: string }; Returns: undefined };
       exigir_lead: { Args: { p_lead: string }; Returns: undefined };
       exigir_super_admin: { Args: Record<PropertyKey, never>; Returns: undefined };
+      fixar_texto_contrato: { Args: { p_contrato: string; p_texto: string }; Returns: undefined };
       funcionalidade_ativa: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };
       gerar_contrato: {
         Args: { p_dados: Json; p_modelo: string; p_proposta: string; p_texto: string };

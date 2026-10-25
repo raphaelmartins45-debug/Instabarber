@@ -142,3 +142,17 @@ export async function apagarLeadsInativos(bd: ClienteBD, meses = 12): Promise<nu
   const { data, error } = await bd.rpc("apagar_leads_inativos", { p_meses: meses });
   return error ? null : data;
 }
+
+/** Atribui o lead a um comercial (ou tira-lho). Só os administradores (RLS e gatilho). */
+export async function atribuirResponsavel(
+  bd: ClienteBD,
+  id: string,
+  responsavel: string | null,
+): Promise<boolean> {
+  const { data, error } = await bd
+    .from("leads")
+    .update({ responsavel_id: responsavel, atualizado_em: new Date().toISOString() })
+    .eq("id", uuid.parse(id))
+    .select("id");
+  return !error && data.length === 1;
+}

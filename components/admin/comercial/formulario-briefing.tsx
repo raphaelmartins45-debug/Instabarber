@@ -1,5 +1,6 @@
 "use client";
 
+import type { CondicoesComerciais } from "@/lib/comercial/condicoes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -21,10 +22,14 @@ export function FormularioBriefing({
   leadId,
   inicial,
   regime,
+  condicoes,
+  administrador,
 }: {
   leadId: string;
   inicial: DadosBriefing;
   regime: RegimeIva;
+  condicoes: CondicoesComerciais;
+  administrador: boolean;
 }) {
   const router = useRouter();
   const [passo, setPasso] = useState(0);
@@ -81,7 +86,13 @@ export function FormularioBriefing({
       </div>
       <p className="text-sm text-muted-foreground">{t.ajuda}</p>
       {aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null}
-      <PassoBriefing form={form} passo={passo} regime={regime} />
+      <PassoBriefing
+        form={form}
+        passo={passo}
+        regime={regime}
+        condicoes={condicoes}
+        administrador={administrador}
+      />
       <div className="flex flex-wrap gap-2">
         <Button
           type="button"

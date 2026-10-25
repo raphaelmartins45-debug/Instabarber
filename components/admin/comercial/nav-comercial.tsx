@@ -7,25 +7,28 @@ import { cn } from "@/lib/utils";
 
 const t = textos.comercial;
 
-// Separadores do Comercial (N.2).
+// Separadores do Comercial (N.2). Modelos e Condições são só dos administradores (D-161).
 const SEPARADORES = [
-  { id: "funil", href: "/admin/comercial" },
-  { id: "leads", href: "/admin/comercial/leads" },
-  { id: "propostas", href: "/admin/comercial/propostas" },
-  { id: "contratos", href: "/admin/comercial/contratos" },
-  { id: "modelos", href: "/admin/comercial/modelos" },
+  { id: "funil", href: "/admin/comercial", soAdmin: false },
+  { id: "leads", href: "/admin/comercial/leads", soAdmin: false },
+  { id: "propostas", href: "/admin/comercial/propostas", soAdmin: false },
+  { id: "contratos", href: "/admin/comercial/contratos", soAdmin: false },
+  { id: "desempenho", href: "/admin/comercial/desempenho", soAdmin: false },
+  { id: "modelos", href: "/admin/comercial/modelos", soAdmin: true },
+  { id: "condicoes", href: "/admin/comercial/condicoes", soAdmin: true },
 ] as const;
 
 /** Separadores do Comercial; no telemóvel deslizam na horizontal. */
-export function NavComercial() {
+export function NavComercial({ administrador }: { administrador: boolean }) {
   const caminho = usePathname();
+  const separadores = SEPARADORES.filter((s) => administrador || !s.soAdmin);
   const atual =
-    [...SEPARADORES].reverse().find((s) => caminho === s.href || caminho.startsWith(`${s.href}/`))
+    [...separadores].reverse().find((s) => caminho === s.href || caminho.startsWith(`${s.href}/`))
       ?.id ?? "funil";
   return (
     <nav aria-label={t.titulo} className="-mx-4 overflow-x-auto border-b px-4 md:mx-0 md:px-0">
       <ul className="flex gap-1">
-        {SEPARADORES.map((s) => (
+        {separadores.map((s) => (
           <li key={s.id}>
             <Link
               href={s.href}

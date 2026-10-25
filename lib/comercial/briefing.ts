@@ -56,6 +56,9 @@ export const esquemaBriefing = z.object({
   condicoes_lancamento: texto(1000),
   desafio_90: z.boolean().optional().default(false),
   validade_dias: z.coerce.number().int().min(1).max(90).optional().default(15),
+  // Descontos (D-161): só valem com as condições comerciais ligadas; percentagens inteiras.
+  desconto_mensalidade_pct: z.coerce.number().int().min(0).max(100).optional().default(0),
+  desconto_taxa_pct: z.coerce.number().int().min(0).max(100).optional().default(0),
   data_arranque: texto(10),
   // 7 · Contacto e decisor
   decisor_nome: texto(120),

@@ -2,7 +2,8 @@ import "server-only";
 import { hojeIso, mesAnterior, primeiroDoMes } from "@/lib/formatacao/datas";
 import { ticketMedio } from "@/lib/regras/classificacao";
 import { faturacaoServicos } from "@/lib/regras/financeiro";
-import { calcularPrecoCent, lerRegimeIva } from "@/lib/regras/mensalidade";
+import { lerRegimeIva } from "@/lib/regras/mensalidade";
+import { precoDaBarbearia } from "@/lib/regras/receita";
 import { receitaAdicionalEstimada, recomendacoes } from "@/lib/regras/recomendacoes";
 import {
   antecedenciaMedia,
@@ -112,11 +113,8 @@ export async function relatorioDoMes(
     retencao: {
       ...r,
       ligacoesAbertas: mensagens.filter((m) => dentro(m.abertaEm, periodo)).length,
-      subscricaoCent: calcularPrecoCent(
-        b.plano as "basic" | "pro",
-        b.profissionais_contratados,
-        "mensal",
-        !!b.dominio_proprio,
+      subscricaoCent: precoDaBarbearia(
+        { ...b, periodicidade: "mensal" },
         lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
       ).comIva,
     },

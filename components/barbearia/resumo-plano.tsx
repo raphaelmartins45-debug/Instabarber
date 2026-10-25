@@ -3,7 +3,8 @@ import { Indicador } from "@/components/nucleo/indicador";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
-import { calcularPrecoCent, lerRegimeIva } from "@/lib/regras/mensalidade";
+import { lerRegimeIva } from "@/lib/regras/mensalidade";
+import { precoDaBarbearia } from "@/lib/regras/receita";
 import type { Fatura, Recebimento } from "@/lib/repositorios/admin/pagamentos";
 import type { ConfiguracaoBarbearia } from "@/lib/repositorios/painel/barbearia";
 
@@ -24,13 +25,7 @@ export function ResumoPlano({
 }) {
   const plano = b.plano as "basic" | "pro";
   const periodicidade = b.periodicidade as "mensal" | "anual";
-  const preco = calcularPrecoCent(
-    plano,
-    b.profissionais_contratados,
-    periodicidade,
-    !!b.dominio_proprio,
-    lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
-  );
+  const preco = precoDaBarbearia(b, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA));
   return (
     <>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4" data-testid="meu-plano">

@@ -4,7 +4,12 @@ import { falhaDeLeitura } from "./erros";
 // Perfis da equipa e da plataforma. O cliente final não tem perfil (CLAUDE.md §3).
 // Cada utilizador lê os seus perfis (RLS perfis_ler); o super_admin escreve-os.
 
-export type Papel = "super_admin" | "proprietario" | "profissional";
+export type Papel =
+  | "super_admin"
+  | "gestor_plataforma"
+  | "comercial"
+  | "proprietario"
+  | "profissional";
 
 export type MeuPerfil = {
   id: string;
@@ -115,4 +120,16 @@ export async function listarProprietarios(
     .eq("papel", "proprietario");
   if (error) falhaDeLeitura("perfis", error);
   return data;
+}
+
+/** O papel do utilizador na equipa InstaBarber (D-161), ou nulo se não for da equipa. */
+export async function papelNaPlataforma(bd: ClienteBD, userId: string): Promise<string | null> {
+  const { data } = await bd
+    .from("perfis")
+    .select("papel")
+    .eq("user_id", userId)
+    .eq("ativo", true)
+    .is("inquilino_id", null)
+    .maybeSingle();
+  return data?.papel ?? null;
 }

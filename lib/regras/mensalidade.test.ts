@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { calcularMensalidadeCent, calcularPrecoCent, profissionaisExtra } from "./mensalidade";
+import {
+  calcularMensalidadeCent,
+  calcularPrecoCent,
+  comDescontoCent,
+  profissionaisExtra,
+} from "./mensalidade";
 
 describe("mensalidade (D.5)", () => {
   it.each([
@@ -51,5 +56,29 @@ describe("mensalidade (D.5)", () => {
   it("a conta dos extras (D.6): 5 profissionais = 2 extra a 10,00 €", () => {
     expect(profissionaisExtra("pro", 5)).toEqual({ extras: 2, valorCent: 2000 });
     expect(profissionaisExtra("basic", 1)).toEqual({ extras: 0, valorCent: 0 });
+  });
+});
+
+describe("desconto na mensalidade (D-161)", () => {
+  it("aplica-se à mensalidade antes do período e do IVA", () => {
+    // Pro com 3: 39,00 € com 20 % → 31,20 € sem IVA; 38,38 € com IVA.
+    expect(calcularPrecoCent("pro", 3, "mensal", false, "normal", 20)).toEqual({
+      semIva: 3120,
+      comIva: 3838,
+      ivaTaxa: 23,
+    });
+    expect(calcularPrecoCent("pro", 3, "anual", false, "normal", 20).semIva).toBe(31200);
+  });
+
+  it("sem desconto o preço não muda", () => {
+    expect(calcularPrecoCent("basic", 1, "mensal", false, "normal", 0)).toEqual(
+      calcularPrecoCent("basic", 1, "mensal"),
+    );
+  });
+
+  it("arredonda ao cêntimo e recusa percentagens inválidas", () => {
+    expect(comDescontoCent(1999, 15)).toBe(1699);
+    expect(() => comDescontoCent(1999, 12.5)).toThrow("desconto_invalido");
+    expect(() => comDescontoCent(1999, 101)).toThrow("desconto_invalido");
   });
 });

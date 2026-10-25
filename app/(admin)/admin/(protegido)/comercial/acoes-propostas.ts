@@ -1,8 +1,11 @@
 "use server";
 
+import { eAdministrador } from "@/lib/admin/acesso";
+import { aplicarCondicoes } from "@/lib/comercial/condicoes";
+import { lerCondicoes } from "@/lib/repositorios/comercial/condicoes";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { exigirSuperAdmin } from "@/lib/admin/contexto";
+import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { type DadosBriefing, emFaltaParaProposta, esquemaBriefing } from "@/lib/comercial/briefing";
 import { montarProposta } from "@/lib/comercial/proposta";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
@@ -32,7 +35,7 @@ function revalidar(leadId: string) {
 }
 
 export async function guardar(leadId: string, dados: DadosBriefing): Promise<Resultado> {
-  const admin = await exigirSuperAdmin();
+  const admin = await exigirEquipaPlataforma();
   const v = esquemaBriefing.safeParse(dados);
   if (!uuid.safeParse(leadId).success || !v.success) return { ok: false, erro: "generico" };
   if (!(await guardarBriefing(await criarClienteServidor(), leadId, v.data, admin.userId)))
@@ -43,18 +46,30 @@ export async function guardar(leadId: string, dados: DadosBriefing): Promise<Res
 
 /** Gera uma versão nova da proposta a partir do briefing guardado. */
 export async function gerar(leadId: string): Promise<Resultado> {
-  await exigirSuperAdmin();
+  const quem = await exigirEquipaPlataforma();
   if (!uuid.safeParse(leadId).success) return { ok: false, erro: "generico" };
   const bd = await criarClienteServidor();
   const briefing = await lerBriefing(bd, leadId);
   const falta = emFaltaParaProposta(briefing);
   if (falta.length) return { ok: false, erro: "em_falta", campos: falta };
-  const [catalogo, pacotes] = await Promise.all([listarFuncionalidades(bd), listarPacotes(bd)]);
+  const [catalogo, pacotes, condicoes] = await Promise.all([
+    listarFuncionalidades(bd),
+    listarPacotes(bd),
+    lerCondicoes(bd),
+  ]);
+  // Descontos e taxa de migração (D-161): a base de dados confere outra vez os limites.
+  const descontos = aplicarCondicoes(
+    { mensalidade: briefing.desconto_mensalidade_pct, taxa: briefing.desconto_taxa_pct },
+    condicoes,
+    eAdministrador(quem.papel),
+  );
+  if (!descontos.ok) return { ok: false, erro: descontos.erro };
   const proposta = montarProposta(
     briefing,
     catalogo,
     pacotes,
     lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
+    descontos,
   );
   const r = await criarProposta(bd, leadId, proposta);
   if ("erro" in r) return { ok: false, erro: codigo(r.erro) };
@@ -63,7 +78,7 @@ export async function gerar(leadId: string): Promise<Resultado> {
 }
 
 export async function marcarEnviada(leadId: string, propostaId: string): Promise<Resultado> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   const erro = await marcarPropostaEnviada(await criarClienteServidor(), propostaId);
   if (erro) return { ok: false, erro: codigo(erro) };
   revalidar(leadId);
@@ -76,7 +91,7 @@ export async function decidir(
   aceite: boolean,
   motivo?: string,
 ): Promise<Resultado> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   const m = z.string().trim().max(400).optional().safeParse(motivo);
   if (!m.success || (!aceite && !m.data)) return { ok: false, erro: "motivo" };
   const erro = await decidirProposta(await criarClienteServidor(), propostaId, aceite, m.data);

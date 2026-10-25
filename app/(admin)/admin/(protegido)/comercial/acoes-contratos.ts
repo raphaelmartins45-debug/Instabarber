@@ -3,7 +3,7 @@
 import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { exigirSuperAdmin } from "@/lib/admin/contexto";
+import { exigirEquipaPlataforma, exigirSuperAdmin } from "@/lib/admin/contexto";
 import { variavel } from "@/lib/configuracao/ambiente";
 import {
   camposEmAberto,
@@ -91,7 +91,7 @@ export async function gerarDaProposta(
   propostaId: string,
   dados: DadosContratante,
 ): Promise<Resultado> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   const c = esquemaContratante.safeParse(dados);
   if (!c.success) return { ok: false, erro: c.error.issues[0]?.message ?? "generico" };
   const bd = await criarClienteServidor();
@@ -149,7 +149,7 @@ export async function gerarDaProposta(
 }
 
 export async function marcarEnviado(leadId: string, id: string): Promise<Resultado> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   const erro = await marcarContratoEnviado(await criarClienteServidor(), id);
   revalidar(leadId);
   return erro ? { ok: false, erro: codigo(erro) } : { ok: true };
@@ -160,7 +160,7 @@ export async function prepararCarregamento(
   leadId: string,
   id: string,
 ): Promise<Resultado<{ caminho: string; token: string }>> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   if (!uuid.safeParse(leadId).success || !uuid.safeParse(id).success)
     return { ok: false, erro: "generico" };
   const caminho = `leads/${leadId}/contratos/${id}-assinado.pdf`;
@@ -174,7 +174,7 @@ export async function registarAssinatura(
   data: string,
   caminho: string,
 ): Promise<Resultado> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   if (
     !/^\d{4}-\d{2}-\d{2}$/.test(data) ||
     caminho !== `leads/${leadId}/contratos/${id}-assinado.pdf`
@@ -190,7 +190,7 @@ export async function criarConvite(
   leadId: string,
   id: string,
 ): Promise<Resultado<{ ligacao: string }>> {
-  await exigirSuperAdmin();
+  await exigirEquipaPlataforma();
   const bd = await criarClienteServidor();
   const contrato = await obterContrato(bd, id);
   if (!contrato || contrato.lead_id !== leadId) return { ok: false, erro: "generico" };

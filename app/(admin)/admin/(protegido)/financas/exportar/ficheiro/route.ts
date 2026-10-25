@@ -1,4 +1,5 @@
 import { type NextRequest } from "next/server";
+import { eAdministrador } from "@/lib/admin/acesso";
 import { lerSuperAdmin } from "@/lib/admin/contexto";
 import { seccoesParaCsv } from "@/lib/exportacao/csv";
 import {
@@ -27,7 +28,7 @@ const TIPOS: TipoPeriodo[] = ["mes", "trimestre", "ano"];
 
 export async function GET(pedido: NextRequest) {
   const admin = await lerSuperAdmin();
-  if (!admin.aal2) return new Response(null, { status: 404 });
+  if (!admin.aal2 || !eAdministrador(admin.papel)) return new Response(null, { status: 404 });
   const q = pedido.nextUrl.searchParams;
   const tipo = (TIPOS.find((x) => x === q.get("periodo")) ?? "mes") as TipoPeriodo;
   const ref = /^\d{4}-\d{2}$/.test(q.get("ref") ?? "") ? q.get("ref")! : mesAtual();

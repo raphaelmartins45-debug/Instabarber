@@ -52,10 +52,17 @@ insert into leads (id, nome_contacto, telefone, responsavel_id) values
 select teste.como('10000000-0000-0000-0000-00000000000a', 'aal2');
 select teste.ok(e_comercial() and not e_super_admin(), 'COMC: o comercial não é administrador');
 insert into leads (id, nome_contacto, telefone) values ('e0000000-0000-0000-0000-00000000000a', 'Da Ana', '912000010');
+-- Como a aplicação faz (insert … returning): o RLS tem de deixar ler a linha nova.
+do $$
+declare v uuid;
+begin
+  insert into leads (nome_contacto, telefone) values ('Outro da Ana', '912000011') returning id into v;
+  perform teste.ok(v is not null, 'COMC: lê o lead que acabou de criar');
+end $$;
 select teste.ok((select responsavel_id = '10000000-0000-0000-0000-00000000000a' and criado_por = responsavel_id
                    from leads where id = 'e0000000-0000-0000-0000-00000000000a'),
   'COMC: o lead que o comercial cria é dele');
-select teste.ok((select count(*) from leads) = 1, 'COMC: o comercial só vê os seus leads');
+select teste.ok((select count(*) from leads) = 2, 'COMC: o comercial só vê os seus leads');
 select teste.zero($$update leads set nome_contacto = 'x' where id = 'e0000000-0000-0000-0000-000000000001'$$,
   'COMC: não altera o lead de outro comercial');
 select teste.erro($$update leads set responsavel_id = '10000000-0000-0000-0000-00000000000b'
@@ -126,6 +133,9 @@ select marcar_proposta_enviada((select id from propostas));
 select decidir_proposta((select id from propostas), true);
 select gerar_contrato((select id from propostas), 'd0000000-0000-0000-0000-00000000000a',
   '{"razao_social":"Barbearia Ana Lda","nif":"501964843","morada":"Rua A","representante":"Ana"}', 'Texto');
+select fixar_texto_contrato((select id from contratos), 'Texto CTR');
+select teste.ok((select texto from contratos) = 'Texto CTR', 'COMC: fixa o texto do seu contrato em rascunho');
+select teste.zero($$update contratos set estado = 'assinado'$$, 'COMC: não altera o contrato diretamente');
 select assinar_contrato((select id from contratos), current_date, 'leads/e0000000-0000-0000-0000-00000000000a/contratos/x.pdf');
 select teste.ok((select estado from leads where id = 'e0000000-0000-0000-0000-00000000000a') = 'ganho',
   'COMC: assina o contrato do seu lead e o lead fica ganho');

@@ -7,8 +7,8 @@ import { textos } from "@/lib/i18n/pt-PT";
 import { modeloAprovado, obterProposta } from "@/lib/repositorios/comercial/propostas";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
-// PDF da proposta (N.5), gerado da fotografia guardada. Só o super_admin com dois fatores;
-// os outros recebem 404, como o resto do Admin.
+// PDF da proposta (N.5), gerado da fotografia guardada. A equipa InstaBarber com dois fatores;
+// o RLS só devolve ao comercial as propostas dos seus leads (D-161). Os outros recebem 404.
 
 const b = textos.comercial.briefing;
 
@@ -33,6 +33,8 @@ export async function GET(_pedido: Request, { params }: { params: Promise<{ id: 
     valorComIva: String(p.valor_periodo_com_iva),
     ivaTaxa: Number(p.iva_taxa),
     condicoesLancamento: p.condicoes_lancamento,
+    descontoPct: Number(p.desconto_mensalidade_pct ?? 0),
+    taxaSemIva: String(p.taxa_migracao_sem_iva ?? 0),
     dados: p.dados as DadosPdfProposta["dados"],
     condicoes: condicoes?.corpo ?? null,
     contacto: {

@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { desvioAdmin, ePapelPlataforma } from "@/lib/admin/acesso";
 import {
   caminhoEntradaEquipa,
   encaminhar,
@@ -7,6 +8,7 @@ import {
 } from "@/lib/inquilino/encaminhar";
 import { CABECALHO_BASE, CABECALHO_SLUG } from "@/lib/inquilino/cabecalhos";
 import { classificarHost } from "@/lib/inquilino/host";
+import { papelNaPlataforma } from "@/lib/repositorios/perfis";
 import { clienteDoPedido, copiarCookies, slugPorDominio } from "@/lib/supabase/middleware";
 
 // Resolve a barbearia pelo host (L.4), reescreve para a rota interna e renova a sessão.
@@ -55,6 +57,12 @@ export async function middleware(pedido: NextRequest) {
 
   if (!user && decisao.zona !== "publica") {
     return copiarCookies(resposta, NextResponse.redirect(entradaPara(pedido, decisao, resolvido)));
+  }
+  // Cada papel da equipa InstaBarber só abre o que usa (D-161); o resto volta ao seu início.
+  if (user && decisao.zona === "admin") {
+    const papel = await papelNaPlataforma(bd, user.id);
+    const desvio = papel && ePapelPlataforma(papel) ? desvioAdmin(papel, decisao.destino) : null;
+    if (desvio) return copiarCookies(resposta, NextResponse.redirect(new URL(desvio, pedido.url)));
   }
   return resposta;
 }

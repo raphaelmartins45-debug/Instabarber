@@ -1,3 +1,4 @@
+import { exigirSuperAdmin } from "@/lib/admin/contexto";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AcoesModelo } from "@/components/admin/comercial/acoes-modelo";
@@ -12,6 +13,7 @@ export const metadata = { title: `${t.titulo} · ${textos.comercial.titulo}` };
 
 /** Um modelo (N.8): editar o rascunho com pré-visualização; os outros só se leem. */
 export default async function Modelo({ params }: { params: Promise<{ id: string }> }) {
+  await exigirSuperAdmin();
   const m = await obterModelo(await criarClienteServidor(), (await params).id);
   if (!m) notFound();
   return (
