@@ -327,7 +327,7 @@ Um problema de nível 3 num sábado à noite passa à frente de tudo.
 4. Verificar: número de barbearias, clientes e marcações igual ao da produção; RLS ativo em todas as tabelas; entrar como uma barbearia de ensaio.
 5. Registar a data, o tempo que demorou e qualquer problema. Limpar o projeto de ensaio no fim.
 
-**Restauro da cópia feita pela API (D-148):** com o Supabase local acabado de repor (`npx supabase db reset`), `ALVO_DB_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres COPIA_SENHA=… python3 scripts/restaurar-copia-api.py <ficheiro>.gpg`. Decifra, confere as somas, repõe tudo numa transação e compara as contagens com o manifesto; recusa a produção. Ensaiado a 24/10/2026 com a cópia da produção: 64 tabelas, 127 linhas, RLS ativo nas 59.
+**Restauro da cópia feita pela API (D-148):** com o Supabase local acabado de repor (`npx supabase db reset`), `ALVO_DB_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres COPIA_SENHA=… python3 scripts/restaurar-copia-api.py <ficheiro>.gpg`. Decifra, confere as somas, repõe tudo numa transação e compara as contagens com o manifesto; recusa a produção. Ensaiado a 24/10/2026 com a cópia da produção: 64 tabelas, 127 linhas, RLS ativo nas 59. Repetido a 25/10/2026 (Fase 8) com a cópia `221846Z`: 69 tabelas, 129 linhas, iguais ao manifesto; RLS ativo nas 65; 6 segundos.
 
 ---
 
