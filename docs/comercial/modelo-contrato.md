@@ -1,5 +1,6 @@
 <!-- RASCUNHO PARA REVISÃO JURÍDICA (N.8, D-38, D-42). Escrito com base na lei portuguesa e europeia aplicável (ver notas-para-o-jurista.md).
      Versão 2 (25/10/2026): revista segundo a análise preliminar do jurista (cláusulas 6, 9.2, 11, 14, 16, 17, 18, 19, 21.3 e anexos).
+     Os campos entre [ ] que ficam são só os que o dono decide; sem eles, o sistema não gera o contrato (D-154).
      Não aprovar no sistema nem usar com um cliente real antes do parecer final do jurista, com os Anexos II e III.
      Os textos entre [parênteses retos] são pontos em aberto ou valores propostos. Os marcadores {{…}} são preenchidos pelo sistema. -->
 
@@ -97,7 +98,7 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 11.5. **Recuperação.** Depois da entrega, o Cliente dispõe de, pelo menos, [30] dias para verificar e recolher os dados.
 11.6. **Eliminação.** Terminado o prazo de recuperação, a Performa LAB elimina os Dados do Cliente da Plataforma, e as cópias de segurança extinguem-se no prazo de 30 dias. Só conserva o que a lei a obrigue a conservar (nomeadamente os seus próprios documentos de faturação) e confirma a eliminação por escrito, a pedido.
 11.7. **Cessação.** O contrato cessa nos termos da cláusula 9. Os prazos desta cláusula aplicam-se a seguir à cessação e não a prolongam; durante eles não há faturação, salvo se o Cliente pedir expressamente a continuação do Serviço.
-11.8. Não há encargos de saída nem de mudança. [Confirmar com o jurista o enquadramento no Regulamento (UE) 2023/2854 (Regulamento dos Dados).]
+11.8. Não há encargos de saída nem de mudança.
 
 ## 12. Propriedade intelectual
 
@@ -114,9 +115,8 @@ Cada parte guarda sigilo sobre a informação confidencial da outra a que aceda 
 14.2. A Performa LAB responde, nos termos gerais, pelo incumprimento, pela mora e pelo cumprimento defeituoso das suas obrigações. Nenhuma cláusula deste contrato exclui ou limita a responsabilidade da Performa LAB por dolo ou culpa grave, por danos à vida, à integridade física, à saúde ou à liberdade das pessoas, nem nos demais casos em que a lei o não permita.
 14.3. **Danos diretos.** Fora dos casos da cláusula 14.2, a indemnização por danos diretos limita-se ao valor pago pelo Cliente nos [12] meses anteriores ao facto.
 14.4. **Danos indiretos.** Fora dos casos da cláusula 14.2, não são indemnizáveis os lucros cessantes nem os danos indiretos.
-14.5. **Segurança, confidencialidade e dados pessoais.** Pelos danos resultantes de falhas de segurança imputáveis à Performa LAB, de violação da confidencialidade (cláusula 13) ou das obrigações de proteção de dados (cláusula 10 e Anexo III), [limite próprio a definir, ou sem o limite da cláusula 14.3].
-14.6. A Performa LAB não responde por: dados inexatos introduzidos pelo Cliente; uso indevido de credenciais por quem as detenha; mensagens que o Cliente envie e o seu conteúdo; falhas de redes, do WhatsApp ou de outros serviços fora do seu controlo.
-14.7. O Cliente responde pelos danos que cause à Performa LAB ou a terceiros por violação do contrato ou da lei, em especial das regras de proteção de dados e de comunicações eletrónicas, e mantém a Performa LAB indemne perante reclamações de terceiros resultantes desse incumprimento, **na medida em que a culpa lhe seja imputável**.
+14.5. A Performa LAB não responde por: dados inexatos introduzidos pelo Cliente; uso indevido de credenciais por quem as detenha; mensagens que o Cliente envie e o seu conteúdo; falhas de redes, do WhatsApp ou de outros serviços fora do seu controlo.
+14.6. O Cliente responde pelos danos que cause à Performa LAB ou a terceiros por violação do contrato ou da lei, em especial das regras de proteção de dados e de comunicações eletrónicas, e mantém a Performa LAB indemne perante reclamações de terceiros resultantes desse incumprimento, **na medida em que a culpa lhe seja imputável**.
 
 ## 15. Força maior
 
@@ -150,7 +150,6 @@ Nenhuma parte responde pelo incumprimento ou atraso causado por facto que não l
 
 20.1. O contrato rege-se pela lei portuguesa.
 20.2. As partes tentam resolver qualquer litígio de boa-fé e por acordo, no prazo de [30] dias, antes de recorrerem a tribunal.
-20.3. Foro: [a definir pelo jurista; deve ser um foro que não crie graves inconvenientes a nenhuma das partes].
 
 ## 21. Disposições finais
 
@@ -171,6 +170,6 @@ Assinado em {{data_assinatura}}.
 ## Anexos
 
 - **Anexo I** — Proposta aceite n.º {{proposta.numero}}
-- **Anexo II** — Termos de Uso e Política de Privacidade, nas versões publicadas em instabarber.pt/termos e instabarber.pt/privacidade à data da assinatura [confirmar com o jurista que são as versões finais]
+- **Anexo II** — Termos de Uso e Política de Privacidade, nas versões publicadas em instabarber.pt/termos e instabarber.pt/privacidade à data da assinatura
 - **Anexo III** — Acordo de Subcontratação de dados pessoais (`modelo-acordo-subcontratacao.md`)
 - **Anexo IV** — Desafio de 90 dias (plano Pro): {{desafio}}
