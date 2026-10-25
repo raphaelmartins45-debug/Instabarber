@@ -6,6 +6,7 @@ import { z } from "zod";
 import { exigirSuperAdmin } from "@/lib/admin/contexto";
 import { variavel } from "@/lib/configuracao/ambiente";
 import {
+  camposEmAberto,
   completarDepoisDeGerar,
   type DadosContratante,
   esquemaContratante,
@@ -130,6 +131,10 @@ export async function gerarDaProposta(
       erro: "marcadores",
       detalhe: [...s.desconhecidos, ...s.emFalta].join(", "),
     };
+  // Nenhum contrato sai com campos [em aberto] do modelo (prazos, foro, assinatura…).
+  const abertos = camposEmAberto(s.texto);
+  if (abertos.length)
+    return { ok: false, erro: "campos_em_aberto", detalhe: abertos.slice(0, 8).join(" · ") };
   const r = await gerarContrato(bd, propostaId, modelo.id, { ...c.data }, s.texto);
   if ("erro" in r) return { ok: false, erro: codigo(r.erro) };
   const contrato = await obterContrato(bd, r.id);

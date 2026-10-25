@@ -117,7 +117,10 @@ export default async function semear() {
         tipo: "contrato",
         versao: 1,
         titulo: "Contrato de Prestação de Serviços InstaBarber",
-        corpo: readFileSync("docs/comercial/modelo-contrato.md", "utf8"),
+        corpo: readFileSync("docs/comercial/modelo-contrato.md", "utf8").replace(
+          /\[([^\]\n]+)\](?!\()/g,
+          "$1",
+        ),
         estado: "aprovado",
         aprovado_por: comercial,
         aprovado_em: new Date().toISOString(),

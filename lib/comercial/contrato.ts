@@ -91,3 +91,15 @@ export const esquemaContratante = z.object({
   data_inicio: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "data_inicio"),
 });
 export type DadosContratante = z.input<typeof esquemaContratante>;
+
+/**
+ * Campos em aberto do modelo: textos entre [parênteses retos] (prazos, foro, assinatura…). Um
+ * contrato não sai com nenhum por preencher (parecer do jurista, D-154). Ligações Markdown
+ * («[texto](endereço)») e comentários não contam.
+ */
+export function camposEmAberto(texto: string): string[] {
+  const semComentarios = texto.replace(/<!--[\s\S]*?-->/g, "");
+  return [
+    ...new Set([...semComentarios.matchAll(/\[([^\]\n]+)\](?!\()/g)].map((m) => m[1]!.trim())),
+  ];
+}

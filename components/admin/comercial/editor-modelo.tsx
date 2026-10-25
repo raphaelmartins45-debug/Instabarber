@@ -7,7 +7,7 @@ import { Aviso } from "@/components/nucleo/aviso";
 import { Campo } from "@/components/nucleo/campo";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { substituirMarcadores } from "@/lib/comercial/contrato";
+import { camposEmAberto, substituirMarcadores } from "@/lib/comercial/contrato";
 import { textos } from "@/lib/i18n/pt-PT";
 
 const t = textos.comercial.modelos;
@@ -33,6 +33,7 @@ export function EditorModelo({
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aGuardar, iniciar] = useTransition();
   const previa = substituirMarcadores(corpo, t.exemplo, textos.comercial.naoAplicavel);
+  const abertos = camposEmAberto(corpo);
   const guardar = () =>
     iniciar(async () => {
       const r = await guardarModelo(id, titulo, corpo);
@@ -77,6 +78,11 @@ export function EditorModelo({
         <p className="rotulo">{t.preVisualizar}</p>
         {!previa.ok && previa.desconhecidos.length ? (
           <Aviso tipo="erro">{t.marcadoresDesconhecidos(previa.desconhecidos.join(", "))}</Aviso>
+        ) : null}
+        {abertos.length ? (
+          <p className="text-sm font-semibold text-alerta" data-testid="campos-em-aberto">
+            {t.camposEmAberto(abertos.length)}
+          </p>
         ) : null}
         <pre className="cartao max-h-[70dvh] overflow-auto rounded-2xl p-4 text-xs whitespace-pre-wrap">
           {previa.ok ? previa.texto : corpo}

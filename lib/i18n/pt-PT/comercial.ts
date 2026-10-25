@@ -261,6 +261,7 @@ export const comercial = {
     titulo: "Contratos",
     vazio: "Ainda sem contratos.",
     dominioIncluido: "Incluído",
+    desafioIncluido: "Incluído, nos termos da proposta aceite (Anexo I).",
     espacoData: "____ / ____ / ________",
     gerar: "Gerar contrato",
     gerarAjuda: "Confirme os dados do contratante. Vêm do briefing e da proposta aceite.",
@@ -317,6 +318,8 @@ export const comercial = {
       contrato_ja_assinado: "Esta proposta já tem um contrato assinado.",
       assinatura_incompleta: "Indique a data e carregue o PDF assinado.",
       marcadores: "O modelo tem marcadores por preencher:",
+      campos_em_aberto:
+        "O modelo aprovado ainda tem campos em aberto entre [ ]. Feche-os numa nova versão antes de gerar:",
       ficheiro: "Escolha um ficheiro PDF até 10 MB.",
       razao_social: "Escreva a firma.",
       nif: "NIF inválido.",
@@ -358,6 +361,10 @@ export const comercial = {
     aprovadoEm: (data: string) => `Aprovado a ${data}`,
     preVisualizar: "Pré-visualização com dados de exemplo",
     marcadoresDesconhecidos: (lista: string) => `Marcadores desconhecidos: ${lista}`,
+    camposEmAberto: (n: number) =>
+      n === 1
+        ? "1 campo em aberto entre [ ]: enquanto existir, o modelo não gera contratos."
+        : `${n} campos em aberto entre [ ]: enquanto existirem, o modelo não gera contratos.`,
     voltar: "← Modelos",
     importado: "Rascunho base importado.",
     aprovado: "Modelo aprovado.",

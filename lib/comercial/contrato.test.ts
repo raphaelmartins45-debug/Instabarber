@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { nifValido } from "@/lib/validacao/nif";
-import { completarDepoisDeGerar, esquemaContratante, substituirMarcadores } from "./contrato";
+import {
+  camposEmAberto,
+  completarDepoisDeGerar,
+  esquemaContratante,
+  substituirMarcadores,
+} from "./contrato";
 
 const NA = "Não aplicável";
 
@@ -69,5 +74,14 @@ describe("esquemaContratante", () => {
       data_inicio: "",
     });
     expect(mau.success).toBe(false);
+  });
+});
+
+describe("camposEmAberto", () => {
+  it("encontra os campos entre parênteses retos, sem repetir, e ignora ligações e comentários", () => {
+    const texto =
+      "Prazo de [30] dias. Foro: [a definir]. Outra vez [30].\n<!-- [nota] -->\nVer [Termos](https://x.pt).";
+    expect(camposEmAberto(texto)).toEqual(["30", "a definir"]);
+    expect(camposEmAberto("Sem campos em aberto.")).toEqual([]);
   });
 });

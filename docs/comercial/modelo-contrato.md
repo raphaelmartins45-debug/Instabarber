@@ -1,5 +1,6 @@
 <!-- RASCUNHO PARA REVISÃO JURÍDICA (N.8, D-38, D-42). Escrito com base na lei portuguesa e europeia aplicável (ver notas-para-o-jurista.md).
-     Não aprovar no sistema nem usar com um cliente real antes do parecer de um jurista.
+     Versão 2 (25/10/2026): revista segundo a análise preliminar do jurista (cláusulas 6, 9.2, 11, 14, 16, 17, 18, 19, 21.3 e anexos).
+     Não aprovar no sistema nem usar com um cliente real antes do parecer final do jurista, com os Anexos II e III.
      Os textos entre [parênteses retos] são pontos em aberto ou valores propostos. Os marcadores {{…}} são preenchidos pelo sistema. -->
 
 # Contrato de Prestação de Serviços InstaBarber
@@ -55,10 +56,10 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 
 ## 6. Preço
 
-6.1. A Mensalidade é de **{{valor_com_iva}}**, preço final, com periodicidade **{{periodicidade}}**. {{iva_texto}} No plano anual, o preço corresponde a dez mensalidades.
+6.1. O preço é de **{{valor_com_iva}}** por período de faturação (periodicidade **{{periodicidade}}**), preço final. Valor sem IVA: {{valor_sem_iva}}. {{iva_texto}}
 6.2. Condições de lançamento acordadas: {{condicoes_lancamento}}
 6.3. A Performa LAB só pode alterar os preços com aviso escrito de, pelo menos, [60] dias, e a alteração não se aplica ao período já pago. Se não concordar, o Cliente pode denunciar o contrato, sem qualquer encargo, até à data de entrada em vigor do novo preço.
-6.4. Se a Performa LAB deixar de estar isenta de IVA, o IVA à taxa legal é incluído no preço final ou, se a Performa LAB preferir, acresce ao preço, mas neste caso só com o aviso e o direito de denúncia da cláusula 6.3.
+6.4. O preço final acordado é o da cláusula 6.1, incluindo o IVA à taxa legal aplicável, quando devido. Qualquer alteração do enquadramento fiscal da Prestadora será refletida na faturação nos termos legalmente aplicáveis, sem prejuízo das condições de alteração de preços previstas na cláusula 6.3. A presente disposição não permite cobrar ao Cliente um montante superior ao preço contratualmente acordado sem fundamento legal ou contratual válido.
 
 ## 7. Faturação e pagamento
 
@@ -76,7 +77,7 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 ## 9. Duração e cessação
 
 9.1. O contrato inicia-se em {{data_inicio}} e vigora por tempo indeterminado, **sem período de fidelização**.
-9.2. Qualquer das partes pode **denunciá-lo**, sem invocar motivo e sem penalização, por comunicação escrita com [30] dias de antecedência. A denúncia produz efeitos no fim do período de faturação em curso. As mensalidades de períodos já iniciados não são reembolsáveis, salvo nos casos da cláusula 6.3 e de incumprimento da Performa LAB.
+9.2. Qualquer das partes pode **denunciá-lo**, sem invocar motivo e sem penalização, por comunicação escrita com [30] dias de antecedência. A denúncia produz efeitos no último dia do período de faturação em que terminar esse aviso: até essa data o Serviço mantém-se e o preço é devido; a partir dela não há mais faturação. Os valores de períodos já iniciados não são reembolsáveis, salvo nos casos da cláusula 6.3 e de incumprimento da Performa LAB.
 9.3. Qualquer das partes pode **resolver** o contrato em caso de incumprimento grave da outra que não seja sanado no prazo de [15] dias após interpelação escrita, ou de insolvência da outra.
 9.4. A cessação não afeta as obrigações já vencidas nem as que, pela sua natureza, subsistem (confidencialidade, proteção de dados, responsabilidade e cláusula 11).
 
@@ -89,12 +90,14 @@ e) pagar a Mensalidade nos termos da cláusula 7.
 
 ## 11. Saída, portabilidade e eliminação dos dados
 
-11.1. O Cliente pode pedir, a qualquer momento, por escrito, a **exportação dos seus dados** ou a **mudança para outro prestador de serviços**, com um aviso máximo de dois meses.
-11.2. A Performa LAB entrega, **sem custos**, todos os Dados do Cliente (clientes, marcações, serviços, equipa, registos financeiros, mensagens registadas e ficheiros carregados) em formato estruturado, de uso corrente e legível por máquina (CSV e, para ficheiros, os formatos originais), **sem demora injustificada e, em qualquer caso, no prazo máximo de 30 dias** a contar do pedido ou da cessação, e presta a assistência razoável para a mudança.
-11.3. O Cliente dispõe de, pelo menos, **30 dias** após a entrega para verificar e recolher os dados.
-11.4. Terminado esse prazo, a Performa LAB elimina os Dados do Cliente da Plataforma. As cópias de segurança extinguem-se no prazo de 30 dias. A Performa LAB só conserva o que a lei a obrigue a conservar (nomeadamente os seus próprios documentos de faturação) e confirma a eliminação por escrito, a pedido.
-11.5. O contrato considera-se terminado quando se concluir a mudança de prestador ou, se o Cliente optar por apagar os dados, no fim do aviso.
-11.6. Não há encargos de saída. Ficam fora da exportação o código, os segredos comerciais e os dados técnicos próprios da Performa LAB.
+11.1. **Dados exportáveis.** São exportáveis todos os Dados do Cliente: clientes finais e respetivos consentimentos, marcações e histórico, serviços e preços, equipa, fichas técnicas, registos financeiros, mensagens registadas e ficheiros carregados (logótipo, fotografias). Ficam fora o código, os segredos comerciais e os dados técnicos próprios da Performa LAB.
+11.2. **Formato.** A exportação é feita em formato estruturado, de uso corrente e legível por máquina (CSV e, para ficheiros, os formatos originais).
+11.3. **Pedido.** O Cliente pode pedir, a qualquer momento, por escrito, a exportação dos seus dados ou a mudança para outro prestador de serviços. O pedido de mudança faz-se com um aviso máximo de dois meses.
+11.4. **Entrega e período de transição.** A Performa LAB entrega os dados, **sem custos**, sem demora injustificada e, em qualquer caso, no prazo máximo de [30] dias a contar do pedido ou da cessação. Durante um período de transição de [30] dias, prorrogável por acordo, mantém o Serviço ou o acesso aos dados e presta a assistência razoável para a mudança.
+11.5. **Recuperação.** Depois da entrega, o Cliente dispõe de, pelo menos, [30] dias para verificar e recolher os dados.
+11.6. **Eliminação.** Terminado o prazo de recuperação, a Performa LAB elimina os Dados do Cliente da Plataforma, e as cópias de segurança extinguem-se no prazo de 30 dias. Só conserva o que a lei a obrigue a conservar (nomeadamente os seus próprios documentos de faturação) e confirma a eliminação por escrito, a pedido.
+11.7. **Cessação.** O contrato cessa nos termos da cláusula 9. Os prazos desta cláusula aplicam-se a seguir à cessação e não a prolongam; durante eles não há faturação, salvo se o Cliente pedir expressamente a continuação do Serviço.
+11.8. Não há encargos de saída nem de mudança. [Confirmar com o jurista o enquadramento no Regulamento (UE) 2023/2854 (Regulamento dos Dados).]
 
 ## 12. Propriedade intelectual
 
@@ -108,10 +111,12 @@ Cada parte guarda sigilo sobre a informação confidencial da outra a que aceda 
 ## 14. Responsabilidade
 
 14.1. A Performa LAB presta o Serviço com os meios razoáveis ao seu alcance, mas **não garante** que funcione sem interrupções ou erros. [Objetivo de disponibilidade, se se quiser assumir: a definir.]
-14.2. A Performa LAB responde pelos danos que cause por **dolo ou culpa grave**, e por danos à vida, à integridade física ou à saúde, **sem limite**.
-14.3. Nos restantes casos, a responsabilidade da Performa LAB perante o Cliente limita-se ao valor das mensalidades pagas nos [12] meses anteriores ao facto, e não abrange lucros cessantes nem danos indiretos.
-14.4. A Performa LAB não responde por: dados inexatos introduzidos pelo Cliente; uso indevido de credenciais por quem as detenha; mensagens que o Cliente envie e o seu conteúdo; falhas de redes, do WhatsApp ou de outros serviços fora do seu controlo.
-14.5. O Cliente responde pelos danos que cause à Performa LAB ou a terceiros por violação do contrato ou da lei, em especial das regras de proteção de dados e de comunicações eletrónicas, e mantém a Performa LAB indemne perante reclamações de terceiros resultantes desse incumprimento, **na medida em que a culpa lhe seja imputável**.
+14.2. A Performa LAB responde, nos termos gerais, pelo incumprimento, pela mora e pelo cumprimento defeituoso das suas obrigações. Nenhuma cláusula deste contrato exclui ou limita a responsabilidade da Performa LAB por dolo ou culpa grave, por danos à vida, à integridade física, à saúde ou à liberdade das pessoas, nem nos demais casos em que a lei o não permita.
+14.3. **Danos diretos.** Fora dos casos da cláusula 14.2, a indemnização por danos diretos limita-se ao valor pago pelo Cliente nos [12] meses anteriores ao facto.
+14.4. **Danos indiretos.** Fora dos casos da cláusula 14.2, não são indemnizáveis os lucros cessantes nem os danos indiretos.
+14.5. **Segurança, confidencialidade e dados pessoais.** Pelos danos resultantes de falhas de segurança imputáveis à Performa LAB, de violação da confidencialidade (cláusula 13) ou das obrigações de proteção de dados (cláusula 10 e Anexo III), [limite próprio a definir, ou sem o limite da cláusula 14.3].
+14.6. A Performa LAB não responde por: dados inexatos introduzidos pelo Cliente; uso indevido de credenciais por quem as detenha; mensagens que o Cliente envie e o seu conteúdo; falhas de redes, do WhatsApp ou de outros serviços fora do seu controlo.
+14.7. O Cliente responde pelos danos que cause à Performa LAB ou a terceiros por violação do contrato ou da lei, em especial das regras de proteção de dados e de comunicações eletrónicas, e mantém a Performa LAB indemne perante reclamações de terceiros resultantes desse incumprimento, **na medida em que a culpa lhe seja imputável**.
 
 ## 15. Força maior
 
@@ -119,23 +124,27 @@ Nenhuma parte responde pelo incumprimento ou atraso causado por facto que não l
 
 ## 16. Alterações
 
-16.1. A Performa LAB pode evoluir a Plataforma. Se uma alteração reduzir de forma material o que foi contratado, avisa o Cliente com [60] dias de antecedência e o Cliente pode denunciar o contrato sem encargos.
-16.2. Qualquer alteração ao contrato só vale se for feita por escrito e aceite pelas duas partes. A mudança de plano, de periodicidade ou de profissionais faz-se nos termos da cláusula 3.1.
+16.1. **Atualizações técnicas.** A Performa LAB pode atualizar a Plataforma (correções, segurança, desempenho, melhorias e novas funcionalidades) sem aviso prévio, desde que não reduza o que foi contratado.
+16.2. **Alterações materiais.** Se uma alteração retirar ou reduzir de forma relevante uma funcionalidade do plano contratado, a Performa LAB avisa o Cliente por escrito com [60] dias de antecedência, e o Cliente pode denunciar o contrato sem encargos até à data em que a alteração produz efeitos.
+16.3. Qualquer alteração ao contrato só vale se for feita por escrito e aceite pelas duas partes. A mudança de plano, de periodicidade ou de profissionais faz-se nos termos da cláusula 3.1.
 
 ## 17. Comunicações
 
 17.1. As comunicações entre as partes fazem-se por escrito e por correio eletrónico: para a Performa LAB, **apoio@instabarber.pt** (suporte e pedidos), **comercial@instabarber.pt** (contrato e preços) e **privacidade@instabarber.pt** (proteção de dados); para o Cliente, **{{contratante.email}}**.
-17.2. Presumem-se recebidas no dia útil seguinte ao do envio. Cada parte avisa a outra de qualquer mudança de contacto.
+17.2. Uma comunicação por correio eletrónico considera-se recebida quando chega ao endereço do destinatário em condições de ser lida; se chegar fora de um dia útil ou depois das 18h00, no dia útil seguinte. Se o envio falhar, o remetente usa outro meio.
+17.3. Os avisos de suspensão, resolução e denúncia enviam-se também [por carta registada com aviso de receção ou com pedido de confirmação de leitura].
+17.4. Cada parte avisa a outra de qualquer mudança de contacto.
 
 ## 18. Cláusulas contratuais gerais
 
-18.1. Este contrato e os seus anexos foram preparados antecipadamente pela Performa LAB para serem usados com vários clientes. O Cliente declara que recebeu o texto **completo**, com a antecedência de [5] dias, que o leu, que lhe foram explicadas as cláusulas e que as suas dúvidas foram esclarecidas.
-18.2. Foram especialmente negociadas as seguintes cláusulas: plano e profissionais, preço e condições de lançamento (cláusula 6), data de início e [outras].
+18.1. Este contrato e os seus anexos contêm cláusulas contratuais gerais, preparadas antecipadamente pela Performa LAB para serem usadas com vários clientes. A Performa LAB comunica ao Cliente o texto integral, com a antecedência adequada à sua extensão e complexidade, e presta os esclarecimentos que lhe forem pedidos. A data de envio e a versão comunicada ficam registadas pela Performa LAB.
+18.2. As condições particulares deste contrato (plano, profissionais, preço, condições de lançamento e data de início) constam da Proposta aceite (Anexo I).
 18.3. Em caso de dúvida, prevalece o sentido mais favorável ao Cliente, nos termos da lei.
 
 ## 19. Cessão da posição contratual
 
-O Cliente não pode ceder a sua posição sem consentimento escrito da Performa LAB. O Cliente dá, desde já, o seu consentimento a que a Performa LAB ceda a sua posição neste contrato a uma sociedade que venha a constituir para continuar a atividade, **nas mesmas condições**, com aviso escrito de [30] dias e sem custos para o Cliente; a cessão inclui o Acordo de Subcontratação. Se não concordar com a cessão, o Cliente pode denunciar o contrato sem encargos nesse prazo.
+19.1. Nenhuma das partes pode ceder a sua posição neste contrato sem o consentimento escrito da outra, dado no momento da cessão. Ressalvam-se os casos em que a lei permita a cessão sem esse consentimento.
+19.2. Se a Performa LAB passar a exercer a atividade através de uma sociedade, propõe ao Cliente, por escrito, a cessão nas mesmas condições, incluindo o Acordo de Subcontratação. Se o Cliente não der o seu consentimento, o contrato mantém-se com a Performa LAB ou pode ser denunciado por qualquer das partes nos termos da cláusula 9.2.
 
 ## 20. Lei aplicável e resolução de litígios
 
@@ -147,8 +156,8 @@ O Cliente não pode ceder a sua posição sem consentimento escrito da Performa 
 
 21.1. O contrato e os anexos formam o acordo completo entre as partes. Em caso de conflito, prevalece o texto do contrato, salvo quanto a dados pessoais, em que prevalece o Anexo III.
 21.2. Se uma cláusula for nula ou ineficaz, as restantes mantêm-se, e as partes substituem-na por outra com efeito económico equivalente.
-21.3. O contrato é celebrado em formato eletrónico e pode ser assinado com **assinatura eletrónica qualificada** (por exemplo, Chave Móvel Digital) ou **manuscrita**, com digitalização. As partes reconhecem a cada exemplar assinado o valor de documento escrito e assinado, e aceitam como válida a assinatura aposta por esses meios. [Convenção de prova a confirmar pelo jurista.]
-21.4. Cada parte fica com um exemplar assinado.
+21.3. O contrato é assinado por um dos seguintes meios: [escolher: assinatura eletrónica qualificada (por exemplo, Chave Móvel Digital); assinatura manuscrita, com troca do exemplar digitalizado e envio do original a pedido]. A assinatura eletrónica qualificada tem o valor da assinatura manuscrita, nos termos da lei.
+21.4. A Performa LAB conserva o exemplar assinado, em formato PDF, durante a vigência do contrato e pelo prazo legal de conservação depois da cessação, e entrega cópia ao Cliente.
 
 ## Assinaturas
 
@@ -162,6 +171,6 @@ Assinado em {{data_assinatura}}.
 ## Anexos
 
 - **Anexo I** — Proposta aceite n.º {{proposta.numero}}
-- **Anexo II** — Termos de Uso e Política de Privacidade *(por escrever)*
+- **Anexo II** — Termos de Uso e Política de Privacidade, nas versões publicadas em instabarber.pt/termos e instabarber.pt/privacidade à data da assinatura [confirmar com o jurista que são as versões finais]
 - **Anexo III** — Acordo de Subcontratação de dados pessoais (`modelo-acordo-subcontratacao.md`)
 - **Anexo IV** — Desafio de 90 dias (plano Pro): {{desafio}}

@@ -61,6 +61,6 @@ export function valoresDoContrato(
     "prestadora.qualidade": prestadora.qualidade,
     "prestadora.assinante": prestadora.assinante,
     condicoes_lancamento: p.condicoes_lancamento ?? "",
-    desafio: p.desafio_90 ? t.pdf.desafioTexto.join(" ") : "",
+    desafio: p.desafio_90 ? t.contratos.desafioIncluido : "",
   };
 }
