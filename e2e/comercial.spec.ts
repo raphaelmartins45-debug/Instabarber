@@ -191,6 +191,11 @@ test("pedido do site no CRM, lead à mão, contacto, estado e funil", async ({ p
 
   // Rotina mensal (P-24): nenhum lead está parado há 12 meses, nada se apaga.
   await page.goto("/admin/comercial/leads");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
   await page.getByRole("button", { name: "Apagar leads inativos (12 meses)" }).click();
   await page
     .getByRole("alertdialog")

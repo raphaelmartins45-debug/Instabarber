@@ -45,9 +45,9 @@ export function FiltrosLeads({
         </select>
       </label>
       {comerciais ? (
-        <label className="grid gap-1.5">
+        <label className="grid w-full min-w-0 gap-1.5 sm:w-56">
           <span className="rotulo">{t.leads.colunas.responsavel}</span>
-          <select name="responsavel" defaultValue={responsavel} className={CAMPO}>
+          <select name="responsavel" defaultValue={responsavel} className={`${CAMPO} w-full`}>
             <option value="">{t.leads.todos}</option>
             <option value="sem">{t.leads.semResponsavel}</option>
             {comerciais.map((c) => (

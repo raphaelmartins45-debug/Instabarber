@@ -76,5 +76,5 @@ test("lead de prospeção: consentimento, duplicado, agenda e briefing", async (
   await expect(page.getByLabel("N.º de cadeiras")).toHaveValue("4");
   await page.getByRole("button", { name: "Seguinte" }).click();
   await page.getByRole("button", { name: "Seguinte" }).click();
-  await expect(page.getByLabel("Sistema atual")).toHaveValue("Booksy");
+  await expect(page.getByLabel("Sistema atual", { exact: true })).toHaveValue("Booksy");
 });
