@@ -20,7 +20,7 @@ export async function dadosDesempenho(bd: ClienteBD): Promise<{
     bd
       .from("leads")
       .select(
-        "id, estado, responsavel_id, criado_em, nome_barbearia, nome_contacto, telefone, proxima_acao, proxima_acao_em",
+        "id, estado, responsavel_id, criado_em, nome_barbearia, nome_contacto, telefone, proxima_acao, proxima_acao_em, fim_contrato_atual",
       ),
     bd.from("propostas").select("id, lead_id, criado_em, numero, estado, valida_ate"),
     bd.from("contratos").select("lead_id, proposta_id, estado, assinado_em"),

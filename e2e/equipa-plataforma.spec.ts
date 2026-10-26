@@ -43,6 +43,8 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   await comercial
     .getByLabel("Telemóvel")
     .fill(`93${String(Date.now() % 10000000).padStart(7, "0")}`);
+  await comercial.getByLabel("Próxima ação", { exact: true }).fill("Ligar amanhã");
+  await comercial.getByLabel("Data da próxima ação").fill("2030-01-15");
   await comercial.getByRole("button", { name: "Criar lead" }).click();
   await expect(comercial.getByTestId("lead-nome")).toHaveText(lead);
   const fichaLead = comercial.url();

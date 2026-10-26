@@ -2330,6 +2330,26 @@ begin
   return v_fatura;
 end $$;
 
+-- Leads parecidos com o que se vai criar (D-174): mesmo telemóvel, mesmo Instagram ou mesma morada.
+-- Devolve o nome só dos que o utilizador pode abrir; dos outros diz apenas que existem.
+create or replace function public.leads_semelhantes(p_telefone text, p_instagram text, p_morada text)
+returns table (id uuid, nome text, acessivel boolean)
+language plpgsql stable security definer set search_path = '' as $$
+declare v_ig text := nullif(lower(trim(both '@ ' from coalesce(p_instagram, ''))), '');
+        v_mor text := nullif(lower(trim(coalesce(p_morada, ''))), '');
+begin
+  perform public.exigir_comercial_ou_admin();
+  return query
+    select l.id,
+           case when public.lead_acessivel(l.id) then coalesce(l.nome_barbearia, l.nome_contacto) end,
+           public.lead_acessivel(l.id)
+      from public.leads l
+     where (nullif(trim(p_telefone), '') is not null and l.telefone = trim(p_telefone))
+        or (v_ig is not null and lower(trim(both '@ ' from l.instagram)) = v_ig)
+        or (v_mor is not null and lower(trim(l.morada)) = v_mor)
+     order by l.criado_em desc limit 5;
+end $$;
+
 -- -----------------------------------------------------------------------------
 -- 9 · Quem pode executar o quê
 --     O Postgres dá EXECUTE a todos por omissão, e o Supabase expõe as funções
@@ -2436,3 +2456,6 @@ grant execute on function public.periodo_a_pagar(uuid),
   public.enviar_comprovativo(uuid, text, numeric, date, text),
   public.aprovar_comprovativo(uuid), public.recusar_comprovativo(uuid, text) to authenticated;
 grant execute on function public.registar_fatura_do_comprovativo(uuid, text, date) to authenticated;
+
+-- Ficha de prospeção (D-174): cada função verifica o papel.
+grant execute on function public.leads_semelhantes(text, text, text) to authenticated;

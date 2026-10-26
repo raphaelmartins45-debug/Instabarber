@@ -315,6 +315,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `inscrever_clube()`
 - `instante_lisboa()`
 - `lead_acessivel()`
+- `leads_semelhantes()`
 - `ler_convite_adesao()`
 - `levantar_pedido()`
 - `ligar_contrato_inquilino()`

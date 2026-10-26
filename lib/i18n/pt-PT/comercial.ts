@@ -26,6 +26,7 @@ export const comercial = {
     email: "E-mail",
     indicacao: "Indicação",
     visita: "Visita",
+    instagram: "Instagram",
     outro: "Outro",
   } as Record<string, string>,
   funil: {
@@ -419,10 +420,57 @@ export const comercial = {
     email: "E-mail",
     n_barbeiros: "N.º de barbeiros",
     origem: "Origem",
+    instagram: "Instagram",
+    morada: "Morada",
+    google_nota: "Avaliação no Google (0 a 5)",
+    google_avaliacoes: "N.º de avaliações no Google",
+    contacto_cargo: "Cargo de quem atendeu",
+    fala_com_decisor: "Falei com quem decide",
+    origem_detalhe: "Como chegou até nós (quem indicou, que publicação…)",
+    consentimento_contacto: "O contacto aceitou ser contactado pela InstaBarber",
+    cadeiras: "N.º de cadeiras",
+    como_marcam: "Como marcam hoje",
+    sistema_atual: "Sistema que usa hoje",
+    custo_atual: "Quanto paga hoje por mês (€)",
+    fim_contrato_atual: "Fim do contrato atual",
+    temperatura: "Temperatura",
+    proxima_acao: "Próxima ação",
+    proxima_acao_em: "Data da próxima ação",
   } as Record<string, string>,
   criar: "Criar lead",
+  prospecao: {
+    titulo: "Ficha de prospeção",
+    ajuda:
+      "O que descobriu na visita, no Instagram ou ao telefone. Tudo opcional, e passa para o briefing.",
+    contacto: "Quem atendeu",
+    barbearia: "A barbearia",
+    situacao: "Situação atual",
+    seguimento: "Seguimento",
+    seguimentoAjuda: "Todo o lead novo leva a próxima ação com data: aparece na agenda «Hoje».",
+    consentimentoAjuda:
+      "Obrigatório na visita, no Instagram e na indicação (RGPD). Sem consentimento, não registe o contacto.",
+    nenhuma: "Por indicar",
+    temperaturas: { frio: "Frio", morno: "Morno", quente: "Quente" } as Record<string, string>,
+    resumo: "Prospeção",
+    sim: "Sim",
+    nao: "Não",
+    avaliacoes: (nota: string, n: number | null) =>
+      n === null ? `${nota} ★` : `${nota} ★ (${n} ${n === 1 ? "avaliação" : "avaliações"})`,
+  },
+  semelhantes: {
+    titulo: "Já existe um lead parecido",
+    ajuda: "O mesmo telemóvel, Instagram ou morada. Confirme antes de criar outro.",
+    deOutro: "Lead de outro comercial (fale com a Performa LAB)",
+    abrir: "Abrir",
+  },
   erros: {
     nome: "Escreva o nome do contacto.",
+    consentimento: "Sem o consentimento do contacto, o lead de prospeção não se regista.",
+    nota: "Use uma nota de 0 a 5, com uma casa decimal.",
+    numero: "Use um número inteiro.",
+    valor: "Valor inválido.",
+    proxima_acao: "Escreva a próxima ação.",
+    proxima_acao_em: "Escolha a data da próxima ação.",
     contacto: "Indique o telemóvel ou o e-mail.",
     email: "E-mail inválido.",
     telefone: "Telemóvel inválido.",
@@ -494,7 +542,7 @@ export const comercial = {
   agenda: {
     titulo: "Hoje",
     ajuda:
-      "O que tem para fazer hoje, por ordem: clientes em risco, ações atrasadas e propostas a expirar.",
+      "O que tem para fazer hoje, por ordem: clientes em risco, ações atrasadas, propostas a expirar e contratos com o sistema atual a acabar nos próximos 30 dias.",
     vazio: "Nada pendente para hoje.",
     risco: "Barbearia da sua carteira em risco",
     acao: (atraso: number) =>
@@ -505,6 +553,10 @@ export const comercial = {
       dias === 0
         ? `Proposta ${numero} expira hoje`
         : `Proposta ${numero} expira em ${dias} ${dias === 1 ? "dia" : "dias"}`,
+    contrato: (dias: number) =>
+      dias === 0
+        ? "O contrato com o sistema atual acaba hoje"
+        : `O contrato com o sistema atual acaba em ${dias} ${dias === 1 ? "dia" : "dias"}`,
     abrir: "Abrir",
     whatsapp: "WhatsApp",
   },
@@ -566,6 +618,8 @@ export const comercial = {
         `Olá ${nome}! Sou da InstaBarber, falámos há uns dias. Ficou com alguma dúvida? Se quiser, marco uma demonstração rápida à hora que preferir. Comercial InstaBarber`,
       proposta: (nome: string, numero: string) =>
         `Olá ${nome}! Lembro que a proposta ${numero} da InstaBarber está quase a expirar. Quer que a revejamos juntos ou avançamos? Comercial InstaBarber`,
+      fimContrato: (nome: string) =>
+        `Olá ${nome}! Daqui é da InstaBarber. Falámos há tempos e disse-me que o contrato com o sistema atual estava a acabar. Quer ver a InstaBarber antes de renovar? Faço-lhe uma demonstração rápida à hora que preferir. Comercial InstaBarber`,
       acompanhamento: (nome: string) =>
         `Olá ${nome}! Daqui é da InstaBarber. Estou a acompanhar a sua barbearia e reparei que pode estar a aproveitar menos o sistema. Posso ajudar em alguma coisa? Comercial InstaBarber`,
     },

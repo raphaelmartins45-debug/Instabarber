@@ -8,6 +8,8 @@ import {
   atribuirResponsavel,
   atualizarLead,
   criarLead,
+  type LeadSemelhante,
+  leadsSemelhantes,
   mudarEstadoLead,
   registarEventoLead,
 } from "@/lib/repositorios/comercial/leads";
@@ -16,9 +18,11 @@ import {
   esquemaEstado,
   esquemaEvento,
   esquemaLead,
+  esquemaNovoLead,
   type DadosEstado,
   type DadosEvento,
   type DadosLead,
+  type DadosNovoLead,
 } from "@/lib/validacao/comercial";
 
 // Ações do Comercial (N.3). A equipa InstaBarber com dois fatores: o comercial só nos seus leads,
@@ -34,14 +38,26 @@ function revalidar(id?: string) {
   if (id) revalidatePath(`/admin/comercial/leads/${id}`);
 }
 
-export async function criar(dados: DadosLead): Promise<Resultado> {
+export async function criar(dados: DadosNovoLead): Promise<Resultado> {
   const admin = await exigirEquipaPlataforma();
-  const v = esquemaLead.safeParse(dados);
+  const v = esquemaNovoLead.safeParse(dados);
   if (!v.success) return { ok: false, erro: erroDe(v.error.issues) };
   const id = await criarLead(await criarClienteServidor(), v.data, admin.userId);
   if (!id) return { ok: false, erro: "generico" };
   revalidar();
   return { ok: true, id };
+}
+
+/** Aviso de duplicado ao criar um lead: o mesmo telemóvel, Instagram ou morada (D-174). */
+export async function procurarSemelhantes(
+  telefone: string,
+  instagram: string,
+  morada: string,
+): Promise<LeadSemelhante[]> {
+  await exigirEquipaPlataforma();
+  const texto = z.string().max(240);
+  if (![telefone, instagram, morada].every((v) => texto.safeParse(v).success)) return [];
+  return leadsSemelhantes(await criarClienteServidor(), telefone, instagram, morada);
 }
 
 export async function atualizar(id: string, dados: DadosLead): Promise<Resultado> {

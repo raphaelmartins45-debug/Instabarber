@@ -1,7 +1,13 @@
 import { z } from "zod";
+import { centimosDeTexto, numericParaGravar } from "@/lib/formatacao/dinheiro";
 import { telefoneE164 } from "@/lib/formatacao/telefone";
 import type { ClienteBD } from "@/lib/supabase/tipos";
-import type { DadosEstado, DadosEvento, esquemaLead } from "@/lib/validacao/comercial";
+import type {
+  DadosEstado,
+  DadosEvento,
+  esquemaLead,
+  esquemaNovoLead,
+} from "@/lib/validacao/comercial";
 import type { Database } from "@/types/database";
 import { falhaDeLeitura } from "../erros";
 
@@ -76,6 +82,9 @@ export async function validadesEnviadas(bd: ClienteBD): Promise<string[]> {
 }
 
 export type LeadValidado = z.output<typeof esquemaLead>;
+export type NovoLeadValidado = z.output<typeof esquemaNovoLead>;
+
+const inteiroOuNulo = (v: string) => (v ? Number(v) : null);
 
 const linhaLead = (d: LeadValidado) => ({
   nome_contacto: d.nome_contacto,
@@ -85,20 +94,60 @@ const linhaLead = (d: LeadValidado) => ({
   email: d.email ? d.email.toLowerCase() : null,
   n_barbeiros: d.n_barbeiros || null,
   origem: d.origem,
+  instagram: d.instagram ? `@${d.instagram.replace(/^@+/, "")}` : null,
+  morada: d.morada || null,
+  google_nota: d.google_nota ? Number(d.google_nota.replace(",", ".")) : null,
+  google_avaliacoes: inteiroOuNulo(d.google_avaliacoes),
+  contacto_cargo: d.contacto_cargo || null,
+  fala_com_decisor: d.fala_com_decisor,
+  origem_detalhe: d.origem_detalhe || null,
+  consentimento_contacto: d.consentimento_contacto,
+  cadeiras: inteiroOuNulo(d.cadeiras),
+  como_marcam: d.como_marcam || null,
+  sistema_atual: d.sistema_atual || null,
+  custo_atual: d.custo_atual ? numericParaGravar(centimosDeTexto(d.custo_atual)!) : null,
+  fim_contrato_atual: d.fim_contrato_atual || null,
+  temperatura: d.temperatura || null,
 });
 
-/** Lead criado à mão (WhatsApp, visita…). O histórico regista quem o criou. */
+/** Lead criado à mão (WhatsApp, visita…), com a próxima ação. O histórico regista quem o criou. */
 export async function criarLead(
   bd: ClienteBD,
-  dados: LeadValidado,
+  dados: NovoLeadValidado,
   autor: string,
 ): Promise<string | null> {
-  const { data, error } = await bd.from("leads").insert(linhaLead(dados)).select("id").single();
+  const { data, error } = await bd
+    .from("leads")
+    .insert({
+      ...linhaLead(dados),
+      proxima_acao: dados.proxima_acao,
+      proxima_acao_em: dados.proxima_acao_em,
+    })
+    .select("id")
+    .single();
   if (error) return null;
   await bd
     .from("lead_eventos")
     .insert({ lead_id: data.id, tipo: "sistema", texto: "Lead criado à mão.", criado_por: autor });
   return data.id;
+}
+
+export type LeadSemelhante = { id: string; nome: string | null; acessivel: boolean };
+
+/** Leads já registados com o mesmo telemóvel, Instagram ou morada (aviso de duplicado, D-174). */
+export async function leadsSemelhantes(
+  bd: ClienteBD,
+  telefone: string,
+  instagram: string,
+  morada: string,
+): Promise<LeadSemelhante[]> {
+  const { data, error } = await bd.rpc("leads_semelhantes", {
+    p_telefone: telefone ? (telefoneE164(telefone) ?? telefone) : "",
+    p_instagram: instagram,
+    p_morada: morada,
+  });
+  if (error) falhaDeLeitura("leads_semelhantes", error);
+  return data;
 }
 
 export async function atualizarLead(

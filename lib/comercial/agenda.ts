@@ -1,7 +1,11 @@
 import { diasEntreDatas } from "@/lib/formatacao/datas";
 
 // A agenda do dia do comercial (D-162): o que tem de fazer hoje. Próximas ações vencidas ou de
-// hoje, propostas enviadas a expirar nos próximos 3 dias e barbearias da carteira em risco.
+// hoje, propostas enviadas a expirar nos próximos 3 dias, barbearias da carteira em risco e leads
+// cujo contrato com o sistema atual acaba nos próximos 30 dias (D-174).
+
+/** Com quantos dias de antecedência o fim do contrato atual entra na agenda. */
+export const DIAS_AVISO_FIM_CONTRATO = 30;
 
 export type LeadAgenda = {
   id: string;
@@ -10,6 +14,7 @@ export type LeadAgenda = {
   estado: string;
   proxima_acao: string | null;
   proxima_acao_em: string | null;
+  fim_contrato_atual?: string | null;
 };
 export type PropostaAgenda = {
   lead_id: string;
@@ -34,6 +39,13 @@ export type ItemAgenda =
       nome: string;
       telefone: string | null;
       numero: string;
+      dias: number;
+    }
+  | {
+      tipo: "contrato";
+      leadId: string;
+      nome: string;
+      telefone: string | null;
       dias: number;
     }
   | { tipo: "risco"; inquilinoId: string; nome: string; telefone: string | null };
@@ -72,5 +84,22 @@ export function agendaDoDia(
         dias,
       };
     });
-  return [...riscos.map((r) => ({ tipo: "risco" as const, ...r })), ...acoes, ...aExpirar];
+  const contratos: ItemAgenda[] = abertos
+    .filter((l) => l.fim_contrato_atual)
+    .map((l) => ({ l, dias: diasEntreDatas(hoje, l.fim_contrato_atual!) }))
+    .filter(({ dias }) => dias >= 0 && dias <= DIAS_AVISO_FIM_CONTRATO)
+    .sort((a, b) => a.dias - b.dias)
+    .map(({ l, dias }) => ({
+      tipo: "contrato" as const,
+      leadId: l.id,
+      nome: l.nome,
+      telefone: l.telefone,
+      dias,
+    }));
+  return [
+    ...riscos.map((r) => ({ tipo: "risco" as const, ...r })),
+    ...acoes,
+    ...aExpirar,
+    ...contratos,
+  ];
 }

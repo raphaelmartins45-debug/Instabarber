@@ -1020,7 +1020,7 @@ create table leads (
   email               text,
   n_barbeiros         text,                       -- o que o visitante indicou: '1', '2', '3 ou mais'
   origem              text not null default 'landing'
-                      check (origem in ('landing','whatsapp','email','indicacao','visita','outro')),
+                      check (origem in ('landing','whatsapp','email','indicacao','visita','instagram','outro')),
   estado              text not null default 'novo'
                       check (estado in ('novo','contactado','demonstracao','proposta','ganho','perdido')),
   motivo_perda        text,
@@ -1030,6 +1030,21 @@ create table leads (
   inquilino_id        uuid references inquilinos(id) on delete set null,
   responsavel_id      uuid references auth.users(id) on delete set null,   -- o comercial (D-161)
   criado_por          uuid references auth.users(id) on delete set null,
+  -- Ficha de prospeção (D-174): o que o comercial apura na visita ou no primeiro contacto.
+  instagram           text check (char_length(instagram) <= 60),
+  morada              text check (char_length(morada) <= 200),
+  google_nota         numeric(2,1) check (google_nota between 0 and 5),
+  google_avaliacoes   integer check (google_avaliacoes >= 0),
+  contacto_cargo      text check (char_length(contacto_cargo) <= 60),
+  fala_com_decisor    boolean,
+  origem_detalhe      text check (char_length(origem_detalhe) <= 120),
+  consentimento_contacto boolean not null default false,
+  cadeiras            smallint check (cadeiras between 1 and 50),
+  como_marcam         text check (como_marcam in ('telefone','whatsapp','caderno','sistema','outro')),
+  sistema_atual       text check (char_length(sistema_atual) <= 80),
+  custo_atual         numeric(10,2) check (custo_atual >= 0),
+  fim_contrato_atual  date,
+  temperatura         text check (temperatura in ('frio','morno','quente')),
   criado_em           timestamptz not null default now(),
   atualizado_em       timestamptz not null default now(),
   check (telefone is not null or email is not null),
@@ -1039,6 +1054,8 @@ create index leads_funil on leads (estado, proxima_acao_em);
 create index leads_email on leads (lower(email)) where email is not null;
 create index leads_telefone on leads (telefone) where telefone is not null;
 create index leads_responsavel on leads (responsavel_id, estado);
+create index leads_instagram on leads (lower(instagram)) where instagram is not null;
+create index leads_fim_contrato on leads (fim_contrato_atual) where fim_contrato_atual is not null;
 
 create table lead_eventos (
   id          bigint generated always as identity primary key,

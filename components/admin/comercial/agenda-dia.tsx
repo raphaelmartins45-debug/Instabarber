@@ -11,6 +11,7 @@ const m = textos.comercial.mensagens.textos;
 function mensagem(i: ItemAgenda): string {
   if (i.tipo === "risco") return m.acompanhamento(i.nome);
   if (i.tipo === "proposta") return m.proposta(i.nome, i.numero);
+  if (i.tipo === "contrato") return m.fimContrato(i.nome);
   return m.seguimento(i.nome);
 }
 
@@ -38,7 +39,9 @@ export function AgendaDia({ itens }: { itens: ItemAgenda[] }) {
                   ? t.risco
                   : i.tipo === "proposta"
                     ? t.proposta(i.numero, i.dias)
-                    : `${t.acao(i.atraso)}${i.texto ? `: ${i.texto}` : ""}`}
+                    : i.tipo === "contrato"
+                      ? t.contrato(i.dias)
+                      : `${t.acao(i.atraso)}${i.texto ? `: ${i.texto}` : ""}`}
               </span>
             </div>
             <div className="flex gap-2">

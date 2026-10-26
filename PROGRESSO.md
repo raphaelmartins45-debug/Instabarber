@@ -45,6 +45,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Registo de apoio e comunicados aos gestores (sugestões C e D, D-160) | Publicado; migração 12 aplicada no ensaio (516 SQL) e na produção (cópia `151909Z` no Drive, RLS 62/62) | 25/10/2026 | Separador «Registo de apoio» na ficha e `/admin/comunicados`; aviso no Início do gestor até «Li». Supabase local: **64 testes Playwright**, **294 Vitest**, **516 SQL** (24 novos); typecheck, lint e build sem erros |
 | Equipa InstaBarber: gestor e comercial, condições comerciais, desempenho (D-161) | Publicado; migração 13 aplicada no ensaio (564 SQL) e na produção (cópia `182654Z` no Drive, RLS 64/64) | 25/10/2026 | Papéis com RLS, middleware e menus por papel; Equipa InstaBarber (só o dono); painel do comercial; descontos e taxa de migração desligados. Supabase local: **66 testes Playwright**, **313 Vitest**, **564 SQL** (48 novos); typecheck, lint e build sem erros |
 | Painel comercial: agenda, mensagens, risco da carteira, distribuição, comissões, demonstração (D-162) | Publicado; migração 14 aplicada no ensaio (591 SQL) e na produção (cópia `221846Z` no Drive, RLS 65/65) | 25/10/2026 | Supabase local: **66 testes Playwright**, **318 Vitest**, **591 SQL** (27 novos); typecheck, lint e build sem erros |
+| Ficha de prospeção no CRM do InstaBarber (D-174) | Feito; a publicar pelo P-16 (migração 17) | 27/10/2026 | Lead de visita, Instagram ou indicação com consentimento, situação atual, temperatura e próxima ação; aviso de duplicado; fim do contrato na agenda «Hoje»; briefing pré-preenchido. **636 SQL** (9 novos); Vitest da agenda; `e2e/prospecao.spec.ts`. O painel comercial da Performa LAB fica em `docs/futuro/crm-performa-lab.md` |
 
 ## Pendentes do dono
 
@@ -147,9 +148,9 @@ testes `docs/esquema/testes/96d_comprovativos.sql` (FAT).
 emitir uma fatura de teste a uma barbearia de ensaio e anulá-la no InvoiceXpress; depois ligar
 para todas. Não precisa de migração nem de código novo.
 
-## Mudança para a isenção de IVA (por aprovar)
+## Mudança para a isenção de IVA (executada, D-173)
 
-A Prestadora está isenta (art. 53.º do CIVA) até 15.000 € (dono, 26/10/2026). As alterações, ponto a ponto, estão em `docs/mudanca-regime-iva.md` para o dono aprovar; executam-se a 27/10/2026. Até lá o sistema continua em `PRESTADORA_REGIME_IVA=normal`.
+A Prestadora está isenta (art. 53.º do CIVA) até 15.000 €. Executada a 27/10/2026: preços 19,99 € e 39,99 €, `PRESTADORA_REGIME_IVA=isento`. O que falta (redes sociais, jurista, contabilista) está em `docs/mudanca-regime-iva.md`.
 
 ## Próximo passo
 

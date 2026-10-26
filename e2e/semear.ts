@@ -118,6 +118,13 @@ export default async function semear() {
     await perfil(bd, await criarConta(bd, c.adminEquipa), "super_admin", null, c.adminEquipa);
     await perfil(bd, await criarConta(bd, c.gestor), "gestor_plataforma", null, c.gestor);
     await perfil(bd, await criarConta(bd, c.comercialVendas), "comercial", null, c.comercialVendas);
+    await perfil(
+      bd,
+      await criarConta(bd, c.comercialProspecao),
+      "comercial",
+      null,
+      c.comercialProspecao,
+    );
     // Comercial (N.8): o modelo de contrato base já aprovado, para os dois projetos gerarem
     // contratos sem corrida na aprovação; a importação pelo ecrã ensaia-se com a das condições.
     if (projeto === PROJETOS[0])

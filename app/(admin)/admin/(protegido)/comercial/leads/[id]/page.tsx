@@ -14,6 +14,7 @@ import { Secao } from "@/components/nucleo/secao";
 import { eAdministrador } from "@/lib/admin/acesso";
 import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { dataCurta } from "@/lib/formatacao/datas";
+import { centimosDeNumeric, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { listarComerciais } from "@/lib/repositorios/admin/equipa";
 import { eventosDoLead, obterLead } from "@/lib/repositorios/comercial/leads";
@@ -52,6 +53,21 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
     email: lead.email ?? "",
     n_barbeiros: lead.n_barbeiros ?? "",
     origem: lead.origem as DadosLead["origem"],
+    instagram: lead.instagram ?? "",
+    morada: lead.morada ?? "",
+    google_nota: lead.google_nota === null ? "" : String(lead.google_nota).replace(".", ","),
+    google_avaliacoes: lead.google_avaliacoes === null ? "" : String(lead.google_avaliacoes),
+    contacto_cargo: lead.contacto_cargo ?? "",
+    fala_com_decisor: lead.fala_com_decisor ?? false,
+    origem_detalhe: lead.origem_detalhe ?? "",
+    consentimento_contacto: lead.consentimento_contacto,
+    cadeiras: lead.cadeiras === null ? "" : String(lead.cadeiras),
+    como_marcam: (lead.como_marcam ?? "") as DadosLead["como_marcam"],
+    sistema_atual: lead.sistema_atual ?? "",
+    custo_atual:
+      lead.custo_atual === null ? "" : textoDeCentimos(centimosDeNumeric(lead.custo_atual)),
+    fim_contrato_atual: lead.fim_contrato_atual ?? "",
+    temperatura: (lead.temperatura ?? "") as DadosLead["temperatura"],
   };
   return (
     <div className="grid gap-5">
@@ -70,6 +86,19 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
           >
             {t.estados[lead.estado]}
           </Etiqueta>
+          {lead.temperatura ? (
+            <Etiqueta
+              tom={
+                lead.temperatura === "quente"
+                  ? "sucesso"
+                  : lead.temperatura === "morno"
+                    ? "alerta"
+                    : "neutro"
+              }
+            >
+              {t.prospecao.temperaturas[lead.temperatura]}
+            </Etiqueta>
+          ) : null}
           {t.origens[lead.origem]} · {dataCurta(lead.criado_em)}
         </p>
       </div>

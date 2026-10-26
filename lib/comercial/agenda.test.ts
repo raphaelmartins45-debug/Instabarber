@@ -35,6 +35,25 @@ describe("agendaDoDia", () => {
     expect(itens[3]).toMatchObject({ leadId: "e", numero: "PRP-1", dias: 2 });
   });
 
+  it("lembra o fim do contrato atual nos 30 dias antes, o mais próximo primeiro", () => {
+    const itens = agendaDoDia(
+      [
+        lead("f", { fim_contrato_atual: "2026-12-12" }),
+        lead("g", { fim_contrato_atual: "2026-11-20" }),
+        lead("h", { fim_contrato_atual: "2026-12-13" }),
+        lead("i", { fim_contrato_atual: "2026-11-11" }),
+        lead("j", { fim_contrato_atual: "2026-11-15", estado: "ganho" }),
+      ],
+      [],
+      [],
+      hoje,
+    );
+    expect(itens).toMatchObject([
+      { tipo: "contrato", leadId: "g", dias: 8 },
+      { tipo: "contrato", leadId: "f", dias: 30 },
+    ]);
+  });
+
   it("sem nada para hoje, a agenda está vazia", () => {
     expect(agendaDoDia([lead("c", { proxima_acao_em: "2026-12-01" })], [], [], hoje)).toEqual([]);
   });

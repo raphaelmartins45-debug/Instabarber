@@ -52,6 +52,8 @@ test("pedido do site no CRM, lead à mão, contacto, estado e funil", async ({ p
   await page.getByLabel("Nome do contacto").fill(`Ana Manual${sufixo}`);
   await page.getByLabel("Barbearia").fill(`Navalha ${sufixo}`);
   await page.getByLabel("Telemóvel").fill(`93300022${sufixo}`);
+  await page.getByLabel("Próxima ação", { exact: true }).fill("Ligar amanhã");
+  await page.getByLabel("Data da próxima ação").fill("2030-01-15");
   await page.getByRole("button", { name: "Criar lead" }).click();
   await expect(page.getByTestId("lead-nome")).toHaveText(`Navalha ${sufixo}`);
 
