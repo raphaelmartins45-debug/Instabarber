@@ -147,6 +147,10 @@ testes `docs/esquema/testes/96d_comprovativos.sql` (FAT).
 emitir uma fatura de teste a uma barbearia de ensaio e anulá-la no InvoiceXpress; depois ligar
 para todas. Não precisa de migração nem de código novo.
 
+## Mudança para a isenção de IVA (por aprovar)
+
+A Prestadora está isenta (art. 53.º do CIVA) até 15.000 € (dono, 26/10/2026). As alterações, ponto a ponto, estão em `docs/mudanca-regime-iva.md` para o dono aprovar; executam-se a 27/10/2026. Até lá o sistema continua em `PRESTADORA_REGIME_IVA=normal`.
+
 ## Próximo passo
 
 **Fase 7 fechada pelo dono a 24/10/2026** com duas pendências: (1) o dono troca os nameservers para `ns1.vercel-dns.com` e `ns2.vercel-dns.com`; depois ligo `*.instabarber.pt` ao projeto e confirmo site, correio e subdomínios; (2) o dono entra no `/admin` e ativa o TOTP; depois faço o ciclo completo numa barbearia de ensaio em produção com o plugin Playwright (item 43) e apago-a no fim.
