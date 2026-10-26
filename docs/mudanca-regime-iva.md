@@ -28,7 +28,18 @@ acresce IVA». O preço estipulado pode ser:
   Na passagem à Lda. o preço sobe 23 %, o que pede aviso prévio a cada barbearia (cláusula 6.3) e
   aumenta o risco de cancelamentos.
 
-> ☐ A  ☐ B — resposta do dono:
+> **Resposta do dono (26/10/2026): opção B**, «fica 19,99 e 39,99».
+>
+> - **Por confirmar:** o Pro passa de 39,00 € para **39,99 €**, ou foi engano e fica 39,00 €?
+> - Valores diários que a landing destaca (preço ÷ 30 dias): Basic 0,82 € → **0,67 €**; Pro
+>   1,60 € → **1,33 €** (39,99 €) ou **1,30 €** (39,00 €). Landing, linhas 704, 1018, 1031 e a nota
+>   «Valor por dia calculado sobre 30 dias» (1044).
+> - Anual (10 meses): Basic 245,88 € → **199,90 €**; Pro 479,70 € → **399,90 €** (ou 390,00 €).
+> - Extras sem IVA: barbeiro adicional **10,00 €** e domínio próprio **5,00 €** (eram 12,30 € e 6,15 €).
+> - Com a opção B, a fórmula da D.7 passa a cobrar o valor «sem IVA» como preço final enquanto
+>   houver isenção. Quando a Lda. passar ao regime normal, o preço sobe 23 %, com aviso prévio a
+>   cada barbearia (cláusula 6.3).
+> - Muda o CLAUDE.md §6 (tabela de preços), a D.5/D.7, a tabela da landing e os Termos.
 
 ## Alterações (cada uma por aprovar)
 
