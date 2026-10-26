@@ -55,8 +55,10 @@ export function CamposProspecao({ register, errors, erro, novo, aoSairDeContacto
     opcoes: readonly string[],
     rotulos: Record<string, string>,
   ) => (
-    <label className="grid gap-1.5">
-      <span className="rotulo">{t.campos[c]}</span>
+    <div className="grid gap-1.5">
+      <label htmlFor={`lead-${c}`} className="rotulo">
+        {t.campos[c]}
+      </label>
       <select id={`lead-${c}`} {...register(c)} className={classeSelect}>
         <option value="">{t.prospecao.nenhuma}</option>
         {opcoes.map((o) => (
@@ -65,7 +67,7 @@ export function CamposProspecao({ register, errors, erro, novo, aoSairDeContacto
           </option>
         ))}
       </select>
-    </label>
+    </div>
   );
 
   return (

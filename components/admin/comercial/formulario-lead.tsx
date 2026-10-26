@@ -108,8 +108,10 @@ export function FormularioLead({ id, inicial }: { id?: string; inicial?: DadosLe
             {...register(c, c === "telefone" ? { onBlur: verificar } : {})}
           />
         ))}
-        <label className="grid gap-1.5">
-          <span className="rotulo">{t.campos.origem}</span>
+        <div className="grid gap-1.5">
+          <label htmlFor="lead-origem" className="rotulo">
+            {t.campos.origem}
+          </label>
           <select
             id="lead-origem"
             {...register("origem")}
@@ -121,7 +123,7 @@ export function FormularioLead({ id, inicial }: { id?: string; inicial?: DadosLe
               </option>
             ))}
           </select>
-        </label>
+        </div>
       </div>
       <LeadsSemelhantes leads={semelhantes} />
       <CamposProspecao
