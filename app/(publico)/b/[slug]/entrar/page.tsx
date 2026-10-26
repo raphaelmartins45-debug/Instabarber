@@ -5,6 +5,7 @@ import { CartaoAcesso } from "@/components/nucleo/cartao-acesso";
 import { textos } from "@/lib/i18n/pt-PT";
 import { lerEndereco } from "@/lib/inquilino/endereco";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
+import { marcaAcesso } from "@/lib/publico/marca-acesso";
 
 const t = textos.acesso.cliente;
 
@@ -17,7 +18,7 @@ export default async function EntrarCliente({ params }: { params: Promise<{ slug
   if (!barbearia) notFound();
   const { base } = await lerEndereco();
   return (
-    <CartaoAcesso titulo={t.titulo} marca={barbearia.nome ?? undefined}>
+    <CartaoAcesso titulo={t.titulo} barbearia={await marcaAcesso(slug)}>
       <div className="grid gap-8">
         <FormularioEntradaCliente slug={slug} />
         <section className="grid gap-3 border-t pt-6" aria-labelledby="sem-acesso">

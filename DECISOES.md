@@ -893,3 +893,7 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - Novo ícone `public/marca/ib3-*.png` e `public/favicon.ico` (16, 32 e 48 px): quadrado de cantos arredondados, fundo escuro com gradiente e brilho, rebordo dourado, «IB» com relevo e sombra. Usado na landing, nos painéis (`app/layout.tsx`) e no ícone do telemóvel (180 e 192 px). O Google pede ícones múltiplos de 48 px: juntou-se o de 48.
 - Título: «Sistema de Gestão para Barbearias em Portugal | InstaBarber». Descrição (também nas redes e nos dados estruturados): «Tudo num só sistema: marcação online 24 horas, agenda, ficha de clientes, lembretes por WhatsApp, cartão de selos, loja, equipa e comissões, financeiro e relatório mensal.»
 - O Google só atualiza o ícone e a descrição quando volta a ler a página: pedir nova indexação no Search Console (Inspeção de URL → Pedir indexação).
+
+## D-172 · 26/10/2026 · Ecrãs de entrada com a marca da barbearia — dono
+- Pedido do dono: a entrada era genérica. No endereço de uma barbearia (`instabarber.pt/<slug>/entrar`, `<slug>.instabarber.pt/entrar` e a entrada da equipa em `/app/entrar` desse endereço, incluindo «Esqueci-me da palavra-passe»), o cartão mostra a capa da barbearia (fotografia ou cor), o logótipo (ou a inicial) em círculo, o nome e a cidade. No domínio principal (`instabarber.pt/entrar` e `/admin`) mantém-se a marca InstaBarber.
+- `components/nucleo/cartao-acesso.tsx` (prop `barbearia`) e `lib/publico/marca-acesso.ts` (lê a vista pública, só dados públicos).
