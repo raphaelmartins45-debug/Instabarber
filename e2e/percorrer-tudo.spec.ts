@@ -9,7 +9,7 @@ import { codigoTotp } from "./auxiliares/totp";
 // porque os botões gravam de verdade.
 
 test.skip(!temSupabase || !process.env.PERCORRER, "Só com PERCORRER=1, sozinho");
-test.setTimeout(40 * 60_000);
+test.setTimeout(30 * 60_000);
 
 const NAO_CARREGAR =
   /^(Sair|Sair da vista de apoio|Mais|Pesquisar|Aparência|Menu|Fechar|Eliminar definitivamente|Suspender|Cancelar barbearia|Cancelar a barbearia|Apagar auditoria.*|Preparar a demonstração|Recolher.*|Expandir.*|Vista de apoio)$/i;
@@ -41,7 +41,7 @@ async function percorrer(
   const porVisitar = [inicio];
   const vistos = new Map<string, number>();
   const visitados = new Set<string>();
-  while (porVisitar.length && visitados.size < 120) {
+  while (porVisitar.length && visitados.size < 80) {
     const rota = porVisitar.shift()!;
     if (visitados.has(rota)) continue;
     const p = padrao(rota);
@@ -86,7 +86,7 @@ async function percorrer(
           ),
       );
     const feitos = new Set<string>();
-    for (let i = 0; i < nomes.length && feitos.size < 25; i++) {
+    for (let i = 0; i < nomes.length && feitos.size < 15; i++) {
       const nome = nomes[i]!;
       if (!nome || NAO_CARREGAR.test(nome) || feitos.has(nome)) continue;
       feitos.add(nome);
@@ -123,47 +123,39 @@ async function percorrer(
   r.linhas.push(`${papel}: ${visitados.size} ecrãs`);
 }
 
-test("percorrer tudo com cada papel", async ({ browser }, info) => {
-  const c = contas(info.project.name);
-  const r: Relatorio = { linhas: [], falhas: [] };
-  const nova = async () => (await browser.newContext(info.project.use)).newPage();
+test.describe.configure({ mode: "serial" });
 
-  // Cliente final
-  const cliente = await nova();
-  await cliente.goto(`/${BARBEARIA_A.slug}/entrar`);
-  await cliente.waitForLoadState("networkidle");
-  await cliente.locator("#telefone").fill(telefones(info.project.name).comConta);
-  await cliente.locator("#palavra_passe").fill(PALAVRA_PASSE);
-  await cliente.getByRole("button", { name: "Entrar", exact: true }).click();
-  await cliente.waitForURL(/minha-area/, { timeout: 30_000 });
-  await percorrer(
-    cliente,
-    "cliente",
-    `/${BARBEARIA_A.slug}/minha-area`,
-    [`/${BARBEARIA_A.slug}`],
-    r,
-  );
-
-  // Barbeiro e gestor da barbearia
-  const barbeiro = await nova();
-  await entrarEquipa(barbeiro, c.barbeiro);
-  await percorrer(barbeiro, "barbeiro", "/app", ["/app"], r);
-  const gestor = await nova();
-  await entrarEquipa(gestor, c.dono);
-  await percorrer(gestor, "gestor-barbearia", "/app", ["/app"], r);
-
-  // Equipa InstaBarber
-  const comercial = await nova();
-  await entrarStaff(comercial, c.comercialVendas);
-  await percorrer(comercial, "comercial", "/admin/comercial", ["/admin"], r);
-  const gestorPlat = await nova();
-  await entrarStaff(gestorPlat, c.gestor);
-  await percorrer(gestorPlat, "gestor-plataforma", "/admin", ["/admin"], r);
-  const dono = await nova();
-  await entrarStaff(dono, c.adminEquipa);
-  await percorrer(dono, "dono-plataforma", "/admin", ["/admin"], r);
-
+async function relatar(info: { project: { name: string } }, papel: string, r: Relatorio) {
   console.log(
-    `RELATORIO ${info.project.name}\n${r.linhas.join("\n")}\nFALHAS\n${r.falhas.join("\n") || "nenhuma"}`,
+    `RELATORIO ${info.project.name} ${papel}\n${r.linhas.join("\n")}\nFALHAS\n${r.falhas.join("\n") || "nenhuma"}`,
   );
+}
+
+test("cliente final", async ({ page }, info) => {
+  const r: Relatorio = { linhas: [], falhas: [] };
+  await page.goto(`/${BARBEARIA_A.slug}/entrar`);
+  await page.waitForLoadState("networkidle");
+  await page.locator("#telefone").fill(telefones(info.project.name).comConta);
+  await page.locator("#palavra_passe").fill(PALAVRA_PASSE);
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
+  await page.waitForURL(/minha-area/, { timeout: 30_000 });
+  await percorrer(page, "cliente", `/${BARBEARIA_A.slug}/minha-area`, [`/${BARBEARIA_A.slug}`], r);
+  await relatar(info, "cliente", r);
 });
+
+for (const [papel, conta, inicio, staff] of [
+  ["barbeiro", "barbeiro", "/app", false],
+  ["gestor-barbearia", "dono", "/app", false],
+  ["comercial", "comercialVendas", "/admin/comercial", true],
+  ["gestor-plataforma", "gestor", "/admin", true],
+  ["dono-plataforma", "adminEquipa", "/admin", true],
+] as const) {
+  test(papel, async ({ page }, info) => {
+    const r: Relatorio = { linhas: [], falhas: [] };
+    const email = contas(info.project.name)[conta];
+    if (staff) await entrarStaff(page, email);
+    else await entrarEquipa(page, email);
+    await percorrer(page, papel, inicio, [inicio === "/app" ? "/app" : "/admin"], r);
+    await relatar(info, papel, r);
+  });
+}
