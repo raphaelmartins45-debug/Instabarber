@@ -59,6 +59,11 @@ test("pedido do site no CRM, lead à mão, contacto, estado e funil", async ({ p
 
   await page.getByLabel("O que aconteceu").fill("Ligou a pedir demonstração.");
   await page.getByLabel("Próxima ação", { exact: true }).fill("Marcar demonstração");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
   await page.getByRole("button", { name: "Registar", exact: true }).click();
   await expect(page.getByText("Contacto registado.")).toBeVisible();
   await expect(page.getByTestId("historico-lead")).toContainText("Ligou a pedir demonstração.");

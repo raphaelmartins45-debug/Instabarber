@@ -71,7 +71,10 @@ export function CamposProspecao({ register, errors, erro, novo, aoSairDeContacto
   );
 
   return (
-    <fieldset className="grid gap-4 border-t border-border pt-4" data-testid="ficha-prospecao">
+    <fieldset
+      className="grid min-w-0 gap-4 border-t border-border pt-4"
+      data-testid="ficha-prospecao"
+    >
       <legend className="sr-only">{t.prospecao.titulo}</legend>
       <div className="grid gap-1">
         <h3 className="text-sm font-semibold">{t.prospecao.titulo}</h3>

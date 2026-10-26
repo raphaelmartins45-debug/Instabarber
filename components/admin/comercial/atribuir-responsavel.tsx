@@ -34,7 +34,7 @@ export function AtribuirResponsavel({
           id="lead-responsavel"
           value={escolha}
           onChange={(e) => setEscolha(e.target.value)}
-          className="h-11 min-w-48 flex-1 rounded-md border border-input bg-card px-3 text-sm"
+          className="h-11 w-48 min-w-0 flex-1 rounded-md border border-input bg-card px-3 text-sm"
         >
           <option value="">{t.semResponsavel}</option>
           {comerciais.map((c) => (

@@ -51,7 +51,8 @@ test("lead de prospeção: consentimento, duplicado, agenda e briefing", async (
   await page.getByRole("button", { name: "Criar lead" }).click();
   await expect(page.getByTestId("lead-nome")).toHaveText(`Barbearia Prospeção ${sufixo}`);
   const ficha = page.url();
-  await expect(page.getByText("Quente", { exact: true })).toBeVisible();
+  await expect(page.locator("#lead-temperatura")).toHaveValue("quente");
+  await expect(page.locator("span").filter({ hasText: /^Quente$/ })).toBeVisible();
   await expect(page.getByLabel("Instagram")).toHaveValue(`@${instagram}`);
   await expect(page.getByLabel("Quanto paga hoje por mês (€)")).toHaveValue("29,90");
 
