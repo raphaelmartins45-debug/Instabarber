@@ -44,6 +44,7 @@ export const TABELAS_DA_PLATAFORMA = [
   "pedidos_adesao",
   "faturas_plataforma",
   "recebimentos",
+  "comprovativos_pagamento",
   "auditoria",
   "inquilino_modulos",
   "ligacoes_externas",

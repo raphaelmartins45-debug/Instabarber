@@ -1,8 +1,10 @@
 import { redirect } from "next/navigation";
 import { sair } from "@/app/(auth)/entrar/acoes";
+import { PagamentoMensalidade } from "@/components/barbearia/plano/pagamento-mensalidade";
 import { ResumoPlano } from "@/components/barbearia/resumo-plano";
 import { BotaoSair } from "@/components/nucleo/botao-sair";
 import { textos } from "@/lib/i18n/pt-PT";
+import { dadosPagamento } from "@/lib/painel/pagamento";
 import { listarFaturas, listarRecebimentos } from "@/lib/repositorios/admin/pagamentos";
 import { obterConfiguracao } from "@/lib/repositorios/painel/barbearia";
 import { listarMeusPerfis } from "@/lib/repositorios/perfis";
@@ -13,7 +15,8 @@ export const metadata = { title: `${t.titulo} · ${textos.marca.nome}` };
 
 /**
  * Acesso suspenso (M.4): o RLS já não mostra os dados da barbearia; o gestor vê só o plano, a
- * mensalidade e as faturas, para regularizar. Nada foi apagado.
+ * mensalidade e as faturas, e envia o comprovativo do pagamento para regularizar (D-168). Nada foi
+ * apagado.
  */
 export default async function AcessoSuspenso() {
   const bd = await criarClienteServidor();
@@ -30,6 +33,7 @@ export default async function AcessoSuspenso() {
     listarFaturas(bd, suspensa.id),
     listarRecebimentos(bd, { inquilinoId: suspensa.id }),
   ]);
+  const pagamento = await dadosPagamento(bd, b);
   return (
     <main className="mx-auto grid max-w-3xl gap-5 px-4 py-8">
       <div className="flex items-start justify-between gap-3">
@@ -42,7 +46,13 @@ export default async function AcessoSuspenso() {
         <BotaoSair acao={sair} className="" />
       </div>
       <p className="rounded-lg border border-destaque/40 bg-accent px-3 py-2 text-sm">{t.texto}</p>
-      <ResumoPlano b={b} faturas={faturas} recebimentos={recebimentos} />
+      <PagamentoMensalidade inquilinoId={suspensa.id} dados={pagamento} podeEnviar />
+      <ResumoPlano
+        b={b}
+        faturas={faturas}
+        recebimentos={recebimentos}
+        emAnalise={pagamento.faturasEmAnalise}
+      />
     </main>
   );
 }

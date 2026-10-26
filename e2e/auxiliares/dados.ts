@@ -48,6 +48,8 @@ export const contas = (projeto: string) => ({
   adminApoio: `admin-apoio-${projeto}@teste.instabarber.pt`,
   // Super_admin da vista de apoio (percorre o painel só de leitura).
   adminVista: `admin-vista-${projeto}@teste.instabarber.pt`,
+  // Super_admin que confere os comprovativos de pagamento (D-168).
+  adminPagamentos: `admin-pagamentos-${projeto}@teste.instabarber.pt`,
   // Equipa InstaBarber (D-161): o dono que gere as contas, um gestor e um comercial.
   adminEquipa: `admin-equipa-${projeto}@teste.instabarber.pt`,
   gestor: `gestor-${projeto}@teste.instabarber.pt`,

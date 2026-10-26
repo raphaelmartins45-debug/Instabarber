@@ -69,6 +69,8 @@ test("código de acesso de ponta a ponta: errado, certo e expirado", async ({
   const href = (await wa.getAttribute("href"))!;
   expect(href).toContain(`https://wa.me/351${semConta}?text=`);
   const codigo = /é (\d{6})\./.exec(decodeURIComponent(href))![1]!;
+  // «Já enviei» só aparece depois do clique tratado pela página: esperar que fique interativa.
+  await gestor.waitForLoadState("networkidle");
   await wa.click();
   await pedido.getByRole("button", { name: "Já enviei" }).click();
   await expect(pedido).toContainText("Enviado");

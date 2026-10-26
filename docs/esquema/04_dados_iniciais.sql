@@ -89,7 +89,8 @@ insert into modulos_plataforma (chave, ativo) values ('pagamentos', false), ('fa
 insert into storage.buckets (id, name, public) values
   ('publico', 'publico', true),
   ('fichas',  'fichas',  false),
-  ('comercial', 'comercial', false)
+  ('comercial', 'comercial', false),
+  ('comprovativos', 'comprovativos', false)
 on conflict (id) do nothing;
 
 -- Condições comerciais (D-161): descontos e taxa de migração desligados.

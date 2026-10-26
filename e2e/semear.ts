@@ -113,6 +113,8 @@ export default async function semear() {
     await perfil(bd, await criarConta(bd, c.adminGestao), "super_admin", null, c.adminGestao);
     await perfil(bd, await criarConta(bd, c.adminApoio), "super_admin", null, c.adminApoio);
     await perfil(bd, await criarConta(bd, c.adminVista), "super_admin", null, c.adminVista);
+    const pagamentos = await criarConta(bd, c.adminPagamentos);
+    await perfil(bd, pagamentos, "super_admin", null, c.adminPagamentos);
     await perfil(bd, await criarConta(bd, c.adminEquipa), "super_admin", null, c.adminEquipa);
     await perfil(bd, await criarConta(bd, c.gestor), "gestor_plataforma", null, c.gestor);
     await perfil(bd, await criarConta(bd, c.comercialVendas), "comercial", null, c.comercialVendas);

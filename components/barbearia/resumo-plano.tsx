@@ -18,10 +18,12 @@ export function ResumoPlano({
   b,
   faturas,
   recebimentos,
+  emAnalise,
 }: {
   b: ConfiguracaoBarbearia;
   faturas: Fatura[];
   recebimentos: Recebimento[];
+  emAnalise?: ReadonlySet<string>;
 }) {
   const plano = b.plano as "basic" | "pro";
   const periodicidade = b.periodicidade as "mensal" | "anual";
@@ -59,7 +61,7 @@ export function ResumoPlano({
           {t.escrever}
         </a>
       </p>
-      <ListasPagamentos faturas={faturas} recebimentos={recebimentos} />
+      <ListasPagamentos faturas={faturas} recebimentos={recebimentos} emAnalise={emAnalise} />
     </>
   );
 }

@@ -848,6 +848,35 @@ create table recebimentos (
   criado_em       timestamptz not null default now()
 );
 
+-- Comprovativos de pagamento da mensalidade (D-168): a barbearia envia o comprovativo do MB Way
+-- ou da transferência; a Performa LAB confere e aprova (regista o recebimento) ou recusa com motivo.
+-- O ficheiro fica no bucket privado «comprovativos», em <inquilino_id>/<ficheiro>.
+create table comprovativos_pagamento (
+  id              uuid primary key default gen_random_uuid(),
+  inquilino_id    uuid not null references inquilinos(id) on delete cascade,
+  fatura_id       uuid references faturas_plataforma(id) on delete set null,
+  periodo_inicio  date not null,
+  periodo_fim     date not null,
+  metodo          text not null check (metodo in ('mbway','transferencia')),
+  valor           numeric(10,2) not null check (valor > 0),
+  pago_em         date not null,
+  caminho         text not null,
+  estado          text not null default 'pendente' check (estado in ('pendente','aprovado','recusado')),
+  motivo          text check (char_length(motivo) <= 600),
+  enviado_por     uuid references auth.users(id) on delete set null,
+  enviado_em      timestamptz not null default now(),
+  decidido_por    uuid references auth.users(id) on delete set null,
+  decidido_em     timestamptz,
+  recebimento_id  uuid references recebimentos(id) on delete set null,
+  check (periodo_fim >= periodo_inicio),
+  check ((estado = 'pendente') = (decidido_em is null)),
+  check (estado <> 'recusado' or motivo is not null)
+);
+-- Um só comprovativo em análise por período.
+create unique index comprovativos_um_pendente on comprovativos_pagamento (inquilino_id, periodo_inicio)
+  where estado = 'pendente';
+create index comprovativos_estado on comprovativos_pagamento (estado, enviado_em);
+
 -- -----------------------------------------------------------------------------
 -- 15 · Auditoria
 -- -----------------------------------------------------------------------------

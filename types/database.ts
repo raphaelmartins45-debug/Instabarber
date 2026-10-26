@@ -892,6 +892,100 @@ export type Database = {
           },
         ];
       };
+      comprovativos_pagamento: {
+        Row: {
+          caminho: string;
+          decidido_em: string | null;
+          decidido_por: string | null;
+          enviado_em: string;
+          enviado_por: string | null;
+          estado: string;
+          fatura_id: string | null;
+          id: string;
+          inquilino_id: string;
+          metodo: string;
+          motivo: string | null;
+          pago_em: string;
+          periodo_fim: string;
+          periodo_inicio: string;
+          recebimento_id: string | null;
+          valor: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          caminho: string;
+          decidido_em?: string | null;
+          decidido_por?: string | null;
+          enviado_em?: string;
+          enviado_por?: string | null;
+          estado?: string;
+          fatura_id?: string | null;
+          id?: string;
+          inquilino_id: string;
+          metodo: string;
+          motivo?: string | null;
+          pago_em: string;
+          periodo_fim: string;
+          periodo_inicio: string;
+          recebimento_id?: string | null;
+          valor: number;
+        };
+        Update: {
+          caminho?: string;
+          decidido_em?: string | null;
+          decidido_por?: string | null;
+          enviado_em?: string;
+          enviado_por?: string | null;
+          estado?: string;
+          fatura_id?: string | null;
+          id?: string;
+          inquilino_id?: string;
+          metodo?: string;
+          motivo?: string | null;
+          pago_em?: string;
+          periodo_fim?: string;
+          periodo_inicio?: string;
+          recebimento_id?: string | null;
+          valor?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comprovativos_pagamento_fatura_id_fkey";
+            columns: ["fatura_id"];
+            isOneToOne: false;
+            referencedRelation: "faturas_plataforma";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comprovativos_pagamento_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comprovativos_pagamento_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "publico_inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comprovativos_pagamento_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "vencimentos_proximos";
+            referencedColumns: ["inquilino_id"];
+          },
+          {
+            foreignKeyName: "comprovativos_pagamento_recebimento_id_fkey";
+            columns: ["recebimento_id"];
+            isOneToOne: false;
+            referencedRelation: "recebimentos";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       comunicado_leituras: {
         Row: {
           comunicado_id: string;
@@ -5216,6 +5310,7 @@ export type Database = {
       apagar_auditoria_antiga: { Args: { p_meses?: number }; Returns: number };
       apagar_leads_inativos: { Args: { p_meses?: number }; Returns: number };
       aplicar_pacote: { Args: { p_inquilino: string }; Returns: undefined };
+      aprovar_comprovativo: { Args: { p_id: string }; Returns: string };
       assinar_contrato: {
         Args: { p_contrato: string; p_data: string; p_inicio?: string; p_pdf_assinado: string };
         Returns: undefined;
@@ -5337,6 +5432,16 @@ export type Database = {
           posicao: number;
         }[];
       };
+      enviar_comprovativo: {
+        Args: {
+          p_caminho: string;
+          p_inquilino: string;
+          p_metodo: string;
+          p_pago_em: string;
+          p_valor: number;
+        };
+        Returns: string;
+      };
       escolher_comercial: { Args: Record<PropertyKey, never>; Returns: string };
       estado_fila_presencial: {
         Args: { p_entrada: string };
@@ -5418,6 +5523,15 @@ export type Database = {
         Args: { p_inquilino: string; p_telefone: string };
         Returns: undefined;
       };
+      periodo_a_pagar: {
+        Args: { p_inquilino: string };
+        Returns: {
+          fatura_id: string;
+          fim: string;
+          inicio: string;
+          valor_fatura: number;
+        }[];
+      };
       pode_criar_acesso_direto: { Args: { p_cliente: string }; Returns: boolean };
       pode_marcar_online: { Args: { p_cliente: string }; Returns: boolean };
       posicao_fila_espera: { Args: { p_entrada: string }; Returns: number };
@@ -5451,6 +5565,7 @@ export type Database = {
           slug: string;
         }[];
       };
+      recusar_comprovativo: { Args: { p_id: string; p_motivo: string }; Returns: undefined };
       registar_auditoria: {
         Args: {
           p_accao: string;

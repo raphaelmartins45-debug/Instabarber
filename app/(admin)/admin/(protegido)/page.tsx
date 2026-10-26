@@ -1,8 +1,10 @@
-import Link from "next/link";
+import { ListaAlertas } from "@/components/admin/painel/lista-alertas";
 import { Indicador } from "@/components/nucleo/indicador";
 import { ApagarAuditoria } from "@/components/admin/apagar-auditoria";
+import { ComprovativosPendentes } from "@/components/admin/painel/comprovativos-pendentes";
 import { PedidosPendentes } from "@/components/admin/painel/pedidos-pendentes";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
+import { periodoDe } from "@/lib/admin/comprovativos";
 import { saude } from "@/lib/admin/saude";
 import { alertasContas } from "@/lib/financas/custos";
 import { dataCurta, hojeIso, somarDias } from "@/lib/formatacao/datas";
@@ -16,6 +18,7 @@ import { receitaMensal } from "@/lib/regras/receita";
 import { apoioEmAberto } from "@/lib/repositorios/admin/apoio";
 import { listarBarbearias } from "@/lib/repositorios/admin/barbearias";
 import { dadosDeSaude } from "@/lib/repositorios/admin/saude";
+import { listarComprovativos } from "@/lib/repositorios/comprovativos";
 import { listarComissoes } from "@/lib/repositorios/comercial/comissoes";
 import { listarLeads, validadesEnviadas } from "@/lib/repositorios/comercial/leads";
 import { contarFeriadosNacionais, datasFeriadosNacionais } from "@/lib/repositorios/feriados";
@@ -26,7 +29,10 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 const t = textos.admin.painel;
 export const metadata = { title: `${t.titulo} · ${textos.marca.nome}` };
 
-/** Painel geral (E.1): quatro indicadores, pedidos pendentes, alertas e atividade recente. */
+/**
+ * Painel geral (E.1): quatro indicadores, pedidos pendentes, comprovativos por confirmar (D-168),
+ * alertas e atividade recente.
+ */
 export default async function PainelGeral() {
   const bd = await criarClienteServidor();
   const hoje = hojeIso();
@@ -42,6 +48,7 @@ export default async function PainelGeral() {
     apoio,
     comissoes,
     dadosSaude,
+    comprovativos,
   ] = await Promise.all([
     listarBarbearias(bd),
     listarPedidos(bd),
@@ -53,6 +60,7 @@ export default async function PainelGeral() {
     apoioEmAberto(bd),
     listarComissoes(bd),
     dadosDeSaude(bd),
+    listarComprovativos(bd, { estado: "pendente" }),
   ]);
   // A barbearia de demonstração não conta nas contas nem nos alertas (D-162).
   const barbearias = todas.filter((b) => !b.demonstracao);
@@ -150,29 +158,18 @@ export default async function PainelGeral() {
           ),
         }))}
       />
-      <section className="grid gap-2">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.alertas}</h2>
-        {alertas.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t.semAlertas}</p>
-        ) : (
-          <ul className="grid gap-2">
-            {alertas.map((x) => (
-              <li
-                key={x.texto}
-                className="rounded-lg border border-destaque/40 bg-accent px-3 py-2 text-sm"
-              >
-                {x.href ? (
-                  <Link href={x.href} className="underline-offset-4 hover:underline">
-                    {x.texto}
-                  </Link>
-                ) : (
-                  x.texto
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <ComprovativosPendentes
+        linhas={comprovativos.map((c) => ({
+          id: c.id,
+          nome: todas.find((b) => b.id === c.inquilino_id)?.nome ?? textos.comum.vazio,
+          detalhe: textos.comprovativos.admin.detalhe(
+            formatarDinheiro(c.valor_centimos),
+            textos.comprovativos.metodos[c.metodo] ?? c.metodo,
+            periodoDe(c),
+          ),
+        }))}
+      />
+      <ListaAlertas alertas={alertas} />
       <section className="grid gap-2">
         <h2 className="text-[15px] font-bold text-ligacao">{t.atividade}</h2>
         <SeparadorAuditoria limite={10} />

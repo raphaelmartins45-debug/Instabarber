@@ -2,6 +2,7 @@ import { TabelaCartoes } from "@/components/nucleo/tabela-cartoes";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
+import { estadoFatura } from "@/lib/regras/comprovativos";
 import type { Fatura, Recebimento } from "@/lib/repositorios/admin/pagamentos";
 
 const t = textos.admin.pagamentos;
@@ -11,11 +12,15 @@ export function ListasPagamentos({
   faturas,
   recebimentos,
   nomes,
+  emAnalise = new Set(),
 }: {
   faturas: Fatura[];
   recebimentos: Recebimento[];
   nomes?: Map<string, string>;
+  /** Faturas com um comprovativo em análise (D-168). */
+  emAnalise?: ReadonlySet<string>;
 }) {
+  const estados = textos.comprovativos.estadosFatura;
   const numeros = new Map(faturas.map((f) => [f.id, f.numero]));
   const barbearia = nomes
     ? [
@@ -52,7 +57,8 @@ export function ListasPagamentos({
             {
               id: "paga",
               rotulo: t.colunas.paga,
-              valor: (f) => (f.paga_em ? dataCurta(f.paga_em) : textos.comum.vazio),
+              valor: (f) =>
+                f.paga_em ? dataCurta(f.paga_em) : estados[estadoFatura(f, emAnalise)],
             },
           ]}
         />

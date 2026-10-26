@@ -506,6 +506,19 @@ create policy storage_comercial on storage.objects for all
   using (bucket_id = 'comercial' and (select public.e_super_admin()))
   with check (bucket_id = 'comercial' and (select public.e_super_admin()));
 
+-- Comprovativos de pagamento (D-168): o dono vê os seus (também suspenso); escreve-se só pelas
+-- funções enviar/aprovar/recusar. O ficheiro: o dono carrega e lê na pasta da barbearia; o
+-- super_admin lê tudo. Ninguém altera nem apaga pelo Storage.
+create policy comprovativos_ler on comprovativos_pagamento for select using (
+  inquilino_id in (select public.inquilinos_onde(array['proprietario'], false)));
+create policy storage_comprovativos_ler on storage.objects for select
+  using (bucket_id = 'comprovativos' and (
+         (storage.foldername(name))[1] in (select x::text from public.inquilinos_onde(array['proprietario'], false) x)
+         or (select public.e_super_admin())));
+create policy storage_comprovativos_carregar on storage.objects for insert
+  with check (bucket_id = 'comprovativos' and
+         (storage.foldername(name))[1] in (select x::text from public.inquilinos_onde(array['proprietario'], false) x));
+
 -- -----------------------------------------------------------------------------
 -- Leitura total pelo super_admin (com dois fatores): vista de apoio e
 -- exportação dos dados de uma barbearia que sai (RGPD, art. 28.º, n.º 3, g).

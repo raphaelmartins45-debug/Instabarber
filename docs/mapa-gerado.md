@@ -34,6 +34,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/financas/vencimentos/page.tsx`
 - `app/(admin)/admin/(protegido)/metricas/page.tsx`
 - `app/(admin)/admin/(protegido)/modulos/page.tsx`
+- `app/(admin)/admin/(protegido)/pagamentos/comprovativos/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/pagamentos/page.tsx`
 - `app/(admin)/admin/(protegido)/page.tsx`
 - `app/(admin)/admin/(protegido)/pedidos/[id]/page.tsx`
@@ -204,6 +205,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `codigos_acesso`
 - `comissoes_comerciais`
 - `comissoes_servico`
+- `comprovativos_pagamento`
 - `comunicado_leituras`
 - `comunicados`
 - `configuracao_comercial`
@@ -265,6 +267,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `apagar_auditoria_antiga()`
 - `apagar_leads_inativos()`
 - `aplicar_pacote()`
+- `aprovar_comprovativo()`
 - `assinar_contrato()`
 - `auditar_inquilino()`
 - `auditar_interruptor()`
@@ -295,6 +298,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `eliminar_inquilino()`
 - `entrar_fila_espera()`
 - `entrar_fila_presencial()`
+- `enviar_comprovativo()`
 - `escolher_comercial()`
 - `estado_fila_presencial()`
 - `evento_lead()`
@@ -335,6 +339,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `orfas_ao_desativar()`
 - `pasta_lead_acessivel()`
 - `pedir_codigo_acesso()`
+- `periodo_a_pagar()`
 - `pode_criar_acesso_direto()`
 - `pode_marcar_online()`
 - `posicao_fila_espera()`
@@ -349,6 +354,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `proteger_proposta()`
 - `proximo_numero_comercial()`
 - `reclamar_email_confirmacao()`
+- `recusar_comprovativo()`
 - `registar_auditoria()`
 - `registar_auditoria_admin()`
 - `registar_email_confirmacao()`
