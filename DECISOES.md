@@ -887,3 +887,9 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - Migração 16: `registar_fatura_do_comprovativo()` guarda o número, paga a fatura e liga-a ao recebimento e ao comprovativo (6 testes SQL, 627 no total). Código em `lib/faturacao-plataforma/` com testes do pedido simulado.
 - **Desligada** até haver `FATURACAO_PLATAFORMA=invoicexpress`, `INVOICEXPRESS_CONTA` e `INVOICEXPRESS_CHAVE` na Vercel. A arquitetura e a lista do que falta estão no PROGRESSO («Módulo pendente de ativação»). Código desligado por configuração, com testes: não é código morto (regra 13).
 - A confirmar na ativação, com uma fatura de teste: os nomes dos campos da resposta do InvoiceXpress para o número (`inverted_sequence_number`) e o nome da taxa na conta.
+
+## D-171 · 26/10/2026 · Ícone em relevo e título da landing com Portugal — dono
+- Pedido do dono: o Google mostrava a landing sem ícone; queria o ícone com aspeto 3D, ao estilo do ícone do Adobe Illustrator; o título com Portugal e a descrição sem repetir o título.
+- Novo ícone `public/marca/ib3-*.png` e `public/favicon.ico` (16, 32 e 48 px): quadrado de cantos arredondados, fundo escuro com gradiente e brilho, rebordo dourado, «IB» com relevo e sombra. Usado na landing, nos painéis (`app/layout.tsx`) e no ícone do telemóvel (180 e 192 px). O Google pede ícones múltiplos de 48 px: juntou-se o de 48.
+- Título: «Sistema de Gestão para Barbearias em Portugal | InstaBarber». Descrição (também nas redes e nos dados estruturados): «Tudo num só sistema: marcação online 24 horas, agenda, ficha de clientes, lembretes por WhatsApp, cartão de selos, loja, equipa e comissões, financeiro e relatório mensal.»
+- O Google só atualiza o ícone e a descrição quando volta a ler a página: pedir nova indexação no Search Console (Inspeção de URL → Pedir indexação).

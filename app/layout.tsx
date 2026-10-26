@@ -11,8 +11,11 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 export const metadata: Metadata = {
   title: textos.marca.nome,
   icons: {
-    icon: [{ url: "/marca/favicon2-32.png", sizes: "32x32", type: "image/png" }],
-    apple: [{ url: "/marca/ib2-180.png" }],
+    icon: [
+      { url: "/marca/ib3-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/marca/ib3-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/marca/ib3-180.png" }],
   },
 };
 
