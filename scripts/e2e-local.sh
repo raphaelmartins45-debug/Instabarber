@@ -14,5 +14,7 @@ export RESEND_API_KEY=re_chave_invalida_dos_ensaios
 # Identificação fictícia da Prestadora para os documentos legais nos ensaios.
 export PRESTADORA_NOME="Prestadora de Ensaio" PRESTADORA_NIF=999999990 PRESTADORA_MORADA="Rua do Ensaio, Viseu"
 export PRESTADORA_QUALIDADE="empresário em nome individual" PRESTADORA_ASSINANTE="Assinante de Ensaio"
+# Regime da Prestadora como na produção: isenta (art. 53.º do CIVA), ao preço não acresce IVA (D-173).
+export PRESTADORA_REGIME_IVA=isento
 npm run build >/dev/null
 npx playwright test "$@"

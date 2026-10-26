@@ -1,5 +1,7 @@
 # Mudança para o regime de isenção de IVA (art. 53.º do CIVA)
 
+> **Executado a 27/10/2026 (D-173)**: preços 19,99 € e 39,99 €, sem IVA a acrescer; regime `isento` na Vercel. Ficam por fazer: as peças das redes sociais (ponto 16), a revisão dos Termos e do contrato com o jurista e a confirmação do contabilista.
+
 Documento de trabalho para o dono aprovar ponto a ponto. Criado a 26/10/2026; a executar a
 27/10/2026, depois da aprovação. **Nada disto está feito ainda**: o sistema continua com
 `PRESTADORA_REGIME_IVA=normal` (D-85).

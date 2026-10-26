@@ -36,10 +36,10 @@ describe("briefing", () => {
 });
 
 describe("montarProposta", () => {
-  it("Pro mensal com 3 profissionais: 39,00 € sem IVA e 47,97 € com IVA (D.5)", () => {
+  it("Pro mensal com 3 profissionais: 39,99 € sem IVA e 49,19 € com IVA (D.5)", () => {
     const p = montarProposta(base, catalogo, pacotes, "normal");
-    expect(p.mensalidade_sem_iva).toBe("39.00");
-    expect(p.valor_periodo_com_iva).toBe("47.97");
+    expect(p.mensalidade_sem_iva).toBe("39.99");
+    expect(p.valor_periodo_com_iva).toBe("49.19");
     expect(p.iva_taxa).toBe(23);
   });
 
@@ -50,7 +50,7 @@ describe("montarProposta", () => {
       pacotes,
       "normal",
     );
-    expect(p.valor_periodo_sem_iva).toBe("440.00");
+    expect(p.valor_periodo_sem_iva).toBe("449.90");
     expect(p.dados.decomposicao.at(-1)).toEqual({ rotulo: "dominio", valorCent: 5000 });
   });
 

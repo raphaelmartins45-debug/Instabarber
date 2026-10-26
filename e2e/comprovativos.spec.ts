@@ -30,7 +30,7 @@ test("comprovativo enviado pelo dono, conferido e aprovado pela Performa LAB", a
   await page.goto("/app/plano");
   const formulario = page.getByTestId("enviar-comprovativo");
   await expect(formulario).toContainText("Período a pagar");
-  await formulario.getByLabel("Valor pago (€)").fill("47,97");
+  await formulario.getByLabel("Valor pago (€)").fill("39,99");
   await page.getByTestId("comprovativo-ficheiro").setInputFiles({
     name: "mbway.png",
     mimeType: "image/png",
@@ -47,7 +47,7 @@ test("comprovativo enviado pelo dono, conferido e aprovado pela Performa LAB", a
   const admin = await (await browser.newContext(info.project.use)).newPage();
   await entrarAdmin(admin, c.adminPagamentos);
   const linha = admin.getByTestId("painel-comprovativo").filter({ hasText: BARBEARIA_A.nome });
-  await expect(linha).toContainText("47,97");
+  await expect(linha).toContainText("39,99");
   await linha.getByRole("link", { name: "Conferir" }).click();
   await expect(admin.getByTestId("comprovativo-dados")).toContainText(BARBEARIA_A.nome);
   await expect(admin.getByRole("img", { name: "Comprovativo de pagamento" })).toBeVisible();
@@ -60,5 +60,5 @@ test("comprovativo enviado pelo dono, conferido e aprovado pela Performa LAB", a
   // 3. O dono vê-o confirmado e o recebimento registado.
   await page.reload();
   await expect(page.getByTestId("comprovativo").first()).toContainText("Confirmado");
-  await expect(page.getByTestId("recebimento").first()).toContainText("47,97");
+  await expect(page.getByTestId("recebimento").first()).toContainText("39,99");
 });

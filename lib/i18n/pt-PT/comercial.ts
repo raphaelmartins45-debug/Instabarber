@@ -249,7 +249,8 @@ export const comercial = {
     semIva: "Total sem IVA",
     comIva: "Total com IVA",
     ivaIncluido: (valor: string) => `IVA à taxa de 23 % incluído: ${valor}.`,
-    isento: "Isento de IVA, nos termos do artigo 53.º do CIVA.",
+    isento:
+      "Ao preço estipulado não acresce IVA, por se encontrar enquadrado no regime de isenção do Artigo 53.º do CIVA.",
     valorParaSi: "O que isto vale para si (estimativa)",
     valorParaSiTexto: (valor: string, mensalidades: string) =>
       `Com os números da conversa, recuperar clientes que deixaram de vir pode valer cerca de ${valor} (${mensalidades} mensalidades). É uma estimativa, não uma promessa.`,
@@ -398,9 +399,10 @@ export const comercial = {
       plano: "Pro",
       profissionais: "3",
       periodicidade: "Mensal",
-      valor_sem_iva: "39,00 €",
-      valor_com_iva: "47,97 €",
-      iva_texto: "IVA à taxa de 23 % incluído",
+      valor_sem_iva: "39,99 €",
+      valor_com_iva: "39,99 €",
+      iva_texto:
+        "Ao preço estipulado não acresce IVA, por se encontrar enquadrado no regime de isenção do Artigo 53.º do CIVA.",
       data_inicio: "01/11/2026",
       "prestadora.nome": "Performa LAB",
       "prestadora.nif": "000000000",

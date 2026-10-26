@@ -134,13 +134,13 @@ A fonte única da grelha é `docs/esquema/04_dados_iniciais.sql`. A tabela D.3 �
 gerada a partir dela. **Nunca escrever à mão quantas funcionalidades tem cada
 plano**: dizer «a grelha D.3».
 
-| Plano | Mensal (sem IVA / com IVA) | Anual (10 meses) | Profissionais |
+| Plano | Mensal | Anual (10 meses) | Profissionais |
 | --- | --- | --- | --- |
-| Basic | 19,99 € / 24,59 € | 199,90 € / 245,88 € | 1 |
-| Pro | 39,00 € / 47,97 € | 390,00 € / 479,70 € | 3 incluídos; +10,00 € (12,30 € com IVA) por mês, ou +100,00 € por ano, a partir do 4.º |
-| Extra: domínio próprio | +5,00 € / +6,15 € | +50,00 € / +61,50 € | Em qualquer plano |
+| Basic | 19,99 € | 199,90 € | 1 |
+| Pro | 39,99 € | 399,90 € | 3 incluídos; +10,00 € por mês, ou +100,00 € por ano, a partir do 4.º |
+| Extra: domínio próprio | +5,00 € | +50,00 € | Em qualquer plano |
 
-O **preço final** ao cliente é o da coluna «com IVA» e não muda com o regime de IVA da Prestadora. Desde 22/10/2026 a Prestadora já não está isenta (D-85): `PRESTADORA_REGIME_IVA=normal`, o IVA a 23 % está incluído no preço final e o valor sem IVA é o preço final ÷ 1,23, arredondado (39,00 € + 8,97 € = 47,97 €). Se o regime mudar outra vez, muda só a variável (D-45).
+Desde 27/10/2026 a Prestadora está **isenta de IVA** (artigo 53.º do CIVA, até 15.000 € de faturação; D-173, substitui a D-85): `PRESTADORA_REGIME_IVA=isento`. Ao preço estipulado não acresce IVA; a fatura leva taxa 0 % e o motivo M10. Quando a isenção acabar (ou abrir a Lda.), passa a `normal` e o IVA a 23 % acresce ao preço (39,99 € + 23 % = 49,19 €), com aviso prévio às barbearias. A fórmula única é `lib/regras/mensalidade.ts`; o regime vive só na variável (D-45). Acompanhamento das mudanças em `docs/mudanca-regime-iva.md`.
 
 Só a Performa LAB liga e desliga funcionalidades, no painel de administração.
 A verificação é no servidor e na base de dados, nunca só na interface.

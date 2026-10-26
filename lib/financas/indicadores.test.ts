@@ -42,11 +42,11 @@ describe("indicadores", () => {
 
   it("valores dos planos e ponto de equilíbrio feitos à mão", () => {
     expect(valorDoPlano("basic", "normal")).toBe(1999);
-    expect(valorDoPlano("pro", "normal")).toBe(3900);
+    expect(valorDoPlano("pro", "normal")).toBe(3999);
     // 200 € de fixos ÷ (39 € − 1 €) = 5,26 → 6 barbearias.
     expect(pontoDeEquilibrio(20000, 3900, 100)).toBe(6);
     expect(pontoDeEquilibrio(20000, 100, 100)).toBeNull();
-    expect(valorMedio(null, 50, "normal")).toBe(2950);
+    expect(valorMedio(null, 50, "normal")).toBe(2999);
     expect(valorMedio(3000, 50, "normal")).toBe(3000);
   });
 
@@ -68,15 +68,15 @@ describe("indicadores", () => {
       mesAnterior: "2026-09",
       regime: "normal",
     });
-    // 39 + 39 + 199,90/12 (16,66) = 94,66 €.
-    expect(r.mrr).toBe(9466);
+    // 39,99 + 39,99 + 199,90/12 (16,66) = 96,64 €.
+    expect(r.mrr).toBe(9664);
     expect(r.ativas).toBe(3);
     expect(r.recebido).toBe(3900);
-    expect(r.lucroEstimado).toBe(4466);
+    expect(r.lucroEstimado).toBe(4664);
     expect(r.lucroCaixa).toBe(2900);
-    expect(r.margem).toBeCloseTo(0.4718, 3);
-    expect(r.arpu).toBe(3155);
-    expect(r.atraso).toEqual({ comIva: 4797, n: 1 });
+    expect(r.margem).toBeCloseTo(0.4826, 3);
+    expect(r.arpu).toBe(3221);
+    expect(r.atraso).toEqual({ comIva: 4919, n: 1 });
     expect(r.saidas).toBeNull();
   });
 
@@ -87,7 +87,7 @@ describe("indicadores", () => {
     const s = serieMensal(["2026-07", "2026-08"], [b({})], [custo], "normal");
     expect(s).toEqual([
       { mes: "2026-07", receita: 0, custos: 5000, lucro: -5000 },
-      { mes: "2026-08", receita: 3900, custos: 5000, lucro: -1100 },
+      { mes: "2026-08", receita: 3999, custos: 5000, lucro: -1001 },
     ]);
   });
 });

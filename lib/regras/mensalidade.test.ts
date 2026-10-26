@@ -9,10 +9,10 @@ import {
 describe("mensalidade (D.5)", () => {
   it.each([
     ["basic", 1, 1999, 2459],
-    ["pro", 3, 3900, 4797],
-    ["pro", 4, 4900, 6027],
-    ["pro", 5, 5900, 7257],
-    ["pro", 8, 8900, 10947],
+    ["pro", 3, 3999, 4919],
+    ["pro", 4, 4999, 6149],
+    ["pro", 5, 5999, 7379],
+    ["pro", 8, 8999, 11069],
   ] as const)("%s com %i profissionais: %i / %i cêntimos", (plano, n, semIva, comIva) => {
     expect(calcularPrecoCent(plano, n, "mensal")).toEqual({ semIva, comIva, ivaTaxa: 23 });
   });
@@ -24,8 +24,8 @@ describe("mensalidade (D.5)", () => {
       ivaTaxa: 23,
     });
     expect(calcularPrecoCent("pro", 3, "anual")).toEqual({
-      semIva: 39000,
-      comIva: 47970,
+      semIva: 39990,
+      comIva: 49188,
       ivaTaxa: 23,
     });
   });
@@ -36,13 +36,13 @@ describe("mensalidade (D.5)", () => {
       calcularPrecoCent("pro", 3, "mensal", true).comIva -
         calcularPrecoCent("pro", 3, "mensal").comIva,
     ).toBe(615);
-    expect(calcularPrecoCent("pro", 3, "anual", true).semIva).toBe(44000);
+    expect(calcularPrecoCent("pro", 3, "anual", true).semIva).toBe(44990);
   });
 
-  it("no regime isento o preço final não muda e o valor sem IVA é igual a ele (D-45)", () => {
+  it("no regime isento não acresce IVA: o preço final é o valor sem IVA (D-173)", () => {
     expect(calcularPrecoCent("pro", 3, "mensal", false, "isento")).toEqual({
-      semIva: 4797,
-      comIva: 4797,
+      semIva: 3999,
+      comIva: 3999,
       ivaTaxa: 0,
     });
   });
@@ -61,13 +61,13 @@ describe("mensalidade (D.5)", () => {
 
 describe("desconto na mensalidade (D-161)", () => {
   it("aplica-se à mensalidade antes do período e do IVA", () => {
-    // Pro com 3: 39,00 € com 20 % → 31,20 € sem IVA; 38,38 € com IVA.
+    // Pro com 3: 39,99 € com 20 % → 31,99 € sem IVA; 39,35 € com IVA.
     expect(calcularPrecoCent("pro", 3, "mensal", false, "normal", 20)).toEqual({
-      semIva: 3120,
-      comIva: 3838,
+      semIva: 3199,
+      comIva: 3935,
       ivaTaxa: 23,
     });
-    expect(calcularPrecoCent("pro", 3, "anual", false, "normal", 20).semIva).toBe(31200);
+    expect(calcularPrecoCent("pro", 3, "anual", false, "normal", 20).semIva).toBe(31990);
   });
 
   it("sem desconto o preço não muda", () => {

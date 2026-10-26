@@ -82,7 +82,7 @@ test("pedido do site no CRM, lead à mão, contacto, estado e funil", async ({ p
   await page.getByLabel("Faltas", { exact: true }).check();
   await page.getByLabel("Objetivo principal nos próximos três meses *").fill("Reduzir as faltas");
   await page.getByRole("button", { name: "Seguinte" }).click();
-  await expect(page.getByTestId("preco-briefing")).toContainText("47,97");
+  await expect(page.getByTestId("preco-briefing")).toContainText("39,99");
   await page.getByRole("button", { name: "Gerar proposta" }).click();
 
   await expect(page.getByTestId("propostas-lead")).toContainText("Rascunho");

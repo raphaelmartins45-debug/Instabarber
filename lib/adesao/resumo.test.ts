@@ -4,7 +4,7 @@ import { decomposicao, listaIncluida } from "./resumo";
 describe("contratação (D.6, D.9)", () => {
   it("decomposição: base e extras, no anual vezes 10", () => {
     expect(decomposicao({ plano: "pro", periodicidade: "mensal", profissionais: 5 })).toEqual([
-      { rotulo: "Plano base Pro", valorCent: 3900 },
+      { rotulo: "Plano base Pro", valorCent: 3999 },
       { rotulo: "2 profissional(is) extra", valorCent: 2000 },
     ]);
     expect(decomposicao({ plano: "basic", periodicidade: "anual", profissionais: 1 })).toEqual([

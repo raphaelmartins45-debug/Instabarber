@@ -42,7 +42,7 @@ describe("exportação das Finanças", () => {
     expect(csv).toContain("Período: 2026-10");
     expect(csv).toContain('2026-10-03;"Barbearia; Alfa";39,00;47,97');
     expect(csv).toContain("Mês;Receita recorrente;Custos;Lucro estimado;Recebido;Lucro de caixa");
-    expect(csv).toContain("2026-10;39,00;0,00;39,00;39,00;39,00");
-    expect(csv).toContain("2026-10;100,00;receita recorrente;39 %");
+    expect(csv).toContain("2026-10;39,99;0,00;39,99;39,00;39,00");
+    expect(csv).toContain("2026-10;100,00;receita recorrente;40 %");
   });
 });

@@ -6,7 +6,8 @@ export type Plano = "basic" | "pro";
 export type Periodicidade = "mensal" | "anual";
 export type RegimeIva = "normal" | "isento"; // PRESTADORA_REGIME_IVA (D-45, D-85)
 
-const BASE_CENT: Record<Plano, number> = { basic: 1999, pro: 3900 };
+// Pro a 39,99 € (dono, 26/10/2026, D-173).
+const BASE_CENT: Record<Plano, number> = { basic: 1999, pro: 3999 };
 export const INCLUIDOS: Record<Plano, number> = { basic: 1, pro: 3 };
 export const EXTRA_CENT: Record<Plano, number> = { basic: 0, pro: 1000 };
 export const DOMINIO_PROPRIO_CENT = 500;
@@ -56,10 +57,9 @@ export function calcularPrecoCent(
     descontoPct,
   );
   const valor = periodicidade === "anual" ? mensal * MESES_NO_ANUAL : mensal;
-  const final = Math.round(valor * (1 + TAXA_IVA));
-  return regime === "isento"
-    ? { semIva: final, comIva: final, ivaTaxa: 0 }
-    : { semIva: valor, comIva: final, ivaTaxa: 23 };
+  // Isento (art. 53.º do CIVA): ao preço não acresce IVA (D-173, substitui a opção B da D-45).
+  if (regime === "isento") return { semIva: valor, comIva: valor, ivaTaxa: 0 };
+  return { semIva: valor, comIva: Math.round(valor * (1 + TAXA_IVA)), ivaTaxa: 23 };
 }
 
 /** Os profissionais além dos incluídos, para a conta em linguagem corrente (D.6). */

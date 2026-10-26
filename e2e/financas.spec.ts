@@ -64,7 +64,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   );
 
   // Resumo: os indicadores aparecem e o ponto de equilíbrio bate com a conta à mão
-  // (21,32 € de fixos ÷ 39,00 € = 1 barbearia Pro; ÷ 19,99 € = 2 Basic).
+  // (21,32 € de fixos ÷ 39,99 € = 1 barbearia Pro; ÷ 19,99 € = 2 Basic).
   await page.getByRole("link", { name: "Resumo", exact: true }).click();
   await expect(page).toHaveURL(/\/admin\/financas$/);
   await expect(page.getByTestId("resumo")).toContainText("Custos do mês");
@@ -84,7 +84,7 @@ test("custos de partida, contas do próximo mês, conta atrasada e paga", async 
   await expect(page.getByTestId("faltam-pro")).toContainText("barbearias");
   await expect(page.getByTestId("previsao")).toContainText("Não é uma promessa.");
   await page.getByLabel("Número de barbearias Pro").fill("10");
-  await expect(page.getByTestId("previsao-ese")).toContainText("MRR 390,00 €");
+  await expect(page.getByTestId("previsao-ese")).toContainText("MRR 399,90 €");
   await page.getByLabel("Novas barbearias por mês").fill("0");
   await page.getByLabel("Saídas mensais (%)").fill("0");
   const base = await page.getByTestId("previsao-base").textContent();

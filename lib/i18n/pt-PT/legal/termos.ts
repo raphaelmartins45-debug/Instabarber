@@ -5,7 +5,7 @@ import type { DocumentoLegal, Prestadora } from "./tipos";
 
 export const termos = (p: Prestadora): DocumentoLegal => ({
   titulo: "Termos de Uso",
-  versao: "Versão de 25 de outubro de 2026",
+  versao: "Versão de 27 de outubro de 2026",
   introducao: [
     `Estes Termos regulam a utilização do InstaBarber, sistema de gestão para barbearias fornecido por ${p.nome}, NIF ${p.nif}, com domicílio profissional em ${p.morada}, que exerce a atividade sob a designação comercial «Performa LAB» («Performa LAB»).`,
     "A adesão ao InstaBarber depende da aceitação dos presentes Termos de Uso, da Política de Privacidade e do Acordo de Subcontratação de Dados Pessoais, nas respetivas versões disponibilizadas ao Cliente antes da contratação.",
@@ -34,8 +34,8 @@ export const termos = (p: Prestadora): DocumentoLegal => ({
     {
       titulo: "3. Preços",
       paragrafos: [
-        "Os preços dos planos são os apresentados no formulário de adesão, com e sem IVA, em periodicidade mensal ou anual. O preço final é o valor com IVA.",
-        "Plano Basic: 19,99 € por mês sem IVA (24,59 € com IVA), ou 199,90 € por ano (245,88 € com IVA), com um profissional. Plano Pro: 39,00 € por mês sem IVA (47,97 € com IVA), ou 390,00 € por ano (479,70 € com IVA), com três profissionais incluídos e 10,00 € por mês (12,30 € com IVA) por cada profissional a partir do quarto. Domínio próprio, em qualquer plano: mais 5,00 € por mês (6,15 € com IVA), ou 50,00 € por ano.",
+        "Os preços dos planos são os apresentados no formulário de adesão, em periodicidade mensal ou anual, e são o preço final. Enquanto a Prestadora estiver enquadrada no regime de isenção do artigo 53.º do CIVA, ao preço não acresce IVA; se o enquadramento mudar, aplica-se o IVA à taxa legal, nos termos do contrato.",
+        "Plano Basic: 19,99 € por mês, ou 199,90 € por ano, com um profissional. Plano Pro: 39,99 € por mês, ou 399,90 € por ano, com três profissionais incluídos e 10,00 € por mês por cada profissional a partir do quarto. Domínio próprio, em qualquer plano: mais 5,00 € por mês, ou 50,00 € por ano.",
         "Os preços e as condições de pagamento aplicáveis ao Cliente são os constantes da proposta aceite ou do resumo da contratação. Nos planos anuais, o preço anual corresponde ao período de referência de 12 meses, com a redução comercial de dez mensalidades por doze meses, e paga-se antecipadamente.",
         "A denúncia e os eventuais reembolsos de valores pagos antecipadamente regem-se pela cláusula 7 e pelo contrato, não podendo esta cláusula ser interpretada como impondo o pagamento de períodos posteriores à cessação quando tal obrigação não tenha sido validamente acordada.",
         "A Performa LAB só pode alterar os preços com aviso escrito de, pelo menos, 60 dias, e a alteração não se aplica ao período já pago. Se não concordar, o Cliente pode denunciar a adesão, sem encargos, até à entrada em vigor do novo preço.",

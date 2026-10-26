@@ -41,11 +41,10 @@ test("adesão, aprovação, entrada do dono e importação CSV", async ({ page, 
   await page.getByLabel("Preço (€)").first().fill("15,00");
   await page.getByRole("button", { name: "Seguinte" }).click();
 
-  // Pro com 4 profissionais: 49,00 € / 60,27 € (D.5).
+  // Pro com 4 profissionais: 49,99 €, sem IVA a acrescer (isenção, D-173).
   await page.getByRole("button", { name: "Mais um profissional" }).click();
   await expect(page.getByTestId("profissionais")).toHaveText("4");
-  await expect(page.getByTestId("caixa-preco")).toContainText("60,27");
-  await expect(page.getByTestId("caixa-preco")).toContainText("49,00");
+  await expect(page.getByTestId("caixa-preco")).toContainText("49,99");
   await page.getByLabel("E-mail de acesso do proprietário").fill(c.donoAdesao);
   await page.getByRole("checkbox").last().check();
   await page.getByRole("button", { name: "Enviar para a Performa LAB" }).click();
@@ -72,7 +71,7 @@ test("adesão, aprovação, entrada do dono e importação CSV", async ({ page, 
     timeout: 20_000,
   });
   await expect(admin.getByTestId("ficha-nome")).toHaveText(nome);
-  await expect(admin.getByTestId("ficha-mensalidade")).toContainText("60,27");
+  await expect(admin.getByTestId("ficha-mensalidade")).toContainText("49,99");
 
   // O pacote Pro ficou aplicado (a grelha mostra todas menos a multilinguagem).
   // No telemóvel os separadores são passos: navega-se pelo endereço.

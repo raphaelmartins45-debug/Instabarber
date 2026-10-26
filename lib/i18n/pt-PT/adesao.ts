@@ -87,7 +87,7 @@ export const adesao = {
     comIva: "com IVA",
     semIva: "sem IVA",
     ivaIncluido: (iva: string) => `IVA a 23 % incluído (${iva})`,
-    isento: "IVA – Regime de Isenção",
+    isento: "Ao preço não acresce IVA (regime de isenção do artigo 53.º do CIVA).",
     incluido: "O que fica incluído",
     soPro: "disponível no Pro",
     pagamento: "Como prefere pagar",

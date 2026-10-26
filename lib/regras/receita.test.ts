@@ -26,8 +26,8 @@ describe("receita recorrente mensal", () => {
       ],
       "normal",
     );
-    // 24,59 + 479,70/12 (39,98 arredondado a 3998) + 30,74
-    expect(r.comIva).toBe(2459 + 3998 + 3074);
-    expect(r.semIva).toBe(1999 + 3250 + 2499);
+    // 24,59 + 491,88/12 (40,99) + 30,74
+    expect(r.comIva).toBe(2459 + 4099 + 3074);
+    expect(r.semIva).toBe(1999 + 3333 + 2499);
   });
 });

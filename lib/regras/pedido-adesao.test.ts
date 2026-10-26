@@ -53,7 +53,7 @@ describe("paraSubmissao", () => {
       email_acesso: "miguel@central.pt",
       ano_abertura: 2019,
       servicos: [{ nome: "Corte", duracao_min: 30, preco: "15.00" }],
-      mensalidade_calculada: "59.00",
+      mensalidade_calculada: "59.99",
       capa_path: null,
       aceitou_termos: true,
     });
@@ -62,7 +62,7 @@ describe("paraSubmissao", () => {
 
   it("o preço do pedido sai da mesma fórmula (D.5)", () => {
     const pedido = esquemaPedidoAdesao.parse(pedidoExemplo);
-    expect(precoDoPedido(pedido, "normal")).toEqual({ semIva: 5900, comIva: 7257, ivaTaxa: 23 });
+    expect(precoDoPedido(pedido, "normal")).toEqual({ semIva: 5999, comIva: 7379, ivaTaxa: 23 });
   });
 
   it("recusa Pro com menos de 3 profissionais e pedidos sem aceitar os documentos", () => {
