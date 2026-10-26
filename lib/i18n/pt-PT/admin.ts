@@ -186,6 +186,9 @@ export const admin = {
         `Vista de apoio de ${barbearia} · só leitura · termina às ${hora}`,
       sair: "Sair da vista de apoio",
       soLeitura: "Na vista de apoio não se altera nada.",
+      naoGravado:
+        "Nada foi gravado: a vista de apoio é só de leitura. Para alterar, peça ao dono da barbearia ou use a ficha da barbearia no Admin.",
+      fecharAviso: "Fechar o aviso",
     },
     servicos: {
       nome: "Serviço",

@@ -1,5 +1,5 @@
 import "server-only";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import { lerEndereco } from "@/lib/inquilino/endereco";
@@ -111,8 +111,25 @@ async function contextoDeApoio(bd: ClienteBD, userId: string): Promise<ContextoE
 /** Para as ações que gravam: a vista de apoio é só de leitura. */
 export async function exigirGestorParaEscrever(): Promise<ContextoEquipa> {
   const contexto = await exigirGestor();
-  if (contexto.apoio) throw new Error("apoio_so_leitura");
+  if (contexto.apoio) await recusarNoApoio();
   return contexto;
+}
+
+/**
+ * Na vista de apoio nada se grava. Em vez de rebentar a página, volta ao ecrã de onde se veio
+ * com `?so_leitura=1`, e a faixa explica que nada foi gravado (D-166).
+ */
+export async function recusarNoApoio(): Promise<never> {
+  let destino = new URL("/app", "http://local");
+  try {
+    const origem = new URL((await headers()).get("referer") ?? "");
+    if (origem.pathname.startsWith("/app"))
+      destino = new URL(origem.pathname + origem.search, "http://local");
+  } catch {
+    // Sem referer válido: fica o Início do painel.
+  }
+  destino.searchParams.set("so_leitura", "1");
+  redirect(destino.pathname + destino.search);
 }
 
 /** Só o gestor (Gestão do sistema, Início do gestor). O barbeiro vai para a sua área. */
@@ -132,7 +149,7 @@ function unicas(lista: { id: string; nome: string; slug: string }[]): BarbeariaD
 /** Ações da equipa (gestor ou barbeiro) que gravam; o RLS limita o barbeiro ao que é dele. */
 export async function exigirEquipaParaEscrever(): Promise<ContextoEquipa> {
   const contexto = await obterContextoEquipa();
-  if (contexto.apoio) throw new Error("apoio_so_leitura");
+  if (contexto.apoio) await recusarNoApoio();
   if (!contexto.eGestor && !contexto.profissionalId) notFound();
   return contexto;
 }

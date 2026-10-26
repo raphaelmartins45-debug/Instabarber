@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { FormularioBalcao } from "@/components/barbearia/agenda/formulario-balcao";
 import { PainelEquipa } from "@/components/barbearia/painel-equipa";
 import { obterContextoEquipa } from "@/lib/equipa/contexto";
@@ -23,7 +23,8 @@ export default async function MarcarBalcao({
   searchParams: Promise<{ modo?: string; dia?: string; profissional?: string; inicio?: string }>;
 }) {
   const contexto = await obterContextoEquipa();
-  if (contexto.apoio) notFound();
+  // Marcar é só escrita: na vista de apoio volta à agenda com o aviso de só leitura.
+  if (contexto.apoio) redirect("/app/agenda?so_leitura=1");
   await exigirFuncionalidade(contexto.barbearia.id, "agenda_basica");
   const q = await searchParams;
   const modo = q.modo === "registar" ? "registar" : "marcar";
