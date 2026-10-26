@@ -8,7 +8,7 @@ import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
 
 const t = textos.acesso.cliente;
 
-export const metadata = { title: t.titulo };
+export const metadata = { title: t.titulo, robots: { index: false, follow: false } };
 
 /** Acesso à área de cliente (E.4, B9): entrar, ou pedir o código para criar ou recuperar o acesso. */
 export default async function EntrarCliente({ params }: { params: Promise<{ slug: string }> }) {
