@@ -74,6 +74,23 @@ select teste.erro($$select aprovar_comprovativo((select id from comprovativos_pa
 select teste.ok((select count(*) from auditoria where accao in ('comprovativo_enviado','comprovativo_aprovado')) = 2,
   'COMP: envio e aprovação ficam em auditoria');
 
+-- Fatura-recibo do programa certificado (D-170) --------------------------------------
+select teste.erro($$select registar_fatura_do_comprovativo((select id from comprovativos_pagamento limit 1), '', hoje_lisboa())$$,
+  'FAT: o número da fatura é obrigatório');
+select teste.ok(registar_fatura_do_comprovativo((select id from comprovativos_pagamento limit 1), 'FR 2026/1', hoje_lisboa()) is not null,
+  'FAT: regista a fatura-recibo emitida');
+select teste.ok((select f.paga_em = c.pago_em and f.valor = c.valor and f.periodo_inicio = c.periodo_inicio
+                   from comprovativos_pagamento c join faturas_plataforma f on f.id = c.fatura_id limit 1),
+  'FAT: a fatura fica paga na data do comprovativo, com o valor e o período');
+select teste.ok((select r.fatura_id = c.fatura_id from comprovativos_pagamento c join recebimentos r on r.id = c.recebimento_id limit 1),
+  'FAT: o recebimento fica ligado à fatura');
+select teste.erro($$select registar_fatura_do_comprovativo((select id from comprovativos_pagamento limit 1), 'FR 2026/2', hoje_lisboa())$$,
+  'FAT: não se emite segunda fatura para o mesmo comprovativo');
+select teste.como('10000000-0000-0000-0000-000000000002');
+select teste.erro($$select registar_fatura_do_comprovativo(gen_random_uuid(), 'FR 2026/3', hoje_lisboa())$$,
+  'FAT: o dono não regista faturas');
+select teste.como('10000000-0000-0000-0000-000000000001', 'aal2');
+
 -- Fatura por pagar, recusa e reativação ----------------------------------------------
 reset role;
 insert into faturas_plataforma (id, inquilino_id, numero, valor, periodo_inicio, periodo_fim, emitida_em) values

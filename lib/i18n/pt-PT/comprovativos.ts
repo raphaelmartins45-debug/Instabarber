@@ -42,6 +42,21 @@ export const comprovativos = {
     carregar: "Não foi possível carregar o ficheiro. Tente outra vez.",
     generico: "Não foi possível enviar. Tente outra vez.",
   } as Record<string, string>,
+  // Fatura-recibo pelo programa certificado (D-170)
+  fatura: {
+    item: "Mensalidade InstaBarber",
+    descricao: (plano: string, periodo: string) => `Plano ${plano} · ${periodo}`,
+    assunto: (numero: string) => `Fatura-recibo ${numero} · InstaBarber`,
+    corpo:
+      "Olá,\n\nSegue em anexo a fatura-recibo da mensalidade do InstaBarber.\n\nInstaBarber · Performa LAB",
+    emitida: (numero: string) => `Fatura-recibo ${numero} emitida e enviada à barbearia.`,
+    falhou:
+      "A fatura-recibo não foi emitida no InvoiceXpress. Emita-a lá à mão e registe-a em Pagamentos.",
+    estadoLigada:
+      "Faturação automática ligada (InvoiceXpress): ao aprovar, emite e envia a fatura-recibo.",
+    estadoDesligada:
+      "Faturação automática desligada: as faturas emitem-se à mão no programa certificado e registam-se aqui.",
+  },
   // Admin
   admin: {
     painel: "Comprovativos por confirmar",

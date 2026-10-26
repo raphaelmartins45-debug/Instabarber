@@ -120,3 +120,18 @@ export async function urlDoComprovativo(bd: ClienteBD, caminho: string): Promise
   const { data } = await bd.storage.from(BUCKET_COMPROVATIVOS).createSignedUrl(caminho, 600);
   return data?.signedUrl ?? null;
 }
+
+/** Regista a fatura-recibo emitida pelo programa certificado e liga-a ao pagamento (D-170). */
+export async function registarFaturaDoComprovativo(
+  bd: ClienteBD,
+  id: string,
+  numero: string,
+  emitida: string,
+): Promise<boolean> {
+  const { error } = await bd.rpc("registar_fatura_do_comprovativo", {
+    p_id: id,
+    p_numero: numero,
+    p_emitida: emitida,
+  });
+  return !error;
+}

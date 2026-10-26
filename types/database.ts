@@ -5601,6 +5601,10 @@ export type Database = {
         };
         Returns: undefined;
       };
+      registar_fatura_do_comprovativo: {
+        Args: { p_emitida: string; p_id: string; p_numero: string };
+        Returns: string;
+      };
       registar_taxa_paga: { Args: { p_comissao: string; p_data: string }; Returns: undefined };
       renovar_subscricao: { Args: { p_subscricao: string }; Returns: string };
       reservar_vaga: {

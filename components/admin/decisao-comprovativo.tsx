@@ -21,7 +21,15 @@ export function DecisaoComprovativo({ id }: { id: string }) {
     iniciar(async () => {
       const r = await acao();
       if (!r.ok) return setAviso({ tipo: "erro", texto: t.erros[r.erro] ?? t.erros.generico! });
-      setAviso({ tipo: r.email ? "sucesso" : "erro", texto: r.email ? ok : semEmail });
+      const f = r.fatura;
+      const fatura =
+        f?.estado === "emitida"
+          ? ` ${textos.comprovativos.fatura.emitida(f.numero)}`
+          : f?.estado === "falhou"
+            ? ` ${textos.comprovativos.fatura.falhou}`
+            : "";
+      const bem = r.email && f?.estado !== "falhou";
+      setAviso({ tipo: bem ? "sucesso" : "erro", texto: (r.email ? ok : semEmail) + fatura });
       router.refresh();
     });
   return (

@@ -360,6 +360,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `registar_email_confirmacao()`
 - `registar_email_lembrete()`
 - `registar_evento_lead()`
+- `registar_fatura_do_comprovativo()`
 - `registar_taxa_paga()`
 - `renovar_subscricao()`
 - `reservar_vaga()`

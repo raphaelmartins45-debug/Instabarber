@@ -103,6 +103,50 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 43. **Ciclo completo numa barbearia de ensaio em produção** (L.8, passo 11): formulário, pedido, aprovação, convite, marcação sem conta, código de acesso, conclusão, relatório. Depois, apagar a barbearia de ensaio (`eliminar_inquilino()`).
 44. **Restauro testado a partir da produção** (P-14), num projeto novo e vazio, antes da primeira barbearia real. A cópia externa precisa de um sítio cifrado fora do Supabase (indique qual: disco cifrado, Drive, etc.). Os ficheiros do Storage copiam-se à parte.
 
+## Módulo pendente de ativação: fatura-recibo automática (D-170)
+
+**Estado:** construído, testado e publicado **desligado**. Enquanto estiver desligado, tudo funciona
+como hoje: a Performa LAB aprova o comprovativo, o pagamento fica registado e a fatura emite-se à
+mão no programa certificado e regista-se em Admin → Pagamentos. A página Pagamentos do Admin diz
+se está ligado ou desligado.
+
+**Arquitetura**
+
+1. A barbearia envia o comprovativo do MB WAY ou da transferência em «O meu plano» (D-168).
+2. A Performa LAB confere e aprova em Admin → painel geral → «Comprovativos por confirmar».
+3. `aprovar_comprovativo()` (SQL) regista o recebimento, põe a barbearia em dia e avança o
+   vencimento.
+4. Com a faturação ligada, `lib/faturacao-plataforma/index.ts` pede ao **InvoiceXpress** (programa
+   certificado pela AT; a plataforma nunca emite documentos fiscais, D-01) uma **fatura-recibo** do
+   período pago: cria-a, finaliza-a (recebe o número) e o InvoiceXpress envia o PDF por e-mail à
+   barbearia (`lib/faturacao-plataforma/invoicexpress.ts`).
+5. `registar_fatura_do_comprovativo()` (SQL, migração 16) guarda a fatura com o número dado pelo
+   InvoiceXpress, paga na data do comprovativo, e liga-a ao recebimento e ao comprovativo. Uma
+   fatura já emitida para o período não se emite outra vez.
+6. Se o InvoiceXpress falhar, o pagamento fica aprovado na mesma e o ecrã avisa para emitir a
+   fatura à mão.
+
+Ficheiros: `lib/faturacao-plataforma/` (com testes), `app/(admin)/admin/(protegido)/pagamentos/comprovativos/acoes.ts`,
+textos em `lib/i18n/pt-PT/comprovativos.ts` (`fatura`), migração `20261026000016_fatura_comprovativo.sql`,
+testes `docs/esquema/testes/96d_comprovativos.sql` (FAT).
+
+**O que preciso do dono para ativar** (plano gratuito do InvoiceXpress por agora, decisão de 26/10/2026)
+
+1. Conta da Performa LAB no InvoiceXpress (plano gratuito), com os dados da empresa e a série de
+   faturas-recibo criada e comunicada à AT (o InvoiceXpress guia este passo).
+2. O **nome da conta**: o «xxx» do endereço `https://xxx.app.invoicexpress.com`.
+3. A **chave da API** (InvoiceXpress → Conta → Integrações → API). Passa-se por um canal seguro e
+   vai só para a Vercel, nunca para o repositório.
+4. O **nome da taxa de IVA a 23 %** na conta, se não for «IVA23» (InvoiceXpress → Definições → Impostos).
+5. Confirmação do contabilista: fatura-recibo emitida na aprovação, com a data do pagamento, a
+   série a usar e o IVA a 23 % (ou isenção M10, se o regime mudar, D-45).
+6. Os dados fiscais de cada barbearia certos na ficha: NIF, morada, código postal, cidade e e-mail.
+
+**Ativação** (eu faço, com os dados acima): pôr na Vercel `FATURACAO_PLATAFORMA=invoicexpress`,
+`INVOICEXPRESS_CONTA`, `INVOICEXPRESS_CHAVE` (e `INVOICEXPRESS_IVA`, se preciso); publicar;
+emitir uma fatura de teste a uma barbearia de ensaio e anulá-la no InvoiceXpress; depois ligar
+para todas. Não precisa de migração nem de código novo.
+
 ## Próximo passo
 
 **Fase 7 fechada pelo dono a 24/10/2026** com duas pendências: (1) o dono troca os nameservers para `ns1.vercel-dns.com` e `ns2.vercel-dns.com`; depois ligo `*.instabarber.pt` ao projeto e confirmo site, correio e subdomínios; (2) o dono entra no `/admin` e ativa o TOTP; depois faço o ciclo completo numa barbearia de ensaio em produção com o plugin Playwright (item 43) e apago-a no fim.

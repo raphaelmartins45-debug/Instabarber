@@ -55,6 +55,8 @@ test("painel: a aparência escolhida fica no dispositivo e o menu lateral recolh
   page,
 }, info) => {
   await entrarEquipa(page, contas(info.project.name).dono);
+  // O botão só abre o seletor depois de a página ficar interativa.
+  await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "Aparência" }).click();
   const seletor = page.getByTestId("seletor-aparencia");
   await seletor.getByRole("radio", { name: "Claro" }).click();

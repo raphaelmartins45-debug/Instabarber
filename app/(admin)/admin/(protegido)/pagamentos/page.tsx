@@ -4,6 +4,7 @@ import { ListasPagamentos } from "@/components/admin/listas-pagamentos";
 import { TabelaCartoes } from "@/components/nucleo/tabela-cartoes";
 import { dataCurta, hojeIso } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
+import { configuracaoFaturacao } from "@/lib/faturacao-plataforma";
 import { textos } from "@/lib/i18n/pt-PT";
 import { lerRegimeIva, type Periodicidade, type Plano } from "@/lib/regras/mensalidade";
 import { precoDaBarbearia, receitaMensal } from "@/lib/regras/receita";
@@ -38,6 +39,11 @@ export default async function Pagamentos() {
   return (
     <section className="grid gap-6">
       <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <p className="text-sm text-muted-foreground" data-testid="estado-faturacao">
+        {configuracaoFaturacao()
+          ? textos.comprovativos.fatura.estadoLigada
+          : textos.comprovativos.fatura.estadoDesligada}
+      </p>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
         <Indicador
           rotulo={t.receitaMes}
