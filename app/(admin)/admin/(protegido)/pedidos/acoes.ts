@@ -22,6 +22,7 @@ export async function aprovar(
   if (!id.success || !a.success) return { ok: false, erro: "falhou" };
   const r = await aprovarPedido(id.data, { ...a.data, slug: a.data.slug || undefined });
   revalidatePath("/admin/pedidos");
+  revalidatePath("/admin");
   return r;
 }
 
@@ -31,5 +32,6 @@ export async function rejeitar(pedidoId: string, motivo: string): Promise<{ ok: 
   if (!id.success || !m.success) return { ok: false };
   const ok = await rejeitarPedido(id.data, m.data);
   revalidatePath("/admin/pedidos");
+  revalidatePath("/admin");
   return { ok };
 }

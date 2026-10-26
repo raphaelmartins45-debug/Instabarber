@@ -57,6 +57,9 @@ test("adesão, aprovação, entrada do dono e importação CSV", async ({ page, 
   // 2. A Performa LAB aprova.
   const admin = await (await browser.newContext()).newPage();
   await entrarAdmin(admin, c.adminAdesao);
+  // O painel geral lista o pedido pendente, com «Aprovar» ao lado (D-165).
+  const noPainel = admin.getByTestId("painel-pedido").filter({ hasText: nome });
+  await expect(noPainel.getByRole("button", { name: "Aprovar" })).toBeVisible();
   await admin.goto("/admin/pedidos");
   await admin.getByRole("link", { name: nome }).first().click();
   await expect(admin.getByText("Dados do pedido")).toBeVisible();

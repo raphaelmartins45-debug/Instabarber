@@ -32,7 +32,13 @@ export const admin = {
     atraso: (n: number) => `${n} mensalidade(s) em atraso`,
     suspensas: (n: number) => `${n} barbearia(s) suspensa(s)`,
     vencimentos: (n: number) => `${n} vencimento(s) nos próximos 7 dias`,
-    feriados: (ano: number) => `Feriados nacionais de ${ano} por carregar`,
+    feriados: (ano: number) => `Feriados nacionais de ${ano} por carregar (manual, P-15)`,
+    abandono: (n: number) =>
+      n === 1 ? "1 barbearia com sinais de abandono" : `${n} barbearias com sinais de abandono`,
+    semPedidos: "Sem pedidos pendentes.",
+    verPedidos: "Ver todos os pedidos",
+    detalhePedido: (plano: string, profissionais: number, valor: string, data: string) =>
+      `${plano} · ${profissionais} ${profissionais === 1 ? "profissional" : "profissionais"} · ${valor} · ${data}`,
     atividade: "Atividade recente",
     semAtividade: "Ainda sem atividade.",
     apagarAuditoria: "Apagar auditoria com mais de 24 meses",

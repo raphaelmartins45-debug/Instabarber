@@ -13,6 +13,7 @@ export const gestao = {
       semMarcacoes: "Mais de 14 dias sem marcações",
       quedaMarcacoes: "Marcações dos últimos 30 dias caíram para metade",
       arranqueLento: "Arranque abaixo de 50 % depois de 30 dias",
+      profissionaisPorUsar: "Mais profissionais contratados do que ativos",
     } as Record<string, string>,
     contagem: (risco: number, atencao: number) => `${risco} em risco · ${atencao} com atenção`,
     vazio: "Nenhuma barbearia ativa ainda.",

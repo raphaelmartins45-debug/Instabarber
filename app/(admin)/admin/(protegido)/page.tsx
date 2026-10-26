@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Indicador } from "@/components/nucleo/indicador";
 import { ApagarAuditoria } from "@/components/admin/apagar-auditoria";
+import { PedidosPendentes } from "@/components/admin/painel/pedidos-pendentes";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
+import { saude } from "@/lib/admin/saude";
 import { alertasContas } from "@/lib/financas/custos";
-import { hojeIso, somarDias } from "@/lib/formatacao/datas";
-import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
+import { dataCurta, hojeIso, somarDias } from "@/lib/formatacao/datas";
+import { centimosDeNumeric, formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { resumoComissoes } from "@/lib/comercial/comissoes";
 import { contarAlertas, faltamFeriados } from "@/lib/regras/alertas-admin";
@@ -13,6 +15,7 @@ import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { receitaMensal } from "@/lib/regras/receita";
 import { apoioEmAberto } from "@/lib/repositorios/admin/apoio";
 import { listarBarbearias } from "@/lib/repositorios/admin/barbearias";
+import { dadosDeSaude } from "@/lib/repositorios/admin/saude";
 import { listarComissoes } from "@/lib/repositorios/comercial/comissoes";
 import { listarLeads, validadesEnviadas } from "@/lib/repositorios/comercial/leads";
 import { contarFeriadosNacionais, datasFeriadosNacionais } from "@/lib/repositorios/feriados";
@@ -23,23 +26,34 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 const t = textos.admin.painel;
 export const metadata = { title: `${t.titulo} · ${textos.marca.nome}` };
 
-/** Painel geral (E.1): quatro indicadores, alertas e atividade recente. */
+/** Painel geral (E.1): quatro indicadores, pedidos pendentes, alertas e atividade recente. */
 export default async function PainelGeral() {
   const bd = await criarClienteServidor();
   const hoje = hojeIso();
   const proximoAno = Number(hoje.slice(0, 4)) + 1;
-  const [todas, pendentes, feriados, leads, validades, feriadosRecentes, contas, apoio, comissoes] =
-    await Promise.all([
-      listarBarbearias(bd),
-      listarPedidos(bd),
-      contarFeriadosNacionais(bd, proximoAno),
-      listarLeads(bd),
-      validadesEnviadas(bd),
-      datasFeriadosNacionais(bd, somarDias(hoje, -60), hoje),
-      listarContas(bd),
-      apoioEmAberto(bd),
-      listarComissoes(bd),
-    ]);
+  const [
+    todas,
+    pendentes,
+    feriados,
+    leads,
+    validades,
+    feriadosRecentes,
+    contas,
+    apoio,
+    comissoes,
+    dadosSaude,
+  ] = await Promise.all([
+    listarBarbearias(bd),
+    listarPedidos(bd),
+    contarFeriadosNacionais(bd, proximoAno),
+    listarLeads(bd),
+    validadesEnviadas(bd),
+    datasFeriadosNacionais(bd, somarDias(hoje, -60), hoje),
+    listarContas(bd),
+    apoioEmAberto(bd),
+    listarComissoes(bd),
+    dadosDeSaude(bd),
+  ]);
   // A barbearia de demonstração não conta nas contas nem nos alertas (D-162).
   const barbearias = todas.filter((b) => !b.demonstracao);
   const vencidas = resumoComissoes(comissoes, hoje).vencidas;
@@ -57,6 +71,8 @@ export default async function PainelGeral() {
     (b) => b.aprovado_em && hojeIso(new Date(b.aprovado_em)).slice(0, 7) === hoje.slice(0, 7),
   ).length;
   const a = contarAlertas(barbearias, hoje);
+  // Sinais de abandono (M.2): as barbearias que a página Saúde dá em risco.
+  const abandono = dadosSaude.filter((d) => saude(d, hoje).nivel === "risco").length;
   const alertas = [
     a.atraso ? { texto: t.atraso(a.atraso), href: "/admin/pagamentos" } : null,
     a.suspensas
@@ -65,7 +81,8 @@ export default async function PainelGeral() {
     a.vencimentos
       ? { texto: t.vencimentos(a.vencimentos), href: "/admin/financas/vencimentos" }
       : null,
-    faltamFeriados(hoje, feriados) ? { texto: t.feriados(proximoAno), href: "/admin" } : null,
+    abandono ? { texto: t.abandono(abandono), href: "/admin/saude" } : null,
+    faltamFeriados(hoje, feriados) ? { texto: t.feriados(proximoAno), href: null } : null,
     parados
       ? { texto: textos.comercial.alertas.leadsParados(parados), href: "/admin/comercial" }
       : null,
@@ -121,6 +138,18 @@ export default async function PainelGeral() {
           alerta={pendentes.length > 0}
         />
       </div>
+      <PedidosPendentes
+        pedidos={pendentes.map((p) => ({
+          id: p.id,
+          nome: p.nome,
+          detalhe: t.detalhePedido(
+            textos.admin.planos[p.plano as "basic" | "pro"],
+            p.profissionais,
+            formatarDinheiro(centimosDeNumeric(p.mensalidade_calculada)),
+            dataCurta(p.submetido_em),
+          ),
+        }))}
+      />
       <section className="grid gap-2">
         <h2 className="text-[15px] font-bold text-ligacao">{t.alertas}</h2>
         {alertas.length === 0 ? (
@@ -132,9 +161,13 @@ export default async function PainelGeral() {
                 key={x.texto}
                 className="rounded-lg border border-destaque/40 bg-accent px-3 py-2 text-sm"
               >
-                <Link href={x.href} className="underline-offset-4 hover:underline">
-                  {x.texto}
-                </Link>
+                {x.href ? (
+                  <Link href={x.href} className="underline-offset-4 hover:underline">
+                    {x.texto}
+                  </Link>
+                ) : (
+                  x.texto
+                )}
               </li>
             ))}
           </ul>

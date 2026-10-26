@@ -18,6 +18,8 @@ export type DadosSaude = {
   marcacoes30: number;
   marcacoesAnteriores30: number;
   ultimaMarcacao: string | null;
+  /** Contratados no plano; quando falta (carteira do comercial), o sinal não se avalia. */
+  profissionaisContratados?: number;
 };
 
 export const PASSOS_ARRANQUE = [
@@ -48,7 +50,13 @@ export function arranque(d: DadosSaude) {
   return { feito, percentagem: Math.round((n / PASSOS_ARRANQUE.length) * 100) };
 }
 
-export type Motivo = "atraso" | "suspensa" | "semMarcacoes" | "quedaMarcacoes" | "arranqueLento";
+export type Motivo =
+  | "atraso"
+  | "suspensa"
+  | "semMarcacoes"
+  | "quedaMarcacoes"
+  | "arranqueLento"
+  | "profissionaisPorUsar";
 export type Nivel = "risco" | "atencao" | "bom";
 
 const RISCO: Motivo[] = ["atraso", "suspensa", "semMarcacoes"];
@@ -56,7 +64,8 @@ const RISCO: Motivo[] = ["atraso", "suspensa", "semMarcacoes"];
 /**
  * Nível de risco de cancelar: «risco» com pagamento em atraso, suspensão ou 14 dias sem marcações
  * (passados os primeiros 14 dias); «atenção» com marcações a cair para metade (com base de 10 ou
- * mais) ou o arranque abaixo de 50 % depois de 30 dias.
+ * mais), o arranque abaixo de 50 % depois de 30 dias ou mais profissionais contratados do que
+ * ativos (paga por algo que não usa, M.2).
  */
 export function saude(d: DadosSaude, hoje: string): { nivel: Nivel; motivos: Motivo[] } {
   const motivos: Motivo[] = [];
@@ -68,6 +77,8 @@ export function saude(d: DadosSaude, hoje: string): { nivel: Nivel; motivos: Mot
   if (d.marcacoesAnteriores30 >= 10 && d.marcacoes30 <= d.marcacoesAnteriores30 / 2)
     motivos.push("quedaMarcacoes");
   if (idade > 30 && arranque(d).percentagem < 50) motivos.push("arranqueLento");
+  if ((d.profissionaisContratados ?? 0) > d.profissionaisAtivos)
+    motivos.push("profissionaisPorUsar");
   const nivel: Nivel = motivos.some((m) => RISCO.includes(m))
     ? "risco"
     : motivos.length

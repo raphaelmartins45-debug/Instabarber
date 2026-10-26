@@ -68,4 +68,12 @@ describe("saude", () => {
     };
     expect(saude(lenta, HOJE).motivos).toContain("arranqueLento");
   });
+
+  it("atenção com mais profissionais contratados do que ativos (M.2)", () => {
+    expect(saude({ ...base, profissionaisContratados: 4 }, HOJE)).toEqual({
+      nivel: "atencao",
+      motivos: ["profissionaisPorUsar"],
+    });
+    expect(saude({ ...base, profissionaisContratados: 3 }, HOJE).motivos).toEqual([]);
+  });
 });

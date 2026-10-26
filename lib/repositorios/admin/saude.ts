@@ -26,7 +26,9 @@ export async function dadosDeSaude(bd: ClienteBD): Promise<LinhaSaude[]> {
   const [inq, serv, prof, cli, marc] = await Promise.all([
     bd
       .from("inquilinos")
-      .select("id, nome, slug, estado, estado_pagamento, aprovado_em, logo_url")
+      .select(
+        "id, nome, slug, estado, estado_pagamento, aprovado_em, logo_url, profissionais_contratados",
+      )
       .in("estado", ["ativo", "suspenso"])
       .eq("demonstracao", false),
     bd.from("servicos").select("inquilino_id, ativo"),
@@ -78,6 +80,7 @@ export async function dadosDeSaude(bd: ClienteBD): Promise<LinhaSaude[]> {
     marcacoes30: ult30.get(b.id) ?? 0,
     marcacoesAnteriores30: ant30.get(b.id) ?? 0,
     ultimaMarcacao: ultima.get(b.id) ?? null,
+    profissionaisContratados: b.profissionais_contratados,
   }));
 }
 
