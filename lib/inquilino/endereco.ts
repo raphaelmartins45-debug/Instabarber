@@ -1,6 +1,7 @@
 import "server-only";
 import { headers } from "next/headers";
 import { CABECALHO_BASE, CABECALHO_SLUG } from "./cabecalhos";
+import { enderecoPublico } from "./encaminhar";
 
 /** A barbearia do endereço onde se está e o prefixo das ligações públicas. */
 export async function lerEndereco(): Promise<{ slug: string | null; base: string }> {
@@ -27,8 +28,7 @@ export async function ipDoPedido(): Promise<string> {
 /** Endereço da página pública da barbearia, para as mensagens por wa.me. */
 export async function paginaPublica(slug: string): Promise<string> {
   const origem = await origemDoPedido();
-  const { slug: doHost } = await lerEndereco();
-  return doHost === slug ? origem : `${origem}/${slug}`;
+  return enderecoPublico(origem, await lerEndereco(), slug);
 }
 
 /**

@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   caminhoEntradaEquipa,
+  enderecoPublico,
   caminhoSeguro,
   encaminhar,
   hostResolvido,
@@ -132,5 +133,19 @@ describe("auxiliares", () => {
     const lista = /slug not in \(([^)]+)\)/.exec(sql)?.[1] ?? "";
     const daBase = [...lista.matchAll(/'([^']+)'/g)].map((m) => m[1]).sort();
     expect([...CAMINHOS_RESERVADOS].sort()).toEqual(daBase);
+  });
+});
+
+describe("enderecoPublico", () => {
+  const o = "https://instabarber.pt";
+  it("em instabarber.pt/<slug> mantém o slug (e-mail de confirmação, D-167)", () => {
+    expect(enderecoPublico(o, { slug: "alfa", base: "/alfa" }, "alfa")).toBe(`${o}/alfa`);
+  });
+  it("no subdomínio, só a origem", () => {
+    const sub = "https://alfa.instabarber.pt";
+    expect(enderecoPublico(sub, { slug: "alfa", base: "" }, "alfa")).toBe(sub);
+  });
+  it("fora do endereço da barbearia (painel), /<slug>", () => {
+    expect(enderecoPublico(o, { slug: null, base: "" }, "alfa")).toBe(`${o}/alfa`);
   });
 });

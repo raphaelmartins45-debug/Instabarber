@@ -80,3 +80,15 @@ export function caminhoSeguro(texto: string | null | undefined, alternativa: str
   }
   return texto;
 }
+
+/**
+ * Endereço completo da página pública de uma barbearia, a partir de onde se está: no endereço
+ * dela mantém-se a forma (subdomínio, ou instabarber.pt/<slug> com a base); fora dele, /<slug>.
+ */
+export function enderecoPublico(
+  origem: string,
+  aqui: { slug: string | null; base: string },
+  slug: string,
+): string {
+  return aqui.slug === slug ? `${origem}${aqui.base}` : `${origem}/${slug}`;
+}
