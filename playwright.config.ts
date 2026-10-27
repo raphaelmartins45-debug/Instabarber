@@ -5,7 +5,8 @@ export default defineConfig({
   // Cria as barbearias e os papéis de teste quando há Supabase local (scripts/e2e-local.sh).
   globalSetup: "./e2e/semear.ts",
   // O browser fica na hora de Lisboa, como os clientes: os dias da agenda não mudam à meia-noite UTC.
-  use: { baseURL: "http://localhost:3000", timezoneId: "Europe/Lisbon" },
+  // Utilizadores em Portugal: língua portuguesa por omissão (a multilinguagem lê o dispositivo).
+  use: { baseURL: "http://localhost:3000", timezoneId: "Europe/Lisbon", locale: "pt-PT" },
   projects: [
     { name: "computador", use: { ...devices["Desktop Chrome"] } },
     { name: "telemovel", use: { ...devices["Pixel 7"] } },

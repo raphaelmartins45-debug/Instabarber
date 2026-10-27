@@ -165,7 +165,7 @@ export const fr = {
     },
     convite: "Parrainez un ami",
     conviteTexto:
-      "Partagez votre code. Quand votre ami fait sa première prestation, vous gagnez un tampon.",
+      "Partagez votre code. Quand votre ami vient pour la première fois, vous gagnez un tampon.",
     marcar: "Réserver",
     whatsapp: "Écrire sur WhatsApp",
     ligar: "Appeler",
@@ -187,7 +187,8 @@ export const fr = {
     entrarAjuda:
       "Aucun créneau ce jour-là. Si un créneau se libère, le salon vous prévient sur WhatsApp.",
     confirmar: "Rejoindre la liste",
-    naFila: (n: number) => `Vous êtes sur la liste d'attente de ce jour, en ${n}ᵉ position.`,
+    naFila: (n: number) =>
+      `Vous êtes sur la liste d'attente de ce jour, en ${n === 1 ? "1ʳᵉ" : `${n}ᵉ`} position.`,
     naFilaAjuda:
       "Si un créneau se libère, le salon vous prévient sur WhatsApp. Vous avez 30 minutes pour répondre.",
     titulo: "File d'aujourd'hui",
@@ -198,7 +199,7 @@ export const fr = {
     servico: "Prestation (facultatif)",
     qualquer: "Je ne sais pas encore",
     entrarHoje: "Entrer dans la file",
-    lugar: (n: number) => `${n}ᵉ position`,
+    lugar: (n: number) => (n === 1 ? "1ʳᵉ position" : `${n}ᵉ position`),
     aSeguir: "C'est bientôt à vous.",
     espera: (min: number) => `Encore environ ${min} minutes.`,
     atualiza: "Cette page se met à jour toute seule.",

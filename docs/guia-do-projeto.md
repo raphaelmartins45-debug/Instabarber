@@ -85,6 +85,7 @@ decisão no `DECISOES.md`.
 | Isenção de IVA | 27/10/2026 | Preços 19,99 € e 39,99 €, sem IVA a acrescer | — | D-173 |
 | Ficha de prospeção | 27/10/2026 | Campos de prospeção no lead, duplicados, fim do contrato na agenda | 17 | D-174 |
 | 9 · Manuais | Desde 27/10/2026 | Formação, calendário, resolução de problemas, respostas de apoio | — | D-175 |
+| Línguas e tradução | 27/10/2026 | Língua do telemóvel com ensaio; tradução dos serviços pelo DeepL, **desligada** até à chave | — | D-176 |
 
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.
@@ -124,6 +125,7 @@ cola-o ou configura as variáveis no ambiente da sessão.
 | `PRESTADORA_NOME`, `_NIF`, `_MORADA`, `_QUALIDADE`, `_ASSINANTE`, `PRESTADORA_REGIME_IVA` | Contratos, propostas, faturas; regime `isento` | Dono (e Vercel → Settings → Environment Variables) |
 | `ROOT_DOMAIN` | Domínio principal (`instabarber.pt`; `localhost` nos ensaios) | — |
 | `FATURACAO_PLATAFORMA`, `INVOICEXPRESS_CONTA`, `INVOICEXPRESS_CHAVE` | Fatura automática (desligada até haver os três) | InvoiceXpress (ver PROGRESSO) |
+| `DEEPL_CHAVE` | Tradução automática dos serviços (desligada sem ela, D-176) | DeepL → conta gratuita da API → Account → API Keys |
 
 **Regras:** nunca escrever um valor num ficheiro do repositório, num commit ou numa mensagem; a
 chave de serviço só em código de servidor (`CLAUDE.md` §3); revogar e trocar no fim da construção

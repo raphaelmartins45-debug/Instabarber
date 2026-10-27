@@ -5,6 +5,7 @@ import { guardarServico } from "@/app/(app)/app/(painel)/sistema/acoes-configura
 import { Aviso } from "@/components/nucleo/aviso";
 import { Campo } from "@/components/nucleo/campo";
 import { Button } from "@/components/ui/button";
+import { BotaoTraduzir } from "./botao-traduzir";
 import { formatarDinheiro, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { Servico } from "@/lib/repositorios/painel/servicos";
@@ -13,14 +14,17 @@ const t = textos.sistema.servicos;
 
 /**
  * Um serviço, aberto para editar, ou o formulário de serviço novo. Com `multilinguagem`, os campos
- * de inglês e francês aparecem ao lado, sempre opcionais, com «copiar do português» (F.3.2).
+ * de inglês e francês aparecem ao lado, sempre opcionais, com «copiar do português» (F.3.2) e,
+ * com o DeepL configurado, «traduzir automaticamente» (D-176).
  */
 export function FormularioServico({
   servico,
   multilinguagem,
+  traducao,
 }: {
   servico: Servico | null;
   multilinguagem: boolean;
+  traducao: boolean;
 }) {
   const inicial = {
     nome: servico?.nome ?? "",
@@ -89,6 +93,23 @@ export function FormularioServico({
       {campo("precoCent", t.preco, "decimal")}
       {multilinguagem ? (
         <>
+          {traducao ? (
+            <BotaoTraduzir
+              nome={v.nome}
+              descricao={v.descricao}
+              aoTraduzir={(r) => {
+                setV({
+                  ...v,
+                  nomeEn: r.en.nome,
+                  descricaoEn: r.en.descricao,
+                  nomeFr: r.fr.nome,
+                  descricaoFr: r.fr.descricao,
+                });
+                setAviso({ tipo: "sucesso", texto: t.traduzido });
+              }}
+              aoFalhar={(texto) => setAviso({ tipo: "erro", texto })}
+            />
+          ) : null}
           {(["En", "Fr"] as const).map((l) => (
             <fieldset key={l} className="grid gap-2 sm:col-span-2 sm:grid-cols-2">
               <legend className="mb-1 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">

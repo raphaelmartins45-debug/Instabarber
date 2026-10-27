@@ -112,6 +112,9 @@ export const sistema = {
     ingles: "Inglês (opcional)",
     frances: "Francês (opcional)",
     copiar: "Copiar do português",
+    traduzir: "Traduzir automaticamente (inglês e francês)",
+    aTraduzir: "A traduzir…",
+    traduzido: "Tradução feita. Reveja o inglês e o francês antes de guardar.",
     guardar: "Guardar serviço",
     vazio: "Ainda sem serviços.",
   },
@@ -245,6 +248,8 @@ export const sistema = {
     cliente: "Não há cliente com este telemóvel. Registe-o primeiro ao balcão.",
     cliente_invalido: "Não há cliente com este telemóvel. Registe-o primeiro ao balcão.",
     plano_inativo: "Este plano está desativado e não aceita subscrições.",
+    limite: "Muitas traduções seguidas. Tente outra vez daqui a uma hora.",
+    traducao: "A tradução automática não respondeu. Tente outra vez ou escreva à mão.",
     erro: "Não foi possível guardar. Tente outra vez.",
   } as Record<string, string>,
 } as const;
