@@ -7,6 +7,8 @@ import { falhaDeLeitura } from "../erros";
 
 export type Visita = {
   id: string;
+  /** A marcação concluída que deu origem à visita (o histórico de cortes liga-se a ela). */
+  marcacaoId: string;
   clienteId: string;
   profissionalId: string | null;
   servicoId: string;
@@ -20,11 +22,12 @@ export type Visita = {
   clube: boolean;
 };
 
-const COLUNAS = `id, cliente_id, profissional_id, servico_id, data, valor_tabela, valor_cobrado,
+const COLUNAS = `id, marcacao_id, cliente_id, profissional_id, servico_id, data, valor_tabela, valor_cobrado,
   comissao_percent, comissao_valor, modelo_caixa, marcacoes(credito_id)`;
 
 type Linha = {
   id: string;
+  marcacao_id: string;
   cliente_id: string;
   profissional_id: string | null;
   servico_id: string;
@@ -39,6 +42,7 @@ type Linha = {
 
 const paraVisita = (l: Linha): Visita => ({
   id: l.id,
+  marcacaoId: l.marcacao_id,
   clienteId: l.cliente_id,
   profissionalId: l.profissional_id,
   servicoId: l.servico_id,

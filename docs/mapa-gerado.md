@@ -307,6 +307,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `exigir_lead()`
 - `exigir_super_admin()`
 - `fixar_texto_contrato()`
+- `foto_do_cliente()`
 - `funcionalidade_ativa()`
 - `gerar_contrato()`
 - `hoje_lisboa()`
@@ -330,11 +331,14 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `marcar_proposta_enviada()`
 - `meu_cartao_selos()`
 - `meu_codigo_convite()`
+- `meu_historico_cortes()`
 - `meus_clientes()`
 - `meus_comunicados()`
 - `meus_leads()`
 - `meus_profissionais()`
+- `minhas_fotos_historico()`
 - `modulo_ativo()`
+- `mudar_consentimento_fotos()`
 - `mudar_estado_lead()`
 - `nif_valido()`
 - `orfas_ao_desativar()`
@@ -372,6 +376,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `usar_convite_adesao()`
 - `vagas_livres()`
 - `validar_contratados()`
+- `validar_ficha_tecnica()`
 - `validar_vaga()`
 - `vender_cartao_oferta()`
 - `verificar_codigo_acesso()`

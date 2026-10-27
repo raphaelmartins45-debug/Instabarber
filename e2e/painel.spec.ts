@@ -67,7 +67,7 @@ test("um dia completo na barbearia", async ({ page, browser }, info) => {
     .click();
   await expect(page.getByTestId("ficha-cliente")).toHaveText(`Novo ${barbeiro}`);
   await page.locator('textarea[name="nota"]').fill("Máquina 2 nos lados, tesoura em cima.");
-  await page.getByRole("button", { name: "Acrescentar à ficha" }).click();
+  await page.getByRole("button", { name: "Acrescentar ao histórico" }).click();
   await expect(page.getByTestId("nota-tecnica")).toContainText("Máquina 2");
 
   // 5. Comissões e acertos: a linha do barbeiro tem os dois serviços e regista-se o acerto.

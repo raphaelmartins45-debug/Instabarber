@@ -5,7 +5,13 @@ import { z } from "zod";
 import { exigirEquipaParaEscrever, exigirGestorParaEscrever } from "@/lib/equipa/contexto";
 import { lerGrelha } from "@/lib/funcionalidades/servidor";
 import { alterarCliente, obterCliente } from "@/lib/repositorios/painel/clientes";
-import { apagarNotaTecnica, criarNotaTecnica } from "@/lib/repositorios/painel/ficha-cliente";
+import {
+  apagarNotaTecnica,
+  criarNotaTecnica,
+  type FotoNova,
+  mudarVisibilidadeNota,
+  registarConsentimentoFotos,
+} from "@/lib/repositorios/painel/historico-cortes";
 import { registarMensagemAberta } from "@/lib/repositorios/painel/mensagens";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { esquemaDadosCliente, FOTO_FICHA } from "@/lib/validacao/cliente";
@@ -86,30 +92,65 @@ export async function anonimizar(id: string): Promise<Resultado> {
   return error ? { ok: false, erro: "erro" } : { ok: true };
 }
 
-/** Nova nota da ficha técnica (F.4.14), com fotografia opcional (JPG, PNG ou WEBP até 3 MB). */
+const textoLivre = (formulario: FormData, campo: string) =>
+  String(formulario.get(campo) ?? "")
+    .trim()
+    .slice(0, 1000) || null;
+
+/**
+ * Nova entrada do histórico de cortes (F.4.14, D-179): nota interna, nota para o cliente, até duas
+ * fotografias (JPG, PNG ou WEBP até 3 MB), o serviço ligado e se o cliente a vê. Com a caixa do
+ * consentimento marcada, regista primeiro que o cliente autorizou as fotografias.
+ */
 export async function novaNotaTecnica(formulario: FormData): Promise<Resultado> {
   const contexto = await exigirEquipaParaEscrever();
   const grelha = await lerGrelha(contexto.barbearia.id);
   if (!grelha.ativas.has("ficha_tecnica")) return { ok: false, erro: "erro" };
   const clienteId = String(formulario.get("clienteId") ?? "");
-  const nota =
-    String(formulario.get("nota") ?? "")
-      .trim()
-      .slice(0, 1000) || null;
-  const ficheiro = formulario.get("foto");
-  const foto = ficheiro instanceof File && ficheiro.size > 0 ? ficheiro : null;
+  const marcacaoId = String(formulario.get("marcacaoId") ?? "") || null;
   if (!uuid.safeParse(clienteId).success) return { ok: false, erro: "erro" };
-  if (!nota && !foto) return { ok: false, erro: "nota" };
-  const extensao = foto ? FOTO_FICHA.tipos[foto.type] : null;
-  if (foto && (!extensao || foto.size > FOTO_FICHA.maxBytes)) return { ok: false, erro: "foto" };
-  const ok = await criarNotaTecnica(await criarClienteServidor(), {
+  if (marcacaoId && !uuid.safeParse(marcacaoId).success) return { ok: false, erro: "erro" };
+  const nota = textoLivre(formulario, "nota");
+  const notaCliente = textoLivre(formulario, "notaCliente");
+  const ficheiros = ["foto", "foto2"].flatMap((c) => {
+    const f = formulario.get(c);
+    return f instanceof File && f.size > 0 ? [f] : [];
+  });
+  if (!nota && !notaCliente && ficheiros.length === 0) return { ok: false, erro: "nota" };
+  const fotos: FotoNova[] = [];
+  for (const f of ficheiros) {
+    const extensao = FOTO_FICHA.tipos[f.type];
+    if (!extensao || f.size > FOTO_FICHA.maxBytes) return { ok: false, erro: "foto" };
+    fotos.push({ dados: await f.arrayBuffer(), tipo: f.type, extensao });
+  }
+  const bd = await criarClienteServidor();
+  if (formulario.get("consentimento") === "on")
+    await registarConsentimentoFotos(bd, contexto.barbearia.id, clienteId);
+  const r = await criarNotaTecnica(bd, {
     inquilinoId: contexto.barbearia.id,
     clienteId,
     profissionalId: contexto.profissionalId,
+    marcacaoId,
     nota,
-    foto: foto && extensao ? { dados: await foto.arrayBuffer(), tipo: foto.type, extensao } : null,
+    notaCliente,
+    visivelCliente: formulario.get("visivel") === "on",
+    fotos,
     criadoPor: contexto.userId,
   });
+  revalidatePath("/app", "layout");
+  return r === true ? { ok: true } : { ok: false, erro: r };
+}
+
+/** Mostrar ou esconder uma entrada do histórico na área do cliente. */
+export async function mostrarNota(id: string, visivel: boolean): Promise<Resultado> {
+  const contexto = await exigirEquipaParaEscrever();
+  if (!uuid.safeParse(id).success) return { ok: false, erro: "erro" };
+  const ok = await mudarVisibilidadeNota(
+    await criarClienteServidor(),
+    contexto.barbearia.id,
+    id,
+    !!visivel,
+  );
   revalidatePath("/app", "layout");
   return ok ? { ok: true } : { ok: false, erro: "erro" };
 }

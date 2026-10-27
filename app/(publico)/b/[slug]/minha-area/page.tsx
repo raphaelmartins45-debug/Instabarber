@@ -1,3 +1,4 @@
+import { HistoricoCortes } from "@/components/cliente/historico-cortes";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -28,6 +29,7 @@ import {
   minhasMarcacoesFuturas,
   minhasVisitas,
 } from "@/lib/repositorios/minha-area";
+import { meuHistoricoCortes } from "@/lib/repositorios/meu-historico";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { sairCliente } from "../entrar/acoes";
 
@@ -54,6 +56,7 @@ export default async function MinhaArea({ params }: { params: Promise<{ slug: st
         "clube_assinatura",
         "loja_produtos",
         "marcacao_rapida",
+        "ficha_tecnica",
       ]),
       listarServicosPublicos(bd, b.id),
       listarEquipaPublica(bd, b.id),
@@ -64,6 +67,7 @@ export default async function MinhaArea({ params }: { params: Promise<{ slug: st
       minhasEncomendas(bd, ficha.id),
     ]);
   const codigo = ligadas.has("fidelizacao_selos") ? await meuCodigoConvite(bd, b.id) : null;
+  const historico = ligadas.has("ficha_tecnica") ? await meuHistoricoCortes(bd, b.id) : null;
   const local = (s: (typeof servicos)[number] | undefined) =>
     (s && ((lingua === "en" ? s.nome_en : lingua === "fr" ? s.nome_fr : null) || s.nome)) ?? "";
   const servico = (id: string) => local(servicos.find((s) => s.id === id));
@@ -150,6 +154,15 @@ export default async function MinhaArea({ params }: { params: Promise<{ slug: st
               servico={servico}
               barbeiro={barbeiro}
             />
+            {historico ? (
+              <HistoricoCortes
+                t={t}
+                lingua={lingua}
+                inquilinoId={b.id}
+                entradas={historico}
+                autorizado={ficha.consentimento_fotos}
+              />
+            ) : null}
             {codigo ? (
               <SeccaoArea titulo={t.area.convite} testId="codigo-convite">
                 <p className="font-mono text-2xl font-bold tracking-widest">{codigo}</p>

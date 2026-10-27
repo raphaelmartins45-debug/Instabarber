@@ -14,11 +14,11 @@ import { obterConfiguracao } from "@/lib/repositorios/painel/barbearia";
 import { obterCliente, saldoSelos } from "@/lib/repositorios/painel/clientes";
 import {
   listarFaltas,
-  listarFichaTecnica,
   listarMovimentosSelos,
   listarPedidosCliente,
   listarSubscricoesCliente,
 } from "@/lib/repositorios/painel/ficha-cliente";
+import { listarFichaTecnica } from "@/lib/repositorios/painel/historico-cortes";
 import { listarServicos } from "@/lib/repositorios/painel/servicos";
 import { listarVisitas } from "@/lib/repositorios/painel/visitas";
 import { listarEquipa } from "@/lib/repositorios/profissionais";
@@ -68,6 +68,23 @@ export default async function FichaCliente({ params }: { params: Promise<{ id: s
     tem("ficha_tecnica") ? listarFichaTecnica(bd, id) : [],
     tem("politica_faltas") ? bd.rpc("marcacao_online_bloqueada", { p_cliente: id }) : null,
   ]);
+  const nomeServico = new Map(servicos.map((s) => [s.id, s.nome]));
+  const nomeProfissional = new Map(equipa.map((p) => [p.id, p.nome_apresentado]));
+  const comEntrada = new Set(notas.map((n) => n.marcacaoId));
+  const servicosParaLigar = [...visitas]
+    .reverse()
+    .filter((v) => !comEntrada.has(v.marcacaoId))
+    .slice(0, 12)
+    .map((v) => ({
+      marcacaoId: v.marcacaoId,
+      rotulo: [
+        dataCurta(v.data),
+        nomeServico.get(v.servicoId),
+        v.profissionalId ? nomeProfissional.get(v.profissionalId) : null,
+      ]
+        .filter(Boolean)
+        .join(" · "),
+    }));
   const voltar = contexto.eGestor
     ? "/app/clientes"
     : `/app/equipa/${contexto.profissionalId}/clientes`;
@@ -108,13 +125,15 @@ export default async function FichaCliente({ params }: { params: Promise<{ id: s
             notas={notas}
             eGestor={contexto.eGestor}
             userId={contexto.userId}
+            consentimento={cliente.consentimento_fotos}
+            servicos={servicosParaLigar}
           />
         </Secao>
       ) : null}
       <HistoricoCliente
         visitas={visitas}
-        servicos={new Map(servicos.map((s) => [s.id, s.nome]))}
-        profissionais={new Map(equipa.map((p) => [p.id, p.nome_apresentado]))}
+        servicos={nomeServico}
+        profissionais={nomeProfissional}
         selos={
           tem("fidelizacao_selos")
             ? { saldo: selos, necessarios: b.selos_necessarios, movimentos }

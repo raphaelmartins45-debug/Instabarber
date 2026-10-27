@@ -170,6 +170,17 @@ export const fr = {
     marcar: "Réserver",
     whatsapp: "Écrire sur WhatsApp",
     ligar: "Appeler",
+    historicoCortes: "Mon historique de coupes",
+    semHistoricoCortes: "Votre historique ne contient encore aucune coupe.",
+    fotos: "Photos de la coupe",
+    fotosSim: "J'autorise le salon à conserver des photos de mes coupes dans mon historique.",
+    fotosAjuda:
+      "Vous pouvez retirer votre autorisation à tout moment : les photos sont supprimées.",
+    fotosRetirar: "Retirer l'autorisation et supprimer les photos",
+    fotosRetirarTitulo: "Supprimer les photos ?",
+    fotosRetirarTexto: "Les photos de vos coupes sont supprimées. Les notes restent.",
+    fotosDar: "Autoriser",
+    fotosErro: "Une erreur s'est produite. Réessayez.",
   },
   loja: {
     titulo: "Boutique",
