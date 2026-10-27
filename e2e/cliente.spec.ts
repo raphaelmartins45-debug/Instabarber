@@ -100,6 +100,8 @@ test("código de acesso de ponta a ponta: errado, certo e expirado", async ({
 
   // Código expirado: recusado, mesmo certo.
   await sairDaArea(page);
+  // Esperar que a saída termine: abrir outra página a meio interrompe a navegação.
+  await expect(page).toHaveURL(entrada);
   await pedirCodigo(page, semConta);
   const bd = servico();
   const { data: cliente } = await bd
