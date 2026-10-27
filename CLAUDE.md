@@ -6,6 +6,11 @@ Regras fixas do projeto, lidas em cada sessão. Versão 10.5 da especificação.
 
 ## 1 · Regra de economia — lê isto primeiro
 
+**Sessão nova, ou a retomar o projeto sem memória:** lê a seguir `docs/guia-do-projeto.md`. É o
+ponto de entrada: o que foi construído e quando, os três ambientes (local, ensaio, produção), as
+chaves que faltam no contentor, as ferramentas de `scripts/`, as receitas e as armadilhas
+conhecidas. Quem mudar alguma coisa que lá está atualiza-o no mesmo commit.
+
 Não leias o documento mestre (`instabarber-documento-mestre.md`). É gerado a
 partir das Partes e gasta o contexto sem necessidade.
 
@@ -156,6 +161,7 @@ metas): aparecem desativadas com a chamada de upgrade (D.2).
 | Onde | O que tem |
 | --- | --- |
 | `CLAUDE.md` | Este ficheiro |
+| `docs/guia-do-projeto.md` | Ponto de entrada de uma sessão nova: história, ambientes, chaves (sem valores), scripts, receitas e armadilhas |
 | `DECISOES.md` | Decisões tomadas, com data. Prevalece sobre o resto em caso de dúvida |
 | `PROGRESSO.md` | Estado real de cada fase |
 | `fases/README.md` | A tabela das nove fases |
