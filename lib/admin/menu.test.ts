@@ -13,6 +13,7 @@ describe("separadorAtual", () => {
     expect(separadorAtual("/admin/comercial")).toBe("comercial");
     expect(separadorAtual("/admin/comercial/leads/abc")).toBe("comercial");
     expect(separadorAtual("/admin/financas/custos")).toBe("financas");
+    expect(separadorAtual("/admin/vendas")).toBe("vendas");
   });
 });
 
@@ -34,8 +35,9 @@ describe("menuDoPapel", () => {
     expect(ids("gestor_plataforma")).toContain("financas");
   });
 
-  it("o comercial só tem o Comercial e o desempenho", () => {
-    expect(ids("comercial")).toEqual(["comercial", "desempenho"]);
+  it("o comercial tem o Comercial, o Apoio às vendas e o desempenho", () => {
+    expect(ids("comercial")).toEqual(["comercial", "vendas", "desempenho"]);
+    expect(ids("gestor_plataforma")).toContain("vendas");
     expect(separadorAtual("/admin/comercial/desempenho", menuDoPapel("comercial"))).toBe(
       "desempenho",
     );

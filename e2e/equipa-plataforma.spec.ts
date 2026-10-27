@@ -37,6 +37,38 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   await expect(comercial).toHaveURL("/admin/comercial");
   await expect(comercial.getByRole("link", { name: "Modelos", exact: true })).toHaveCount(0);
 
+  // Apoio às vendas (D-181): o comercial tem as ferramentas, mas não a demonstração.
+  await comercial.goto("/admin/vendas");
+  await expect(comercial.getByRole("heading", { name: "Apoio às vendas" })).toBeVisible();
+  await expect(comercial.getByRole("button", { name: "Preparar dados de hoje" })).toHaveCount(0);
+  await comercial.waitForLoadState("networkidle");
+  const simulador = comercial.getByTestId("simulador-preco");
+  await simulador.getByLabel("Barbeiros").fill("5");
+  await simulador.getByLabel("Domínio próprio").check();
+  await expect(comercial.getByTestId("simulador-mensal")).toHaveText(/64,99/);
+  await simulador.getByLabel("Plano").selectOption("basic");
+  await expect(comercial.getByTestId("simulador-mensal")).toHaveText(/24,99/);
+  const perdas = comercial.getByTestId("calculadora-perdas");
+  await perdas.getByLabel("Faltas por semana").fill("3");
+  await perdas.getByLabel("Valor médio da visita (€)").fill("15");
+  await perdas.getByLabel("Clientes que deixaram de vir").fill("20");
+  await expect(comercial.getByTestId("perdas-resultado")).toContainText("195,00");
+  await expect(comercial.getByTestId("perdas-resultado")).toContainText("120,00");
+  await expect(comercial.getByTestId("perdas-resultado")).toContainText("2 cortes");
+  await comercial.getByText("«É caro.»").click();
+  await expect(comercial.getByText(/Vamos fazer a conta com os seus números/)).toBeVisible();
+  const biblioteca = comercial.getByTestId("biblioteca-mensagens");
+  await biblioteca.getByLabel("Nome do contacto").fill("Rui");
+  await biblioteca.getByRole("button", { name: "Depois da demonstração" }).click();
+  await expect(comercial.getByTestId("mensagem-texto")).toContainText("Olá Rui! Obrigado");
+  await expect(biblioteca.getByRole("link", { name: "Abrir no WhatsApp" })).toHaveAttribute(
+    "href",
+    /^https:\/\/wa\.me\/\?text=Ol%C3%A1%20Rui/,
+  );
+  // No telemóvel, nada sai da largura do ecrã.
+  const largura = await comercial.evaluate(() => document.documentElement.scrollWidth);
+  expect(largura).toBeLessThanOrEqual(comercial.viewportSize()!.width);
+
   await comercial.goto("/admin/comercial/leads/novo");
   await comercial.getByLabel("Nome do contacto").fill(`Contacto ${projeto}`);
   await comercial.getByLabel("Barbearia").fill(lead);
@@ -130,7 +162,7 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
 
   // Barbearia de demonstração (D-162): uma só para todos, por isso só num dos projetos.
   if (projeto === "computador") {
-    await dono.goto("/admin/comercial");
+    await dono.goto("/admin/vendas");
     await dono.getByRole("button", { name: "Preparar dados de hoje" }).click();
     await expect(dono.getByText("Demonstração pronta.")).toBeVisible();
     await dono.getByRole("button", { name: "Abrir o painel da demonstração" }).click();

@@ -40,6 +40,7 @@ export const MENU_ADMIN: ItemMontado[] = [
         chave: null,
         estado: "ativo",
       },
+      { id: "vendas", rotulo: m.vendas, href: "/admin/vendas", chave: null, estado: "ativo" },
       {
         id: "financas",
         rotulo: m.financas,
@@ -61,9 +62,10 @@ export const MENU_ADMIN: ItemMontado[] = [
   },
 ];
 
-/** O comercial só tem o Comercial e o seu desempenho (D-161). */
+/** O comercial tem o Comercial, o Apoio às vendas e o seu desempenho (D-161, D-181). */
 const MENU_COMERCIAL: ItemMontado[] = [
   { id: "comercial", rotulo: m.comercial, href: "/admin/comercial", chave: null, estado: "ativo" },
+  { id: "vendas", rotulo: m.vendas, href: "/admin/vendas", chave: null, estado: "ativo" },
   {
     id: "desempenho",
     rotulo: m.desempenho,

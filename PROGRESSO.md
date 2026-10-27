@@ -57,6 +57,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Telemóveis estrangeiros e língua declarada (D-178) | Feito | 27/10/2026 | Marcação com número inglês em ensaio (computador e telemóvel); campos de telefone já não cortam o número; `<html lang>` certo em pt, en e fr; nomes protegidos da tradução |
 | Histórico de cortes com fotografias e consentimento (D-179) | Publicado; migração 18 no ensaio (655 SQL) e na produção (cópia `035201Z` por e-mail, RLS 66/66) | 27/10/2026 | 655 SQL (19 novos); `e2e/historico-cortes.spec.ts` (registar com duas fotografias e autorização, o cliente vê sem a nota interna, retira a autorização e as fotografias saem) no computador e no telemóvel |
 | Entradas por barbearia: /gestor, /barbeiro e /cliente com a marca (D-180) | Publicado | 27/10/2026 | Vitest do encaminhamento (17); `e2e/entradas-barbearia.spec.ts` (4 ensaios) e os ensaios do cliente e do encaminhamento atualizados, no computador e no telemóvel |
+| Apoio às vendas: demonstração, simulador, perdas, objeções, guião e mensagens (D-181, lote 1) | Publicado | 27/10/2026 | Vitest das regras de venda, do menu, do acesso e do wa.me; `e2e/equipa-plataforma.spec.ts` alargado (o comercial usa as ferramentas; a demonstração abre em /admin/vendas) |
 
 ## Pendentes do dono
 

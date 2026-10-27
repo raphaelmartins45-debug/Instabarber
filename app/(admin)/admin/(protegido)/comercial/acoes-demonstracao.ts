@@ -13,7 +13,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 export async function preparar(): Promise<{ ok: boolean }> {
   await exigirSuperAdmin();
   const ok = !!(await prepararDemonstracao(await criarClienteServidor()));
-  revalidatePath("/admin/comercial");
+  revalidatePath("/admin/vendas");
   return { ok };
 }
 

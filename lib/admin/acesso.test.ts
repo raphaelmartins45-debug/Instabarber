@@ -13,8 +13,9 @@ describe("desvioAdmin", () => {
     expect(desvioAdmin("gestor_plataforma", "/admin/equipa")).toBe("/admin");
   });
 
-  it("o comercial só abre o Comercial, sem modelos nem condições", () => {
+  it("o comercial só abre o Comercial e o Apoio às vendas, sem modelos nem condições", () => {
     expect(desvioAdmin("comercial", "/admin/comercial")).toBeNull();
+    expect(desvioAdmin("comercial", "/admin/vendas")).toBeNull();
     expect(desvioAdmin("comercial", "/admin/comercial/leads/abc")).toBeNull();
     expect(desvioAdmin("comercial", "/admin/comercial/desempenho")).toBeNull();
     expect(desvioAdmin("comercial", "/admin/dois-passos")).toBeNull();
@@ -25,6 +26,7 @@ describe("desvioAdmin", () => {
       "/admin/comercial/modelos",
       "/admin/comercial/condicoes",
       "/admin/comercialx",
+      "/admin/vendasx",
     ])
       expect(desvioAdmin("comercial", c)).toBe("/admin/comercial");
   });

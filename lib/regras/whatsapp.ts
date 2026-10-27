@@ -23,3 +23,8 @@ export function ligacaoParaTelefone(telefone: string | null, mensagem: string): 
     return null;
   }
 }
+
+/** `https://wa.me/?text=…` sem número: o WhatsApp abre e a pessoa escolhe o contacto. */
+export function ligacaoSemNumero(mensagem: string): string {
+  return `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+}

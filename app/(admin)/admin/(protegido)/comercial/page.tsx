@@ -1,12 +1,8 @@
-import { CartaoDemonstracao } from "@/components/admin/comercial/cartao-demonstracao";
 import { CartaoLead } from "@/components/admin/comercial/cartao-lead";
-import { eAdministrador } from "@/lib/admin/acesso";
 import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { hojeIso } from "@/lib/formatacao/datas";
 import { centimosDeNumeric, formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
-import { paginaPublica } from "@/lib/inquilino/endereco";
-import { obterDemonstracao } from "@/lib/repositorios/admin/demonstracao";
 import { listarLeads, potencialPorLead } from "@/lib/repositorios/comercial/leads";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
@@ -17,17 +13,12 @@ const ESTADOS = ["novo", "contactado", "demonstracao", "proposta", "ganho", "per
 
 /** Funil (N.3): uma coluna por estado, com o número de leads e o valor potencial por mês. */
 export default async function Funil() {
-  const admin = eAdministrador((await exigirEquipaPlataforma()).papel);
+  await exigirEquipaPlataforma();
   const bd = await criarClienteServidor();
-  const [leads, potencial, demo] = await Promise.all([
-    listarLeads(bd),
-    potencialPorLead(bd),
-    admin ? obterDemonstracao(bd) : null,
-  ]);
+  const [leads, potencial] = await Promise.all([listarLeads(bd), potencialPorLead(bd)]);
   const hoje = hojeIso();
   return (
     <div className="grid gap-5">
-      {admin ? <CartaoDemonstracao pagina={demo ? await paginaPublica(demo.slug) : null} /> : null}
       <div className="-mx-4 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0">
         <div className="grid gap-4 md:grid-flow-col md:auto-cols-[minmax(220px,1fr)]">
           {ESTADOS.map((estado) => {

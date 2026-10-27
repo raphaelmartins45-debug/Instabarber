@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { valorRecuperavelCent } from "@/lib/regras/vendas";
 
 // Briefing em sete passos (N.4), guardado em briefings.dados e validado com o mesmo esquema no
 // formulário e no servidor. Pode ficar a meio: só os campos marcados com * são precisos para
@@ -93,5 +94,5 @@ export function emFaltaParaProposta(b: Briefing): string[] {
  */
 export function valorParaSiCent(b: Briefing): number | null {
   if (!b.clientes_perdidos || !b.valor_visita_cent) return null;
-  return Math.round(b.clientes_perdidos * b.valor_visita_cent * 0.4);
+  return valorRecuperavelCent(b.clientes_perdidos, b.valor_visita_cent);
 }

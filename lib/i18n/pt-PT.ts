@@ -6,6 +6,7 @@ import { agenda, inicio, mensagensWhatsApp, upgrade } from "./pt-PT/agenda";
 import { admin } from "./pt-PT/admin";
 import { clientes } from "./pt-PT/clientes";
 import { comercial } from "./pt-PT/comercial";
+import { vendas } from "./pt-PT/vendas";
 import { financas } from "./pt-PT/financas";
 import { comprovativos } from "./pt-PT/comprovativos";
 import { ficheiros } from "./pt-PT/ficheiros";
@@ -73,6 +74,7 @@ export const textos = {
   paineis,
   admin,
   comercial,
+  vendas,
   financas,
   gestao,
   ficheiros,

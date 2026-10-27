@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ligacaoParaTelefone, ligacaoWhatsApp } from "./whatsapp";
+import { ligacaoParaTelefone, ligacaoSemNumero, ligacaoWhatsApp } from "./whatsapp";
 
 describe("ligacaoWhatsApp", () => {
   it("tira o + e codifica a mensagem", () => {
@@ -24,5 +24,13 @@ describe("ligacaoParaTelefone", () => {
   it("sem telefone ou inválido dá nulo", () => {
     expect(ligacaoParaTelefone(null, "x")).toBeNull();
     expect(ligacaoParaTelefone("123", "x")).toBeNull();
+  });
+});
+
+describe("ligacaoSemNumero", () => {
+  it("abre o WhatsApp sem contacto, com o texto codificado", () => {
+    expect(ligacaoSemNumero("Olá & até já")).toBe(
+      "https://wa.me/?text=Ol%C3%A1%20%26%20at%C3%A9%20j%C3%A1",
+    );
   });
 });

@@ -9,6 +9,7 @@ export const admin = {
     modulos: "Módulos",
     negocio: "Gestão do negócio",
     comercial: "Comercial",
+    vendas: "Apoio às vendas",
     financas: "Finanças",
     saude: "Saúde das barbearias",
     metricas: "Crescimento",

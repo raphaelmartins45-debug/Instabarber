@@ -40,6 +40,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/pedidos/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/pedidos/page.tsx`
 - `app/(admin)/admin/(protegido)/saude/page.tsx`
+- `app/(admin)/admin/(protegido)/vendas/page.tsx`
 - `app/(admin)/admin/dois-passos/page.tsx`
 - `app/(app)/app/(painel)/agenda/marcar/page.tsx`
 - `app/(app)/app/(painel)/agenda/page.tsx`
