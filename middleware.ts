@@ -73,7 +73,9 @@ function entradaPara(
   resolvido: ReturnType<typeof hostResolvido>,
 ): URL {
   const caminho =
-    decisao.zona === "cliente" ? `${decisao.base}/entrar` : caminhoEntradaEquipa(resolvido);
+    decisao.zona === "cliente"
+      ? `${decisao.base}/cliente`
+      : caminhoEntradaEquipa(resolvido, pedido.nextUrl.pathname);
   const destino = new URL(caminho, pedido.url);
   if (decisao.zona !== "cliente") destino.searchParams.set("seguinte", pedido.nextUrl.pathname);
   return destino;

@@ -72,8 +72,11 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(institucional)/route.ts`
 - `app/(institucional)/termos/page.tsx`
 - `app/(institucional)/termos/subcontratacao/page.tsx`
+- `app/(publico)/b/[slug]/barbeiro/page.tsx`
+- `app/(publico)/b/[slug]/cliente/page.tsx`
 - `app/(publico)/b/[slug]/entrar/page.tsx`
 - `app/(publico)/b/[slug]/fila/page.tsx`
+- `app/(publico)/b/[slug]/gestor/page.tsx`
 - `app/(publico)/b/[slug]/loja/page.tsx`
 - `app/(publico)/b/[slug]/marcar/page.tsx`
 - `app/(publico)/b/[slug]/minha-area/page.tsx`

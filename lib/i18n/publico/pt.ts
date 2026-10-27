@@ -19,12 +19,7 @@ export const pt = {
     marcarCurto: "Marcar",
   },
   entrar: {
-    titulo: "Entrar",
-    cliente: "Sou cliente",
-    clienteAjuda: "A minha área: selos, marcações e histórico",
-    gestor: "Sou o gestor",
-    barbeiro: "Sou o barbeiro",
-    fechar: "Fechar",
+    cliente: "Área de cliente",
   },
   blocos: {
     servicos: "Serviços",

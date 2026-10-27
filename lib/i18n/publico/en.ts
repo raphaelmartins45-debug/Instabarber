@@ -20,12 +20,7 @@ export const en = {
     marcarCurto: "Book",
   },
   entrar: {
-    titulo: "Sign in",
-    cliente: "I'm a client",
-    clienteAjuda: "My area: stamps, bookings and history",
-    gestor: "I'm the manager",
-    barbeiro: "I'm the barber",
-    fechar: "Close",
+    cliente: "Client area",
   },
   blocos: {
     servicos: "Services",

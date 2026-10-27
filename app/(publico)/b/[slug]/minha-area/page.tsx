@@ -46,7 +46,7 @@ export default async function MinhaArea({ params }: { params: Promise<{ slug: st
   } = await bd.auth.getUser();
   const ficha = user ? await obterMinhaFicha(bd, b.id, user.id) : null;
   // Sem ficha nesta barbearia (sessão de equipa ou de outra barbearia): entrar como cliente.
-  if (!ficha) redirect(`${base}/entrar`);
+  if (!ficha) redirect(`${base}/cliente`);
   const hoje = hojeIso();
   const [{ lingua, t }, ligadas, servicos, equipa, cartao, marcacoes, visitas, planos, encomendas] =
     await Promise.all([

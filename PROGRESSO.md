@@ -56,6 +56,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Ecrã das promoções (D-177, pendente 21) | Feito | 27/10/2026 | Gestão do sistema → Promoções; sem esquema novo. Ensaio `e2e/promocoes.spec.ts` (criar, ver na página pública, desligar, remover; computador e telemóvel) |
 | Telemóveis estrangeiros e língua declarada (D-178) | Feito | 27/10/2026 | Marcação com número inglês em ensaio (computador e telemóvel); campos de telefone já não cortam o número; `<html lang>` certo em pt, en e fr; nomes protegidos da tradução |
 | Histórico de cortes com fotografias e consentimento (D-179) | Publicado; migração 18 no ensaio (655 SQL) e na produção (cópia `035201Z` por e-mail, RLS 66/66) | 27/10/2026 | 655 SQL (19 novos); `e2e/historico-cortes.spec.ts` (registar com duas fotografias e autorização, o cliente vê sem a nota interna, retira a autorização e as fotografias saem) no computador e no telemóvel |
+| Entradas por barbearia: /gestor, /barbeiro e /cliente com a marca (D-180) | Publicado | 27/10/2026 | Vitest do encaminhamento (17); `e2e/entradas-barbearia.spec.ts` (4 ensaios) e os ensaios do cliente e do encaminhamento atualizados, no computador e no telemóvel |
 
 ## Pendentes do dono
 

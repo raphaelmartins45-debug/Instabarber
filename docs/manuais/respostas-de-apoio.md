@@ -21,7 +21,7 @@ não chega, ver o `resolucao-de-problemas.md`.
 ## Gestor da barbearia
 
 **Esqueci-me da palavra-passe.**
-> Olá! No ecrã de entrada (instabarber.pt/entrar), carregue em «Esqueci-me da palavra-passe» e
+> Olá! No ecrã de entrada ([barbearia].instabarber.pt/gestor, ou /barbeiro), carregue em «Esqueci-me da palavra-passe» e
 > escreva o seu e-mail. Recebe uma ligação para definir uma nova. Se não aparecer em 5 minutos, veja
 > no spam. Qualquer coisa, diga.
 
@@ -88,7 +88,7 @@ não chega, ver o `resolucao-de-problemas.md`.
 ## Barbeiro
 
 **Não sei a minha palavra-passe / não consigo entrar.**
-> Olá! Entre em instabarber.pt/entrar e carregue em «Esqueci-me da palavra-passe». Se ainda não
+> Olá! Entre em [barbearia].instabarber.pt/gestor (ou /barbeiro) e carregue em «Esqueci-me da palavra-passe». Se ainda não
 > definiu nenhuma, use a ligação do convite que recebeu por e-mail; se não a encontrar, peça ao
 > gestor para «Reenviar convite».
 
@@ -120,7 +120,7 @@ As perguntas dos clientes vão para a barbearia (é ela a responsável). Estas r
 > e a hora. Se deixar o e-mail, recebe a confirmação.
 
 **Como cancelo a minha marcação?**
-> Olá! Na sua área de cliente ([endereço] → «Entrar» → «Sou cliente»), em «Próxima marcação»,
+> Olá! Na sua área de cliente ([endereço]/cliente, ou «Entrar» na página da barbearia), em «Próxima marcação»,
 > carregue em «Cancelar». Online só se pode cancelar até [antecedência] antes; depois disso, fale
 > connosco.
 

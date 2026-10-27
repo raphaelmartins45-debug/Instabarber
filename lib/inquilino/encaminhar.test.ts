@@ -46,6 +46,19 @@ describe("classificarHost", () => {
   });
 });
 
+describe("entradas de cada pessoa no endereço da barbearia (D-180)", () => {
+  const barbearia = { tipo: "barbearia" as const, slug: "judah" };
+  it("gestor, barbeiro e cliente têm páginas próprias, com a marca da barbearia", () => {
+    expect(encaminhar(barbearia, "/gestor")).toMatchObject({ destino: "/b/judah/gestor" });
+    expect(encaminhar(barbearia, "/barbeiro")).toMatchObject({ destino: "/b/judah/barbeiro" });
+    expect(encaminhar(barbearia, "/cliente")).toMatchObject({ destino: "/b/judah/cliente" });
+    expect(encaminhar({ tipo: "principal" }, "/judah/gestor")).toMatchObject({
+      destino: "/b/judah/gestor",
+      base: "/judah",
+    });
+  });
+});
+
 describe("encaminhar no domínio principal", () => {
   it("a landing, a equipa e a administração seguem sem barbearia", () => {
     expect(encaminhar(principal, "/")).toMatchObject({ acao: "seguir", destino: "/", slug: null });
@@ -117,7 +130,9 @@ describe("auxiliares", () => {
 
   it("entrada da equipa conforme o endereço", () => {
     expect(caminhoEntradaEquipa(principal)).toBe("/entrar");
-    expect(caminhoEntradaEquipa(barbearia)).toBe("/app/entrar");
+    expect(caminhoEntradaEquipa(barbearia)).toBe("/gestor");
+    expect(caminhoEntradaEquipa(barbearia, "/app/agenda")).toBe("/gestor");
+    expect(caminhoEntradaEquipa(barbearia, "/app/equipa/x/agenda")).toBe("/barbeiro");
   });
 
   it("caminhoSeguro recusa endereços externos", () => {

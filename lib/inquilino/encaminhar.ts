@@ -52,7 +52,8 @@ export function encaminhar(host: HostResolvido, caminho: string): Decisao {
   const { slug } = host;
   // O InstaBarber Admin só existe no domínio principal: 404, nunca redireciona (L.4, passo 8).
   if (comeca(caminho, "/admin")) return { acao: "nao_encontrado" };
-  // No endereço da barbearia, /entrar é do cliente; a equipa entra em /app/entrar.
+  // No endereço da barbearia, cada pessoa entra na sua página: /gestor, /barbeiro e /cliente
+  // (D-180). /app/entrar continua a funcionar para as ligações antigas e as dos e-mails.
   if (comeca(caminho, "/app/entrar")) return seguir(caminho.slice("/app".length), slug, "");
   if (comeca(caminho, "/app") || comeca(caminho, "/api") || eFicheiro(caminho)) {
     return seguir(caminho, slug, "");
@@ -68,9 +69,14 @@ export function hostResolvido(host: Host, slugDoDominio: string | null): HostRes
   return { tipo: "barbearia", slug: slugDoDominio ?? "_" };
 }
 
-/** Caminho da entrada da equipa, conforme o endereço. */
-export function caminhoEntradaEquipa(host: HostResolvido): string {
-  return host.tipo === "principal" ? "/entrar" : "/app/entrar";
+/**
+ * Caminho da entrada da equipa, conforme o endereço. No endereço da barbearia, cada pessoa tem a
+ * sua página (D-180): o barbeiro (o que está debaixo de /app/equipa) entra em /barbeiro; o gestor,
+ * em /gestor. No domínio principal, a entrada geral.
+ */
+export function caminhoEntradaEquipa(host: HostResolvido, caminho = "/app"): string {
+  if (host.tipo === "principal") return "/entrar";
+  return comeca(caminho, "/app/equipa") ? "/barbeiro" : "/gestor";
 }
 
 /** Aceita só caminhos relativos do próprio site (evita redirecionamentos para fora). */

@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { formatarTelefone } from "@/lib/formatacao/telefone";
-import type { Lingua, TextosPublicos } from "@/lib/i18n/publico";
+import type { TextosPublicos } from "@/lib/i18n/publico";
 import { corDoTexto } from "@/lib/regras/contraste";
 import { BotaoAcao } from "./botao-acao";
-import { EscolhaEntrar } from "./escolha-entrar";
 import { LogoCapa } from "./logo-capa";
 
 export type DadosCapa = {
@@ -16,7 +16,8 @@ export type DadosCapa = {
   whatsapp: string | null;
   telefone: string | null;
   estado: string;
-  entradas: { cliente: string; equipa: string };
+  /** A entrada do cliente (D-180); a equipa entra por /gestor e /barbeiro. */
+  entrar: string;
 };
 
 /**
@@ -39,7 +40,13 @@ export function Capa({ d, t }: { d: DadosCapa; t: TextosPublicos }) {
               </p>
             ) : null}
           </div>
-          <EscolhaEntrar lingua={t.lingua as Lingua} entradas={d.entradas} cor={texto} />
+          <Link
+            href={d.entrar}
+            className="inline-flex h-11 shrink-0 items-center rounded-full border px-4 text-sm font-semibold"
+            style={{ borderColor: texto, color: texto }}
+          >
+            {t.capa.entrar}
+          </Link>
         </div>
         <div className="grid items-center gap-8 md:grid-cols-[1fr_auto]">
           <div className="order-2 grid gap-3 md:order-1 md:max-w-md">

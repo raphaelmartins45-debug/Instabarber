@@ -14,7 +14,7 @@ import { entrarEquipa } from "./auxiliares/entrar";
 
 test.skip(!temSupabase, "Precisa do Supabase local (scripts/e2e-local.sh)");
 
-const entrada = `/${BARBEARIA_A.slug}/entrar`;
+const entrada = `/${BARBEARIA_A.slug}/cliente`;
 
 /** «Sair» só responde depois de a página ficar interativa. */
 async function sairDaArea(page: Page) {
@@ -35,7 +35,7 @@ test("o cliente com conta entra com telemóvel e palavra-passe, também pelo sub
   page,
 }, info) => {
   const { comConta } = telefones(info.project.name);
-  await page.goto(`http://${BARBEARIA_A.slug}.localhost:3000/entrar`);
+  await page.goto(`http://${BARBEARIA_A.slug}.localhost:3000/cliente`);
   await page.waitForLoadState("networkidle");
   await page.locator("#telefone").fill("912 000 999");
   await page.locator("#palavra_passe").fill("errada-123");
@@ -49,7 +49,7 @@ test("o cliente com conta entra com telemóvel e palavra-passe, também pelo sub
   await expect(page.getByTestId("vista")).toHaveText("Olá, João Conta");
   // A conta do cliente não abre o painel da equipa.
   await page.goto(`http://${BARBEARIA_A.slug}.localhost:3000/app`);
-  await expect(page).toHaveURL(/\/app\/entrar\?erro=sem_acesso$/);
+  await expect(page).toHaveURL(/\/gestor\?erro=sem_acesso$/);
 });
 
 test("código de acesso de ponta a ponta: errado, certo e expirado", async ({

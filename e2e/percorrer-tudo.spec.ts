@@ -133,7 +133,7 @@ async function relatar(info: { project: { name: string } }, papel: string, r: Re
 
 test("cliente final", async ({ page }, info) => {
   const r: Relatorio = { linhas: [], falhas: [] };
-  await page.goto(`/${BARBEARIA_A.slug}/entrar`);
+  await page.goto(`/${BARBEARIA_A.slug}/cliente`);
   await page.waitForLoadState("networkidle");
   await page.locator("#telefone").fill(telefones(info.project.name).comConta);
   await page.locator("#palavra_passe").fill(PALAVRA_PASSE);

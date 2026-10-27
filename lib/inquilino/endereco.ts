@@ -44,3 +44,11 @@ export async function origemPrincipal(): Promise<string> {
   const porta = /:(\d+)$/.exec(origem)?.[1];
   return `${protocolo}://${raiz}${porta && raiz === "localhost" ? `:${porta}` : ""}`;
 }
+
+/**
+ * Onde a equipa volta a entrar (D-180): no endereço da barbearia, a página de cada papel
+ * (/gestor ou /barbeiro); no domínio principal, a entrada geral.
+ */
+export async function entradaEquipaAqui(papel: "gestor" | "barbeiro" = "gestor"): Promise<string> {
+  return (await lerEndereco()).slug ? `/${papel}` : "/entrar";
+}

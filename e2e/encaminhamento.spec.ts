@@ -38,9 +38,9 @@ test("sem sessão, as camadas protegidas mandam para a entrada certa", async ({ 
   await page.goto("/app/sistema");
   await expect(page).toHaveURL(/\/entrar\?seguinte=%2Fapp%2Fsistema$/);
   await page.goto(subdominio(BARBEARIA_A.slug, "/app"));
-  await expect(page).toHaveURL(subdominio(BARBEARIA_A.slug, "/app/entrar?seguinte=%2Fapp"));
+  await expect(page).toHaveURL(subdominio(BARBEARIA_A.slug, "/gestor?seguinte=%2Fapp"));
   await page.goto(subdominio(BARBEARIA_A.slug, "/minha-area"));
-  await expect(page).toHaveURL(subdominio(BARBEARIA_A.slug, "/entrar"));
+  await expect(page).toHaveURL(subdominio(BARBEARIA_A.slug, "/cliente"));
   await page.goto(`/${BARBEARIA_A.slug}/minha-area`);
-  await expect(page).toHaveURL(`/${BARBEARIA_A.slug}/entrar`);
+  await expect(page).toHaveURL(`/${BARBEARIA_A.slug}/cliente`);
 });

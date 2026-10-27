@@ -46,9 +46,10 @@ Comercial → Desempenho → «Carteira de clientes»).
 
 ### 1.1 Entrar
 
-1. Abra **instabarber.pt/entrar** e entre com o e-mail e a palavra-passe.
-   No endereço da barbearia (**instabarber.pt/&lt;nome-da-barbearia&gt;**) também se entra:
-   «Entrar» → «Sou o gestor». O ecrã de entrada mostra a capa e o logótipo da barbearia.
+1. Abra a entrada do gestor da sua barbearia, **&lt;nome-da-barbearia&gt;.instabarber.pt/gestor**,
+   e entre com o e-mail e a palavra-passe. O ecrã mostra a capa e o logótipo da barbearia. Guarde
+   o endereço nos favoritos (a página pública só mostra a entrada dos clientes). Também funciona
+   **instabarber.pt/entrar**.
 2. **O que se vê:** o **Início** do painel, com os números do dia.
 3. **Se for diferente:** «Esqueci-me da palavra-passe» no ecrã de entrada envia uma ligação para
    definir outra. Se o e-mail não chegar, veja o spam; se continuar sem chegar, contacte
@@ -87,7 +88,7 @@ Menu → **Gestão do sistema**. As secções aparecem por esta ordem; faça-as 
    - O barbeiro já trabalha noutra barbearia com InstaBarber: passa a trabalhar também nesta, com a
      mesma conta.
 
-O barbeiro entra em **instabarber.pt/entrar** (ou «Entrar» → «Sou o barbeiro») e vê só o painel
+O barbeiro entra em **&lt;nome-da-barbearia&gt;.instabarber.pt/barbeiro** e vê só o painel
 dele: a agenda, os clientes com ele, as metas e as comissões.
 
 ### 1.4 A página pública e a primeira marcação de teste

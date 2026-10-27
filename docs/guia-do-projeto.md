@@ -22,7 +22,8 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 - **De quem:** InstaBarber, da Performa LAB. A Prestadora é a Michelle, isenta de IVA (art. 53.º,
   D-173). O dono faz a operação e a parte comercial (D-175).
 - **No ar:** `instabarber.pt` (landing, adesão, entrada, Admin), `instabarber.pt/<slug>` e
-  `<slug>.instabarber.pt` (página de cada barbearia).
+  `<slug>.instabarber.pt` (página de cada barbearia, com as entradas `/gestor`, `/barbeiro` e
+  `/cliente`, D-180).
 - **Utilizadores:** dono da plataforma e gestor (Admin, dois passos), comercial (área Comercial),
   gestor da barbearia, barbeiro, cliente final.
 - **Stack:** Next.js 15 (App Router), React 19, TypeScript estrito, Tailwind 4, Supabase
@@ -41,7 +42,7 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 | `docs/mapa-do-sistema.md` | **Pedidos de manutenção:** classifica o pedido e diz onde mexer e como verificar |
 | `docs/mapa-gerado.md` | Lista gerada das rotas e ficheiros (`scripts/gerar-mapa.sh`; não se edita) |
 | `PROGRESSO.md` | Estado real: fases, trabalhos paralelos, pendentes do dono, módulos por ativar |
-| `DECISOES.md` | As decisões (D-01 a D-175), com data. **Prevalece** quando duas regras se contradizem |
+| `DECISOES.md` | As decisões (D-01 a D-180), com data. **Prevalece** quando duas regras se contradizem |
 | `docs/esquema/` | Fonte única da base de dados (tabelas, funções, RLS, dados iniciais) e os testes SQL |
 | `supabase/migrations/` | As migrações aplicadas (01 a 17), copiadas do esquema |
 | `fases/` | O plano de cada fase e os critérios (J.1, verificados em `fases/verificacao-j1.md`) |
@@ -86,6 +87,10 @@ decisão no `DECISOES.md`.
 | Ficha de prospeção | 27/10/2026 | Campos de prospeção no lead, duplicados, fim do contrato na agenda | 17 | D-174 |
 | 9 · Manuais | Desde 27/10/2026 | Formação, calendário, resolução de problemas, respostas de apoio | — | D-175 |
 | Línguas e tradução | 27/10/2026 | Língua do telemóvel com ensaio; tradução dos serviços pelo DeepL, **desligada** até à chave | — | D-176 |
+| Promoções | 27/10/2026 | Ecrã das promoções na Gestão do sistema | — | D-177 |
+| Telemóveis estrangeiros | 27/10/2026 | Números com indicativo de qualquer país; língua declarada da página pública | — | D-178 |
+| Histórico de cortes | 27/10/2026 | Entradas por serviço com fotografias e consentimento; o cliente vê as dele | 18 | D-179 |
+| Entradas por barbearia | 27/10/2026 | `/gestor`, `/barbeiro` e `/cliente` no endereço de cada barbearia, com a marca dela | — | D-180 |
 
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.

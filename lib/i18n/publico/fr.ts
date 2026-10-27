@@ -20,12 +20,7 @@ export const fr = {
     marcarCurto: "Réserver",
   },
   entrar: {
-    titulo: "Se connecter",
-    cliente: "Je suis client",
-    clienteAjuda: "Mon espace : tampons, rendez-vous et historique",
-    gestor: "Je suis le gérant",
-    barbeiro: "Je suis le barbier",
-    fechar: "Fermer",
+    cliente: "Espace client",
   },
   blocos: {
     servicos: "Prestations",

@@ -12,5 +12,5 @@ export async function entrarEquipa(
   await page.getByLabel("E-mail").fill(email);
   await page.getByLabel("Palavra-passe").fill(palavraPasse);
   await page.getByRole("button", { name: "Entrar" }).click();
-  await expect(page).not.toHaveURL(/\/entrar(\?|$)/);
+  await expect(page).not.toHaveURL(/\/(entrar|gestor|barbeiro)(\?|$)/);
 }

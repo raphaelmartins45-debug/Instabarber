@@ -6,6 +6,7 @@ import { exigirEquipaParaEscrever } from "@/lib/equipa/contexto";
 import { carregarImagemPublica, removerImagemPublica } from "@/lib/repositorios/painel/imagens";
 import { acrescentarFoto, removerFoto } from "@/lib/repositorios/painel/portfolio";
 import { alterarProfissional, obterProfissional } from "@/lib/repositorios/profissionais";
+import { entradaEquipaAqui } from "@/lib/inquilino/endereco";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 // Perfil do barbeiro (E.3.1): o próprio ou o gestor. O gatilho proteger_profissional deixa o
@@ -106,5 +107,5 @@ export async function removerDoPortfolio(
 export async function terminarSessoes(): Promise<{ destino: string }> {
   const bd = await criarClienteServidor();
   await bd.auth.signOut({ scope: "global" });
-  return { destino: "/entrar" };
+  return { destino: await entradaEquipaAqui("barbeiro") };
 }

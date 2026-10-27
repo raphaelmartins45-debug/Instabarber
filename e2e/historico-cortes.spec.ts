@@ -55,7 +55,7 @@ test("histórico de cortes: a barbearia regista com fotografias e o cliente vê 
 
   // 2. O cliente vê a entrada na sua área, com as fotografias e sem a nota interna.
   const cliente = await (await browser.newContext(info.project.use)).newPage();
-  await cliente.goto(`/${BARBEARIA_A.slug}/entrar`);
+  await cliente.goto(`/${BARBEARIA_A.slug}/cliente`);
   await cliente.waitForLoadState("networkidle");
   await cliente.locator("#telefone").fill(telefone);
   await cliente.locator("#palavra_passe").fill(PALAVRA_PASSE);

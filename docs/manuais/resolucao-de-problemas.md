@@ -37,8 +37,9 @@ Alguém vê dados de OUTRA barbearia?
 
 ## A barbearia não consegue entrar
 
-**Confirmar:** que endereço usa e que mensagem aparece. A equipa entra em **instabarber.pt/entrar**
-(ou na página da barbearia → «Entrar» → «Sou o gestor» / «Sou o barbeiro»).
+**Confirmar:** que endereço usa e que mensagem aparece. O gestor entra em
+**&lt;barbearia&gt;.instabarber.pt/gestor**, o barbeiro em **/barbeiro** (ou ambos em
+**instabarber.pt/entrar**). A página pública só leva à entrada dos clientes (D-180).
 
 | Mensagem ou situação | Causa provável | Resolver |
 | --- | --- | --- |
@@ -136,7 +137,7 @@ O código **não é enviado pelo sistema**: aparece no Início da barbearia, em 
 alguém da barbearia carrega em «Enviar código por WhatsApp» e depois em «Já enviei».
 
 1. **Confirmar:** o pedido aparece no Início? Está «Expirado»? O código vale **15 minutos**.
-2. Se expirou: o cliente pede outra vez na página da barbearia → «Entrar» → «Sou cliente».
+2. Se expirou: o cliente pede outra vez na página da barbearia → «Entrar» (ou em **/cliente**).
 3. Fora do horário da barbearia, o cliente é avisado de que o código chega quando a barbearia
    abrir.
 4. «Demasiadas tentativas»: a mesma rede pediu códigos muitas vezes (10 por hora). Esperar uma

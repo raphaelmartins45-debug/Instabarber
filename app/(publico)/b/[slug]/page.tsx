@@ -57,7 +57,7 @@ export async function generateMetadata({
   };
 }
 
-/** Página pública (E.6): a porta de entrada do cliente, do gestor e do barbeiro. */
+/** Página pública (E.6): a porta de entrada do cliente; a equipa entra por /gestor e /barbeiro (D-180). */
 export default async function PaginaBarbearia({ params }: { params: Promise<{ slug: string }> }) {
   const b = await obterBarbeariaDoEndereco((await params).slug);
   if (!b?.id || !b.slug || !b.nome) notFound();
@@ -82,7 +82,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
   const estado = aberta ? t.capa.aberto(hm(b.hora_fecho)) : t.capa.fechado;
   const marcar = b.aberto ? `${base}/marcar` : null;
   const whatsapp = b.whatsapp ? ligacaoWhatsApp(b.whatsapp, "") : null;
-  const entradas = { cliente: `${base}/entrar`, equipa: base ? "/entrar" : "/app/entrar" };
+  const entrar = `${base}/cliente`;
   const nomeServico = (s: (typeof servicos)[number]) =>
     (lingua === "en" ? s.nome_en : lingua === "fr" ? s.nome_fr : null) || s.nome || "";
   const descricaoServico = (s: (typeof servicos)[number]) =>
@@ -125,7 +125,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
           whatsapp,
           telefone: b.telefone,
           estado,
-          entradas,
+          entrar,
         }}
       />
       <Barras
@@ -137,7 +137,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
         marcar={marcar}
         whatsapp={whatsapp}
         telefone={b.telefone}
-        entrar={entradas.cliente}
+        entrar={entrar}
       />
       <main className="mx-auto max-w-5xl divide-y px-4">
         <BlocoServicos
@@ -181,7 +181,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
         origemPrincipal={principal}
         reclamacoes={b.livro_reclamacoes_url}
         avaliacao={b.google_avaliacao_url}
-        entradas={entradas}
+        entrar={entrar}
       />
     </div>
   );

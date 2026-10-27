@@ -2,7 +2,7 @@
 
 import { ePapelPlataforma } from "@/lib/admin/acesso";
 import { caminhoSeguro } from "@/lib/inquilino/encaminhar";
-import { lerEndereco, origemDoPedido } from "@/lib/inquilino/endereco";
+import { entradaEquipaAqui, lerEndereco, origemDoPedido } from "@/lib/inquilino/endereco";
 import { eContaCliente } from "@/lib/regras/conta-cliente";
 import { listarMeusPerfis } from "@/lib/repositorios/perfis";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
@@ -71,8 +71,14 @@ export async function definirPalavraPasse(dados: DadosDefinirPalavraPasse): Prom
   return { destino: "/app" };
 }
 
+/** Sair: no endereço da barbearia, volta à página de entrada do seu papel (D-180). */
 export async function sair(): Promise<{ destino: string }> {
   const bd = await criarClienteServidor();
+  const {
+    data: { user },
+  } = await bd.auth.getUser();
+  const perfis = user ? await listarMeusPerfis(bd, user.id) : [];
+  const gestor = perfis.length === 0 || perfis.some((p) => p.papel !== "profissional");
   await bd.auth.signOut();
-  return { destino: `${await prefixoEquipa()}/entrar` };
+  return { destino: await entradaEquipaAqui(gestor ? "gestor" : "barbeiro") };
 }

@@ -2,7 +2,7 @@ import "server-only";
 import { cookies, headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
-import { lerEndereco } from "@/lib/inquilino/endereco";
+import { entradaEquipaAqui, lerEndereco } from "@/lib/inquilino/endereco";
 import { listarMeusPerfis, type MeuPerfil } from "@/lib/repositorios/perfis";
 import { obterProfissionalDoPerfil } from "@/lib/repositorios/profissionais";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
@@ -36,7 +36,7 @@ export const obterContextoEquipa = cache(async (): Promise<ContextoEquipa> => {
     data: { user },
   } = await bd.auth.getUser();
   const { slug } = await lerEndereco();
-  const entrada = slug ? "/app/entrar" : "/entrar";
+  const entrada = await entradaEquipaAqui();
   if (!user) redirect(entrada);
 
   const perfis = await listarMeusPerfis(bd, user.id);

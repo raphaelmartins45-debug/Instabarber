@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { entradaEquipaAqui } from "@/lib/inquilino/endereco";
 import { sair } from "@/app/(auth)/entrar/acoes";
 import { PagamentoMensalidade } from "@/components/barbearia/plano/pagamento-mensalidade";
 import { ResumoPlano } from "@/components/barbearia/resumo-plano";
@@ -23,7 +24,7 @@ export default async function AcessoSuspenso() {
   const {
     data: { user },
   } = await bd.auth.getUser();
-  if (!user) redirect("/entrar");
+  if (!user) redirect(await entradaEquipaAqui());
   const suspensa = (await listarMeusPerfis(bd, user.id)).find(
     (p) => p.papel === "proprietario" && p.inquilino?.estado === "suspenso",
   )?.inquilino;

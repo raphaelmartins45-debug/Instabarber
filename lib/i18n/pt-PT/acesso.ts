@@ -4,6 +4,11 @@ export const acesso = {
   equipa: {
     titulo: "Entrar",
     subtitulo: "Gestores e barbeiros",
+    /** Páginas próprias no endereço da barbearia (D-180). */
+    gestorTitulo: "Entrar como gestor",
+    gestorSubtitulo: "O painel de gestão da barbearia",
+    barbeiroTitulo: "Entrar como barbeiro",
+    barbeiroSubtitulo: "A sua agenda, os seus clientes e as suas metas",
     email: "E-mail",
     palavraPasse: "Palavra-passe",
     botao: "Entrar",

@@ -1,5 +1,6 @@
 import { ePapelPlataforma } from "@/lib/admin/acesso";
 import { redirect } from "next/navigation";
+import { entradaEquipaAqui } from "@/lib/inquilino/endereco";
 import { CartaoAcesso } from "@/components/nucleo/cartao-acesso";
 import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
@@ -14,7 +15,7 @@ export default async function PaginaEscolher() {
   const {
     data: { user },
   } = await bd.auth.getUser();
-  if (!user) redirect("/entrar");
+  if (!user) redirect(await entradaEquipaAqui());
 
   // Uma linha por barbearia, com os papéis que a pessoa lá tem.
   const porBarbearia = new Map<string, { nome: string; papeis: string[] }>();

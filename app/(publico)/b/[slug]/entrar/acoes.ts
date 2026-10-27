@@ -49,7 +49,7 @@ export async function entrarCliente(
 
 export async function sairCliente(): Promise<{ destino: string }> {
   await (await criarClienteServidor()).auth.signOut();
-  return { destino: `${(await lerEndereco()).base}/entrar` };
+  return { destino: `${(await lerEndereco()).base}/cliente` };
 }
 
 /**

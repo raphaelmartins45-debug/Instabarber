@@ -4,7 +4,7 @@ import { SeletorLingua } from "./seletor-lingua";
 
 /**
  * Rodapé da página pública (E.6, H.2): Privacidade, Termos, Livro de Reclamações eletrónico,
- * avaliar no Google, os três acessos e, com `multilinguagem`, o seletor PT · EN · FR.
+ * avaliar no Google, a área de cliente e, com `multilinguagem`, o seletor PT · EN · FR.
  */
 export function Rodape({
   t,
@@ -13,7 +13,7 @@ export function Rodape({
   origemPrincipal,
   reclamacoes,
   avaliacao,
-  entradas,
+  entrar,
 }: {
   t: TextosPublicos;
   lingua: Lingua;
@@ -21,21 +21,15 @@ export function Rodape({
   origemPrincipal: string;
   reclamacoes: string | null;
   avaliacao: string | null;
-  entradas: { cliente: string; equipa: string };
+  entrar: string;
 }) {
   const ligacao = "underline-offset-4 hover:underline";
   return (
     <footer className="border-t bg-card px-4 pt-8 pb-28 text-sm md:pb-10">
       <div className="mx-auto grid max-w-5xl gap-4">
         <nav aria-label={t.rodape.acessos} className="flex flex-wrap gap-x-4 gap-y-2">
-          <Link href={entradas.cliente} className={ligacao}>
+          <Link href={entrar} className={ligacao}>
             {t.entrar.cliente}
-          </Link>
-          <Link href={entradas.equipa} className={ligacao}>
-            {t.entrar.gestor}
-          </Link>
-          <Link href={entradas.equipa} className={ligacao}>
-            {t.entrar.barbeiro}
           </Link>
         </nav>
         <div className="flex flex-wrap gap-x-4 gap-y-2 text-muted-foreground">
