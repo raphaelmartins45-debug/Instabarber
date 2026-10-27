@@ -267,6 +267,8 @@ create table clientes (
   consentimento_mensagens  boolean not null default false,
   consentimento_em         timestamptz,
   nao_contactar            boolean not null default false,
+  consentimento_fotos      boolean not null default false,          -- fotografias no histórico de cortes (D-179)
+  consentimento_fotos_em   timestamptz,
   codigo_convite           text unique check (codigo_convite ~ '^[A-Z0-9]{6}$'),
   convidado_por            uuid,
   faltas_perdoadas_em      timestamptz,                             -- o gestor volta a permitir marcação online
@@ -278,6 +280,7 @@ create table clientes (
   check (not consentimento_mensagens or consentimento_em is not null),
   check (telefone is not null or anonimizado_em is not null),
   check (convidado_por is null or convidado_por <> id),
+  constraint clientes_consentimento_fotos_data check (not consentimento_fotos or consentimento_fotos_em is not null),
   foreign key (inquilino_id, convidado_por) references clientes (inquilino_id, id) on delete set null (convidado_por)
 );
 
@@ -287,11 +290,18 @@ create table fichas_tecnicas (
   inquilino_id     uuid not null,
   cliente_id       uuid not null,
   profissional_id  uuid,
-  nota             text,
+  nota             text,   -- nota interna: só a equipa
   foto_path        text,   -- caminho no bucket privado 'fichas'
+  -- Histórico de cortes (D-179): uma entrada por serviço, ligada à marcação (chave estrangeira
+  -- depois da tabela marcacoes), segunda fotografia e nota para o cliente, visível na área dele.
+  marcacao_id      uuid,
+  foto2_path       text,
+  nota_cliente     text,
+  visivel_cliente  boolean not null default false,
   criado_por       uuid references auth.users(id) on delete set null,
   criado_em        timestamptz not null default now(),
-  check (nota is not null or foto_path is not null),
+  check (nota is not null or nota_cliente is not null or foto_path is not null),
+  constraint fichas_tecnicas_foto2 check (foto2_path is null or foto_path is not null),
   foreign key (inquilino_id, cliente_id) references clientes (inquilino_id, id) on delete cascade,
   foreign key (inquilino_id, profissional_id) references profissionais (inquilino_id, id) on delete set null (profissional_id)
 );
@@ -1176,6 +1186,12 @@ create table convites_adesao (
 );
 
 alter table pedidos_adesao add column contrato_id uuid references contratos(id) on delete set null;
+
+-- Histórico de cortes (D-179): a ficha técnica liga-se à marcação; uma entrada por marcação.
+alter table fichas_tecnicas add constraint fichas_tecnicas_marcacao_fk foreign key (inquilino_id, marcacao_id)
+  references marcacoes (inquilino_id, id) on delete set null (marcacao_id);
+create unique index fichas_tecnicas_uma_por_marcacao on fichas_tecnicas (inquilino_id, marcacao_id)
+  where marcacao_id is not null;
 
 -- Estado efetivo da proposta: uma proposta enviada passa a expirada ao fim da validade,
 -- sem tarefa agendada (D-16).

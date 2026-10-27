@@ -479,6 +479,8 @@ export type Database = {
           auth_user_id: string | null;
           codigo_convite: string | null;
           consentimento_em: string | null;
+          consentimento_fotos: boolean;
+          consentimento_fotos_em: string | null;
           consentimento_mensagens: boolean;
           convidado_por: string | null;
           criado_em: string;
@@ -501,6 +503,8 @@ export type Database = {
           auth_user_id?: string | null;
           codigo_convite?: string | null;
           consentimento_em?: string | null;
+          consentimento_fotos?: boolean;
+          consentimento_fotos_em?: string | null;
           consentimento_mensagens?: boolean;
           convidado_por?: string | null;
           criado_em?: string;
@@ -522,6 +526,8 @@ export type Database = {
           auth_user_id?: string | null;
           codigo_convite?: string | null;
           consentimento_em?: string | null;
+          consentimento_fotos?: boolean;
+          consentimento_fotos_em?: string | null;
           consentimento_mensagens?: boolean;
           convidado_por?: string | null;
           criado_em?: string;
@@ -1746,10 +1752,14 @@ export type Database = {
           criado_em: string;
           criado_por: string | null;
           foto_path: string | null;
+          foto2_path: string | null;
           id: string;
           inquilino_id: string;
+          marcacao_id: string | null;
           nota: string | null;
+          nota_cliente: string | null;
           profissional_id: string | null;
+          visivel_cliente: boolean;
         };
         ComputedFields: never;
         Insert: {
@@ -1757,20 +1767,28 @@ export type Database = {
           criado_em?: string;
           criado_por?: string | null;
           foto_path?: string | null;
+          foto2_path?: string | null;
           id?: string;
           inquilino_id: string;
+          marcacao_id?: string | null;
           nota?: string | null;
+          nota_cliente?: string | null;
           profissional_id?: string | null;
+          visivel_cliente?: boolean;
         };
         Update: {
           cliente_id?: string;
           criado_em?: string;
           criado_por?: string | null;
           foto_path?: string | null;
+          foto2_path?: string | null;
           id?: string;
           inquilino_id?: string;
+          marcacao_id?: string | null;
           nota?: string | null;
+          nota_cliente?: string | null;
           profissional_id?: string | null;
+          visivel_cliente?: boolean;
         };
         Relationships: [
           {
@@ -1813,6 +1831,13 @@ export type Database = {
             columns: ["inquilino_id", "profissional_id"];
             isOneToOne: false;
             referencedRelation: "publico_profissionais";
+            referencedColumns: ["inquilino_id", "id"];
+          },
+          {
+            foreignKeyName: "fichas_tecnicas_marcacao_fk";
+            columns: ["inquilino_id", "marcacao_id"];
+            isOneToOne: false;
+            referencedRelation: "marcacoes";
             referencedColumns: ["inquilino_id", "id"];
           },
         ];
@@ -5504,6 +5529,7 @@ export type Database = {
       exigir_lead: { Args: { p_lead: string }; Returns: undefined };
       exigir_super_admin: { Args: Record<PropertyKey, never>; Returns: undefined };
       fixar_texto_contrato: { Args: { p_contrato: string; p_texto: string }; Returns: undefined };
+      foto_do_cliente: { Args: { p_nome: string; p_so_visiveis: boolean }; Returns: boolean };
       funcionalidade_ativa: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };
       gerar_contrato: {
         Args: { p_dados: Json; p_modelo: string; p_proposta: string; p_texto: string };
@@ -5550,6 +5576,18 @@ export type Database = {
         }[];
       };
       meu_codigo_convite: { Args: { p_inquilino: string }; Returns: string };
+      meu_historico_cortes: {
+        Args: { p_inquilino: string };
+        Returns: {
+          data: string;
+          foto_path: string;
+          foto2_path: string;
+          id: string;
+          nota: string;
+          profissional: string;
+          servico: string;
+        }[];
+      };
       meus_clientes: { Args: Record<PropertyKey, never>; Returns: string[] };
       meus_comunicados: {
         Args: { p_inquilino: string };
@@ -5562,7 +5600,12 @@ export type Database = {
       };
       meus_leads: { Args: Record<PropertyKey, never>; Returns: string[] };
       meus_profissionais: { Args: Record<PropertyKey, never>; Returns: string[] };
+      minhas_fotos_historico: { Args: { p_inquilino: string }; Returns: string[] };
       modulo_ativo: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };
+      mudar_consentimento_fotos: {
+        Args: { p_inquilino: string; p_sim: boolean };
+        Returns: undefined;
+      };
       mudar_estado_lead: {
         Args: { p_estado: string; p_lead: string; p_motivo?: string };
         Returns: undefined;

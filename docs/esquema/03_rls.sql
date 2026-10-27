@@ -428,6 +428,13 @@ create policy storage_fichas on storage.objects for all
          (storage.foldername(name))[1] in (select x::text from public.inquilinos_onde(array['proprietario']) x)
          or (storage.foldername(name))[2] in (select x::text from public.clientes_do_profissional() x)));
 
+-- Histórico de cortes (D-179): o cliente vê as fotografias das suas entradas visíveis e apaga as
+-- suas quando retira o consentimento.
+create policy storage_fichas_cliente_ler on storage.objects for select
+  using (bucket_id = 'fichas' and public.foto_do_cliente(name, true));
+create policy storage_fichas_cliente_apagar on storage.objects for delete
+  using (bucket_id = 'fichas' and public.foto_do_cliente(name, false));
+
 -- -----------------------------------------------------------------------------
 -- Comercial (Parte N): só o super_admin com dois fatores. Nenhum outro papel vê nada.
 -- numeracao_comercial e convites_adesao só se tocam pelas funções.
