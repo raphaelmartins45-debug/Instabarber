@@ -74,9 +74,12 @@ palavras-passe da Performa LAB, com acesso de emergência:
 
 ### P-01 · Rotina do operador
 
+O calendário completo, com as datas e os marcos, está em `docs/manuais/calendario-de-operacao.md`.
+
 | Frequência | Tarefa | Procedimento |
 | --- | --- | --- |
 | Diária | Pedidos de adesão novos (resposta no próprio dia) | P-03 |
+| Diária | Comprovativos de pagamento por confirmar | P-08 |
 | Diária | Leads novos no Comercial | P-21 |
 | Semanal | Leads parados e propostas a expirar | P-21, P-22 |
 | Mensal | Apagar leads com mais de 12 meses | P-24 |
@@ -87,7 +90,7 @@ palavras-passe da Performa LAB, com acesso de emergência:
 | Diária | Correio do apoio@ e do privacidade@ | P-11, P-12 |
 | Semanal | Cópia de segurança externa | P-13 |
 | Semanal | Barbearias com pouca utilização: contacto pessoal | M.2 |
-| Mensal (dia 1) | Emitir faturas e registar recebimentos | P-08 |
+| Mensal (dia 1) | Faturas das mensalidades pagas no mês anterior; faturação acumulada contra o limite da isenção | P-08, `docs/manuais/calendario-de-operacao.md` |
 | Mensal | Rever mensalidades em atraso | P-09 |
 | Trimestral | Testar um restauro; rever preços e planos | P-14 |
 | Anual (até 1 de dezembro) | Feriados do ano seguinte | P-15 |
@@ -101,7 +104,7 @@ palavras-passe da Performa LAB, com acesso de emergência:
 
 > **Antes da Fase 3B** (módulo Comercial), faz-se à mão como abaixo. **Depois**, o passo 1 faz-se com P-22 e o passo 2 com o convite de adesão de P-23.
 
-1. Enviar a proposta: planos (Basic 19,99 €, Pro 39 €, com e sem IVA), plano anual (dez mensalidades), extra de domínio próprio, o que inclui cada plano (grelha D.3) e que não há comissões nem custos por mensagem.
+1. Enviar a proposta: planos (Basic 19,99 €, Pro 39,99 €; ao preço não acresce IVA, D-173), plano anual (dez mensalidades), extra de domínio próprio, o que inclui cada plano (grelha D.3) e que não há comissões nem custos por mensagem.
 2. Quando o dono aceitar, enviar a ligação do formulário: `instabarber.pt/adesao`.
 3. Juntar ao e-mail a lista do que convém ter à mão: logótipo com fundo transparente (PNG ou SVG, mínimo 512 × 512 px), fotografia da fachada, lista de serviços com duração e preço, nomes e e-mails dos barbeiros, e o ficheiro de clientes se vier de outro sistema (P-05).
 
@@ -198,13 +201,13 @@ palavras-passe da Performa LAB, com acesso de emergência:
 
 ### P-08 · Faturar e registar recebimentos
 
-**Quando:** no dia 1 de cada mês (mensais) e nos vencimentos anuais.
+**Quando:** todos os dias, para os comprovativos; no dia 1 de cada mês, para as faturas do mês anterior.
 
-1. `Admin → Pagamentos`: ver as barbearias com vencimento no mês e o valor de cada uma.
-2. No **programa de faturação certificado da Performa LAB** (fora da plataforma), emitir a fatura de cada uma com o valor com IVA.
-3. Na plataforma, registar a fatura: número (o do programa certificado), período, valor e data.
-4. Pedir o pagamento segundo a preferência de cada barbearia: pedido MB WAY para o número indicado, IBAN por e-mail (geral@) ou entrega em mão.
-5. Quando o dinheiro entrar, registar o recebimento: data, método, valor e a fatura a que corresponde. O estado passa a «em dia».
+1. **A barbearia paga e envia o comprovativo** (MB WAY ou transferência) em «O meu plano» (D-168).
+2. Painel geral → «Comprovativos por confirmar» → «Conferir». Ver o comprovativo e confirmar no extrato do banco ou no MB WAY que o dinheiro entrou, com o valor e a data.
+3. «Aprovar pagamento»: regista o recebimento, põe a barbearia em dia, avança o vencimento um período (e reativa-a, se estava suspensa) e envia o e-mail de confirmação. Se o dinheiro não entrou ou o valor não bate, «Recusar» com o motivo: a barbearia recebe-o por e-mail.
+4. **Fatura:** enquanto o InvoiceXpress não estiver ativo (D-170), emitir a fatura-recibo no programa de faturação certificado da Prestadora, com **taxa 0 % e motivo M10** («IVA - regime de isenção», artigo 53.º do CIVA), e registar o número na plataforma. Com o InvoiceXpress ativo, a fatura-recibo sai sozinha ao aprovar.
+5. Pagamento sem comprovativo (em mão, por exemplo): `Admin → Pagamentos`, registar o recebimento à mão com a data, o método e o valor.
 
 **Nunca** emitir faturas pela plataforma: ela não é programa certificado (H.3).
 
