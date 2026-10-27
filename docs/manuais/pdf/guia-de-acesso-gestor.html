@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<title>InstaBarber · Guia de acesso aos painéis</title>
+<!-- Guia institucional para o gestor da barbearia: os endereços de cada painel e como se entra.
+     Gerado em PDF com scripts/gerar-pdf-guia.mjs. Cores da Parte I (Ouro #F5A623). -->
+<style>
+  @page { size: A4; margin: 0; }
+  :root {
+    --fundo: #09090B; --ouro: #F5A623; --ouro-texto: #B8760A; --texto: #09090B;
+    --sec: #52525B; --ter: #71717A; --borda: rgba(9,9,11,.10); --cartao: #F4F4F5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "Inter", system-ui, sans-serif; color: var(--texto); font-size: 10.5pt;
+         line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .pagina { width: 210mm; height: 297mm; padding: 18mm 18mm 22mm; position: relative;
+            page-break-after: always; overflow: hidden; background: #FFFFFF; }
+  .pagina:last-child { page-break-after: auto; }
+  /* Capa */
+  .capa { background: var(--fundo); color: #F4F4F5; display: flex; flex-direction: column;
+          justify-content: space-between; padding: 26mm 20mm; }
+  .capa .logo { width: 78mm; }
+  .capa h1 { font-size: 34pt; line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 6mm; font-weight: 800; }
+  .capa h1 span { color: var(--ouro); }
+  .capa .sub { font-size: 13pt; color: #A1A1AA; max-width: 130mm; margin: 0; }
+  .capa .faixa { height: 1.2mm; width: 34mm; background: var(--ouro); border-radius: 1mm; margin-bottom: 8mm; }
+  .capa .rodape { display: flex; justify-content: space-between; color: #71717A; font-size: 9pt; }
+  /* Páginas interiores */
+  .cabeca { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8mm;
+            font-size: 8.5pt; color: var(--ter); letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+  .cabeca b { color: var(--ouro-texto); }
+  h2 { font-size: 20pt; letter-spacing: -0.02em; margin: 0 0 3mm; font-weight: 800; line-height: 1.15; }
+  .intro { color: var(--sec); font-size: 11pt; margin: 0 0 6mm; max-width: 160mm; }
+  h3 { font-size: 12.5pt; margin: 5mm 0 2mm; font-weight: 700; }
+  p { margin: 0 0 2.5mm; }
+  ol, ul { margin: 0 0 3mm; padding-left: 5.5mm; }
+  li { margin-bottom: 1.6mm; }
+  .rotulo { font-size: 8pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ter); }
+  .url { font-family: "Inter", sans-serif; font-weight: 700; color: var(--ouro-texto); white-space: nowrap; }
+  .botao { display: inline-block; padding: .4mm 2.2mm; border-radius: 2mm; background: var(--cartao);
+           border: 1px solid var(--borda); font-weight: 600; font-size: 9.5pt; white-space: nowrap; }
+  .grelha { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .cartao { border: 1px solid var(--borda); border-radius: 4mm; padding: 5mm; background: #FFFFFF; }
+  .cartao.destaque { border-color: rgba(245,166,35,.55); background: #FFF8EC; }
+  .cartao h4 { margin: 1mm 0 2mm; font-size: 12pt; }
+  .cartao .url { display: block; font-size: 11pt; margin: 1.5mm 0 2.5mm; white-space: normal; word-break: break-all; }
+  .url-linha { color: var(--ouro-texto); font-weight: 700; white-space: nowrap; }
+  .nota { border-left: 1.2mm solid var(--ouro); background: #FFF8EC; padding: 3.5mm 5mm; border-radius: 0 3mm 3mm 0;
+          margin: 5mm 0; font-size: 10pt; }
+  .passos { counter-reset: p; list-style: none; padding: 0; }
+  .passos li { counter-increment: p; position: relative; padding-left: 10mm; margin-bottom: 2.4mm; }
+  .passos li::before { content: counter(p); position: absolute; left: 0; top: -.3mm; width: 6.5mm; height: 6.5mm;
+           border-radius: 50%; background: var(--fundo); color: var(--ouro); font-weight: 800; font-size: 9pt;
+           display: flex; align-items: center; justify-content: center; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.8pt; margin: 2mm 0 4mm; }
+  th { text-align: left; font-size: 8pt; text-transform: uppercase; letter-spacing: .07em; color: var(--ter);
+       font-weight: 700; padding: 0 3mm 2mm 0; border-bottom: 1px solid var(--borda); }
+  td { padding: 1.8mm 3mm 1.8mm 0; border-bottom: 1px solid var(--borda); vertical-align: top; }
+  td:first-child { font-weight: 700; white-space: nowrap; }
+  .pe { position: absolute; left: 18mm; right: 18mm; bottom: 10mm; display: flex; justify-content: space-between;
+        font-size: 8pt; color: var(--ter); border-top: 1px solid var(--borda); padding-top: 3mm; }
+</style>
+</head>
+<body>
+
+<!-- 1 · Capa -->
+<section class="pagina capa">
+  <img class="logo" src="../../../public/marca/logo-horizontal-branco.png" alt="InstaBarber">
+  <div>
+    <div class="faixa"></div>
+    <h1>Guia de acesso<br>aos <span>painéis</span></h1>
+    <p class="sub">Para o gestor da barbearia: onde entra cada pessoa, como se faz o primeiro acesso e o que fazer se algo não correr bem.</p>
+  </div>
+  <div class="rodape"><span>instabarber.pt</span><span>InstaBarber · Performa LAB</span></div>
+</section>
+
+<!-- 2 · Os quatro acessos -->
+<section class="pagina">
+  <div class="cabeca"><span><b>InstaBarber</b> · Guia de acesso</span><span>1 · Os acessos</span></div>
+  <h2>Quatro acessos, um só sistema</h2>
+  <p class="intro">Cada pessoa entra no seu espaço e vê só o que lhe pertence. Em todos os endereços abaixo, troque <b>a-sua-barbearia</b> pelo endereço da sua barbearia, que vem no e-mail de boas-vindas.</p>
+
+  <div class="grelha">
+    <div class="cartao destaque">
+      <span class="rotulo">Gestor (você)</span>
+      <h4>Painel de gestão</h4>
+      <span class="url">instabarber.pt/entrar</span>
+      <p>E-mail e palavra-passe. Também pela página da barbearia: <span class="botao">Entrar</span> → <span class="botao">Sou o gestor</span>.</p>
+    </div>
+    <div class="cartao">
+      <span class="rotulo">Barbeiros</span>
+      <h4>Painel do barbeiro</h4>
+      <span class="url">instabarber.pt/entrar</span>
+      <p>Cada barbeiro tem a sua conta, criada por convite seu. Na página: <span class="botao">Entrar</span> → <span class="botao">Sou o barbeiro</span>.</p>
+    </div>
+    <div class="cartao">
+      <span class="rotulo">Clientes</span>
+      <h4>Página da barbearia e marcação</h4>
+      <span class="url">instabarber.pt/a-sua-barbearia</span>
+      <p>Também em:<br><b class="url-linha">a-sua-barbearia.instabarber.pt</b><br>Marcar não pede conta.</p>
+    </div>
+    <div class="cartao">
+      <span class="rotulo">Clientes</span>
+      <h4>Área do cliente</h4>
+      <span class="url">instabarber.pt/a-sua-barbearia/entrar</span>
+      <p>Telemóvel e palavra-passe. Na página: <span class="botao">Entrar</span> → <span class="botao">Sou cliente</span>.</p>
+    </div>
+  </div>
+
+  <h3>Resumo</h3>
+  <table>
+    <tr><th>Quem</th><th>Entra com</th><th>Primeiro acesso</th></tr>
+    <tr><td>Gestor</td><td>E-mail e palavra-passe</td><td>Ligação do e-mail de boas-vindas, para definir a palavra-passe</td></tr>
+    <tr><td>Barbeiro</td><td>E-mail e palavra-passe</td><td>Ligação do convite que o gestor lhe envia</td></tr>
+    <tr><td>Cliente</td><td>Telemóvel e palavra-passe</td><td>Ao marcar («criar acesso») ou com um código enviado pela barbearia</td></tr>
+  </table>
+  <div class="nota"><b>Nunca partilhe palavras-passe.</b> Ninguém da InstaBarber lhe pede a sua palavra-passe, nem por e-mail nem por telefone. Cada pessoa usa a sua conta.</div>
+  <div class="pe"><span>InstaBarber · Guia de acesso aos painéis</span><span>2</span></div>
+</section>
+
+<!-- 3 · Painel de gestão -->
+<section class="pagina">
+  <div class="cabeca"><span><b>InstaBarber</b> · Guia de acesso</span><span>2 · Gestor</span></div>
+  <h2>Painel de gestão</h2>
+  <p class="intro">É aqui que gere a barbearia: agenda, clientes, equipa, dinheiro e configuração. Funciona no computador e no telemóvel.</p>
+
+  <h3>Primeiro acesso</h3>
+  <ol class="passos">
+    <li>Abra o e-mail de boas-vindas da InstaBarber e carregue na ligação para <b>definir a palavra-passe</b>. Se não o encontrar, veja na pasta de spam.</li>
+    <li>Entre em <span class="url">instabarber.pt/entrar</span> com o seu e-mail e a palavra-passe que escolheu.</li>
+    <li>Abre o <b>Início</b>, com os números do dia.</li>
+  </ol>
+
+  <h3>Nas vezes seguintes</h3>
+  <p>Entre em <span class="url">instabarber.pt/entrar</span>, ou na página da barbearia: <span class="botao">Entrar</span> → <span class="botao">Sou o gestor</span>. O ecrã de entrada mostra o logótipo e a capa da sua barbearia.</p>
+
+  <h3>Esqueceu-se da palavra-passe?</h3>
+  <p>No ecrã de entrada, carregue em <span class="botao">Esqueci-me da palavra-passe</span> e escreva o seu e-mail. Recebe uma ligação para definir outra.</p>
+
+  <h3>Como aplicação no telemóvel</h3>
+  <ul>
+    <li><b>iPhone (Safari):</b> <span class="botao">Partilhar</span> → <span class="botao">Adicionar ao ecrã principal</span>.</li>
+    <li><b>Android (Chrome):</b> menu ⋮ → <span class="botao">Adicionar ao ecrã principal</span>.</li>
+  </ul>
+  <p>O painel passa a abrir com o ícone da sua barbearia, como uma aplicação.</p>
+
+  <h3>O que encontra no menu</h3>
+  <table>
+    <tr><td>Início</td><td>Os números do dia e os pedidos de acesso dos clientes</td></tr>
+    <tr><td>Agenda</td><td>Marcar ao balcão, concluir serviços, faltas e lembretes por WhatsApp</td></tr>
+    <tr><td>Clientes</td><td>Fichas, clientes em risco e perdidos, histórico de cortes</td></tr>
+    <tr><td>Equipa</td><td>Barbeiros, convites e o painel de cada um</td></tr>
+    <tr><td>Financeiro · Comissões</td><td>Objetivo do mês, despesas e acertos com os barbeiros</td></tr>
+    <tr><td>Relatório</td><td>O relatório do mês, com recomendações</td></tr>
+    <tr><td>Gestão do sistema</td><td>Marca, horário, serviços, promoções e restante configuração</td></tr>
+    <tr><td>O meu plano</td><td>Plano, vencimento e envio do comprovativo da mensalidade</td></tr>
+  </table>
+  <p style="color:var(--ter);font-size:9pt">Alguns menus dependem do plano contratado. Se não vir um menu, essa funcionalidade não está no seu plano.</p>
+  <div class="pe"><span>InstaBarber · Guia de acesso aos painéis</span><span>3</span></div>
+</section>
+
+<!-- 4 · Barbeiros e clientes -->
+<section class="pagina">
+  <div class="cabeca"><span><b>InstaBarber</b> · Guia de acesso</span><span>3 · Barbeiros e clientes</span></div>
+  <h2>Barbeiros e clientes</h2>
+  <p class="intro">Os barbeiros entram com a conta que lhes cria; os clientes entram com o telemóvel.</p>
+
+  <h3>Dar acesso a um barbeiro</h3>
+  <ol class="passos">
+    <li>No painel de gestão: <span class="botao">Equipa</span> → <span class="botao">Registar barbeiro</span>. Escreva o nome e o e-mail dele.</li>
+    <li>Carregue em <span class="botao">Registar e enviar convite</span>. O barbeiro recebe um e-mail com a ligação para definir a palavra-passe.</li>
+    <li>Ele entra em <span class="url">instabarber.pt/entrar</span> e vê só o painel dele: a agenda, os clientes dele, as metas, as comissões e o perfil.</li>
+  </ol>
+  <p>Não recebeu o convite? <span class="botao">Reenviar convite</span> na Equipa. Um barbeiro saiu? <span class="botao">Cancelar acesso</span> na Gestão do sistema → Equipa: deixa de entrar, e o histórico fica.</p>
+
+  <h3>A página da barbearia</h3>
+  <p>Partilhe <span class="url">instabarber.pt/a-sua-barbearia</span> no Instagram, no Google, no estado do WhatsApp e num código QR ao balcão. Os clientes marcam a qualquer hora, sem conta. Clientes de outros países marcam com o número do país deles.</p>
+
+  <h3>A área do cliente</h3>
+  <p>O cliente vê os selos, as próximas marcações, o histórico e as fotografias dos cortes que a barbearia partilhar. Cria o acesso ao marcar, escolhendo uma palavra-passe, ou com um código:</p>
+  <ol class="passos">
+    <li>O cliente pede o código na página: <span class="botao">Entrar</span> → <span class="botao">Sou cliente</span> → <span class="botao">Pedir código</span>.</li>
+    <li>O pedido aparece no seu <b>Início</b>, em «Pedidos de acesso». Carregue em <span class="botao">Enviar código por WhatsApp</span>, envie na conversa que abre e carregue em <span class="botao">Já enviei</span>.</li>
+    <li>O código vale <b>15 minutos</b>. Se passar o prazo, o cliente pede outro.</li>
+  </ol>
+  <div class="nota">O código de acesso é pessoal: envie-o só para o telemóvel do próprio cliente.</div>
+
+  <h3>Precisa de ajuda?</h3>
+  <table>
+    <tr><td>Apoio</td><td><span class="url">apoio@instabarber.pt</span> · de segunda a sábado, das 8h00 às 20h00; ao domingo, só emergências</td></tr>
+    <tr><td>Plano e preços</td><td><span class="url">comercial@instabarber.pt</span></td></tr>
+    <tr><td>Proteção de dados</td><td><span class="url">privacidade@instabarber.pt</span></td></tr>
+  </table>
+  <div class="pe"><span>InstaBarber · Performa LAB</span><span>4</span></div>
+</section>
+
+</body>
+</html>
