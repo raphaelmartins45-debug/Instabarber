@@ -55,7 +55,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Línguas da página pública e tradução dos serviços (D-176) | Feito; tradução **pendente de ativação** (`DEEPL_CHAVE`) | 27/10/2026 | Língua do telemóvel confirmada em ensaio (8 Playwright: pt-PT, pt-BR, fr-FR, fr-CA, de-DE, en-US e o ecrã Serviços nos dois projetos); botão DeepL com 5 Vitest; textos EN e FR revistos. Para ativar: conta gratuita da API do DeepL e a chave na Vercel (`DEEPL_CHAVE`). Por decidir: aceitar telemóveis estrangeiros na marcação |
 | Ecrã das promoções (D-177, pendente 21) | Feito | 27/10/2026 | Gestão do sistema → Promoções; sem esquema novo. Ensaio `e2e/promocoes.spec.ts` (criar, ver na página pública, desligar, remover; computador e telemóvel) |
 | Telemóveis estrangeiros e língua declarada (D-178) | Feito | 27/10/2026 | Marcação com número inglês em ensaio (computador e telemóvel); campos de telefone já não cortam o número; `<html lang>` certo em pt, en e fr; nomes protegidos da tradução |
-| Histórico de cortes com fotografias e consentimento (D-179) | Feito; a publicar pelo P-16 (migração 18) | 27/10/2026 | 655 SQL (19 novos); `e2e/historico-cortes.spec.ts` (registar com duas fotografias e autorização, o cliente vê sem a nota interna, retira a autorização e as fotografias saem) no computador e no telemóvel |
+| Histórico de cortes com fotografias e consentimento (D-179) | Publicado; migração 18 no ensaio (655 SQL) e na produção (cópia `035201Z` por e-mail, RLS 66/66) | 27/10/2026 | 655 SQL (19 novos); `e2e/historico-cortes.spec.ts` (registar com duas fotografias e autorização, o cliente vê sem a nota interna, retira a autorização e as fotografias saem) no computador e no telemóvel |
 
 ## Pendentes do dono
 

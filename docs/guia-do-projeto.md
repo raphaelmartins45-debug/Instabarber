@@ -174,8 +174,8 @@ chave de serviço só em código de servidor (`CLAUDE.md` §3); revogar e trocar
 3. Local: `npx supabase db reset`, `npm run test:sql`, `scripts/comparar-esquema.sh`,
    `npm run db:types`, e o resto dos testes.
 4. Ensaio: `scripts/aplicar-migracao.sh ensaio …` e `scripts/testar-sql-ensaio.py`.
-5. Cópia cifrada da produção (`copia-api.py`), verificada (`gpg -d … | tar xz` e
-   `sha256sum -c SHA256SUMS`), enviada com `enviar-copia.mjs`.
+5. Cópia cifrada da produção (`copia-api.py`), verificada **antes** de a enviar (`gpg -d … | tar xz`
+   e `sha256sum -c SHA256SUMS` dentro da subpasta que o arquivo cria), enviada com `enviar-copia.mjs`.
 6. Produção: `scripts/aplicar-migracao.sh producao …` (`sem_rls` tem de ser 0).
 7. Publicar a aplicação.
 **Um teste de isolamento que falhe para tudo** (`CLAUDE.md` §3).
