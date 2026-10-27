@@ -4,6 +4,10 @@ Documento para usar **durante** a formação de uma barbearia nova: quem forma s
 passo, e o gestor fica com ele para rever depois. Cada passo diz **onde clicar**, **o que se vê**
 e **o que fazer se for diferente**. No fim de cada sessão há uma lista para marcar.
 
+**Quem dá a formação:** o dono da InstaBarber ou o comercial que fechou a barbearia (decisão do
+dono, 27/10/2026). Os passos são os mesmos; muda só onde se regista cada sessão (ver «Depois da
+formação»).
+
 A formação são **três sessões curtas**, de preferência no telemóvel do gestor (é onde ele vai
 usar o sistema), com o computador ao lado para o que é mais confortável num ecrã grande:
 
@@ -33,7 +37,8 @@ Envie esta lista dois dias antes, para a sessão não parar à espera de dados:
 - [ ] Férias ou folgas já marcadas para as próximas semanas.
 
 **Quem forma confirma antes:** o gestor já recebeu o e-mail de boas-vindas e definiu a
-palavra-passe; a barbearia aparece ativa no Admin.
+palavra-passe; a barbearia está ativa (o dono vê-a no Admin → Barbearias; o comercial, em
+Comercial → Desempenho → «Carteira de clientes»).
 
 ---
 
@@ -241,6 +246,14 @@ Ao preço não acresce IVA (regime de isenção do artigo 53.º do CIVA).
 - **Dia 30:** sessão 3.
 - **Dia 90:** revisão dos números com o relatório mensal.
 
-Registe cada sessão no Admin → ficha da barbearia → «Registo de apoio».
+Registe cada sessão, com o que ficou combinado e as dúvidas do gestor:
+
+- **O dono:** Admin → Barbearias → ficha da barbearia → «Registo de apoio».
+- **O comercial:** Comercial → Leads → o lead ganho desta barbearia → «Registar contacto», tipo
+  «Nota». Na «Próxima ação», ponha o contacto seguinte com a data (dia 7, 30 ou 90): aparece na
+  agenda «Hoje» nesse dia.
+
+Uma dúvida que o guia não responde vai para o dono, para entrar na versão seguinte deste
+documento.
 
 InstaBarber · Performa LAB

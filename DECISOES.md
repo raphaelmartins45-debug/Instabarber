@@ -911,3 +911,7 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Regras:** nas origens de prospeção (visita, Instagram, indicação) o consentimento do contacto é obrigatório (RGPD); todo o lead criado à mão leva a próxima ação com data; o fim do contrato atual entra na agenda «Hoje» nos 30 dias antes, com mensagem pronta; o briefing começa com a ficha (morada, cadeiras, barbeiros, como marcam, sistema, custo, cargo do decisor).
 - **Telemóvel:** as listas de comerciais (Atribuir responsável e o filtro da lista de leads) alargavam a página quando um nome ou e-mail era comprido; passam a ter largura limitada, com ensaio da largura na ficha e na lista.
 - **Publicação (P-16):** migração 17 aplicada no ensaio (636 SQL) e na produção a 27/10/2026 (RLS 66/66). Cópia cifrada da produção `211105Z` verificada e enviada para geral@instabarber.pt, para guardar no Drive.
+
+## D-175 · 27/10/2026 · Formação do gestor da barbearia: três sessões, dada pelo dono ou pelo comercial — dono
+- Aprovada a divisão em três sessões (arranque no dia da entrada, dia a dia nos primeiros 3 dias, crescer aos 30 dias), em `docs/manuais/formacao-gestor-barbearia.md`.
+- Quem forma: o dono da InstaBarber ou o comercial que fechou a barbearia. O dono regista cada sessão no «Registo de apoio» da ficha da barbearia; o comercial, que não abre o Admin das barbearias (D-161), regista-a como nota no lead ganho, com a próxima ação na agenda «Hoje».
