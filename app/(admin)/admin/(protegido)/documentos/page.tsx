@@ -3,6 +3,7 @@ import { ContratosLead } from "@/components/admin/comercial/contratos-lead";
 import { ListaPropostas } from "@/components/admin/comercial/lista-propostas";
 import { DocumentosBarbearia } from "@/components/admin/documentos/documentos-barbearia";
 import { Escolher } from "@/components/admin/documentos/escolher";
+import { FolhetoVisita } from "@/components/admin/documentos/folheto-visita";
 import { Secao } from "@/components/nucleo/secao";
 import { Button } from "@/components/ui/button";
 import { eAdministrador } from "@/lib/admin/acesso";
@@ -16,6 +17,7 @@ import {
   modeloAprovado,
   propostasDoLead,
 } from "@/lib/repositorios/comercial/propostas";
+import { perfilDePlataforma } from "@/lib/repositorios/perfis";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 const t = textos.documentos;
@@ -33,14 +35,16 @@ export default async function GeradorDeDocumentos({
 }: {
   searchParams: Promise<{ lead?: string; barbearia?: string }>;
 }) {
-  const admin = eAdministrador((await exigirEquipaPlataforma()).papel);
+  const quem = await exigirEquipaPlataforma();
+  const admin = eAdministrador(quem.papel);
   const p = await searchParams;
   const [leadId, inquilinoId] = [valido(p.lead), valido(p.barbearia)];
   const bd = await criarClienteServidor();
-  const [leads, barbearias, lead] = await Promise.all([
+  const [leads, barbearias, lead, eu] = await Promise.all([
     listarLeads(bd),
     admin ? listarBarbearias(bd) : [],
     leadId ? obterLead(bd, leadId) : null,
+    perfilDePlataforma(bd, quem.userId),
   ]);
   const [propostas, contratos, briefing, modelo] = lead
     ? await Promise.all([
@@ -96,6 +100,12 @@ export default async function GeradorDeDocumentos({
               />
             </div>
           ) : null}
+        </div>
+      </Secao>
+      <Secao id="folheto" titulo={t.ecra.folhetoTitulo}>
+        <div className="grid gap-3">
+          <p className="text-sm text-muted-foreground">{t.ecra.folhetoAjuda}</p>
+          <FolhetoVisita telefone={eu?.telefone ?? null} />
         </div>
       </Secao>
       {admin ? (

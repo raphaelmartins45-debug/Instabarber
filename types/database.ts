@@ -1190,10 +1190,15 @@ export type Database = {
       contratos: {
         Row: {
           assinado_em: string | null;
+          carregado_em: string | null;
+          carregado_path: string | null;
           criado_em: string;
           criado_por: string | null;
           dados: NonNullable<Json>;
           data_inicio: string | null;
+          enviado_cliente_em: string | null;
+          envio_expira_em: string | null;
+          envio_token_hash: string | null;
           estado: string;
           id: string;
           inquilino_id: string | null;
@@ -1203,15 +1208,21 @@ export type Database = {
           pdf_assinado_path: string | null;
           pdf_path: string | null;
           proposta_id: string;
+          recusa_motivo: string | null;
           texto: string;
         };
         ComputedFields: never;
         Insert: {
           assinado_em?: string | null;
+          carregado_em?: string | null;
+          carregado_path?: string | null;
           criado_em?: string;
           criado_por?: string | null;
           dados: NonNullable<Json>;
           data_inicio?: string | null;
+          enviado_cliente_em?: string | null;
+          envio_expira_em?: string | null;
+          envio_token_hash?: string | null;
           estado?: string;
           id?: string;
           inquilino_id?: string | null;
@@ -1221,14 +1232,20 @@ export type Database = {
           pdf_assinado_path?: string | null;
           pdf_path?: string | null;
           proposta_id: string;
+          recusa_motivo?: string | null;
           texto: string;
         };
         Update: {
           assinado_em?: string | null;
+          carregado_em?: string | null;
+          carregado_path?: string | null;
           criado_em?: string;
           criado_por?: string | null;
           dados?: NonNullable<Json>;
           data_inicio?: string | null;
+          enviado_cliente_em?: string | null;
+          envio_expira_em?: string | null;
+          envio_token_hash?: string | null;
           estado?: string;
           id?: string;
           inquilino_id?: string | null;
@@ -1238,6 +1255,7 @@ export type Database = {
           pdf_assinado_path?: string | null;
           pdf_path?: string | null;
           proposta_id?: string;
+          recusa_motivo?: string | null;
           texto?: string;
         };
         Relationships: [
@@ -3823,6 +3841,7 @@ export type Database = {
           inquilino_id: string | null;
           nome: string | null;
           papel: string;
+          telefone: string | null;
           user_id: string;
         };
         ComputedFields: never;
@@ -3834,6 +3853,7 @@ export type Database = {
           inquilino_id?: string | null;
           nome?: string | null;
           papel: string;
+          telefone?: string | null;
           user_id: string;
         };
         Update: {
@@ -3844,6 +3864,7 @@ export type Database = {
           inquilino_id?: string | null;
           nome?: string | null;
           papel?: string;
+          telefone?: string | null;
           user_id?: string;
         };
         Relationships: [
@@ -5446,6 +5467,17 @@ export type Database = {
         Args: { p_chave: string; p_janela: string; p_max: number };
         Returns: boolean;
       };
+      contrato_do_cliente: {
+        Args: { p_token: string };
+        Returns: {
+          contratante: string;
+          estado: string;
+          id: string;
+          lead_id: string;
+          numero: string;
+          recusa_motivo: string;
+        }[];
+      };
       criar_convite_adesao: {
         Args: { p_contrato: string; p_dados: Json; p_dias?: number; p_token: string };
         Returns: string;
@@ -5610,6 +5642,7 @@ export type Database = {
         Args: { p_estado: string; p_lead: string; p_motivo?: string };
         Returns: undefined;
       };
+      mudar_meu_telefone: { Args: { p_telefone: string }; Returns: undefined };
       nif_valido: { Args: { p_nif: string }; Returns: boolean };
       pasta_lead_acessivel: { Args: { p_nome: string }; Returns: boolean };
       pedir_codigo_acesso: {
@@ -5629,6 +5662,10 @@ export type Database = {
       pode_marcar_online: { Args: { p_cliente: string }; Returns: boolean };
       posicao_fila_espera: { Args: { p_entrada: string }; Returns: number };
       preparar_demonstracao: { Args: Record<PropertyKey, never>; Returns: string };
+      preparar_envio_contrato: {
+        Args: { p_contrato: string; p_dias?: number; p_token: string };
+        Returns: undefined;
+      };
       preparar_lembrete_vencimento: {
         Args: { p_canal: string; p_conteudo: string; p_inquilino: string };
         Returns: string;
@@ -5658,6 +5695,10 @@ export type Database = {
           slug: string;
         }[];
       };
+      recusar_carregamento_contrato: {
+        Args: { p_contrato: string; p_motivo: string };
+        Returns: undefined;
+      };
       recusar_comprovativo: { Args: { p_id: string; p_motivo: string }; Returns: undefined };
       registar_auditoria: {
         Args: {
@@ -5678,6 +5719,10 @@ export type Database = {
           p_inquilino: string;
         };
         Returns: undefined;
+      };
+      registar_carregamento_contrato: {
+        Args: { p_path: string; p_token: string };
+        Returns: boolean;
       };
       registar_email_confirmacao: {
         Args: { p_enviado: boolean; p_marcacao: string };

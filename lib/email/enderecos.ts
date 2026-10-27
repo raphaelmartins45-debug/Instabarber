@@ -16,4 +16,6 @@ export const enderecos = {
   remetente: () => `${textos.marca.nome} <${variavel("EMAIL_REMETENTE")}>`,
   /** Remetente das respostas ao visitante e do apoio às barbearias. */
   apoio: () => `${textos.marca.nome} <apoio@${DOMINIO}>`,
+  /** Remetente dos e-mails comerciais para fora: contratos e propostas (L.2, D-181). */
+  comercialRemetente: () => `${textos.marca.nome} <comercial@${DOMINIO}>`,
 };

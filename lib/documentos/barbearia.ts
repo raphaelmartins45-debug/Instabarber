@@ -53,12 +53,13 @@ export async function barbeariaDoDocumento(
 export async function assinaturaDe(
   bd: ClienteBD,
   userId: string,
-): Promise<{ nome: string; funcao: string; email: string | null }> {
+): Promise<{ nome: string; funcao: string; email: string | null; telefone: string | null }> {
   const p = await perfilDePlataforma(bd, userId);
   const funcoes = textos.documentos.funcoes;
   return {
     nome: p?.nome || textos.marca.nome,
     funcao: funcoes[p?.papel ?? ""] ?? textos.marca.nome,
     email: p?.email ?? null,
+    telefone: p?.telefone ?? null,
   };
 }

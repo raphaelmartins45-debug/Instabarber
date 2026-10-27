@@ -298,6 +298,7 @@ export const comercial = {
     estados: {
       rascunho: "Rascunho",
       enviado: "Enviado",
+      carregado: "Por conferir",
       assinado: "Assinado",
       terminado: "Terminado",
       cancelado: "Cancelado",

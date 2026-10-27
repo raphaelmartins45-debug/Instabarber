@@ -138,13 +138,27 @@ export async function papelNaPlataforma(bd: ClienteBD, userId: string): Promise<
 export async function perfilDePlataforma(
   bd: ClienteBD,
   userId: string,
-): Promise<{ nome: string | null; email: string | null; papel: string } | null> {
+): Promise<{
+  nome: string | null;
+  email: string | null;
+  telefone: string | null;
+  papel: string;
+} | null> {
   const { data, error } = await bd
     .from("perfis")
-    .select("nome, email, papel")
+    .select("nome, email, telefone, papel")
     .eq("user_id", userId)
     .is("inquilino_id", null)
     .maybeSingle();
   if (error) falhaDeLeitura("perfis", error);
   return data;
+}
+
+/** Cada pessoa da equipa InstaBarber muda o seu telefone, em E.164 (D-181). */
+export async function mudarMeuTelefone(bd: ClienteBD, telefone: string | null): Promise<boolean> {
+  // Nulo apaga o telefone; os tipos gerados não marcam o argumento como anulável.
+  const { error } = await bd.rpc("mudar_meu_telefone", {
+    p_telefone: telefone as string,
+  });
+  return !error;
 }

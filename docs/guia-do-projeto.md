@@ -93,6 +93,7 @@ decisão no `DECISOES.md`.
 | Entradas por barbearia | 27/10/2026 | `/gestor`, `/barbeiro` e `/cliente` no endereço de cada barbearia, com a marca dela | — | D-180 |
 | Apoio às vendas | 27/10/2026 | Demonstração e ferramentas de venda num separador próprio | — | D-181 |
 | Gerador de documentos | 27/10/2026 | Proposta rápida, guia de arranque em anexo nas boas-vindas, guia do barbeiro, cartaz com QR, resumo da conta | — | D-181 |
+| Contrato por e-mail | 27/10/2026 | O cliente carrega o contrato assinado por ligação segura; conferir, agradecer e adesão; folheto da visita | 19 | D-181 |
 
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.

@@ -9,7 +9,10 @@ import type { Lead } from "@/lib/repositorios/comercial/leads";
 import type { Proposta } from "@/lib/repositorios/comercial/propostas";
 import { AcoesContrato } from "./acoes-contrato";
 import { AssinarContrato } from "./assinar-contrato";
+import { AvisoContrato } from "./aviso-contrato";
+import { ConferirContrato } from "./conferir-contrato";
 import { ConviteAdesao } from "./convite-adesao";
+import { EnviarContrato } from "./enviar-contrato";
 import { GerarContrato } from "./gerar-contrato";
 
 const t = textos.comercial.contratos;
@@ -17,6 +20,7 @@ const t = textos.comercial.contratos;
 export const TOM_CONTRATO: Record<string, TomEtiqueta> = {
   rascunho: "neutro",
   enviado: "info",
+  carregado: "alerta",
   assinado: "sucesso",
   terminado: "neutro",
   cancelado: "neutro",
@@ -33,7 +37,10 @@ const contratanteDoBriefing = (b: Briefing, lead: Lead): DadosContratante => ({
   data_inicio: /^\d{4}-\d{2}-\d{2}$/.test(b.data_arranque) ? b.data_arranque : hojeIso(),
 });
 
-/** Secção «Contratos» da ficha (N.6, N.7): gerar, enviar, assinar e convidar para a adesão. */
+/**
+ * Secção «Contratos» da ficha (N.6, N.7, D-181): gerar, enviar ao cliente por e-mail, conferir o
+ * que ele carregou, assinar e convidar para a adesão.
+ */
 export function ContratosLead({
   lead,
   briefing,
@@ -49,7 +56,7 @@ export function ContratosLead({
 }) {
   const aceite = propostas.find((p) => p.estado_efetivo === "aceite");
   const assinado = contratos.some((c) => c.estado === "assinado");
-  const emCurso = contratos.some((c) => c.estado === "rascunho" || c.estado === "enviado");
+  const emCurso = contratos.some((c) => ["rascunho", "enviado", "carregado"].includes(c.estado));
   const formulario =
     aceite && !assinado ? (
       <GerarContrato
@@ -61,6 +68,7 @@ export function ContratosLead({
     ) : null;
   return (
     <div className="grid gap-3">
+      <AvisoContrato />
       {aceite && !assinado && !haModelo ? <Aviso tipo="erro">{t.semModelo}</Aviso> : null}
       {formulario && haModelo ? (
         emCurso ? (
@@ -90,8 +98,24 @@ export function ContratosLead({
             {c.estado !== "cancelado" ? (
               <AcoesContrato leadId={lead.id} id={c.id} estado={c.estado} />
             ) : null}
+            {c.estado === "enviado" && c.recusa_motivo ? (
+              <p className="text-sm text-alerta" data-testid="contrato-recusado">
+                {textos.contratoCliente.equipa.ultimaRecusa(c.recusa_motivo)}
+              </p>
+            ) : null}
             {c.estado === "rascunho" || c.estado === "enviado" ? (
-              <AssinarContrato leadId={lead.id} id={c.id} />
+              <>
+                <EnviarContrato
+                  leadId={lead.id}
+                  id={c.id}
+                  email={(c.dados as { email?: string }).email || null}
+                  enviadoEm={c.enviado_cliente_em}
+                />
+                <AssinarContrato leadId={lead.id} id={c.id} />
+              </>
+            ) : null}
+            {c.estado === "carregado" ? (
+              <ConferirContrato leadId={lead.id} id={c.id} hoje={hojeIso()} />
             ) : null}
             {c.estado === "assinado" ? (
               c.inquilino_id ? (

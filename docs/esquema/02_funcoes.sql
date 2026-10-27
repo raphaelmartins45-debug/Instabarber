@@ -1492,13 +1492,13 @@ begin
   select * into v from public.contratos where id = p_contrato for update;
   if v.id is not null then perform public.exigir_lead(v.lead_id); end if;
   if v.id is null then raise exception 'contrato_inexistente' using errcode = 'P0001'; end if;
-  if v.estado not in ('rascunho','enviado') then raise exception 'contrato_nao_assinavel' using errcode = 'P0001'; end if;
+  if v.estado not in ('rascunho','enviado','carregado') then raise exception 'contrato_nao_assinavel' using errcode = 'P0001'; end if;
   if p_data is null or coalesce(trim(p_pdf_assinado), '') = '' then
     raise exception 'assinatura_incompleta' using errcode = 'P0001';
   end if;
   update public.contratos
      set estado = 'assinado', assinado_em = p_data, pdf_assinado_path = p_pdf_assinado,
-         data_inicio = coalesce(p_inicio, data_inicio)
+         data_inicio = coalesce(p_inicio, data_inicio), envio_token_hash = null
    where id = p_contrato;
   update public.leads set estado = 'ganho', motivo_perda = null, atualizado_em = now() where id = v.lead_id;
   perform public.evento_lead(v.lead_id, 'contrato', 'Contrato ' || v.numero || ' assinado.', jsonb_build_object('contrato', p_contrato));
@@ -1512,6 +1512,98 @@ begin
                   where pf.user_id = l.responsavel_id and pf.papel = 'comercial' and pf.ativo
                     and pf.inquilino_id is null)
   on conflict (contrato_id) do nothing;
+end $$;
+
+
+-- Contrato enviado ao cliente e carregado por ele; telefone da equipa (D-181, migração 19).
+-- Cada pessoa da equipa muda só o seu telefone (os administradores e o comercial).
+create or replace function public.mudar_meu_telefone(p_telefone text) returns void
+language plpgsql security definer set search_path = '' as $$
+begin
+  perform public.exigir_comercial_ou_admin();
+  if p_telefone is not null and p_telefone !~ '^\+[1-9][0-9]{7,14}$' then
+    raise exception 'telefone_invalido' using errcode = 'P0001';
+  end if;
+  update public.perfis set telefone = p_telefone
+   where user_id = auth.uid() and inquilino_id is null;
+end $$;
+
+-- Guarda o hash da ligação enviada ao cliente (válida p_dias) e marca o contrato como enviado.
+-- O motivo de uma recusa anterior fica até o cliente carregar outra vez.
+create or replace function public.preparar_envio_contrato(p_contrato uuid, p_token text, p_dias integer default 30)
+returns void language plpgsql security definer set search_path = '' as $$
+declare v public.contratos%rowtype;
+begin
+  perform public.exigir_comercial_ou_admin();
+  select * into v from public.contratos where id = p_contrato for update;
+  if v.id is not null then perform public.exigir_lead(v.lead_id); end if;
+  if v.id is null then raise exception 'contrato_inexistente' using errcode = 'P0001'; end if;
+  if v.estado not in ('rascunho','enviado') then
+    raise exception 'contrato_nao_enviavel' using errcode = 'P0001';
+  end if;
+  if p_token is null or length(p_token) < 32 then raise exception 'token_fraco' using errcode = 'P0001'; end if;
+  if p_dias is null or p_dias not between 1 and 60 then raise exception 'prazo_invalido' using errcode = 'P0001'; end if;
+  update public.contratos
+     set estado = 'enviado',
+         envio_token_hash = encode(sha256(convert_to(p_token, 'UTF8')), 'hex'),
+         envio_expira_em = now() + make_interval(days => p_dias),
+         enviado_cliente_em = now()
+   where id = p_contrato;
+  perform public.evento_lead(v.lead_id, 'contrato',
+    'Contrato ' || v.numero || ' enviado ao cliente por e-mail.', jsonb_build_object('contrato', p_contrato));
+end $$;
+
+-- O que a página do cliente mostra: só com a ligação certa, dentro do prazo e antes de assinado.
+create or replace function public.contrato_do_cliente(p_token text)
+returns table (id uuid, lead_id uuid, numero text, estado text, contratante text, recusa_motivo text)
+language sql stable security definer set search_path = '' as $$
+  select c.id, c.lead_id, c.numero, c.estado, c.dados ->> 'razao_social', c.recusa_motivo
+    from public.contratos c
+   where c.envio_token_hash = encode(sha256(convert_to(coalesce(p_token, ''), 'UTF8')), 'hex')
+     and c.envio_expira_em > now()
+     and c.estado in ('enviado','carregado')
+$$;
+
+-- O cliente carregou o PDF assinado (no caminho que a aplicação lhe deu): fica por conferir.
+create or replace function public.registar_carregamento_contrato(p_token text, p_path text)
+returns boolean language plpgsql security definer set search_path = '' as $$
+declare v public.contratos%rowtype;
+begin
+  select * into v from public.contratos
+   where envio_token_hash = encode(sha256(convert_to(coalesce(p_token, ''), 'UTF8')), 'hex')
+     and envio_expira_em > now() and estado in ('enviado','carregado')
+   for update;
+  if v.id is null then return false; end if;
+  if p_path is distinct from 'leads/' || v.lead_id || '/contratos/' || v.id || '-carregado.pdf' then
+    return false;
+  end if;
+  update public.contratos
+     set estado = 'carregado', carregado_path = p_path, carregado_em = now(), recusa_motivo = null
+   where id = v.id;
+  insert into public.lead_eventos (lead_id, tipo, texto, detalhes)
+  values (v.lead_id, 'contrato', 'O cliente carregou o contrato ' || v.numero || ' assinado.',
+          jsonb_build_object('contrato', v.id));
+  return true;
+end $$;
+
+-- A equipa recusa o PDF carregado (ilegível, sem assinatura…): volta a «enviado», com o motivo.
+create or replace function public.recusar_carregamento_contrato(p_contrato uuid, p_motivo text)
+returns void language plpgsql security definer set search_path = '' as $$
+declare v public.contratos%rowtype;
+begin
+  perform public.exigir_comercial_ou_admin();
+  select * into v from public.contratos where id = p_contrato for update;
+  if v.id is not null then perform public.exigir_lead(v.lead_id); end if;
+  if v.id is null or v.estado <> 'carregado' then
+    raise exception 'contrato_nao_carregado' using errcode = 'P0001';
+  end if;
+  if coalesce(trim(p_motivo), '') = '' then raise exception 'motivo_obrigatorio' using errcode = 'P0001'; end if;
+  update public.contratos
+     set estado = 'enviado', recusa_motivo = left(trim(p_motivo), 400),
+         carregado_path = null, carregado_em = null
+   where id = p_contrato;
+  perform public.evento_lead(v.lead_id, 'contrato',
+    'Contrato ' || v.numero || ' carregado recusado: ' || left(trim(p_motivo), 400), jsonb_build_object('contrato', p_contrato));
 end $$;
 
 -- O convite leva os dados do contrato para o formulário de adesão (D.12).
@@ -2505,6 +2597,13 @@ grant execute on function public.preparar_lembrete_vencimento(uuid, text, text),
 -- Funções internas que só correm dentro de outras (registar_auditoria,
 -- cliente_por_telefone, pode_marcar_online e as funções de gatilho) não ficam
 -- expostas: sem EXECUTE para anon nem authenticated.
+grant execute on function public.mudar_meu_telefone(text),
+  public.preparar_envio_contrato(uuid, text, integer),
+  public.recusar_carregamento_contrato(uuid, text)
+  to authenticated;
+grant execute on function public.contrato_do_cliente(text),
+  public.registar_carregamento_contrato(text, text)
+  to anon, authenticated;
 grant execute on all functions in schema public to service_role;
 
 -- Vistas públicas: só leitura

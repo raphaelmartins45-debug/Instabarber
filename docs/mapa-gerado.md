@@ -4,6 +4,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 ## Rotas (app/)
 
+- `app/(adesao)/adesao/contrato/[token]/page.tsx`
 - `app/(adesao)/adesao/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/[separador]/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/exportar/route.ts`
@@ -26,6 +27,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/comunicados/page.tsx`
 - `app/(admin)/admin/(protegido)/design/page.tsx`
 - `app/(admin)/admin/(protegido)/documentos/barbearia/[id]/[tipo]/route.ts`
+- `app/(admin)/admin/(protegido)/documentos/folheto/route.ts`
 - `app/(admin)/admin/(protegido)/documentos/page.tsx`
 - `app/(admin)/admin/(protegido)/documentos/proposta/page.tsx`
 - `app/(admin)/admin/(protegido)/equipa/page.tsx`
@@ -293,6 +295,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `confirmar_lembrete_vencimento()`
 - `confirmar_reserva()`
 - `consumir_limite()`
+- `contrato_do_cliente()`
 - `criar_convite_adesao()`
 - `criar_pedido_loja()`
 - `criar_proposta()`
@@ -347,6 +350,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `modulo_ativo()`
 - `mudar_consentimento_fotos()`
 - `mudar_estado_lead()`
+- `mudar_meu_telefone()`
 - `nif_valido()`
 - `orfas_ao_desativar()`
 - `pasta_lead_acessivel()`
@@ -356,6 +360,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `pode_marcar_online()`
 - `posicao_fila_espera()`
 - `preparar_demonstracao()`
+- `preparar_envio_contrato()`
 - `preparar_lead()`
 - `preparar_lembrete_vencimento()`
 - `procurar_cliente_por_telefone()`
@@ -366,9 +371,11 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `proteger_proposta()`
 - `proximo_numero_comercial()`
 - `reclamar_email_confirmacao()`
+- `recusar_carregamento_contrato()`
 - `recusar_comprovativo()`
 - `registar_auditoria()`
 - `registar_auditoria_admin()`
+- `registar_carregamento_contrato()`
 - `registar_email_confirmacao()`
 - `registar_email_lembrete()`
 - `registar_evento_lead()`

@@ -135,9 +135,11 @@ create table perfis (
                 check (papel in ('super_admin','gestor_plataforma','comercial','proprietario','profissional')),
   nome          text,
   email         text,
+  telefone      text,                        -- da equipa InstaBarber, para o folheto (D-181)
   ativo         boolean not null default true,
   criado_em     timestamptz not null default now(),
   constraint perfis_check check ((papel in ('super_admin','gestor_plataforma','comercial')) = (inquilino_id is null)),
+  constraint perfis_telefone check (telefone is null or telefone ~ '^\+[1-9][0-9]{7,14}$'),
   unique nulls not distinct (user_id, inquilino_id, papel)
 );
 create index perfis_user on perfis (user_id) where ativo;
@@ -1158,7 +1160,8 @@ create table contratos (
   modelo_id           uuid not null references modelos_documento(id) on delete no action,
   numero              text not null unique,
   estado              text not null default 'rascunho'
-                      check (estado in ('rascunho','enviado','assinado','terminado','cancelado')),
+                      constraint contratos_estado_check
+                      check (estado in ('rascunho','enviado','carregado','assinado','terminado','cancelado')),
   dados               jsonb not null,             -- contratante: razao_social, nif, morada, representante, cargo
   texto               text not null check (length(trim(texto)) > 0),   -- texto final, fotografado na geração
   pdf_path            text,
@@ -1168,9 +1171,18 @@ create table contratos (
   inquilino_id        uuid references inquilinos(id) on delete set null,
   criado_por          uuid references auth.users(id) on delete set null,
   criado_em           timestamptz not null default now(),
-  check (estado not in ('assinado','terminado') or (pdf_assinado_path is not null and assinado_em is not null))
+  -- Enviado ao cliente por e-mail e carregado por ele (D-181): só o hash da ligação.
+  envio_token_hash    text unique,
+  envio_expira_em     timestamptz,
+  enviado_cliente_em  timestamptz,
+  carregado_path      text,
+  carregado_em        timestamptz,
+  recusa_motivo       text,
+  check (estado not in ('assinado','terminado') or (pdf_assinado_path is not null and assinado_em is not null)),
+  constraint contratos_carregado
+    check (estado <> 'carregado' or (carregado_path is not null and carregado_em is not null))
 );
-create unique index contratos_um_ativo on contratos (proposta_id) where estado in ('rascunho','enviado','assinado');
+create unique index contratos_um_ativo on contratos (proposta_id) where estado in ('rascunho','enviado','carregado','assinado');
 create index contratos_lead on contratos (lead_id);
 
 -- Convite para o formulário de adesão, já preenchido com os dados do contrato (D.12).

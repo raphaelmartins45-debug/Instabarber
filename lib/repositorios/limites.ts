@@ -11,6 +11,8 @@ export const LIMITES = {
   adesaoIp: { maximo: 3, janelaSegundos: 3600 },
   adesaoEmail: { maximo: 3, janelaSegundos: 3600 },
   carregamentoIp: { maximo: 40, janelaSegundos: 3600 },
+  // O cliente carrega o contrato assinado (D-181): poucas tentativas por hora e por IP.
+  contratoClienteIp: { maximo: 10, janelaSegundos: 3600 },
   // Formulário de contacto da landing (N.3): os dois passos contam, por isso 10 por hora.
   contactoIp: { maximo: 10, janelaSegundos: 3600 },
   // Tradução automática dos serviços (D-176): por barbearia, para não gastar a quota do DeepL.

@@ -472,11 +472,11 @@ Seguir a M.6. Resumo para o operador:
 
 0. Só da primeira vez (ou quando o jurista rever o texto): em `Admin → Gestão do negócio → Comercial → Modelos`, **Importar o rascunho base** de cada tipo (vem de `docs/comercial/`), ler a pré-visualização, corrigir no rascunho se for preciso e **Aprovar**. O aprovado anterior fica arquivado; para mudar um aprovado, «Nova versão a partir desta».
 1. Na ficha do lead, secção **Contratos**, confirmar os dados do contratante (vêm do briefing): firma, NIF, morada, representante, cargo, e-mail e data de início. **Gerar contrato.**
-2. Abrir o PDF, ler-o e enviá-lo; **Marcar como enviado**.
-3. Assinar fora do sistema (Chave Móvel Digital ou impressão e digitalização). Receber o PDF assinado.
-4. **Registar assinatura**: data e PDF assinado. O lead passa a Ganho.
-5. **Criar convite de adesão** e enviar a ligação ao dono (copiar ou abrir o WhatsApp com o texto pronto): o formulário abre preenchido e ele completa o resto. A ligação só aparece uma vez, vale 14 dias e serve uma só vez; se se perder, criar outra (a anterior deixa de valer).
-6. Quando o pedido chegar, seguir o P-03. Na aprovação, o contrato fica ligado à barbearia.
+2. Abrir o PDF e lê-lo. **Enviar ao cliente por e-mail** (D-181): o cliente recebe o contrato em anexo, as instruções e uma ligação segura (30 dias) para carregar o PDF assinado. Chega o aviso no comercial@ quando ele carregar.
+3. O contrato fica **Por conferir**: **Ver o PDF carregado** (datas, assinatura, todas as páginas). Se faltar alguma coisa, **Recusar** com o motivo: o cliente recebe-o com uma ligação nova. Se estiver bem, escrever a data da assinatura e **Aprovar e enviar a adesão**: o lead passa a Ganho e o cliente recebe o agradecimento com a ligação da adesão (14 dias, uso único). Se o aviso disser que o e-mail falhou, seguir o passo 5.
+4. Em alternativa (o cliente entregou o contrato em mão): **Marcar como enviado** e **Registar assinatura** com a data e o PDF.
+5. **Criar convite de adesão** quando a ligação não seguiu por e-mail: copiar ou abrir o WhatsApp com o texto pronto. A ligação só aparece uma vez, vale 14 dias e serve uma só vez; se se perder, criar outra (a anterior deixa de valer).
+6. Quando o pedido chegar, seguir o P-03. Na aprovação, o contrato fica ligado à barbearia e as boas-vindas levam o guia de arranque em anexo.
 
 **Confirmar:** contrato «assinado» com PDF, lead «ganho», pedido de adesão ligado ao contrato.
 

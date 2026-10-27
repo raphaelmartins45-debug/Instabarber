@@ -211,3 +211,66 @@ export async function ligarContratoInquilino(
   });
   return !error;
 }
+
+// Contrato enviado ao cliente e carregado por ele (D-181) ------------------------------------
+
+/** Guarda o hash da ligação enviada ao cliente e marca o contrato como enviado. */
+export async function prepararEnvioContrato(
+  bd: ClienteBD,
+  id: string,
+  token: string,
+): Promise<string | null> {
+  const { error } = await bd.rpc("preparar_envio_contrato", {
+    p_contrato: uuid.parse(id),
+    p_token: token,
+  });
+  return error?.message ?? null;
+}
+
+export type ContratoDoCliente = {
+  id: string;
+  lead_id: string;
+  numero: string;
+  estado: string;
+  contratante: string | null;
+  recusa_motivo: string | null;
+};
+
+/** O contrato da ligação do cliente: só com a ligação certa, dentro do prazo e por assinar. */
+export async function contratoDoCliente(
+  bd: ClienteBD,
+  token: string,
+): Promise<ContratoDoCliente | null> {
+  if (!/^[A-Za-z0-9_-]{32,64}$/.test(token)) return null;
+  const { data, error } = await bd.rpc("contrato_do_cliente", { p_token: token });
+  if (error) falhaDeLeitura("contrato_do_cliente", error);
+  return (data?.[0] as ContratoDoCliente | undefined) ?? null;
+}
+
+/** O caminho onde o cliente carrega o contrato assinado (a base de dados confere-o). */
+export const caminhoCarregado = (leadId: string, id: string) =>
+  `leads/${leadId}/contratos/${id}-carregado.pdf`;
+
+export async function registarCarregamento(
+  bd: ClienteBD,
+  token: string,
+  caminho: string,
+): Promise<boolean> {
+  const { data, error } = await bd.rpc("registar_carregamento_contrato", {
+    p_token: token,
+    p_path: caminho,
+  });
+  return !error && data === true;
+}
+
+export async function recusarCarregamento(
+  bd: ClienteBD,
+  id: string,
+  motivo: string,
+): Promise<string | null> {
+  const { error } = await bd.rpc("recusar_carregamento_contrato", {
+    p_contrato: uuid.parse(id),
+    p_motivo: motivo,
+  });
+  return error?.message ?? null;
+}

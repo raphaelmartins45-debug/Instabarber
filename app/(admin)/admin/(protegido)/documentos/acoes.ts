@@ -11,6 +11,8 @@ import { envioGuia } from "@/lib/email/adesao-decisao";
 import { enviarEmail } from "@/lib/email/enviar";
 import { registarAcaoAdmin } from "@/lib/repositorios/admin/auditoria";
 import { criarLead } from "@/lib/repositorios/comercial/leads";
+import { mudarMeuTelefone } from "@/lib/repositorios/perfis";
+import { telefoneE164 } from "@/lib/formatacao/telefone";
 import { guardarBriefing } from "@/lib/repositorios/comercial/propostas";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { esquemaNovoLead } from "@/lib/validacao/comercial";
@@ -69,5 +71,16 @@ export async function enviarGuia(inquilinoId: string): Promise<{ ok: boolean }> 
       entidade: "inquilinos",
       entidadeId: inquilinoId,
     });
+  return { ok };
+}
+
+/** O telefone de quem está na equipa, para o folheto (vazio apaga). */
+export async function guardarMeuTelefone(texto: string): Promise<{ ok: boolean }> {
+  await exigirEquipaPlataforma();
+  const limpo = texto.trim();
+  const e164 = limpo ? telefoneE164(limpo) : null;
+  if (limpo && !e164) return { ok: false };
+  const ok = await mudarMeuTelefone(await criarClienteServidor(), e164);
+  revalidatePath("/admin/documentos");
   return { ok };
 }
