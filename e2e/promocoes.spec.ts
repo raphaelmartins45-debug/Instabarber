@@ -26,8 +26,11 @@ test("o gestor cria uma promoção, aparece na página pública e sai ao desliga
   await visitante.goto(`/${BARBEARIA_A.slug}`);
   await expect(visitante.getByText(titulo)).toBeVisible();
 
-  await linha.getByLabel("Ativa").uncheck();
-  await page.waitForLoadState("networkidle");
+  // Espera que a ação de desligar responda antes de recarregar a página pública.
+  await Promise.all([
+    page.waitForResponse((r) => r.request().method() === "POST"),
+    linha.getByLabel("Ativa").uncheck(),
+  ]);
   await visitante.reload();
   await expect(visitante.getByText(titulo)).toHaveCount(0);
 

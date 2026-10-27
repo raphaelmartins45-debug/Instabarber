@@ -106,7 +106,7 @@ export default async function ComprovativoPagamento({
           ) : null}
         </div>
       </div>
-      {c.estado === "pendente" ? <DecisaoComprovativo id={c.id} /> : null}
+      <DecisaoComprovativo id={c.id} pendente={c.estado === "pendente"} />
     </section>
   );
 }

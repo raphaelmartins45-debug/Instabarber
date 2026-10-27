@@ -54,6 +54,8 @@ test("um dia completo na barbearia", async ({ page, browser }, info) => {
     "href",
     /^https:\/\/wa\.me\/351/,
   );
+  // O botão só abre a confirmação depois de a página ficar interativa.
+  await page.waitForLoadState("networkidle");
   await marcada.getByRole("button", { name: "Concluir" }).click();
   await page.getByRole("alertdialog").getByRole("button", { name: "Concluir" }).click();
   await expect(marcada).toHaveAttribute("data-estado", "concluida");

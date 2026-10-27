@@ -51,6 +51,8 @@ test("comprovativo enviado pelo dono, conferido e aprovado pela Performa LAB", a
   await linha.getByRole("link", { name: "Conferir" }).click();
   await expect(admin.getByTestId("comprovativo-dados")).toContainText(BARBEARIA_A.nome);
   await expect(admin.getByRole("img", { name: "Comprovativo de pagamento" })).toBeVisible();
+  // O botão só abre a confirmação depois de a página ficar interativa.
+  await admin.waitForLoadState("networkidle");
   await admin.getByRole("button", { name: "Aprovar pagamento" }).click();
   await admin.getByRole("alertdialog").getByRole("button", { name: "Aprovar pagamento" }).click();
   // Nos ensaios o Resend tem uma chave inválida: aprova, mas avisa que o e-mail não saiu.

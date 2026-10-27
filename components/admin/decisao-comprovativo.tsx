@@ -11,8 +11,11 @@ import { textos } from "@/lib/i18n/pt-PT";
 
 const t = textos.comprovativos.admin;
 
-/** Aprovar ou recusar com motivo um comprovativo de pagamento (D-168). */
-export function DecisaoComprovativo({ id }: { id: string }) {
+/**
+ * Aprovar ou recusar com motivo um comprovativo de pagamento (D-168). Fica montado depois da
+ * decisão, só com o aviso, para o resultado não desaparecer quando a página se atualiza.
+ */
+export function DecisaoComprovativo({ id, pendente }: { id: string; pendente: boolean }) {
   const router = useRouter();
   const [motivo, setMotivo] = useState("");
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
@@ -32,6 +35,7 @@ export function DecisaoComprovativo({ id }: { id: string }) {
       setAviso({ tipo: bem ? "sucesso" : "erro", texto: (r.email ? ok : semEmail) + fatura });
       router.refresh();
     });
+  if (!pendente) return aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null;
   return (
     <section className="grid gap-4 rounded-lg border bg-card p-4">
       {aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null}
