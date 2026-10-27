@@ -923,3 +923,7 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - A regra 9 do CLAUDE.md pede inglês e francês «escritos à mão»: a tradução automática é só um ponto de partida que o gestor revê antes de guardar.
 - **Revisão dos textos EN e FR** (pendentes 23 e 31): corrigidos «1ʳᵉ position», «Prefer to call?», «Contact» e uma frase do convite. **Limitação encontrada:** a marcação só aceita telemóveis portugueses (9 dígitos); um cliente estrangeiro sem número português não consegue marcar online. Fica para decisão do dono.
 
+## D-177 · 27/10/2026 · Ecrã das promoções na Gestão do sistema — dono e técnica
+- Pedido do dono (grupo 5, ponto 3; pendente 21): as promoções só se criavam na base de dados. Nova secção «Promoções» na Gestão do sistema: título, texto e datas opcionais («mostrar a partir de» e «até»); ligar e desligar; remover com confirmação. Aparecem no bloco «Promoções» da página pública enquanto ativas e dentro das datas (a vista `publico_promocoes` já fazia o filtro).
+- **Sem esquema novo:** a tabela `promocoes`, a RLS (só o proprietário escreve) e a vista já existiam. Aparece com a funcionalidade `pagina_publica` (como a Marca). Os títulos ficam só em português (a tabela não tem campos EN e FR); se o dono os quiser traduzidos, é uma alteração ao esquema.
+

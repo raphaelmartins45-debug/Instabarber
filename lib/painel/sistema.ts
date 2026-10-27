@@ -17,6 +17,7 @@ export const SECCOES: readonly Seccao[] = [
   { id: "ligacoes", chave: null },
   { id: "clube", chave: "clube_assinatura" },
   { id: "loja", chave: "loja_produtos" },
+  { id: "promocoes", chave: "pagina_publica" },
   { id: "periodos", chave: "precos_dinamicos" },
   { id: "cartoes", chave: "cartoes_oferta" },
   { id: "orfas", chave: "agenda_basica" },

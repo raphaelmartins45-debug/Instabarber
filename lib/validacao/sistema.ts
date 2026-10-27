@@ -112,6 +112,21 @@ export const esquemaPeriodo = z
 
 const textoOpc = (max: number) => z.string().max(max, "longo").transform(vazioParaNulo);
 
+const dataOpc = z
+  .string()
+  .regex(/^(\d{4}-\d{2}-\d{2})?$/, "data")
+  .transform(vazioParaNulo);
+
+/** Promoção da página pública: título, texto e, se quiser, as datas em que aparece. */
+export const esquemaPromocao = z
+  .object({
+    titulo: z.string().trim().min(1, "titulo").max(80, "longo"),
+    descricao: textoOpc(300),
+    inicio: dataOpc,
+    fim: dataOpc,
+  })
+  .refine((v) => !v.inicio || !v.fim || v.fim >= v.inicio, { message: "periodo", path: ["fim"] });
+
 /** Serviço (E.2, F.3.2): preço final ao cliente; inglês e francês opcionais, nunca traduzidos. */
 export const esquemaServico = z.object({
   nome: z.string().trim().min(1, "nome").max(80, "nome"),
