@@ -10,8 +10,8 @@ export type Email = {
   /** Versão HTML (e-mail timbrado). O texto simples segue sempre como alternativa. */
   html?: string;
   responderPara?: string;
-  /** Ficheiros anexos (por exemplo, o .ics da marcação). */
-  anexos?: { nome: string; conteudo: string }[];
+  /** Ficheiros anexos: texto (o .ics da marcação) ou binário (o PDF do guia, D-181). */
+  anexos?: { nome: string; conteudo: string | Buffer }[];
 };
 
 /**
@@ -33,7 +33,8 @@ export async function enviarEmail(montar: () => Email): Promise<boolean> {
         ? {
             attachments: email.anexos.map((a) => ({
               filename: a.nome,
-              content: Buffer.from(a.conteudo, "utf-8"),
+              content:
+                typeof a.conteudo === "string" ? Buffer.from(a.conteudo, "utf-8") : a.conteudo,
             })),
           }
         : {}),

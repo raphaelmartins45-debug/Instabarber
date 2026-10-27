@@ -1,6 +1,7 @@
 // Papéis da equipa InstaBarber no /admin (D-161). O dono (super_admin) vê tudo; o gestor é
-// administrador sem a gestão de contas; o comercial só o Comercial e o Apoio às vendas (D-181),
-// sem os modelos de contrato nem as condições comerciais. A base de dados volta a verificar tudo (RLS e funções).
+// administrador sem a gestão de contas; o comercial só o Comercial, o Apoio às vendas e os
+// documentos dos seus leads (D-181), sem os modelos de contrato nem as condições comerciais.
+// A base de dados volta a verificar tudo (RLS e funções).
 
 export const PAPEIS_PLATAFORMA = ["super_admin", "gestor_plataforma", "comercial"] as const;
 export type PapelPlataforma = (typeof PAPEIS_PLATAFORMA)[number];
@@ -14,8 +15,8 @@ export const eAdministrador = (p: PapelPlataforma) => p !== "comercial";
 const dentro = (caminho: string, prefixo: string) =>
   caminho === prefixo || caminho.startsWith(`${prefixo}/`);
 
-/** As áreas do comercial: o Comercial e o Apoio às vendas (D-181). */
-const AREAS_DO_COMERCIAL = ["/admin/comercial", "/admin/vendas"];
+/** As áreas do comercial: o Comercial, o Apoio às vendas e o Gerador de documentos (D-181). */
+const AREAS_DO_COMERCIAL = ["/admin/comercial", "/admin/vendas", "/admin/documentos"];
 
 /** Só dos administradores dentro do Comercial. */
 const SO_ADMIN_NO_COMERCIAL = ["/admin/comercial/modelos", "/admin/comercial/condicoes"];

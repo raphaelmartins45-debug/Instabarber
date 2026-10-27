@@ -58,6 +58,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Histórico de cortes com fotografias e consentimento (D-179) | Publicado; migração 18 no ensaio (655 SQL) e na produção (cópia `035201Z` por e-mail, RLS 66/66) | 27/10/2026 | 655 SQL (19 novos); `e2e/historico-cortes.spec.ts` (registar com duas fotografias e autorização, o cliente vê sem a nota interna, retira a autorização e as fotografias saem) no computador e no telemóvel |
 | Entradas por barbearia: /gestor, /barbeiro e /cliente com a marca (D-180) | Publicado | 27/10/2026 | Vitest do encaminhamento (17); `e2e/entradas-barbearia.spec.ts` (4 ensaios) e os ensaios do cliente e do encaminhamento atualizados, no computador e no telemóvel |
 | Apoio às vendas: demonstração, simulador, perdas, objeções, guião e mensagens (D-181, lote 1) | Publicado | 27/10/2026 | Vitest das regras de venda, do menu, do acesso e do wa.me; `e2e/equipa-plataforma.spec.ts` alargado (o comercial usa as ferramentas; a demonstração abre em /admin/vendas) |
+| Gerador de documentos: proposta rápida, propostas e contratos por lead, guia de arranque, guia do barbeiro, cartaz com QR e resumo da conta; guia em anexo nas boas-vindas (D-181, lote 2) | Publicado | 27/10/2026 | Vitest dos PDFs, da proposta rápida, dos endereços, do menu e do acesso; `e2e/documentos.spec.ts` (proposta rápida até ao PDF; os quatro PDFs com os endereços e a assinatura; 404 sem tipo válido) no computador e no telemóvel |
 
 ## Pendentes do dono
 

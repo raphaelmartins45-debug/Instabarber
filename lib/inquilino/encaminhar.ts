@@ -98,3 +98,36 @@ export function enderecoPublico(
 ): string {
   return aqui.slug === slug ? `${origem}${aqui.base}` : `${origem}/${slug}`;
 }
+
+export type EnderecosBarbearia = {
+  pagina: string;
+  gestor: string;
+  barbeiro: string;
+  cliente: string;
+  marcar: string;
+};
+
+/**
+ * Os endereços de uma barbearia para os documentos e e-mails (D-180, D-181): o domínio próprio,
+ * se tiver; senão o subdomínio na raiz da plataforma, com o protocolo e a porta da origem
+ * (em local, `http://<slug>.localhost:3000`).
+ */
+export function enderecosDaBarbearia(o: {
+  slug: string;
+  dominioProprio: string | null;
+  raiz: string;
+  origem: string;
+}): EnderecosBarbearia {
+  const protocolo = o.origem.startsWith("http://") ? "http" : "https";
+  const porta = /:(\d+)$/.exec(o.origem)?.[1];
+  const base = o.dominioProprio
+    ? `https://${o.dominioProprio}`
+    : `${protocolo}://${o.slug}.${o.raiz}${porta && o.raiz === "localhost" ? `:${porta}` : ""}`;
+  return {
+    pagina: base,
+    gestor: `${base}/gestor`,
+    barbeiro: `${base}/barbeiro`,
+    cliente: `${base}/cliente`,
+    marcar: `${base}/marcar`,
+  };
+}

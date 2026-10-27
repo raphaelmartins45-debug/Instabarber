@@ -10,6 +10,7 @@ export const admin = {
     negocio: "Gestão do negócio",
     comercial: "Comercial",
     vendas: "Apoio às vendas",
+    documentos: "Gerador de documentos",
     financas: "Finanças",
     saude: "Saúde das barbearias",
     metricas: "Crescimento",
@@ -364,6 +365,11 @@ export const admin = {
       "Fotografia da fachada: JPG ou WEBP, até 3 MB, com pelo menos 1600 × 900 px (16:9). É a primeira imagem da galeria; sem ela, a capa usa a cor do logótipo.",
       "Galeria: até 6 fotografias contando com a fachada, JPG ou WEBP, até 3 MB cada, com pelo menos 1200 × 800 px.",
     ],
+    guiaAnexo: (barbearia: string) =>
+      `Em anexo vai o guia de arranque da ${barbearia}: os seus endereços, os primeiros passos e como entra cada pessoa. Guarde-o à mão nos primeiros dias.`,
+    guiaAssunto: (barbearia: string) => `O guia de arranque da ${barbearia}`,
+    guiaReenvio: (barbearia: string) =>
+      `Como pediu, segue em anexo o guia de arranque da ${barbearia}, com os endereços de cada painel e os primeiros passos.`,
     duvidas: "Qualquer dúvida, responda a este e-mail.",
     despedida: "Com os melhores cumprimentos,",
     rejeicaoAssunto: (barbearia: string) => `Pedido de adesão ao InstaBarber · ${barbearia}`,

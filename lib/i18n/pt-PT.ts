@@ -7,6 +7,7 @@ import { admin } from "./pt-PT/admin";
 import { clientes } from "./pt-PT/clientes";
 import { comercial } from "./pt-PT/comercial";
 import { vendas } from "./pt-PT/vendas";
+import { documentos } from "./pt-PT/documentos";
 import { financas } from "./pt-PT/financas";
 import { comprovativos } from "./pt-PT/comprovativos";
 import { ficheiros } from "./pt-PT/ficheiros";
@@ -75,6 +76,7 @@ export const textos = {
   admin,
   comercial,
   vendas,
+  documentos,
   financas,
   gestao,
   ficheiros,

@@ -133,3 +133,18 @@ export async function papelNaPlataforma(bd: ClienteBD, userId: string): Promise<
     .maybeSingle();
   return data?.papel ?? null;
 }
+
+/** O nome e o e-mail de quem está na equipa InstaBarber, para assinar os documentos (D-181). */
+export async function perfilDePlataforma(
+  bd: ClienteBD,
+  userId: string,
+): Promise<{ nome: string | null; email: string | null; papel: string } | null> {
+  const { data, error } = await bd
+    .from("perfis")
+    .select("nome, email, papel")
+    .eq("user_id", userId)
+    .is("inquilino_id", null)
+    .maybeSingle();
+  if (error) falhaDeLeitura("perfis", error);
+  return data;
+}

@@ -35,8 +35,8 @@ describe("menuDoPapel", () => {
     expect(ids("gestor_plataforma")).toContain("financas");
   });
 
-  it("o comercial tem o Comercial, o Apoio às vendas e o desempenho", () => {
-    expect(ids("comercial")).toEqual(["comercial", "vendas", "desempenho"]);
+  it("o comercial tem o Comercial, o Apoio às vendas, os documentos e o desempenho", () => {
+    expect(ids("comercial")).toEqual(["comercial", "vendas", "documentos", "desempenho"]);
     expect(ids("gestor_plataforma")).toContain("vendas");
     expect(separadorAtual("/admin/comercial/desempenho", menuDoPapel("comercial"))).toBe(
       "desempenho",

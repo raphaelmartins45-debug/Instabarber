@@ -1,0 +1,310 @@
+// Gerador de documentos (D-181): os textos dos PDFs personalizados e do ecrã que os gera.
+// Os endereços, os nomes e as datas chegam já formatados.
+
+export const documentos = {
+  titulo: "Gerador de documentos",
+  ajuda:
+    "Propostas, contratos e os documentos personalizados de cada barbearia, para descarregar ou enviar.",
+  ecra: {
+    leadTitulo: "Propostas e contratos",
+    leadAjuda:
+      "Escolha o lead: aparecem as propostas e os contratos dele, para gerar, descarregar ou enviar.",
+    lead: "Lead",
+    escolher: "Escolha…",
+    abrir: "Abrir",
+    novoLead: "Proposta para um lead novo",
+    briefing: "Completar o briefing",
+    fichaLead: "Abrir a ficha do lead",
+    barbeariaTitulo: "Documentos da barbearia",
+    barbeariaAjuda:
+      "Personalizados com o nome, o logótipo e os endereços da barbearia. O guia de arranque vai também em anexo nas boas-vindas da aprovação.",
+    barbearia: "Barbearia",
+    descarregar: "Descarregar PDF",
+    enviarGuia: "Enviar ao proprietário",
+    guiaEnviado: "Guia enviado por e-mail ao proprietário.",
+    guiaNaoEnviado: "Não foi possível enviar. Confirme o e-mail do proprietário e tente outra vez.",
+    documentos: {
+      guia: {
+        titulo: "Guia de arranque",
+        texto: "Boas-vindas, primeiros passos e os endereços de cada painel, com a sua assinatura.",
+      },
+      barbeiro: {
+        titulo: "Guia do barbeiro",
+        texto: "O endereço /barbeiro, o primeiro acesso e o dia a dia, para cada barbeiro novo.",
+      },
+      cartaz: {
+        titulo: "Cartaz do balcão",
+        texto: "A4 na cor da barbearia, com o código QR da marcação.",
+      },
+      resumo: {
+        titulo: "Resumo da conta",
+        texto: "Plano, valor e pagamentos registados. Não é documento fiscal.",
+      },
+    } as Record<string, { titulo: string; texto: string }>,
+  },
+  rapida: {
+    titulo: "Proposta para um lead novo",
+    ajuda:
+      "Num só formulário: cria o lead, guarda o briefing e gera a proposta. Os restantes campos do briefing preenchem-se depois, na ficha do lead.",
+    voltar: "Voltar ao Gerador de documentos",
+    contacto: "Contacto",
+    barbearia: "A barbearia",
+    plano: "Plano",
+    seguimento: "Próximo passo",
+    campos: {
+      nome_contacto: "Nome do contacto (quem decide)",
+      nome_barbearia: "Nome da barbearia",
+      cidade: "Cidade",
+      telefone: "Telemóvel",
+      email: "E-mail",
+      origem: "Origem",
+      consentimento_contacto: "O contacto autorizou que o contactássemos",
+      n_barbeiros: "Barbeiros",
+      como_marcam: "Como marcam hoje",
+      clientes_ativos: "Clientes ativos (estimativa)",
+      valor_visita: "Valor médio da visita (€)",
+      faltas_semana: "Faltas por semana",
+      clientes_perdidos: "Clientes que deixaram de vir",
+      dores: "O que mais lhe custa hoje",
+      objetivo: "O objetivo dele, nas palavras dele",
+      plano: "Plano",
+      profissionais: "Profissionais",
+      periodicidade: "Pagamento",
+      dominio_proprio: "Domínio próprio",
+      proxima_acao: "Próxima ação",
+      proxima_acao_em: "Data da próxima ação",
+    } as Record<string, string>,
+    gerar: "Criar o lead e gerar a proposta",
+    aGerar: "A gerar…",
+    erros: {
+      invalido: "Há campos por preencher ou com erro: veja os assinalados.",
+      generico: "Não foi possível gerar. Tente outra vez.",
+      obrigatorio: "Preencha este campo.",
+      numero: "Escreva um número inteiro.",
+      telefone: "Telemóvel inválido.",
+      email: "E-mail inválido.",
+      valor: "Escreva um valor, por exemplo 15 ou 15,50.",
+      consentimento: "Na prospeção, confirme que o contacto autorizou.",
+      pro_minimo: "O Pro tem pelo menos 3 profissionais.",
+      data: "Escolha a data.",
+    } as Record<string, string>,
+    feito: "Proposta gerada.",
+    semProposta:
+      "O lead ficou criado, mas a proposta não foi gerada. Abra a ficha do lead para completar.",
+    pdf: "Descarregar a proposta",
+    ficha: "Abrir a ficha do lead",
+  },
+  funcoes: {
+    super_admin: "InstaBarber",
+    gestor_plataforma: "InstaBarber",
+    comercial: "Comercial InstaBarber",
+  } as Record<string, string>,
+  guia: {
+    nomeFicheiro: (slug: string) => `InstaBarber-guia-${slug}.pdf`,
+    marca: "InstaBarber · Guia de arranque",
+    seccoes: ["Bem-vindo", "Os acessos", "Painel de gestão", "Barbeiros e clientes"],
+    capaSobre: "Bem-vindo à InstaBarber",
+    capaTexto:
+      "O seu guia de arranque: os endereços da sua barbearia, como entra cada pessoa e o que fazer nos primeiros dias.",
+    rodapeCapa: "instabarber.pt",
+    rodapeMarca: "InstaBarber · Performa LAB",
+    rodape: (barbearia: string) => `InstaBarber · Guia de arranque · ${barbearia}`,
+    boasVindas: {
+      titulo: (responsavel: string) => `Olá, ${responsavel}.`,
+      paragrafos: (barbearia: string) => [
+        `Obrigado pela confiança. A partir de hoje, a ${barbearia} tem a sua página, a agenda, os clientes e as contas do mês num só sistema, no computador e no telemóvel.`,
+        "Este guia foi feito para a sua barbearia: os endereços que vê são os seus e pode partilhá-los já. Guarde-o à mão nos primeiros dias.",
+      ],
+      primeirosPassos: "Os primeiros passos",
+      passos: [
+        "Defina a sua palavra-passe pela ligação do e-mail de boas-vindas e entre no painel de gestão.",
+        "Confirme o horário, os serviços e os preços em Gestão do sistema.",
+        "Registe os seus barbeiros em Equipa: cada um recebe o convite por e-mail.",
+        "Faça uma marcação de teste na sua página, como se fosse um cliente.",
+        "Partilhe a página: na bio do Instagram, no Google e no estado do WhatsApp.",
+        "Ponha o cartaz com o código QR ao balcão, para os clientes marcarem a próxima visita.",
+      ],
+      impressoesTitulo: "O que os seus clientes vão ver",
+      impressoes: [
+        "A página da barbearia, com o seu logótipo, os serviços, os preços e o horário.",
+        "Marcação em poucos passos, a qualquer hora, sem criar conta.",
+        "Confirmação da marcação e lembrete por WhatsApp, que a barbearia envia num toque.",
+        "A área do cliente, com os selos, as próximas marcações e o histórico.",
+      ],
+      notaArranque:
+        "Combinamos consigo uma sessão de arranque de cerca de uma hora. Se preferir começar já, siga os passos acima: tudo se pode mudar depois.",
+    },
+    acessos: {
+      titulo: "Quatro acessos, um só sistema",
+      intro:
+        "Cada pessoa entra no seu espaço e vê só o que lhe pertence. Estes são os endereços da sua barbearia.",
+      cartoes: {
+        gestor: {
+          rotulo: "Gestor (você)",
+          titulo: "Painel de gestão",
+          texto:
+            "E-mail e palavra-passe. Guarde nos favoritos: a página pública não mostra esta entrada.",
+        },
+        barbeiro: {
+          rotulo: "Barbeiros",
+          titulo: "Painel do barbeiro",
+          texto: "Cada barbeiro tem a sua conta, criada por convite seu. Dê-lhe este endereço.",
+        },
+        pagina: {
+          rotulo: "Clientes",
+          titulo: "Página e marcação",
+          texto: "Para partilhar em todo o lado. Marcar não pede conta.",
+        },
+        cliente: {
+          rotulo: "Clientes",
+          titulo: "Área do cliente",
+          texto: "Telemóvel e palavra-passe. É o botão «Entrar» da sua página.",
+        },
+      },
+      resumoTitulo: "Resumo",
+      resumo: [
+        [
+          "Gestor",
+          "E-mail e palavra-passe. Primeiro acesso pela ligação do e-mail de boas-vindas.",
+        ],
+        ["Barbeiro", "E-mail e palavra-passe. Primeiro acesso pelo convite que lhe envia."],
+        [
+          "Cliente",
+          "Telemóvel e palavra-passe. Cria o acesso ao marcar, ou com um código enviado pela barbearia.",
+        ],
+      ] as [string, string][],
+      nota: "Nunca partilhe palavras-passe. Ninguém da InstaBarber lhe pede a sua palavra-passe, nem por e-mail nem por telefone.",
+    },
+    gestor: {
+      titulo: "Painel de gestão",
+      intro:
+        "É aqui que gere a barbearia: agenda, clientes, equipa, dinheiro e configuração. Funciona no computador e no telemóvel.",
+      entrarTitulo: "Como entra",
+      entrar: (gestor: string) =>
+        `Entre em ${gestor} com o seu e-mail e a palavra-passe. O ecrã de entrada mostra o logótipo da sua barbearia.`,
+      esqueceuTitulo: "Esqueceu-se da palavra-passe?",
+      esqueceu:
+        "No ecrã de entrada, carregue em «Esqueci-me da palavra-passe» e escreva o seu e-mail. Recebe uma ligação para definir outra.",
+      appTitulo: "Como aplicação no telemóvel",
+      app: [
+        "iPhone (Safari): Partilhar, depois «Adicionar ao ecrã principal».",
+        "Android (Chrome): menu, depois «Adicionar ao ecrã principal».",
+      ],
+      menuTitulo: "O que encontra no menu",
+      menu: [
+        ["Início", "Os números do dia e os pedidos de acesso dos clientes"],
+        ["Agenda", "Marcar ao balcão, concluir serviços, faltas e lembretes por WhatsApp"],
+        ["Clientes", "Fichas, clientes em risco e perdidos, histórico de cortes"],
+        ["Equipa", "Barbeiros, convites e o painel de cada um"],
+        ["Financeiro", "Objetivo do mês, despesas e acertos com os barbeiros"],
+        ["Relatório", "O relatório do mês, com recomendações"],
+        ["Gestão do sistema", "Marca, horário, serviços, promoções e configuração"],
+        ["O meu plano", "Plano, vencimento e comprovativo da mensalidade"],
+      ] as [string, string][],
+      menuNota:
+        "Alguns menus dependem do plano contratado. Se não vir um menu, essa funcionalidade não está no seu plano.",
+    },
+    equipa: {
+      titulo: "Barbeiros e clientes",
+      barbeiroTitulo: "Dar acesso a um barbeiro",
+      barbeiro: (barbeiro: string) => [
+        "No painel de gestão: Equipa, depois «Registar barbeiro». Escreva o nome e o e-mail dele.",
+        "Carregue em «Registar e enviar convite». O barbeiro recebe a ligação para definir a palavra-passe.",
+        `Ele entra em ${barbeiro} e vê só o painel dele: a agenda, os clientes, as metas e as comissões.`,
+      ],
+      clienteTitulo: "O código de acesso do cliente",
+      cliente: [
+        "O cliente pede o código na sua página: «Entrar», depois «Pedir código».",
+        "O pedido aparece no seu Início. Carregue em «Enviar código por WhatsApp», envie e carregue em «Já enviei».",
+        "O código vale 15 minutos. Se passar o prazo, o cliente pede outro.",
+      ],
+      ajudaTitulo: "Precisa de ajuda?",
+      ajuda: [
+        ["Apoio", "apoio@instabarber.pt"],
+        ["Plano e preços", "comercial@instabarber.pt"],
+        ["Proteção de dados", "privacidade@instabarber.pt"],
+      ] as [string, string][],
+      despedida: "Bom trabalho e boas marcações,",
+    },
+  },
+  barbeiro: {
+    nomeFicheiro: (slug: string) => `InstaBarber-guia-do-barbeiro-${slug}.pdf`,
+    marca: "InstaBarber · Guia do barbeiro",
+    seccoes: ["O seu painel", "O dia a dia"],
+    capaSobre: "Guia do barbeiro",
+    capaTexto: "Como entra no seu painel e o que encontra lá, do telemóvel ou do computador.",
+    rodape: (barbearia: string) => `InstaBarber · Guia do barbeiro · ${barbearia}`,
+    painel: {
+      titulo: "O seu painel",
+      intro:
+        "Cada barbeiro tem a sua conta e vê só o que é seu: a agenda, os seus clientes, as metas e as comissões.",
+      cartao: {
+        rotulo: "Barbeiro",
+        titulo: "Painel do barbeiro",
+        texto: "E-mail e palavra-passe. Guarde nos favoritos do telemóvel.",
+      },
+      primeiroTitulo: "Primeiro acesso",
+      primeiro: (barbeiro: string) => [
+        "Abra o e-mail de convite da InstaBarber e carregue na ligação para definir a palavra-passe. Se não o encontrar, veja no spam ou peça ao gestor para reenviar o convite.",
+        `Entre em ${barbeiro} com o seu e-mail e a palavra-passe que escolheu.`,
+        "Abre o seu Início, com as marcações do dia.",
+      ],
+      appTitulo: "Como aplicação no telemóvel",
+      app: [
+        "iPhone (Safari): Partilhar, depois «Adicionar ao ecrã principal».",
+        "Android (Chrome): menu, depois «Adicionar ao ecrã principal».",
+      ],
+      esqueceu:
+        "Esqueceu-se da palavra-passe? No ecrã de entrada, carregue em «Esqueci-me da palavra-passe».",
+    },
+    dia: {
+      titulo: "O dia a dia",
+      menuTitulo: "O que encontra no menu",
+      menu: [
+        ["Início", "As marcações de hoje e o que precisa de atenção"],
+        ["Agenda", "As suas marcações: concluir o serviço, registar uma falta, enviar o lembrete"],
+        ["Clientes", "Os seus clientes, com a ficha e o histórico de cortes"],
+        ["Metas", "O seu objetivo do mês e quanto falta"],
+        ["Comissões", "O que tem a receber e os acertos com a barbearia"],
+        ["Perfil", "A sua fotografia e a apresentação na página da barbearia"],
+      ] as [string, string][],
+      menuNota: "Alguns menus dependem do plano da barbearia.",
+      dicasTitulo: "Três hábitos que fazem a diferença",
+      dicas: [
+        "Conclua cada serviço no fim do corte: é isso que conta para as metas, as comissões e os selos do cliente.",
+        "Envie o lembrete na véspera, pelo WhatsApp: as faltas descem.",
+        "Escreva uma nota na ficha do cliente (o pente, a risca, o que ele pediu). Da próxima vez, está lá.",
+      ],
+      ajuda: "Dúvidas sobre o seu acesso? Fale com o gestor da barbearia.",
+    },
+  },
+  cartaz: {
+    nomeFicheiro: (slug: string) => `InstaBarber-cartaz-${slug}.pdf`,
+    titulo: "Marque a sua próxima visita",
+    texto: "Aponte a câmara do telemóvel ao código. Marca em segundos, a qualquer hora.",
+    rodape: "Marcações com InstaBarber",
+  },
+  resumo: {
+    nomeFicheiro: (slug: string) => `InstaBarber-resumo-da-conta-${slug}.pdf`,
+    marca: "InstaBarber",
+    titulo: "Resumo da conta",
+    planoTitulo: "Plano",
+    plano: "Plano",
+    periodicidade: "Pagamento",
+    profissionais: "Profissionais",
+    dominio: "Domínio próprio",
+    desconto: "Desconto na mensalidade",
+    valor: "Valor do período",
+    estado: "Estado",
+    pagamento: "Mensalidade",
+    vencimento: "Próximo vencimento",
+    sim: "Sim",
+    nao: "Não",
+    recebimentosTitulo: "Pagamentos registados (últimos 12)",
+    colunas: ["Data", "Método", "Valor"],
+    semRecebimentos: "Ainda não há pagamentos registados.",
+    nota: "Resumo informativo do que está registado na InstaBarber.",
+    rodape: "Não é documento fiscal · InstaBarber · Performa LAB",
+    pagina: (n: number, total: number) => `${n} / ${total}`,
+  },
+} as const;

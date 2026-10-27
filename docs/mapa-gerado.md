@@ -25,6 +25,9 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/comercial/propostas/page.tsx`
 - `app/(admin)/admin/(protegido)/comunicados/page.tsx`
 - `app/(admin)/admin/(protegido)/design/page.tsx`
+- `app/(admin)/admin/(protegido)/documentos/barbearia/[id]/[tipo]/route.ts`
+- `app/(admin)/admin/(protegido)/documentos/page.tsx`
+- `app/(admin)/admin/(protegido)/documentos/proposta/page.tsx`
 - `app/(admin)/admin/(protegido)/equipa/page.tsx`
 - `app/(admin)/admin/(protegido)/financas/custos/page.tsx`
 - `app/(admin)/admin/(protegido)/financas/exportar/ficheiro/route.ts`

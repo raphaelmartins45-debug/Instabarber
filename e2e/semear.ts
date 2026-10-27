@@ -116,6 +116,10 @@ export default async function semear() {
     const pagamentos = await criarConta(bd, c.adminPagamentos);
     await perfil(bd, pagamentos, "super_admin", null, c.adminPagamentos);
     await perfil(bd, await criarConta(bd, c.adminEquipa), "super_admin", null, c.adminEquipa);
+    // Gerador de documentos (D-181): o nome do registo assina os PDFs.
+    const documentos = await criarConta(bd, c.adminDocumentos);
+    await perfil(bd, documentos, "super_admin", null, c.adminDocumentos);
+    await bd.from("perfis").update({ nome: "Raphael Martins" }).eq("user_id", documentos);
     await perfil(bd, await criarConta(bd, c.gestor), "gestor_plataforma", null, c.gestor);
     await perfil(bd, await criarConta(bd, c.comercialVendas), "comercial", null, c.comercialVendas);
     await perfil(

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   caminhoEntradaEquipa,
   enderecoPublico,
+  enderecosDaBarbearia,
   caminhoSeguro,
   encaminhar,
   hostResolvido,
@@ -162,5 +163,40 @@ describe("enderecoPublico", () => {
   });
   it("fora do endereço da barbearia (painel), /<slug>", () => {
     expect(enderecoPublico(o, { slug: null, base: "" }, "alfa")).toBe(`${o}/alfa`);
+  });
+});
+
+describe("enderecosDaBarbearia", () => {
+  it("subdomínio da raiz, em produção", () => {
+    const e = enderecosDaBarbearia({
+      slug: "judah",
+      dominioProprio: null,
+      raiz: "instabarber.pt",
+      origem: "https://instabarber.pt",
+    });
+    expect(e.gestor).toBe("https://judah.instabarber.pt/gestor");
+    expect(e.cliente).toBe("https://judah.instabarber.pt/cliente");
+  });
+
+  it("domínio próprio, quando existe", () => {
+    expect(
+      enderecosDaBarbearia({
+        slug: "judah",
+        dominioProprio: "judahbarber.pt",
+        raiz: "instabarber.pt",
+        origem: "https://instabarber.pt",
+      }).barbeiro,
+    ).toBe("https://judahbarber.pt/barbeiro");
+  });
+
+  it("em local, com a porta", () => {
+    expect(
+      enderecosDaBarbearia({
+        slug: "a",
+        dominioProprio: null,
+        raiz: "localhost",
+        origem: "http://localhost:3000",
+      }).pagina,
+    ).toBe("http://a.localhost:3000");
   });
 });

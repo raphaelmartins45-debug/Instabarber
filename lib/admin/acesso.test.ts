@@ -16,6 +16,7 @@ describe("desvioAdmin", () => {
   it("o comercial só abre o Comercial e o Apoio às vendas, sem modelos nem condições", () => {
     expect(desvioAdmin("comercial", "/admin/comercial")).toBeNull();
     expect(desvioAdmin("comercial", "/admin/vendas")).toBeNull();
+    expect(desvioAdmin("comercial", "/admin/documentos")).toBeNull();
     expect(desvioAdmin("comercial", "/admin/comercial/leads/abc")).toBeNull();
     expect(desvioAdmin("comercial", "/admin/comercial/desempenho")).toBeNull();
     expect(desvioAdmin("comercial", "/admin/dois-passos")).toBeNull();

@@ -1,5 +1,6 @@
 import "server-only";
 import { contaComLigacaoDeConvite, ligacaoDeRecuperacao } from "@/lib/auth/contas";
+import { pdfGuiaDeArranque } from "@/lib/documentos/guia";
 import { boasVindas, respostaRejeicao } from "@/lib/email/adesao-decisao";
 import { enviarEmail } from "@/lib/email/enviar";
 import { centimosDeNumeric } from "@/lib/formatacao/dinheiro";
@@ -145,14 +146,17 @@ export async function aprovarPedido(
     entidadeId: pedidoId,
     detalhes: { slug, plano, periodicidade, profissionais },
   });
+  // O guia de arranque personalizado vai em anexo, assinado por quem aprova (D-181).
+  const guia = await pdfGuiaDeArranque(bd, inquilinoId, admin.userId);
   const emailEnviado = await enviarEmail(() =>
     boasVindas({
       para: pedido.email_acesso,
       responsavel: pedido.responsavel ?? pedido.nome,
       barbearia: pedido.nome,
-      paginaUrl: `${origem}/${slug}`,
-      painelUrl: `${origem}/app`,
+      paginaUrl: guia?.enderecos.pagina ?? `${origem}/${slug}`,
+      painelUrl: guia?.enderecos.gestor ?? `${origem}/app`,
       ligacaoPalavraPasse: ligacao,
+      guia,
     }),
   );
   return { ok: true, inquilinoId, emailEnviado };
@@ -190,7 +194,7 @@ export async function reenviarBoasVindas(
   inquilinoId: string,
   barbearia: { nome: string; slug: string },
 ): Promise<boolean> {
-  await exigirSuperAdmin();
+  const admin = await exigirSuperAdmin();
   const bd = await criarClienteServidor();
   const [dono] = await listarProprietarios(bd, inquilinoId);
   if (!dono?.email) return false;
@@ -207,14 +211,16 @@ export async function reenviarBoasVindas(
     entidade: "perfis",
     entidadeId: dono.id,
   });
+  const guia = await pdfGuiaDeArranque(bd, inquilinoId, admin.userId);
   return enviarEmail(() =>
     boasVindas({
       para: dono.email!,
       responsavel: dono.nome ?? barbearia.nome,
       barbearia: barbearia.nome,
-      paginaUrl: `${origem}/${barbearia.slug}`,
-      painelUrl: `${origem}/app`,
+      paginaUrl: guia?.enderecos.pagina ?? `${origem}/${barbearia.slug}`,
+      painelUrl: guia?.enderecos.gestor ?? `${origem}/app`,
       ligacaoPalavraPasse: ligacao,
+      guia,
     }),
   );
 }
