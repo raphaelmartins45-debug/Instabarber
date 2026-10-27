@@ -915,3 +915,4 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 ## D-175 · 27/10/2026 · Formação do gestor da barbearia: três sessões, dada pelo dono ou pelo comercial — dono
 - Aprovada a divisão em três sessões (arranque no dia da entrada, dia a dia nos primeiros 3 dias, crescer aos 30 dias), em `docs/manuais/formacao-gestor-barbearia.md`.
 - Quem forma: o dono da InstaBarber ou o comercial que fechou a barbearia. O dono regista cada sessão no «Registo de apoio» da ficha da barbearia; o comercial, que não abre o Admin das barbearias (D-161), regista-a como nota no lead ganho, com a próxima ação na agenda «Hoje».
+- **Atualização (dono, 27/10/2026):** por agora é o dono quem forma as barbearias e faz a parte comercial; não deve haver comercial tão cedo. O guia do gestor parte do dono e regista no «Registo de apoio». A formação dos comerciais (`docs/manuais/formacao-comercial.md`) fica escrita para o primeiro comercial e não avança mais por agora.

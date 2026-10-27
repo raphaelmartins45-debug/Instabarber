@@ -4,9 +4,9 @@ Documento para usar **durante** a formação de uma barbearia nova: quem forma s
 passo, e o gestor fica com ele para rever depois. Cada passo diz **onde clicar**, **o que se vê**
 e **o que fazer se for diferente**. No fim de cada sessão há uma lista para marcar.
 
-**Quem dá a formação:** o dono da InstaBarber ou o comercial que fechou a barbearia (decisão do
-dono, 27/10/2026). Os passos são os mesmos; muda só onde se regista cada sessão (ver «Depois da
-formação»).
+**Quem dá a formação:** o dono da InstaBarber. Por agora não há comercial (dono, 27/10/2026);
+quando houver, o comercial que fechou a barbearia segue os mesmos passos e muda só onde regista
+cada sessão (ver «Depois da formação»).
 
 A formação são **três sessões curtas**, de preferência no telemóvel do gestor (é onde ele vai
 usar o sistema), com o computador ao lado para o que é mais confortável num ecrã grande:

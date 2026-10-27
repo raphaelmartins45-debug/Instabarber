@@ -1,5 +1,9 @@
 # Formação do comercial InstaBarber
 
+> **Para mais tarde.** Por agora é o dono quem faz a parte comercial e não há comercial na equipa
+> (dono, 27/10/2026). Este guia fica pronto para o primeiro comercial; revê-se antes de o usar,
+> porque os ecrãs e as condições podem ter mudado.
+
 Para quem entra como comercial: o que faz no sistema, do lead à barbearia a trabalhar, e o que diz
 (e nunca diz) ao cliente. Quem forma é o dono. São **duas sessões** e um **cenário completo**
 feito pelo comercial sozinho no fim.
