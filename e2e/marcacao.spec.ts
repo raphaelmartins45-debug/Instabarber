@@ -48,6 +48,24 @@ test("marcação completa sem conta, pela página pública", async ({ page }, in
   expect(data).toEqual([expect.objectContaining({ estado: "agendada", origem: "online" })]);
 });
 
+test("um cliente estrangeiro marca com o número do seu país (D-178)", async ({ page }, info) => {
+  const barbeiro = barbeiroDe(info.project.name);
+  const telefone = info.project.name === "computador" ? "+44 7911 100001" : "+44 7911 100002";
+  await ateVagas(page, barbeiro);
+  await page.getByTestId("vaga").filter({ hasText: "17:00" }).click();
+  await page.getByLabel("Nome").fill(`Visitor ${barbeiro}`);
+  await page.getByLabel("Telemóvel").fill(telefone);
+  await page.getByRole("button", { name: "Confirmar marcação" }).click();
+  await expect(page.getByTestId("marcacao-confirmada")).toContainText(`Corte com ${barbeiro}`);
+
+  const { data } = await servico()
+    .from("marcacoes")
+    .select("estado, clientes!inner(telefone)")
+    .eq("inquilino_id", BARBEARIA_A.id)
+    .eq("clientes.telefone", telefone.replace(/\s/g, ""));
+  expect(data).toEqual([expect.objectContaining({ estado: "agendada" })]);
+});
+
 test("duas reservas da mesma vaga: uma passa, a outra é recusada", async ({
   page,
   browser,

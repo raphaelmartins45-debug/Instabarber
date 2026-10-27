@@ -41,7 +41,7 @@ export function FormularioEntradaCliente({ slug }: { slug: string }) {
         rotulo={t.telemovel}
         type="tel"
         inputMode="tel"
-        autoComplete="tel-national"
+        autoComplete="tel"
         placeholder={t.exemploTelemovel}
         erro={formState.errors.telefone ? t.erroTelemovel : undefined}
         {...register("telefone")}

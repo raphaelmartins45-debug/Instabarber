@@ -20,13 +20,13 @@ test.beforeAll(async () => {
   if (error) throw new Error(error.message);
 });
 
-for (const [locale, titulo] of [
-  ["pt-PT", "Faça a sua marcação"],
-  ["pt-BR", "Faça a sua marcação"],
-  ["fr-FR", "Prendre rendez-vous"],
-  ["fr-CA", "Prendre rendez-vous"],
-  ["de-DE", "Book an appointment"],
-  ["en-US", "Book an appointment"],
+for (const [locale, titulo, lang] of [
+  ["pt-PT", "Faça a sua marcação", "pt"],
+  ["pt-BR", "Faça a sua marcação", "pt"],
+  ["fr-FR", "Prendre rendez-vous", "fr"],
+  ["fr-CA", "Prendre rendez-vous", "fr"],
+  ["de-DE", "Book an appointment", "en"],
+  ["en-US", "Book an appointment", "en"],
 ] as const)
   test(`página pública num telemóvel em ${locale}`, async ({ browser }, info) => {
     test.skip(info.project.name !== "telemovel");
@@ -34,6 +34,8 @@ for (const [locale, titulo] of [
     const page = await contexto.newPage();
     await page.goto(`/${BARBEARIA_A.slug}`);
     await expect(page.getByText(titulo).first()).toBeVisible();
+    // O documento declara a língua mostrada, para o tradutor do telemóvel partir dela (D-178).
+    await expect(page.locator("html")).toHaveAttribute("lang", lang);
     await contexto.close();
   });
 

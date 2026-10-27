@@ -52,8 +52,8 @@ export function FormularioContacto({
         ajuda={m.telefoneAjuda}
         type="tel"
         inputMode="tel"
-        autoComplete="tel-national"
-        maxLength={11}
+        autoComplete="tel"
+        maxLength={20}
         value={v.telefone}
         onChange={(e) => setV({ ...v, telefone: e.target.value })}
       />

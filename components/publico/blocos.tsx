@@ -118,7 +118,9 @@ export function BlocoEquipa({ t, equipa }: { t: TextosPublicos; equipa: Profissi
                   {p.nome[0]}
                 </span>
               )}
-              <span className="font-bold">{p.nome}</span>
+              <span className="font-bold" translate="no">
+                {p.nome}
+              </span>
             </div>
             {p.portfolio.length ? (
               <div aria-label={t.blocos.trabalhos(p.nome)} className="grid grid-cols-3 gap-2">

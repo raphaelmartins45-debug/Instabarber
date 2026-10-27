@@ -80,7 +80,7 @@ export const fr = {
     dados: "Vos coordonnées",
     nome: "Nom",
     telefone: "Portable",
-    telefoneAjuda: "Numéro portugais à 9 chiffres, sans indicatif",
+    telefoneAjuda: "Numéro portugais à 9 chiffres, ou avec l'indicatif du pays (ex. : +33…)",
     email: "E-mail (facultatif)",
     emailAjuda: "Pour recevoir la confirmation",
     nascimento: "Date de naissance (facultatif)",
@@ -123,7 +123,8 @@ export const fr = {
       servico_invalido: "Cette prestation n'est plus disponible.",
       profissional_invalido: "Ce barbier n'est plus disponible.",
       nome: "Indiquez votre nom.",
-      telefone: "Indiquez un portable portugais à 9 chiffres.",
+      telefone:
+        "Indiquez un portable portugais à 9 chiffres, ou votre numéro avec l'indicatif du pays (+…).",
       email: "Indiquez un e-mail valide.",
       palavra_passe_curta: "Le mot de passe doit contenir au moins 8 caractères.",
       dia_invalido: "Ce jour est déjà passé.",

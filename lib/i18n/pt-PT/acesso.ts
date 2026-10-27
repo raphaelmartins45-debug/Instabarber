@@ -60,7 +60,8 @@ export const acesso = {
     novaPalavraPasse: "Palavra-passe nova (pelo menos 8 caracteres)",
     criarBotao: "Criar acesso",
     erroCodigo: "Código errado ou expirado. Peça um código novo.",
-    erroTelemovel: "Escreva um número de telemóvel português com 9 dígitos.",
+    erroTelemovel:
+      "Escreva um telemóvel português com 9 dígitos, ou com o indicativo do país (+…).",
   },
   erros: {
     limite: "Demasiadas tentativas. Tente outra vez daqui a uma hora.",

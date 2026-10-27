@@ -80,7 +80,7 @@ export const en = {
     dados: "Your details",
     nome: "Name",
     telefone: "Mobile number",
-    telefoneAjuda: "9 digits, Portuguese number, no country code",
+    telefoneAjuda: "Portuguese number (9 digits) or with your country code (e.g. +44…)",
     email: "Email (optional)",
     emailAjuda: "To receive the confirmation",
     nascimento: "Date of birth (optional)",
@@ -122,7 +122,8 @@ export const en = {
       servico_invalido: "This service is no longer available.",
       profissional_invalido: "This barber is no longer available.",
       nome: "Please enter your name.",
-      telefone: "Please enter a 9-digit Portuguese mobile number.",
+      telefone:
+        "Please enter a 9-digit Portuguese number, or your number with its country code (+…).",
       email: "Please enter a valid email.",
       palavra_passe_curta: "The password must have at least 8 characters.",
       dia_invalido: "This day has already passed.",

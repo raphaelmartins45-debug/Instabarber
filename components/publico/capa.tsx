@@ -30,7 +30,9 @@ export function Capa({ d, t }: { d: DadosCapa; t: TextosPublicos }) {
       <div className="mx-auto grid max-w-5xl gap-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-lg font-extrabold">{d.nome}</h1>
+            <h1 className="text-lg font-extrabold" translate="no">
+              {d.nome}
+            </h1>
             {d.morada || d.cidade ? (
               <p className="text-sm opacity-80">
                 {[d.morada, d.cidade].filter(Boolean).join(" · ")}

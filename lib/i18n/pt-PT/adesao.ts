@@ -108,7 +108,7 @@ export const adesao = {
     nif: "O NIF tem 9 dígitos.",
     ano: "Escreva o ano com 4 dígitos.",
     email: "Escreva um e-mail válido.",
-    telemovel: "Escreva um número português com 9 dígitos.",
+    telemovel: "Escreva um número português com 9 dígitos, ou com o indicativo do país (+…).",
     url: "Escreva um endereço completo, começado por https://",
     hora: "Escolha uma hora.",
     horario: "A hora de fecho tem de ser depois da abertura.",

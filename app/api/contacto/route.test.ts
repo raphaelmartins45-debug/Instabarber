@@ -123,7 +123,7 @@ describe("POST /api/contacto · fase 1", () => {
 
   it.each([
     ["nome sem apelido", { nome: "Miguel" }],
-    ["telemóvel estrangeiro", { telemovel: "+34 612 345 678" }],
+    ["telemóvel sem indicativo que não é português", { telemovel: "612 345 678" }],
     ["telemóvel curto", { telemovel: "91234567" }],
     ["e-mail inválido", { email: "miguel@" }],
     ["nome demasiado longo", { nome: "Miguel " + "a".repeat(200) }],

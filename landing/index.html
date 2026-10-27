@@ -1245,7 +1245,7 @@ footer { border-top-color: var(--line); }
   function erro(m) { $("err").textContent = m; $("err").hidden = false; }
   function validar1(f) {
     if (f.nome.split(/\s+/).filter(Boolean).length < 2) { erro("Escreve o nome completo (nome e apelido)."); return false; }
-    if (!/^(\+?351)?[239]\d{8}$/.test(f.telemovel.replace(/[\s.-]/g, ""))) { erro("Escreve um telemóvel português com 9 dígitos. Ex.: 912 345 678."); return false; }
+    if (!/^((\+?351)?[239]\d{8}|\+[1-9]\d{7,14})$/.test(f.telemovel.replace(/[\s.()-]/g, "").replace(/^00/, "+"))) { erro("Escreve um telemóvel português com 9 dígitos (ex.: 912 345 678) ou com o indicativo do país (ex.: +44 7911 123456)."); return false; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email)) { erro("Escreve um e-mail válido. Ex.: miguel@barbearia.pt."); return false; }
     return true;
   }
