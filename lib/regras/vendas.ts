@@ -1,6 +1,9 @@
 import {
+  calcularMensalidadeCent,
   calcularPrecoCent,
+  DOMINIO_PROPRIO_CENT,
   INCLUIDOS,
+  profissionaisExtra,
   type Periodicidade,
   type Plano,
   type RegimeIva,
@@ -83,4 +86,39 @@ export function contaPerdas(d: {
     recuperavelCent: valorRecuperavelCent(d.clientesPerdidos, visita),
     cortesParaPagar: visita > 0 ? Math.ceil(d.mensalidadeCent / visita) : 0,
   };
+}
+
+export type LinhaPreco = {
+  tipo: "base" | "extras" | "dominio" | "iva";
+  quantidade: number;
+  valorCent: number;
+};
+
+/**
+ * A mensalidade decomposta para o simulador (D-181): o plano com os incluídos, os profissionais
+ * a mais, o domínio próprio e, no regime normal, o IVA. Soma sempre `simularPreco().mensalCent`.
+ */
+export function decomporMensalidade(
+  plano: Plano,
+  pedidoProfissionais: number,
+  dominioProprio: boolean,
+  regime: RegimeIva,
+): LinhaPreco[] {
+  const profissionais = profissionaisDoPlano(plano, pedidoProfissionais);
+  const base = calcularMensalidadeCent(plano, INCLUIDOS[plano]);
+  const extras = profissionaisExtra(plano, profissionais);
+  const semIva = base + extras.valorCent + (dominioProprio ? DOMINIO_PROPRIO_CENT : 0);
+  const total = simularPreco(plano, profissionais, dominioProprio, regime).mensalCent;
+  return [
+    { tipo: "base", quantidade: INCLUIDOS[plano], valorCent: base },
+    ...(extras.extras
+      ? [{ tipo: "extras" as const, quantidade: extras.extras, valorCent: extras.valorCent }]
+      : []),
+    ...(dominioProprio
+      ? [{ tipo: "dominio" as const, quantidade: 1, valorCent: DOMINIO_PROPRIO_CENT }]
+      : []),
+    ...(total > semIva
+      ? [{ tipo: "iva" as const, quantidade: 23, valorCent: total - semIva }]
+      : []),
+  ];
 }

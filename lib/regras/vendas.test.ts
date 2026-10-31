@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { contaPerdas, profissionaisDoPlano, simularPreco, valorRecuperavelCent } from "./vendas";
+import {
+  contaPerdas,
+  decomporMensalidade,
+  profissionaisDoPlano,
+  simularPreco,
+  valorRecuperavelCent,
+} from "./vendas";
 
 describe("simulador de preço", () => {
   it("Basic isento: 19,99 € por mês, 199,90 € por ano, poupa dois meses", () => {
@@ -51,5 +57,22 @@ describe("quanto está a perder", () => {
 
   it("a fórmula do briefing é a mesma", () => {
     expect(valorRecuperavelCent(10, 1200)).toBe(4800);
+  });
+});
+
+describe("decomposição da mensalidade", () => {
+  const soma = (l: { valorCent: number }[]) => l.reduce((s, x) => s + x.valorCent, 0);
+
+  it("Pro com 5 barbeiros e domínio, isento: base, 2 extras e domínio", () => {
+    const l = decomporMensalidade("pro", 5, true, "isento");
+    expect(l.map((x) => x.tipo)).toEqual(["base", "extras", "dominio"]);
+    expect(l[1]).toMatchObject({ quantidade: 2, valorCent: 2000 });
+    expect(soma(l)).toBe(simularPreco("pro", 5, true, "isento").mensalCent);
+  });
+
+  it("regime normal acrescenta a linha do IVA e soma o total", () => {
+    const l = decomporMensalidade("basic", 1, false, "normal");
+    expect(l.map((x) => x.tipo)).toEqual(["base", "iva"]);
+    expect(soma(l)).toBe(simularPreco("basic", 1, false, "normal").mensalCent);
   });
 });

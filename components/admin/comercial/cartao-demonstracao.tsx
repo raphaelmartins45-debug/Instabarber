@@ -16,8 +16,7 @@ export function CartaoDemonstracao({ pagina }: { pagina: string | null }) {
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aCorrer, iniciar] = useTransition();
   return (
-    <section className="cartao grid gap-3 rounded-2xl p-4" data-testid="demonstracao">
-      <h2 className="text-[15px] font-bold">{t.titulo}</h2>
+    <div className="grid gap-3" data-testid="demonstracao">
       <p className="text-sm text-muted-foreground">{t.ajuda}</p>
       {aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null}
       <div className="flex flex-wrap gap-2">
@@ -57,6 +56,6 @@ export function CartaoDemonstracao({ pagina }: { pagina: string | null }) {
           </Button>
         ) : null}
       </div>
-    </section>
+    </div>
   );
 }

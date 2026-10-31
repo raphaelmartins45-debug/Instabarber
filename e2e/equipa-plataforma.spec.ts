@@ -37,37 +37,84 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   await expect(comercial).toHaveURL("/admin/comercial");
   await expect(comercial.getByRole("link", { name: "Modelos", exact: true })).toHaveCount(0);
 
-  // Apoio às vendas (D-181): o comercial tem as ferramentas, mas não a demonstração.
+  // Apoio às vendas (D-181): visão geral por fases e um módulo por separador; o comercial tem
+  // as ferramentas, mas não a demonstração.
   await comercial.goto("/admin/vendas");
   await expect(comercial.getByRole("heading", { name: "Apoio às vendas" })).toBeVisible();
-  await expect(comercial.getByRole("button", { name: "Preparar dados de hoje" })).toHaveCount(0);
+  await expect(comercial.getByTestId("vendas-geral").getByRole("link")).toHaveCount(6);
+  await comercial.getByTestId("cartao-preco").click();
+  await expect(comercial).toHaveURL("/admin/vendas/preco");
   await comercial.waitForLoadState("networkidle");
   const simulador = comercial.getByTestId("simulador-preco");
-  await simulador.getByLabel("Barbeiros").fill("5");
+  await simulador.getByRole("button", { name: "Mais barbeiros" }).click();
+  await simulador.getByRole("button", { name: "Mais barbeiros" }).click();
   await simulador.getByLabel("Domínio próprio").check();
   await expect(comercial.getByTestId("simulador-mensal")).toHaveText(/64,99/);
-  await simulador.getByLabel("Plano").selectOption("basic");
+  await expect(comercial.getByTestId("simulador-decomposicao")).toContainText("2 barbeiros a mais");
+  await simulador.getByRole("radio", { name: "Basic" }).click();
   await expect(comercial.getByTestId("simulador-mensal")).toHaveText(/24,99/);
+
+  await comercial.getByRole("link", { name: "Quanto está a perder" }).click();
+  await comercial.waitForLoadState("networkidle");
   const perdas = comercial.getByTestId("calculadora-perdas");
-  await perdas.getByLabel("Faltas por semana").fill("3");
+  await expect(comercial.getByTestId("perdas-faltas")).toContainText("—");
+  await perdas.getByLabel("Faltas por semana", { exact: true }).fill("3");
   await perdas.getByLabel("Valor médio da visita (€)").fill("15");
-  await perdas.getByLabel("Clientes que deixaram de vir").fill("20");
-  await expect(comercial.getByTestId("perdas-resultado")).toContainText("195,00");
-  await expect(comercial.getByTestId("perdas-resultado")).toContainText("120,00");
-  await expect(comercial.getByTestId("perdas-resultado")).toContainText("2 cortes");
+  await perdas.getByLabel("Clientes que deixaram de vir", { exact: true }).fill("20");
+  await expect(comercial.getByTestId("perdas-faltas")).toContainText("195,00");
+  await expect(comercial.getByTestId("perdas-recuperavel")).toContainText("120,00");
+  await expect(comercial.getByTestId("perdas-cortes")).toContainText("2");
+  // O pior caso realista (break-ui): os limites seguram os números.
+  await perdas.getByLabel("Clientes que deixaram de vir", { exact: true }).fill("999999");
+  await expect(perdas.getByLabel("Clientes que deixaram de vir", { exact: true })).toHaveValue(
+    "5000",
+  );
+
+  await comercial.getByRole("link", { name: "Objeções" }).click();
   await comercial.getByText("«É caro.»").click();
   await expect(comercial.getByText(/Vamos fazer a conta com os seus números/)).toBeVisible();
+  await comercial.getByText("«Vou pensar.»").click();
+  await expect(comercial.getByText(/Vamos fazer a conta com os seus números/)).toBeHidden();
+
+  await comercial.getByRole("link", { name: "Guião da visita" }).click();
+  await comercial.waitForLoadState("networkidle");
+  await comercial.getByRole("checkbox", { name: "Feito: Antes de ir" }).click();
+  await expect(comercial.getByTestId("guiao-progresso")).toHaveText("1 de 7 passos");
+
+  await comercial.getByRole("link", { name: "Mensagens" }).click();
+  await comercial.waitForLoadState("networkidle");
   const biblioteca = comercial.getByTestId("biblioteca-mensagens");
   await biblioteca.getByLabel("Nome do contacto").fill("Rui");
-  await biblioteca.getByRole("button", { name: "Depois da demonstração" }).click();
-  await expect(comercial.getByTestId("mensagem-texto")).toContainText("Olá Rui! Obrigado");
-  await expect(biblioteca.getByRole("link", { name: "Abrir no WhatsApp" })).toHaveAttribute(
+  const mensagem = comercial.getByTestId("mensagem-posDemonstracao");
+  await expect(mensagem).toContainText("Olá Rui! Obrigado");
+  await expect(mensagem.getByRole("link", { name: "Abrir no WhatsApp" })).toHaveAttribute(
     "href",
     /^https:\/\/wa\.me\/\?text=Ol%C3%A1%20Rui/,
   );
-  // No telemóvel, nada sai da largura do ecrã.
-  const largura = await comercial.evaluate(() => document.documentElement.scrollWidth);
-  expect(largura).toBeLessThanOrEqual(comercial.viewportSize()!.width);
+
+  await comercial.getByRole("link", { name: "Demonstração" }).click();
+  await expect(comercial.getByTestId("modulo-demonstracao")).toContainText("vista de apoio");
+  await expect(comercial.getByRole("button", { name: "Preparar dados de hoje" })).toHaveCount(0);
+
+  // Num telemóvel estreito, com um nome longo, nenhum módulo sai da largura do ecrã.
+  await comercial.setViewportSize({ width: 320, height: 720 });
+  for (const m of [
+    "",
+    "/visita",
+    "/demonstracao",
+    "/perdas",
+    "/objecoes",
+    "/preco",
+    "/mensagens",
+  ]) {
+    await comercial.goto(`/admin/vendas${m}`);
+    if (m === "/mensagens")
+      await comercial
+        .getByLabel("Nome do contacto")
+        .fill("Aleksandra Wiśniewska-Kowalczyk de Albuquerque");
+    const largura = await comercial.evaluate(() => document.documentElement.scrollWidth);
+    expect(largura, m || "visão geral").toBeLessThanOrEqual(320);
+  }
 
   await comercial.goto("/admin/comercial/leads/novo");
   await comercial.getByLabel("Nome do contacto").fill(`Contacto ${projeto}`);
@@ -162,7 +209,7 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
 
   // Barbearia de demonstração (D-162): uma só para todos, por isso só num dos projetos.
   if (projeto === "computador") {
-    await dono.goto("/admin/vendas");
+    await dono.goto("/admin/vendas/demonstracao");
     await dono.getByRole("button", { name: "Preparar dados de hoje" }).click();
     await expect(dono.getByText("Demonstração pronta.")).toBeVisible();
     await dono.getByRole("button", { name: "Abrir o painel da demonstração" }).click();

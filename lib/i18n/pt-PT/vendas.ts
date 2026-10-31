@@ -10,8 +10,34 @@ export const vendas = {
   demonstracaoSoAdmin:
     "A barbearia de demonstração abre-se na vista de apoio, que é só do dono e do gestor da plataforma. Peça-lhes uma demonstração conjunta.",
   copiar: "Copiar",
-  copiado: "Copiado.",
+  copiado: "Copiado",
   whatsapp: "Abrir no WhatsApp",
+  menos: (o: string) => `Menos ${o}`,
+  mais: (o: string) => `Mais ${o}`,
+  // Os módulos (D-181, revisão): cada ferramenta na sua página, arrumadas pelas fases da venda.
+  modulos: {
+    geral: "Visão geral",
+    visita: "Guião da visita",
+    demonstracao: "Demonstração",
+    perdas: "Quanto está a perder",
+    objecoes: "Objeções",
+    preco: "Preço",
+    mensagens: "Mensagens",
+  } as Record<string, string>,
+  resumos: {
+    visita: "Os sete passos, do Instagram à próxima ação, com a lista para ir marcando.",
+    demonstracao: "A barbearia fictícia para mostrar o sistema a funcionar, com os dados de hoje.",
+    perdas: "As faltas, os clientes perdidos e quantos cortes pagam a mensalidade.",
+    objecoes: "As objeções mais comuns, com uma resposta curta pronta a usar.",
+    preco: "O valor certo para o plano e os barbeiros, mensal ou anual, decomposto.",
+    mensagens: "Primeiro contacto, seguimento, proposta e depois da assinatura.",
+  } as Record<string, string>,
+  fases: [
+    { titulo: "Antes da visita", modulos: ["visita", "demonstracao"] },
+    { titulo: "Na conversa", modulos: ["perdas", "objecoes"] },
+    { titulo: "Para fechar", modulos: ["preco", "mensagens"] },
+  ],
+  abrir: "Abrir",
   simulador: {
     titulo: "Simulador de preço",
     ajuda: "O preço certo para o plano e o número de barbeiros, pela mesma fórmula da adesão.",
@@ -22,6 +48,15 @@ export const vendas = {
     dominio: "Domínio próprio",
     mensal: "Por mês",
     anual: "Por ano",
+    decomposicao: "Como se chega ao valor",
+    linhas: {
+      base: (plano: string, n: number) =>
+        `${plano} (${n} ${n === 1 ? "barbeiro incluído" : "barbeiros incluídos"})`,
+      extras: (n: number) => `${n} ${n === 1 ? "barbeiro a mais" : "barbeiros a mais"}`,
+      dominio: () => "Domínio próprio",
+      iva: (taxa: number) => `IVA (${taxa} %)`,
+    },
+    total: "Total por mês",
     poupa: (valor: string) => `Pagando o ano, poupa ${valor} (dois meses).`,
     iva: { isento: "Ao preço não acresce IVA.", normal: "IVA incluído." },
     texto: (
@@ -43,6 +78,16 @@ export const vendas = {
     perdidos: "Clientes que deixaram de vir",
     perdidosAjuda: "Uma estimativa dele: quantos clientes habituais deixou de ver.",
     plano: "Comparar com o plano",
+    blocos: {
+      faltas: "Faltas por mês",
+      recuperavel: "Clientes perdidos podem valer",
+      cortes: "Cortes que pagam a mensalidade",
+    },
+    blocosAjuda: {
+      faltas: "Faltas por semana × visita, num mês.",
+      recuperavel: "Se 4 em cada 10 voltarem com um lembrete.",
+      cortes: (mensal: string) => `Para a mensalidade de ${mensal}.`,
+    },
     faltasMes: (valor: string) => `As faltas custam cerca de ${valor} por mês.`,
     recuperavel: (valor: string) =>
       `Os clientes que deixaram de vir podem valer ${valor} (se 4 em cada 10 voltarem com um lembrete).`,
@@ -140,6 +185,9 @@ export const vendas = {
       },
     ],
     novoLead: "Criar um lead",
+    feito: (n: number, total: number) => `${n} de ${total} passos`,
+    recomecar: "Recomeçar",
+    marcar: (passo: string) => `Feito: ${passo}`,
   },
   mensagens: {
     titulo: "Mensagens prontas",
@@ -147,6 +195,11 @@ export const vendas = {
       "Para qualquer conversa, mesmo sem lead criado: escreva o nome, abra o WhatsApp e escolha o contacto. Na ficha do lead, as mensagens ficam no histórico.",
     nome: "Nome do contacto",
     nomeVazio: "[nome]",
+    grupos: [
+      { titulo: "Primeiro contacto", modelos: ["primeiro", "seguimento", "fimContrato"] },
+      { titulo: "Depois da visita", modelos: ["posDemonstracao", "envioProposta"] },
+      { titulo: "Cliente novo", modelos: ["aposAssinatura"] },
+    ],
     modelos: {
       primeiro: "Primeiro contacto",
       seguimento: "Seguimento",

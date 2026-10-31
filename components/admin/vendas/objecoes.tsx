@@ -1,28 +1,36 @@
+import { ChevronDown } from "lucide-react";
 import { textos } from "@/lib/i18n/pt-PT";
 import { AcoesTexto } from "./acoes-texto";
 
 const t = textos.vendas.objecoes;
 
-/** Respostas às objeções (D-181): abrem uma a uma, com a resposta pronta a copiar. */
+/**
+ * Respostas às objeções (D-181): um acordeão em que abre uma de cada vez (`name` comum), com a
+ * seta a rodar e a resposta pronta a copiar ou a abrir no WhatsApp.
+ */
 export function Objecoes() {
   return (
-    <div className="grid gap-3" data-testid="objecoes">
-      <p className="text-sm text-muted-foreground">{t.ajuda}</p>
-      <ul className="grid gap-2">
-        {t.lista.map((o) => (
-          <li key={o.id}>
-            <details className="group rounded-xl border p-3">
-              <summary className="flex min-h-8 cursor-pointer items-center font-semibold">
-                {o.objecao}
-              </summary>
-              <div className="mt-2 grid gap-3">
-                <p className="text-sm">{o.resposta}</p>
-                <AcoesTexto texto={o.resposta} />
-              </div>
-            </details>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="grid gap-2" data-testid="objecoes">
+      {t.lista.map((o) => (
+        <li key={o.id}>
+          <details
+            name="objecoes"
+            className="group rounded-xl border transition-colors duration-150 open:border-[rgba(var(--ac-rgb),.45)] open:bg-[rgba(var(--ac-rgb),.04)]"
+          >
+            <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 font-semibold [&::-webkit-details-marker]:hidden">
+              <span className="min-w-0">{o.objecao}</span>
+              <ChevronDown
+                aria-hidden
+                className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-sistema group-open:rotate-180 motion-reduce:transition-none"
+              />
+            </summary>
+            <div className="grid gap-3 px-4 pb-4">
+              <p className="text-sm">{o.resposta}</p>
+              <AcoesTexto texto={o.resposta} />
+            </div>
+          </details>
+        </li>
+      ))}
+    </ul>
   );
 }

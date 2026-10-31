@@ -2,60 +2,66 @@
 
 import { useState } from "react";
 import { Campo } from "@/components/nucleo/campo";
-import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
 import { AcoesTexto } from "./acoes-texto";
 
 const t = textos.vendas.mensagens;
 const base = textos.comercial.mensagens.textos;
 
-const MODELOS = {
+const MODELOS: Record<string, (nome: string) => string> = {
   primeiro: base.primeiro,
   seguimento: base.seguimento,
+  fimContrato: base.fimContrato,
   posDemonstracao: t.textos.posDemonstracao,
   envioProposta: t.textos.envioProposta,
-  fimContrato: base.fimContrato,
   aposAssinatura: t.textos.aposAssinatura,
-} as const;
-
-type Modelo = keyof typeof MODELOS;
+};
 
 /**
- * Mensagens prontas para qualquer conversa (D-181). Os textos de contacto são os mesmos da
- * ficha do lead (D-162); lá ficam no histórico, aqui só se copiam ou abrem no WhatsApp.
+ * Mensagens prontas para qualquer conversa (D-181), arrumadas pelo momento da venda. Os textos
+ * de contacto são os mesmos da ficha do lead (D-162); lá ficam no histórico, aqui só se copiam
+ * ou abrem no WhatsApp.
  */
 export function BibliotecaMensagens() {
   const [nome, setNome] = useState("");
-  const [modelo, setModelo] = useState<Modelo>("primeiro");
-  const texto = MODELOS[modelo](nome.trim() || t.nomeVazio);
+  const quem = nome.trim() || t.nomeVazio;
   return (
-    <div className="grid gap-3" data-testid="biblioteca-mensagens">
-      <p className="text-sm text-muted-foreground">{t.ajuda}</p>
-      <Campo
-        id="mensagens-nome"
-        rotulo={t.nome}
-        value={nome}
-        autoComplete="off"
-        onChange={(e) => setNome(e.target.value)}
-      />
-      <div className="flex flex-wrap gap-2" role="group" aria-label={t.titulo}>
-        {(Object.keys(MODELOS) as Modelo[]).map((m) => (
-          <Button
-            key={m}
-            type="button"
-            size="sm"
-            variant={m === modelo ? "default" : "outline"}
-            aria-pressed={m === modelo}
-            onClick={() => setModelo(m)}
-          >
-            {t.modelos[m]}
-          </Button>
-        ))}
+    <div className="grid gap-5" data-testid="biblioteca-mensagens">
+      <div className="sm:max-w-xs">
+        <Campo
+          id="mensagens-nome"
+          rotulo={t.nome}
+          value={nome}
+          autoComplete="off"
+          maxLength={80}
+          onChange={(e) => setNome(e.target.value)}
+        />
       </div>
-      <p className="rounded-xl border bg-foreground/[.03] p-3 text-sm" data-testid="mensagem-texto">
-        {texto}
-      </p>
-      <AcoesTexto texto={texto} />
+      {t.grupos.map((g) => (
+        <section key={g.titulo} className="grid gap-2" aria-label={g.titulo}>
+          <h3 className="rotulo">{g.titulo}</h3>
+          <ul className="grid gap-3 lg:grid-cols-2">
+            {g.modelos.map((m) => {
+              const texto = MODELOS[m]!(quem);
+              return (
+                <li
+                  key={m}
+                  className="grid content-between gap-3 rounded-xl border p-3"
+                  data-testid={`mensagem-${m}`}
+                >
+                  <div className="grid gap-1">
+                    <p className="font-semibold">{t.modelos[m]}</p>
+                    <p className="text-sm [overflow-wrap:anywhere] text-muted-foreground">
+                      {texto}
+                    </p>
+                  </div>
+                  <AcoesTexto texto={texto} />
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
     </div>
   );
 }
