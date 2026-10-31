@@ -48,7 +48,7 @@ export default async function Agenda({
   return (
     <PainelGestor atual="agenda">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+        <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
         <div className="flex flex-wrap gap-2">
           <Button asChild className="h-11">
             <Link href={`/app/agenda/marcar?dia=${dia}`}>{t.balcao.marcar}</Link>

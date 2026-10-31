@@ -40,7 +40,7 @@ export default async function AcessoSuspenso() {
       <div className="flex items-start justify-between gap-3">
         <div className="grid gap-1">
           <p className="text-sm text-muted-foreground">{suspensa.nome}</p>
-          <h1 className="text-[22px] font-extrabold" data-testid="acesso-suspenso">
+          <h1 className="text-titulo font-extrabold" data-testid="acesso-suspenso">
             {t.titulo}
           </h1>
         </div>

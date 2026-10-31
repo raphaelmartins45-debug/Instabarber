@@ -5,7 +5,7 @@ const PERIMETRO = 2 * Math.PI * RAIO;
 
 /**
  * Anel de progresso para objetivos (D-134): traço SVG com pontas redondas, valor tabular no
- * centro e brilho suave. O tom diz o estado, mas o texto também (nunca só a cor).
+ * centro. O tom diz o estado, mas o texto também (nunca só a cor).
  */
 export function AnelProgresso({
   percentagem,
@@ -56,15 +56,12 @@ export function AnelProgresso({
           stroke="currentColor"
           strokeDasharray={PERIMETRO}
           strokeDashoffset={PERIMETRO * (1 - cheio / 100)}
-          className={cn(
-            cor,
-            "drop-shadow-[0_0_6px_currentColor] transition-[stroke-dashoffset] duration-[900ms] ease-sistema",
-          )}
+          className={cn(cor, "transition-[stroke-dashoffset] duration-500 ease-sistema")}
         />
       </svg>
       <div className="relative grid justify-items-center text-center">
         <span className="numero text-2xl font-bold tracking-tight">{centro}</span>
-        {legenda ? <span className="text-[11px] text-muted-foreground">{legenda}</span> : null}
+        {legenda ? <span className="text-mini text-muted-foreground">{legenda}</span> : null}
       </div>
     </div>
   );

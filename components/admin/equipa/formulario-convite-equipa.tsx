@@ -47,7 +47,7 @@ export function FormularioConviteEquipa() {
   );
   return (
     <form onSubmit={enviar} className="cartao grid gap-4 rounded-2xl p-4" noValidate>
-      <h2 className="text-[15px] font-bold">{t.novo}</h2>
+      <h2 className="text-secao font-bold">{t.novo}</h2>
       {aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null}
       <div className="grid gap-4 sm:grid-cols-3">
         <Campo id="equipa-nome" rotulo={t.campos.nome} erro={erro("nome")} {...register("nome")} />

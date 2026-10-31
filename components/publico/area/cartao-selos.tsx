@@ -9,7 +9,7 @@ export function CartaoSelos({ t, cartao }: { t: TextosPublicos; cartao: Cartao }
   const faltam = completo ? 0 : cartao.necessarios - cartao.selos;
   return (
     <section className="grid gap-3 rounded-2xl border bg-card p-4" data-testid="cartao-selos">
-      <h2 className="text-[15px] font-bold">{t.area.selos}</h2>
+      <h2 className="text-secao font-bold">{t.area.selos}</h2>
       <div className="grid grid-cols-5 gap-2">
         {Array.from({ length: cartao.necessarios }, (_, i) => (
           <span

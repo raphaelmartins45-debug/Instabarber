@@ -15,7 +15,7 @@ export function Objecoes() {
         <li key={o.id}>
           <details
             name="objecoes"
-            className="group rounded-xl border transition-colors duration-150 open:border-[rgba(var(--ac-rgb),.45)] open:bg-[rgba(var(--ac-rgb),.04)]"
+            className="group rounded-xl border transition-colors duration-150 open:border-destaque/45 open:bg-destaque/4"
           >
             <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 font-semibold [&::-webkit-details-marker]:hidden">
               <span className="min-w-0">{o.objecao}</span>

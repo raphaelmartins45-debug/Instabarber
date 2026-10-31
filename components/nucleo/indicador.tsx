@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Um indicador (KPI): rótulo pequeno, valor grande em algarismos tabulares que não mudam de largura
- * ao atualizar, e uma linha de detalhe. Em perda, o valor ganha a cor e um brilho suave (D-134).
+ * Um indicador (KPI): rótulo pequeno, valor em algarismos tabulares que não mudam de largura ao
+ * atualizar e uma linha de detalhe. Compacto e sem animação, porque se vê muitas vezes por dia
+ * (D-183); em perda, o valor ganha só a cor.
  */
 export function Indicador({
   rotulo,
@@ -16,12 +17,12 @@ export function Indicador({
   alerta?: boolean;
 }) {
   return (
-    <div className="cartao grid animate-entrada content-start gap-1.5 rounded-2xl p-4 md:p-5">
+    <div className="cartao grid content-start gap-1 rounded-xl px-4 py-3.5">
       <span className="rotulo">{rotulo}</span>
       <span
         className={cn(
-          "numero text-2xl font-bold tracking-tight md:text-[28px]",
-          alerta && "text-destructive [text-shadow:0_0_24px_rgba(240,120,107,.35)]",
+          "numero text-xl font-bold tracking-tight md:text-2xl",
+          alerta && "text-destructive",
         )}
       >
         {valor}

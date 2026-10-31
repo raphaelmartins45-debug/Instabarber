@@ -54,7 +54,7 @@ export function RegistarEventoLead({ id }: { id: string }) {
         <textarea
           {...register("texto")}
           rows={3}
-          className="rounded-lg border border-input bg-foreground/[.03] p-3 text-sm"
+          className="rounded-lg border border-input bg-campo p-3 text-sm"
         />
         {formState.errors.texto ? (
           <span className="text-xs text-destructive">{t.erros.texto}</span>

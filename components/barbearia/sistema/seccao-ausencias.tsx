@@ -46,7 +46,7 @@ export async function SeccaoAusencias({ inquilinoId }: { inquilinoId: string }) 
         hoje={hoje}
       />
       <section className="grid gap-2">
-        <h3 className="text-[15px] font-bold">{t.nacionais}</h3>
+        <h3 className="text-secao font-bold">{t.nacionais}</h3>
         <ul className="grid gap-1 text-sm text-muted-foreground">
           {nacionais.map((f) => (
             <li key={f.id}>

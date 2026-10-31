@@ -86,7 +86,7 @@ export function FormularioServico({
       className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2"
       onSubmit={(e) => (e.preventDefault(), enviar())}
     >
-      {!servico ? <h3 className="text-[15px] font-bold sm:col-span-2">{t.novo}</h3> : null}
+      {!servico ? <h3 className="text-secao font-bold sm:col-span-2">{t.novo}</h3> : null}
       {campo("nome", t.nome)}
       {campo("descricao", t.descricao)}
       {campo("duracaoMin", t.duracao, "numeric")}
@@ -112,7 +112,7 @@ export function FormularioServico({
           ) : null}
           {(["En", "Fr"] as const).map((l) => (
             <fieldset key={l} className="grid gap-2 sm:col-span-2 sm:grid-cols-2">
-              <legend className="mb-1 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+              <legend className="mb-1 text-mini font-semibold tracking-wide text-muted-foreground uppercase">
                 {l === "En" ? t.ingles : t.frances}
               </legend>
               {campo(`nome${l}`, t.nome)}

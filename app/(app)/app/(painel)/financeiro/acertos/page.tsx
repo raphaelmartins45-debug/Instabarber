@@ -29,7 +29,7 @@ export default async function Acertos({
   return (
     <PainelGestor atual="comissoes">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+        <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
         <SeletorMes mes={mes} base="/app/financeiro/acertos" />
       </div>
       <TabelaCartoes<LinhaAcertoProfissional>

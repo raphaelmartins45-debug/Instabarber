@@ -59,7 +59,7 @@ export function AgendaDia({
               aria-labelledby={`col-${c.profissionalId}`}
               className="grid content-start gap-3 rounded-xl border bg-card p-4"
             >
-              <h3 id={`col-${c.profissionalId}`} className="text-[15px] font-bold">
+              <h3 id={`col-${c.profissionalId}`} className="text-secao font-bold">
                 {c.nome}
               </h3>
               {c.ausencias.map((a) => (
@@ -88,7 +88,7 @@ export function AgendaDia({
               )}
               {c.livres.length ? (
                 <div className="grid gap-2">
-                  <span className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+                  <span className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
                     {t.livres}
                   </span>
                   <div className="flex flex-wrap gap-1.5">

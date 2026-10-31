@@ -60,7 +60,7 @@ export function FormularioComunicado({
   );
   return (
     <form onSubmit={enviar} className="cartao grid gap-4 rounded-2xl p-4" noValidate>
-      <h2 className="text-[15px] font-bold">{t.novo}</h2>
+      <h2 className="text-secao font-bold">{t.novo}</h2>
       {aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null}
       <Campo
         id="com-titulo"

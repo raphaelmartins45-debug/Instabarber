@@ -33,7 +33,7 @@ export function Escolher({
           id={`escolher-${nome}`}
           name={nome}
           defaultValue={atual ?? ""}
-          className="h-11 w-full min-w-0 rounded-md border border-input bg-foreground/[.03] px-3 text-sm"
+          className="h-11 w-full min-w-0 rounded-md border border-input bg-campo px-3 text-sm"
         >
           <option value="">{t.escolher}</option>
           {opcoes.map((o) => (

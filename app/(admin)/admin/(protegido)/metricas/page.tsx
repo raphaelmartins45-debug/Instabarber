@@ -38,7 +38,7 @@ export default async function Metricas() {
 
   return (
     <section className="grid gap-6">
-      <h1 className="text-[22px] font-extrabold tracking-tight">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold tracking-tight">{t.titulo}</h1>
       <p className="text-sm text-muted-foreground">{t.ajuda}</p>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4" data-testid="metricas">
         <Indicador rotulo={t.ativas} valor={String(ativas)} />

@@ -96,7 +96,7 @@ export function FormularioAusencias({
           e.preventDefault(), correr(() => novaAusencia({ ...a, tipo: a.tipo as "ferias" }))
         )}
       >
-        <h3 className="text-[15px] font-bold sm:col-span-2">{t.nova}</h3>
+        <h3 className="text-secao font-bold sm:col-span-2">{t.nova}</h3>
         <Selecao
           id="ausencia-quem"
           rotulo={t.quem}
@@ -145,7 +145,7 @@ export function FormularioAusencias({
         </Button>
       </form>
       <section className="grid gap-3">
-        <h3 className="text-[15px] font-bold">{t.feriadosTitulo}</h3>
+        <h3 className="text-secao font-bold">{t.feriadosTitulo}</h3>
         <p className="text-sm text-muted-foreground">{t.feriadosAjuda}</p>
         {feriados.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t.semFeriados}</p>

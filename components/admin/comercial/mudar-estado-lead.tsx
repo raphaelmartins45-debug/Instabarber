@@ -57,7 +57,7 @@ export function MudarEstadoLead({ id, atual }: { id: string; atual: string }) {
             value={motivo}
             onChange={(e) => setMotivo(e.target.value)}
             rows={2}
-            className="rounded-lg border border-input bg-foreground/[.03] p-3 text-sm"
+            className="rounded-lg border border-input bg-campo p-3 text-sm"
           />
           <span className="text-xs text-muted-foreground">{t.ficha.motivoAjuda}</span>
         </label>

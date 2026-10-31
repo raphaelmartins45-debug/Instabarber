@@ -40,7 +40,7 @@ export default async function Equipa({ searchParams }: { searchParams: Promise<{
 
   return (
     <PainelGestor atual="equipa">
-      <h1 className="text-[22px] font-extrabold">{t.equipaTitulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.equipaTitulo}</h1>
       {!escolhido || !indicadores ? (
         <p className="text-sm text-muted-foreground">{t.semEquipa}</p>
       ) : (

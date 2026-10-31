@@ -18,7 +18,7 @@ export default async function CodigoDaFila() {
   return (
     <PainelGestor atual="agenda">
       <div className="grid justify-items-center gap-4 text-center">
-        <h1 className="text-[22px] font-extrabold">{contexto.barbearia.nome}</h1>
+        <h1 className="text-titulo font-extrabold">{contexto.barbearia.nome}</h1>
         <p className="text-sm text-muted-foreground print:hidden">{t.qrAjuda}</p>
         <CodigoQr texto={endereco} rotulo={t.qrTitulo} />
         <p className="font-mono text-sm break-all" data-testid="endereco-fila">

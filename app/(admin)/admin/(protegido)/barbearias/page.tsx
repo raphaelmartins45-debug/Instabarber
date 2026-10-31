@@ -11,7 +11,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 const t = textos.admin.barbearias;
 export const metadata = { title: `${t.titulo} · ${textos.marca.nome}` };
 
-const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
+const etiqueta = "text-mini font-semibold tracking-wide text-muted-foreground uppercase";
 
 /** Lista com pesquisa e filtros por estado, plano e periodicidade (E.1). */
 export default async function Barbearias({
@@ -49,7 +49,7 @@ export default async function Barbearias({
   );
   return (
     <section className="grid gap-4">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       <form className="grid gap-3 rounded-lg border bg-card p-3 sm:grid-cols-[1fr_auto_auto_auto_auto] sm:items-end">
         <label className="grid gap-1.5 text-sm">
           <span className={etiqueta}>{textos.comum.pesquisar}</span>

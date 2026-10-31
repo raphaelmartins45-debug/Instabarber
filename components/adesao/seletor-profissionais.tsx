@@ -21,7 +21,7 @@ export function SeletorProfissionais({
   const { extras, valorCent } = profissionaisExtra(plano, valor);
   return (
     <div className="grid gap-2">
-      <span className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+      <span className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
         {t.profissionais}
       </span>
       <div className="flex items-center gap-3">

@@ -9,7 +9,7 @@ export function BlocoHistoria({ t, historia }: { t: TextosPublicos; historia: st
   if (!historia) return null;
   return (
     <Bloco id="historia" titulo={t.blocos.historia}>
-      <p className="max-w-2xl whitespace-pre-line text-[15px] leading-relaxed">{historia}</p>
+      <p className="max-w-2xl whitespace-pre-line text-secao leading-relaxed">{historia}</p>
     </Bloco>
   );
 }

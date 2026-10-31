@@ -10,7 +10,7 @@ export type ComprovativoPendente = { id: string; nome: string; detalhe: string }
 export function ComprovativosPendentes({ linhas }: { linhas: ComprovativoPendente[] }) {
   return (
     <section className="grid gap-2" data-testid="painel-comprovativos">
-      <h2 className="text-[15px] font-bold text-ligacao">{t.painel}</h2>
+      <h2 className="text-secao font-bold">{t.painel}</h2>
       {linhas.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t.semPainel}</p>
       ) : (

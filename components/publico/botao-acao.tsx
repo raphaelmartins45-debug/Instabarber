@@ -32,7 +32,7 @@ export function BotaoAcao({
   const estilo = variante === "principal" ? { backgroundColor: cor, color: corTexto } : undefined;
   const conteudo = (
     <>
-      <span className="text-[15px] font-bold">{titulo}</span>
+      <span className="text-secao font-bold">{titulo}</span>
       {linha ? <span className="text-xs opacity-75">{linha}</span> : null}
     </>
   );

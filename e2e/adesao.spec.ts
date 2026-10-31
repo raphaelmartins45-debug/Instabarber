@@ -104,10 +104,10 @@ test("adesão, aprovação, entrada do dono e importação CSV", async ({ page, 
       "nome;telemovel;email\nAna;912345001;ana@x.pt\nBruno;123;\nCarla;912345002;\n",
     ),
   });
-  await expect(clientes).toContainText("2 linha(s) válida(s) · 1 com erro");
+  await expect(clientes).toContainText("2 linhas válidas · 1 com erro");
   await expect(clientes).toContainText("Linha 3: telemóvel inválido");
-  await clientes.getByRole("button", { name: "Gravar 2 linha(s) válida(s)" }).click();
-  await expect(clientes).toContainText("2 linha(s) gravada(s).");
+  await clientes.getByRole("button", { name: "Gravar 2 linhas válidas" }).click();
+  await expect(clientes).toContainText("2 linhas gravadas.");
 
   // 5. Exportação dos dados em ZIP e vista de apoio só de leitura, com faixa e saída.
   const zip = admin.waitForEvent("download");

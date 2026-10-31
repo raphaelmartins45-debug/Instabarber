@@ -17,10 +17,10 @@ export function CartaoModulo({
   return (
     <Link
       href={href}
-      className="cartao group grid min-h-28 grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-2xl p-4 transition-[border-color,transform] duration-200 ease-sistema hover:border-[rgba(var(--ac-rgb),.5)] active:scale-[0.98]"
+      className="cartao group grid min-h-28 grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-2xl p-4 transition-[border-color,transform] duration-200 ease-sistema hover:border-destaque/50 active:scale-[0.98]"
       data-testid={`cartao-${id}`}
     >
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[rgba(var(--ac-rgb),.12)] text-destaque">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-destaque/12 text-destaque">
         <Icone className="size-5" aria-hidden />
       </span>
       <span className="grid content-start gap-1">

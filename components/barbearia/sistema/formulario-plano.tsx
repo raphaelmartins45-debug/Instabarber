@@ -79,7 +79,7 @@ export function FormularioPlano({ plano, servicos }: { plano: Plano | null; serv
         onChange={(e) => setV({ ...v, validadeDias: e.target.value })}
       />
       <fieldset className="grid gap-2 sm:col-span-2">
-        <legend className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+        <legend className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
           {t.servicos}
         </legend>
         {servicos.map((s) => (

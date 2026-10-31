@@ -8,7 +8,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 export default function LayoutFinancas({ children }: { children: ReactNode }) {
   return (
     <section className="grid gap-5">
-      <h1 className="text-[22px] font-extrabold tracking-tight">{textos.financas.titulo}</h1>
+      <h1 className="text-titulo font-extrabold tracking-tight">{textos.financas.titulo}</h1>
       <NavFinancas />
       {children}
     </section>

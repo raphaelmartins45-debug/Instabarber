@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resumoAuditoria } from "./resumo-auditoria";
+import { resumoAuditoria, rotuloAcao } from "./resumo-auditoria";
 
 describe("resumoAuditoria", () => {
   it("mostra só os campos que mudaram, sem carimbos técnicos", () => {
@@ -28,5 +28,23 @@ describe("resumoAuditoria", () => {
     expect(resumoAuditoria({ justificacao: "Apoio" }, "—")).toBe("justificacao: Apoio");
     expect(resumoAuditoria(null, "—")).toBe("—");
     expect(resumoAuditoria({}, "—")).toBe("—");
+  });
+});
+
+describe("rotuloAcao e palavras lógicas", () => {
+  it("usa o nome do dicionário e torna legível um código desconhecido", () => {
+    expect(rotuloAcao("adesao_aprovada", { adesao_aprovada: "Adesão aprovada" })).toBe(
+      "Adesão aprovada",
+    );
+    expect(rotuloAcao("leads_inativos_apagados", {})).toBe("Leads inativos apagados");
+  });
+
+  it("os sim e não substituem true e false quando se pedem", () => {
+    expect(
+      resumoAuditoria({ chave: "agenda", depois: { ativa: true } }, "—", {
+        sim: "sim",
+        nao: "não",
+      }),
+    ).toBe("agenda · ativa: sim");
   });
 });

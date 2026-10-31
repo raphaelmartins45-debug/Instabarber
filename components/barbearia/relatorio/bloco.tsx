@@ -16,7 +16,7 @@ export function BlocoRelatorio({
       className="grid gap-3 break-inside-avoid"
       data-testid={`bloco-${n}`}
     >
-      <h2 id={`bloco-${n}`} className="text-[15px] font-bold">
+      <h2 id={`bloco-${n}`} className="text-secao font-bold">
         <span className="mr-2 text-muted-foreground tabular-nums">{n}</span>
         {titulo}
       </h2>

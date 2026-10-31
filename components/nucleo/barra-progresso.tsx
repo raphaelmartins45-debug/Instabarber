@@ -11,10 +11,10 @@ export function BarraProgresso({ percentagem, rotulo }: { percentagem: number; r
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={largura}
-      className="h-1.5 w-full overflow-hidden rounded-full bg-foreground/[.08]"
+      className="h-1.5 w-full overflow-hidden rounded-full bg-foreground/8"
     >
       <div
-        className="h-full origin-left rounded-full bg-destaque shadow-[0_0_12px_rgba(var(--ac-rgb),.5)] transition-transform duration-700 ease-sistema"
+        className="h-full origin-left rounded-full bg-destaque transition-transform duration-500 ease-sistema"
         style={{ transform: `scaleX(${largura / 100})` }}
       />
     </div>

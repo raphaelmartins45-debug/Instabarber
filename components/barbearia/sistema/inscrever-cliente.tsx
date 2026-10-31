@@ -36,7 +36,7 @@ export function InscreverCliente({
         });
       }}
     >
-      <h3 className="text-[15px] font-bold sm:col-span-3">{t.inscrever}</h3>
+      <h3 className="text-secao font-bold sm:col-span-3">{t.inscrever}</h3>
       <Campo
         id="clube-telefone"
         rotulo={t.telefone}

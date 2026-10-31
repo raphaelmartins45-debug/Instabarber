@@ -103,7 +103,7 @@ export function PassoContactos() {
         />
       </div>
       <fieldset className="grid gap-2">
-        <legend className="mb-1.5 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+        <legend className="mb-1.5 text-mini font-semibold tracking-wide text-muted-foreground uppercase">
           {t.descanso}
         </legend>
         <div className="flex flex-wrap gap-2">

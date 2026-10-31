@@ -8,7 +8,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 import { paletaDePixeis } from "@/lib/regras/paleta";
 
 const t = textos.sistema.marca;
-const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
+const etiqueta = "text-mini font-semibold tracking-wide text-muted-foreground uppercase";
 
 type Valores = {
   capa_cor: string;

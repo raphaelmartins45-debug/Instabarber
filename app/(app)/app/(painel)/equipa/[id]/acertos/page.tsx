@@ -26,7 +26,7 @@ export default async function AcertoProfissional({ params }: { params: Promise<{
   ]);
   return (
     <PainelProfissional area={area} atual="comissoes">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       <FolhaAcerto mes={mes} linha={linhas[0] ?? null} historico={historico} />
     </PainelProfissional>
   );

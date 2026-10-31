@@ -30,7 +30,7 @@ export function FiltrosLeads({
         <input
           name="q"
           defaultValue={q}
-          className="h-11 rounded-lg border border-input bg-foreground/[.03] px-3 text-sm"
+          className="h-11 rounded-lg border border-input bg-campo px-3 text-sm"
         />
       </label>
       <label className="grid gap-1.5">

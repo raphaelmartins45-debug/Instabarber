@@ -43,14 +43,14 @@ export function PastaLateral({
         aria-controls={id}
         title={recolhido ? pasta.rotulo : undefined}
         className={cn(
-          "flex h-10 w-full items-center gap-3 rounded-lg px-3 text-left text-sm transition-colors duration-200 ease-sistema hover:bg-foreground/[.05] hover:text-foreground",
+          "flex h-10 w-full items-center gap-3 rounded-lg px-3 text-left text-sm transition-colors duration-200 ease-sistema hover:bg-foreground/5 hover:text-foreground",
           contemAtual ? "font-semibold text-foreground" : "text-muted-foreground",
           recolhido && "justify-center px-0",
         )}
       >
         <IconeMenu
           id={pasta.id}
-          className={cn("size-[18px] shrink-0", contemAtual && "text-ligacao")}
+          className={cn("size-4.5 shrink-0", contemAtual && "text-ligacao")}
         />
         {recolhido ? (
           <span className="sr-only">{pasta.rotulo}</span>

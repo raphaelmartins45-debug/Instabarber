@@ -77,7 +77,7 @@ export default async function InicioGestor() {
       </div>
       <IndicadoresInicio i={indicadores} />
       <section className="grid gap-3" aria-labelledby="hoje">
-        <h2 id="hoje" className="text-[15px] font-bold">
+        <h2 id="hoje" className="text-secao font-bold">
           {t.hojeTitulo}
         </h2>
         {marcacoes.length === 0 ? (
@@ -99,7 +99,7 @@ export default async function InicioGestor() {
       <PedidosAcesso pedidos={pedidos} barbearia={contexto.barbearia.nome} />
       {tem("contas_a_pagar") ? (
         <section className="grid gap-3" aria-labelledby="contas">
-          <h2 id="contas" className="text-[15px] font-bold">
+          <h2 id="contas" className="text-secao font-bold">
             {t.contasTitulo}
           </h2>
           <ContasPendentes contas={[...custos, ...despesas]} />
@@ -107,7 +107,7 @@ export default async function InicioGestor() {
       ) : null}
       {radar ? (
         <section className="grid gap-3" aria-labelledby="contactar">
-          <h2 id="contactar" className="text-[15px] font-bold">
+          <h2 id="contactar" className="text-secao font-bold">
             {t.contactarTitulo}
           </h2>
           <ClientesContactar

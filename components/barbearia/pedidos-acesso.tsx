@@ -10,7 +10,7 @@ export function PedidosAcesso({ pedidos, barbearia }: { pedidos: Pedido[]; barbe
   const comTelefone = pedidos.filter((p) => p.cliente?.telefone);
   return (
     <section className="grid gap-3" aria-labelledby="pedidos-acesso">
-      <h2 id="pedidos-acesso" className="text-[15px] font-bold">
+      <h2 id="pedidos-acesso" className="text-secao font-bold">
         {t.titulo}
       </h2>
       {comTelefone.length === 0 ? (

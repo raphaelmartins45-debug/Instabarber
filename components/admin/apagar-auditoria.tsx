@@ -34,7 +34,12 @@ export function ApagarAuditoria() {
         confirmar={t.apagarAuditoria}
         aoConfirmar={apagar}
       >
-        <Button variant="ghost" size="sm" disabled={aCorrer} className="justify-self-start">
+        <Button
+          variant="ghost"
+          size="sm"
+          disabled={aCorrer}
+          className="justify-self-end text-destructive hover:bg-destructive/10"
+        >
           {t.apagarAuditoria}
         </Button>
       </ConfirmarAcao>

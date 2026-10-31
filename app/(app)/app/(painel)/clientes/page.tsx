@@ -36,7 +36,7 @@ export default async function Clientes({
   const mensagens = grelha.ativas.has("envio_mensagens");
   return (
     <PainelGestor atual="clientes">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       <RadarClientes
         radar={radar}
         filtro={lerFiltroRadar(q.filtro)}

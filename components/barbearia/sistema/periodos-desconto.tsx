@@ -79,7 +79,7 @@ export function PeriodosDesconto({ periodos }: { periodos: Periodo[] }) {
         className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2"
         onSubmit={(e) => (e.preventDefault(), correr(() => novoPeriodo(v)))}
       >
-        <h3 className="text-[15px] font-bold sm:col-span-2">{t.novo}</h3>
+        <h3 className="text-secao font-bold sm:col-span-2">{t.novo}</h3>
         <Selecao
           id="periodo-dia"
           rotulo={t.dia}

@@ -48,7 +48,7 @@ export default async function MarcarBalcao({
     : `/app/equipa/${contexto.profissionalId}/agenda?dia=${dia ?? hojeIso()}`;
   return (
     <PainelEquipa atual="agenda">
-      <h1 className="text-[22px] font-extrabold">
+      <h1 className="text-titulo font-extrabold">
         {modo === "marcar" ? t.tituloMarcar : t.tituloRegistar}
       </h1>
       <FormularioBalcao

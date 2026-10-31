@@ -58,7 +58,7 @@ export default async function ComprovativoPagamento({
   return (
     <section className="grid gap-6">
       <div className="grid gap-1">
-        <h1 className="text-[22px] font-extrabold">{t.admin.titulo}</h1>
+        <h1 className="text-titulo font-extrabold">{t.admin.titulo}</h1>
         <Link
           href={`/admin/barbearias/${b.id}/pagamentos`}
           className="text-sm text-ligacao underline-offset-4 hover:underline"
@@ -68,7 +68,7 @@ export default async function ComprovativoPagamento({
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="grid content-start gap-2 rounded-lg border bg-card p-4">
-          <h2 className="text-[15px] font-bold text-ligacao">{t.admin.dados}</h2>
+          <h2 className="text-secao font-bold">{t.admin.dados}</h2>
           <dl className="grid gap-1.5 text-sm" data-testid="comprovativo-dados">
             {dados.map(([rotulo, valor]) => (
               <div key={rotulo} className="flex justify-between gap-3 border-b py-1 last:border-0">

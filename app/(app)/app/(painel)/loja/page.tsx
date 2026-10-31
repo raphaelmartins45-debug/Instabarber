@@ -39,7 +39,7 @@ export default async function Loja({ searchParams }: { searchParams: Promise<{ s
   );
   return (
     <PainelGestor atual="loja">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Indicador
           rotulo={t.indicadores.ativos}

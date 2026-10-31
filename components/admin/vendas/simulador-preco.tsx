@@ -57,7 +57,7 @@ export function SimuladorPreco({ regime }: { regime: RegimeIva }) {
         {t.dominio}
       </label>
       <dl className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl border border-[rgba(var(--ac-rgb),.45)] bg-[rgba(var(--ac-rgb),.06)] p-3">
+        <div className="rounded-xl border border-destaque/45 bg-destaque/6 p-3">
           <dt className="rotulo">{t.mensal}</dt>
           <dd
             className="numero text-2xl font-extrabold tabular-nums"

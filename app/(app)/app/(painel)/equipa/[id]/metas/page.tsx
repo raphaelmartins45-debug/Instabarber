@@ -41,7 +41,7 @@ export default async function MetasProfissional({ params }: { params: Promise<{ 
   if (!ativa) {
     return (
       <PainelProfissional area={area} atual="metas">
-        <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+        <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
         <ChamadaUpgrade />
       </PainelProfissional>
     );
@@ -68,7 +68,7 @@ export default async function MetasProfissional({ params }: { params: Promise<{ 
 
   return (
     <PainelProfissional area={area} atual="metas">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       {p.objetivoCent === 0 ? (
         <p className="text-sm text-muted-foreground">{t.semObjetivo}</p>
       ) : (

@@ -36,7 +36,7 @@ export function SeletorDia({ dia, hoje, base }: { dia: string; hoje: string; bas
           {t.escolherDia}
         </button>
       </form>
-      <h2 className="w-full text-[15px] font-bold first-letter:uppercase sm:w-auto sm:pl-2">
+      <h2 className="w-full text-secao font-bold first-letter:uppercase sm:w-auto sm:pl-2">
         {diaPorExtenso(dia)}
       </h2>
     </div>

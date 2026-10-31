@@ -43,7 +43,7 @@ const VAZIO: DadosPropostaRapida = {
   proxima_acao_em: "",
 };
 
-const seletor = "h-11 rounded-md border border-input bg-foreground/[.03] px-3 text-sm";
+const seletor = "h-11 rounded-md border border-input bg-campo px-3 text-sm";
 
 /** Proposta para um lead novo (D-181): cria o lead e o briefing e gera a proposta de uma vez. */
 export function FormularioPropostaRapida() {

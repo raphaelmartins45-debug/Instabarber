@@ -119,7 +119,7 @@ export function CartoesOferta({
         className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2"
         onSubmit={(e) => (e.preventDefault(), vender())}
       >
-        <h3 className="text-[15px] font-bold sm:col-span-2">{t.vender}</h3>
+        <h3 className="text-secao font-bold sm:col-span-2">{t.vender}</h3>
         <Campo
           id="cartao-valor"
           rotulo={t.valor}

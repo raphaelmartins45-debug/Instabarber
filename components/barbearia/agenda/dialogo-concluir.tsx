@@ -74,7 +74,7 @@ export function DialogoConcluir({ id }: { id: string }) {
           <AlertDialogDescription>{dados ? t.selos(dados.selos) : null}</AlertDialogDescription>
           <form className="grid gap-3" onSubmit={(e) => (e.preventDefault(), enviar())}>
             <fieldset className="grid gap-1">
-              <legend className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+              <legend className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
                 {t.modo}
               </legend>
               {opcao("normal", t.normal)}

@@ -17,7 +17,7 @@ export default async function Comunicados() {
   ]);
   return (
     <section className="grid gap-6">
-      <h1 className="text-[22px] font-extrabold tracking-tight">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold tracking-tight">{t.titulo}</h1>
       <p className="text-sm text-muted-foreground">{t.ajuda}</p>
       <FormularioComunicado
         hoje={hojeIso()}

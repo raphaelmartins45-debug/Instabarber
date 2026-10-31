@@ -12,7 +12,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 import { REGRAS_IMAGEM, verificarImagem, type TipoImagem } from "@/lib/regras/imagens";
 
 const t = textos.sistema.marca;
-const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
+const etiqueta = "text-mini font-semibold tracking-wide text-muted-foreground uppercase";
 // A mesma explicação da adesão: formatos, tamanho, medidas e, no logótipo, o fundo transparente.
 const a = textos.adesao.identidade;
 const AJUDA: Record<TipoImagem, string> = {

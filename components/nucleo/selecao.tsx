@@ -19,7 +19,7 @@ export function Selecao({
       </label>
       <select
         id={id}
-        className="h-11 rounded-md border border-input bg-foreground/[.03] px-3 text-sm text-foreground transition-colors hover:border-foreground/25 focus-visible:border-ring"
+        className="h-11 rounded-md border border-input bg-campo px-3 text-sm text-foreground transition-colors hover:border-foreground/25 focus-visible:border-ring"
         value={valor}
         onChange={(e) => aoMudar(e.target.value)}
       >

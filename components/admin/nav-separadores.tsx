@@ -39,7 +39,7 @@ export function NavSeparadores({ inquilinoId }: { inquilinoId: string }) {
         </ul>
       </nav>
       <div className="grid gap-2 md:hidden">
-        <p className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+        <p className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
           {t.separadorDe(indice + 1, SEPARADORES.length)} · {t.separadores[SEPARADORES[indice]!]}
         </p>
         <div className="flex gap-1">

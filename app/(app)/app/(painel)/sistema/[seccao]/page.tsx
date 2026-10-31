@@ -87,9 +87,9 @@ export default async function SeccaoSistema({
 
   return (
     <PainelGestor atual="sistema">
-      <h1 className="text-[22px] font-extrabold">{textos.sistema.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{textos.sistema.titulo}</h1>
       <NavSeccoes seccoes={seccoes} atual={seccao} />
-      <h2 className="text-[15px] font-bold">{textos.sistema.secoes[seccao]}</h2>
+      <h2 className="text-secao font-bold">{textos.sistema.secoes[seccao]}</h2>
       {so ? (
         <p className="text-sm text-muted-foreground">{textos.admin.ficha.apoio.soLeitura}</p>
       ) : null}

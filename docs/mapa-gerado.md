@@ -114,14 +114,13 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `--texto: #f4f4f5;`
 - `--texto-2: #a1a1aa;`
 - `--texto-3: #8b8b94;`
-- `--vidro: rgba(18, 18, 20, 0.72);`
 - `--sucesso: #3dbe8b;`
 - `--alerta: #f2b134;`
 - `--perda: #f0786b;`
 - `--info: #8fb3ff;`
-- `--sombra-cartao: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 16px 40px -28px rgba(0, 0, 0, 0.9);`
-- `--sombra-flutuante: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 24px 60px -24px rgba(0, 0, 0, 0.85);`
-- `--brilho-cartao: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 40%);`
+- `--sombra-cartao: 0 1px 0 rgba(255, 255, 255, 0.03) inset;`
+- `--sombra-flutuante: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 12px 32px -12px rgba(0, 0, 0, 0.7);`
+- `--campo: rgba(255, 255, 255, 0.03);`
 - `--ac: #f5a623;`
 - `--ac-hi: #ffb63d;`
 - `--ac-sobre: #17120a;`
@@ -137,14 +136,13 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `--texto: #09090b;`
 - `--texto-2: #52525b;`
 - `--texto-3: #65656e;`
-- `--vidro: rgba(255, 255, 255, 0.72);`
 - `--sucesso: #14804f;`
 - `--alerta: #9a5b00;`
 - `--perda: #c4372a;`
 - `--info: #2459c9;`
-- `--sombra-cartao: 0 1px 2px rgba(9, 9, 11, 0.04), 0 12px 32px -24px rgba(9, 9, 11, 0.22);`
-- `--sombra-flutuante: 0 2px 6px rgba(9, 9, 11, 0.06), 0 24px 60px -24px rgba(9, 9, 11, 0.28);`
-- `--brilho-cartao: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 40%);`
+- `--sombra-cartao: 0 1px 2px rgba(9, 9, 11, 0.05);`
+- `--sombra-flutuante: 0 2px 6px rgba(9, 9, 11, 0.06), 0 12px 32px -12px rgba(9, 9, 11, 0.2);`
+- `--campo: rgba(9, 9, 11, 0.03);`
 - `--ac-texto: #945c00;`
 - `--ac: #2dff8a;`
 - `--ac-hi: #7dffb4;`
@@ -185,21 +183,28 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `--color-alerta: var(--alerta);`
 - `--color-info: var(--info);`
 - `--color-destaque: var(--ac);`
+- `--color-destaque-forte: var(--ac-hi);`
+- `--color-campo: var(--campo);`
 - `--color-ligacao: var(--ac-texto);`
 - `--color-border: var(--borda);`
 - `--color-borda-forte: var(--borda-forte);`
 - `--color-input: var(--borda-forte);`
 - `--color-ring: var(--ac);`
-- `--radius-sm: 8px;`
-- `--radius-md: 12px;`
-- `--radius-lg: 16px;`
-- `--radius-xl: 20px;`
-- `--radius-2xl: 24px;`
+- `--radius-sm: 6px;`
+- `--radius-md: 8px;`
+- `--radius-lg: 10px;`
+- `--radius-xl: 12px;`
+- `--radius-2xl: 14px;`
+- `--text-titulo: 22px;`
+- `--text-titulo--line-height: 1.2;`
+- `--text-secao: 15px;`
+- `--text-secao--line-height: 1.35;`
+- `--text-mini: 11px;`
+- `--text-mini--line-height: 1.3;`
 - `--shadow-cartao: var(--sombra-cartao);`
 - `--shadow-flutuante: var(--sombra-flutuante);`
 - `--ease-sistema: var(--ease);`
-- `--animate-entrada: entrada 0.5s var(--ease) both;`
-- `--animate-brilho: brilho 2.4s ease-in-out infinite;`
+- `--animate-entrada: entrada 0.2s var(--ease) both;`
 
 ## Textos (lib/i18n)
 

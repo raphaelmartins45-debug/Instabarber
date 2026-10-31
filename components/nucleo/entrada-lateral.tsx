@@ -34,10 +34,10 @@ export function EntradaLateral({
         title={textos.paineis.upgrade}
         className={cn(base, "text-terciario")}
       >
-        <IconeMenu id={item.id} className="size-[18px] shrink-0" />
+        <IconeMenu id={item.id} className="size-4.5 shrink-0" />
         {rotulo}
         {recolhido ? null : (
-          <span className="ml-auto rounded-md bg-accent px-1.5 py-0.5 text-[11px] font-semibold text-ligacao">
+          <span className="ml-auto rounded-md bg-accent px-1.5 py-0.5 text-mini font-semibold text-ligacao">
             {textos.paineis.etiquetaPro}
           </span>
         )}
@@ -53,13 +53,13 @@ export function EntradaLateral({
         base,
         ativo
           ? "bg-accent font-semibold text-foreground"
-          : "text-muted-foreground hover:bg-foreground/[.05] hover:text-foreground",
+          : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
         ativo &&
           !dentro &&
           "before:absolute before:inset-y-2 before:-left-3 before:w-0.5 before:rounded-full before:bg-primary",
       )}
     >
-      <IconeMenu id={item.id} className={cn("size-[18px] shrink-0", ativo && "text-ligacao")} />
+      <IconeMenu id={item.id} className={cn("size-4.5 shrink-0", ativo && "text-ligacao")} />
       {rotulo}
     </Link>
   );

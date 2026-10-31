@@ -38,7 +38,7 @@ export default async function Pagamentos() {
   }));
   return (
     <section className="grid gap-6">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       <p className="text-sm text-muted-foreground" data-testid="estado-faturacao">
         {configuracaoFaturacao()
           ? textos.comprovativos.fatura.estadoLigada
@@ -63,7 +63,7 @@ export default async function Pagamentos() {
         <Indicador rotulo={t.projecao} valor={formatarDinheiro(mrr.comIva * 12)} />
       </div>
       <section className="grid gap-2">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.tabela}</h2>
+        <h2 className="text-secao font-bold">{t.tabela}</h2>
         <TabelaCartoes<LinhaBarbearia>
           linhas={barbearias}
           chave={(b) => b.id}

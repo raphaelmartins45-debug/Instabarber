@@ -58,11 +58,11 @@ export default async function Pedido({ params }: { params: Promise<{ id: string 
   return (
     <section className="grid gap-6">
       <div className="grid gap-1">
-        <h1 className="text-[22px] font-extrabold">{p.nome}</h1>
+        <h1 className="text-titulo font-extrabold">{p.nome}</h1>
         <p className="text-sm text-muted-foreground">{t.estados[p.estado as "pendente"]}</p>
       </div>
       <div className="grid gap-2 rounded-lg border bg-card p-4">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.dados}</h2>
+        <h2 className="text-secao font-bold">{t.dados}</h2>
         <dl className="grid gap-x-6 gap-y-1.5 text-sm sm:grid-cols-2">
           {dados.map(([rotulo, valor]) => (
             <div key={rotulo} className="flex justify-between gap-3 border-b py-1 last:border-0">
@@ -73,7 +73,7 @@ export default async function Pedido({ params }: { params: Promise<{ id: string 
         </dl>
       </div>
       <div className="grid gap-2">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.imagens}</h2>
+        <h2 className="text-secao font-bold">{t.imagens}</h2>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <ImagemPedido url={logo ?? null} tipo="logo" rotulo={textos.adesao.identidade.logo} />
           <ImagemPedido url={capa ?? null} tipo="capa" rotulo={textos.adesao.identidade.capa} />
@@ -89,7 +89,7 @@ export default async function Pedido({ params }: { params: Promise<{ id: string 
       </div>
       <div className="grid gap-2 sm:grid-cols-2">
         <div className="grid content-start gap-1 rounded-lg border bg-card p-4 text-sm">
-          <h2 className="text-[15px] font-bold text-ligacao">{t.servicos}</h2>
+          <h2 className="text-secao font-bold">{t.servicos}</h2>
           {(p.servicos as Servico[]).map((s) => (
             <p key={s.nome} className="flex justify-between gap-3">
               <span>
@@ -100,7 +100,7 @@ export default async function Pedido({ params }: { params: Promise<{ id: string 
           ))}
         </div>
         <div className="grid content-start gap-1 rounded-lg border bg-card p-4 text-sm">
-          <h2 className="text-[15px] font-bold text-ligacao">{t.equipa}</h2>
+          <h2 className="text-secao font-bold">{t.equipa}</h2>
           {(p.equipa as Membro[]).map((m) => (
             <p key={m.email}>
               {m.nome} · {m.email}

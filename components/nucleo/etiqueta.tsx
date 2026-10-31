@@ -9,7 +9,7 @@ const TONS: Record<TomEtiqueta, string> = {
   perda: "border-destructive/25 bg-destructive/12 text-destructive",
   info: "border-info/25 bg-info/12 text-info",
   destaque: "border-destaque/25 bg-accent text-ligacao",
-  neutro: "border-border bg-foreground/[.04] text-muted-foreground",
+  neutro: "border-border bg-foreground/4 text-muted-foreground",
 };
 
 /** Etiqueta de estado (pastel, com ponto: o estado nunca depende só da cor). */

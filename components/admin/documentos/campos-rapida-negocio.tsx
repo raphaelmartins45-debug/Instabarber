@@ -61,7 +61,7 @@ export function CamposRapidaNegocio({
           id="rapida-objetivo"
           rows={2}
           aria-invalid={!!erros.objetivo}
-          className="rounded-md border border-input bg-foreground/[.03] px-3 py-2 text-sm"
+          className="rounded-md border border-input bg-campo px-3 py-2 text-sm"
           {...register("objetivo")}
         />
         {erros.objetivo ? (

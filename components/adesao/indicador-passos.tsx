@@ -6,7 +6,7 @@ export function IndicadorPassos({ atual }: { atual: number }) {
   const passos = textos.adesao.passos;
   return (
     <div className="grid gap-2">
-      <p className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+      <p className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
         {textos.adesao.passoDe(atual + 1, passos.length)}
       </p>
       <ol className="grid grid-cols-4 gap-1.5">

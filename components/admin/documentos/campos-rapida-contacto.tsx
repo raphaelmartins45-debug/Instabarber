@@ -37,7 +37,7 @@ export function CamposRapidaContacto({
         </label>
         <select
           id="rapida-origem"
-          className="h-11 rounded-md border border-input bg-foreground/[.03] px-3 text-sm"
+          className="h-11 rounded-md border border-input bg-campo px-3 text-sm"
           {...register("origem")}
         >
           {ORIGENS.filter((o) => o !== "landing").map((o) => (

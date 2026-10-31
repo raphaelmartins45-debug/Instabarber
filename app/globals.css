@@ -6,7 +6,7 @@
 
 /*
  * Sistema de design (D-134), irmão da landing (D-139): cinzentos profundos, um só destaque,
- * bordas de 1 px, vidro só em camadas flutuantes, números tabulares. Estes são os únicos valores:
+ * bordas de 1 px, superfícies lisas (sem vidro nem brilhos, D-183), números tabulares. Estes são os únicos valores:
  * os componentes usam os tokens do @theme, nunca hexadecimais. O teste
  * lib/design/tokens.test.ts confere o contraste AA de cada par de texto.
  */
@@ -23,14 +23,14 @@
   --texto: #f4f4f5;
   --texto-2: #a1a1aa;
   --texto-3: #8b8b94;
-  --vidro: rgba(18, 18, 20, 0.72);
   --sucesso: #3dbe8b;
   --alerta: #f2b134;
   --perda: #f0786b;
   --info: #8fb3ff;
-  --sombra-cartao: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 16px 40px -28px rgba(0, 0, 0, 0.9);
-  --sombra-flutuante: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 24px 60px -24px rgba(0, 0, 0, 0.85);
-  --brilho-cartao: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 40%);
+  --sombra-cartao: 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+  --sombra-flutuante: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 12px 32px -12px rgba(0, 0, 0, 0.7);
+  /* Fundo dos campos e das linhas ao passar o rato: um véu do texto sobre a superfície. */
+  --campo: rgba(255, 255, 255, 0.03);
   /* Destaque Ouro (por omissão). */
   --ac: #f5a623;
   --ac-hi: #ffb63d;
@@ -52,14 +52,13 @@
   --texto: #09090b;
   --texto-2: #52525b;
   --texto-3: #65656e;
-  --vidro: rgba(255, 255, 255, 0.72);
   --sucesso: #14804f;
   --alerta: #9a5b00;
   --perda: #c4372a;
   --info: #2459c9;
-  --sombra-cartao: 0 1px 2px rgba(9, 9, 11, 0.04), 0 12px 32px -24px rgba(9, 9, 11, 0.22);
-  --sombra-flutuante: 0 2px 6px rgba(9, 9, 11, 0.06), 0 24px 60px -24px rgba(9, 9, 11, 0.28);
-  --brilho-cartao: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 40%);
+  --sombra-cartao: 0 1px 2px rgba(9, 9, 11, 0.05);
+  --sombra-flutuante: 0 2px 6px rgba(9, 9, 11, 0.06), 0 12px 32px -12px rgba(9, 9, 11, 0.2);
+  --campo: rgba(9, 9, 11, 0.03);
   --ac-texto: #945c00;
 }
 
@@ -116,36 +115,40 @@
   --color-alerta: var(--alerta);
   --color-info: var(--info);
   --color-destaque: var(--ac);
+  --color-destaque-forte: var(--ac-hi);
+  --color-campo: var(--campo);
   --color-ligacao: var(--ac-texto);
   --color-border: var(--borda);
   --color-borda-forte: var(--borda-forte);
   --color-input: var(--borda-forte);
   --color-ring: var(--ac);
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  /* Escala de texto com nome: título de página, título de secção e rótulo pequeno. */
+  --text-titulo: 22px;
+  --text-titulo--line-height: 1.2;
+  --text-secao: 15px;
+  --text-secao--line-height: 1.35;
+  --text-mini: 11px;
+  --text-mini--line-height: 1.3;
   --shadow-cartao: var(--sombra-cartao);
   --shadow-flutuante: var(--sombra-flutuante);
   --ease-sistema: var(--ease);
-  --animate-entrada: entrada 0.5s var(--ease) both;
-  --animate-brilho: brilho 2.4s ease-in-out infinite;
+  /* Entrada curta de avisos e popups ocasionais; nunca em ações repetidas (D-183). */
+  --animate-entrada: entrada 0.2s var(--ease) both;
 }
 
 @keyframes entrada {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
     transform: none;
-  }
-}
-@keyframes brilho {
-  50% {
-    opacity: 0.55;
   }
 }
 
@@ -180,21 +183,17 @@
 }
 
 @layer components {
-  /* Cartão do sistema: borda de 1 px, brilho subtil por cima e sombra baixa. */
+  /* Cartão do sistema: superfície lisa, borda de 1 px e sombra seca (D-183). */
   .cartao {
     border: 1px solid var(--borda);
     background-color: var(--sup-cartao);
-    background-image: var(--brilho-cartao);
     box-shadow: var(--sombra-cartao);
   }
-  /* Vidro: só em camadas flutuantes (cabeçalho, menus, folhas, barra inferior). */
-  .vidro {
-    background: var(--vidro);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    backdrop-filter: blur(16px) saturate(1.4);
+  /* Barras fixas (cabeçalho, barra inferior): superfície sólida, sem desfoque (D-183). */
+  .barra {
+    background: var(--sup-cartao);
   }
-  /* Popups e diálogos: superfície sólida. Dentro de uma barra de vidro, o desfoque não chega à
-     página por trás e o vidro ficaria só transparente. */
+  /* Popups, diálogos e a folha «Mais»: superfície elevada, um degrau acima do cartão. */
   .flutuante {
     background: var(--sup-elevado);
     border: 1px solid var(--borda-forte);
@@ -207,7 +206,7 @@
   .rotulo {
     font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--texto-3);
   }

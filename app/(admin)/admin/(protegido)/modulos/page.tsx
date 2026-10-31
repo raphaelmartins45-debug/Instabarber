@@ -28,7 +28,7 @@ export default async function Modulos() {
   return (
     <section className="grid gap-6">
       <div className="grid gap-2">
-        <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+        <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
         <p className="text-sm text-muted-foreground">{t.texto}</p>
         <p className="rounded-lg border border-destaque/40 bg-accent px-3 py-2 text-sm">
           {t.aviso}
@@ -40,8 +40,8 @@ export default async function Modulos() {
           const emFalta = chavesEmFalta(chave);
           return (
             <article key={chave} className="grid gap-3 rounded-xl border bg-card p-4">
-              <h2 className="text-[15px] font-bold">{t.nomes[chave]}</h2>
-              <span className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+              <h2 className="text-secao font-bold">{t.nomes[chave]}</h2>
+              <span className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
                 {t.geral}
               </span>
               <InterruptorModulo modulo={chave} ativo={!!m?.ativo} rotulo={t.nomes[chave]!} />
@@ -52,7 +52,7 @@ export default async function Modulos() {
           );
         })}
       </div>
-      <h2 className="text-[15px] font-bold">{t.porBarbearia}</h2>
+      <h2 className="text-secao font-bold">{t.porBarbearia}</h2>
       <TabelaCartoes
         linhas={barbearias}
         chave={(b) => b.id}

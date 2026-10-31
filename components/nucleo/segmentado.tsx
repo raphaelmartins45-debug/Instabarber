@@ -26,7 +26,7 @@ export function Segmentado<T extends string>({
       <div
         role="radiogroup"
         aria-labelledby={`seg-${rotulo}`}
-        className="grid auto-cols-fr grid-flow-col gap-1 rounded-lg border border-border bg-foreground/[.04] p-1"
+        className="grid auto-cols-fr grid-flow-col gap-1 rounded-lg border border-border bg-foreground/4 p-1"
       >
         {opcoes.map((o) => (
           <button

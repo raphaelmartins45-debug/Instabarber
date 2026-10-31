@@ -37,9 +37,7 @@ export function ImportadorCsv({
 
   return (
     <section className="grid gap-3 rounded-lg border bg-card p-4" data-testid={`importar-${tipo}`}>
-      <h2 className="text-[15px] font-bold text-ligacao">
-        {tipo === "clientes" ? t.clientes : t.servicos}
-      </h2>
+      <h2 className="text-secao font-bold">{tipo === "clientes" ? t.clientes : t.servicos}</h2>
       <p className="text-sm text-muted-foreground">
         {tipo === "clientes" ? t.clientesAjuda : t.servicosAjuda}
       </p>

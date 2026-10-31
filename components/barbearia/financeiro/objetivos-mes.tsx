@@ -89,7 +89,7 @@ export function ObjetivosMes({
       </div>
       {porProfissional && profissionais.length ? (
         <div className="grid gap-3 rounded-xl border bg-card p-4">
-          <h3 className="text-[15px] font-bold">{t.porProfissional}</h3>
+          <h3 className="text-secao font-bold">{t.porProfissional}</h3>
           {profissionais.map((p) => (
             <div key={p.profissionalId} className="grid gap-2">
               {linha(p.profissionalId, p.nome)}

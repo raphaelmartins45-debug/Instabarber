@@ -13,7 +13,7 @@ export function SeletorMes({ mes, base }: { mes: string; base: string }) {
       <Link href={`${base}?mes=${mesAnterior(mes)}`} className={botao} aria-label={t.mesAnterior}>
         <ChevronLeft className="size-4" aria-hidden />
       </Link>
-      <span className="min-w-40 text-center text-[15px] font-bold first-letter:uppercase">
+      <span className="min-w-40 text-center text-secao font-bold first-letter:uppercase">
         {mesPorExtenso(mes)}
       </span>
       <Link

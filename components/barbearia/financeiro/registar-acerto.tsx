@@ -66,7 +66,7 @@ export function RegistarAcerto({
       className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2"
       onSubmit={(e) => (e.preventDefault(), enviar())}
     >
-      <h3 className="text-[15px] font-bold sm:col-span-2">{t.registar}</h3>
+      <h3 className="text-secao font-bold sm:col-span-2">{t.registar}</h3>
       <Selecao
         id="acerto-profissional"
         rotulo={t.colunas.barbeiro}

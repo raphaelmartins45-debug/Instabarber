@@ -32,7 +32,7 @@ export default async function Financeiro({
   return (
     <PainelGestor atual="financeiro">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+        <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
         <SeletorMes mes={mes} base="/app/financeiro" />
       </div>
       <Secao id="objetivo" titulo={t.objetivo.titulo}>

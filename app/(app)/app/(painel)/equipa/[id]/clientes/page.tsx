@@ -43,7 +43,7 @@ export default async function ClientesProfissional({
   const assinatura = area.profissional.nome_apresentado;
   return (
     <PainelProfissional area={area} atual="clientes">
-      <h1 className="text-[22px] font-extrabold">{textos.clientes.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{textos.clientes.titulo}</h1>
       <RadarClientes
         radar={{ ...radar, linhas }}
         filtro={lerFiltroRadar(q.filtro)}

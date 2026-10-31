@@ -44,7 +44,7 @@ export function GrelhaFuncionalidades(props: {
       <div className="grid gap-4">
         {grupos.map((g) => (
           <fieldset key={g} className="grid gap-2 rounded-lg border bg-card p-3">
-            <legend className="px-1 text-[15px] font-bold text-ligacao">{t.grupos[g]}</legend>
+            <legend className="px-1 text-secao font-bold">{t.grupos[g]}</legend>
             {props.catalogo
               .filter((f) => f.grupo === g)
               .map((f) => {
@@ -72,7 +72,7 @@ export function GrelhaFuncionalidades(props: {
                     </span>
                     <span
                       className={cn(
-                        "rounded px-1.5 py-0.5 text-[11px] font-semibold uppercase",
+                        "rounded px-1.5 py-0.5 text-mini font-semibold uppercase",
                         estado === "bonus"
                           ? "bg-destaque text-primary"
                           : estado === "pacote"
@@ -89,7 +89,7 @@ export function GrelhaFuncionalidades(props: {
         ))}
       </div>
       <aside className="grid content-start gap-3 rounded-lg border bg-card p-4 lg:sticky lg:top-4">
-        <h2 className="text-[15px] font-bold">{t.resumo}</h2>
+        <h2 className="text-secao font-bold">{t.resumo}</h2>
         <p className="text-sm" data-testid="contador-ativas">
           {t.ativas(ativas.size, props.catalogo.length)}
         </p>

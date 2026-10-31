@@ -42,7 +42,7 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 | `docs/mapa-do-sistema.md` | **Pedidos de manutenção:** classifica o pedido e diz onde mexer e como verificar |
 | `docs/mapa-gerado.md` | Lista gerada das rotas e ficheiros (`scripts/gerar-mapa.sh`; não se edita) |
 | `PROGRESSO.md` | Estado real: fases, trabalhos paralelos, pendentes do dono, módulos por ativar |
-| `DECISOES.md` | As decisões (D-01 a D-182), com data. **Prevalece** quando duas regras se contradizem |
+| `DECISOES.md` | As decisões (D-01 a D-183), com data. **Prevalece** quando duas regras se contradizem |
 | `docs/esquema/` | Fonte única da base de dados (tabelas, funções, RLS, dados iniciais) e os testes SQL |
 | `supabase/migrations/` | As migrações aplicadas (01 a 17), copiadas do esquema |
 | `fases/` | O plano de cada fase e os critérios (J.1, verificados em `fases/verificacao-j1.md`) |
@@ -95,6 +95,7 @@ decisão no `DECISOES.md`.
 | Gerador de documentos | 27/10/2026 | Proposta rápida, guia de arranque em anexo nas boas-vindas, guia do barbeiro, cartaz com QR, resumo da conta | — | D-181 |
 | Contrato por e-mail | 27/10/2026 | O cliente carrega o contrato assinado por ligação segura; conferir, agradecer e adesão; folheto da visita | 19 | D-181 |
 | Apoio às vendas em módulos | 31/10/2026 | Visão geral por fases e um módulo por página, com o acabamento das skills de Emil Kowalski | — | D-182 |
+| Revisão visual | 31/10/2026 | Sistema de design mais seco, tokens com nome, folha «Mais» e barra que se esconde no telemóvel | — | D-183 |
 
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.

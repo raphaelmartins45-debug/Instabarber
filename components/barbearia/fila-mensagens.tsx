@@ -26,7 +26,7 @@ export function FilaMensagens({ itens, titulo }: { itens: ItemLote[]; titulo: st
       aria-label={titulo}
       data-testid="fila-mensagens"
     >
-      <p className="text-[15px] font-bold">{titulo}</p>
+      <p className="text-secao font-bold">{titulo}</p>
       <p className="text-sm text-muted-foreground">{t.progresso(feitos, itens.length)}</p>
       {seguinte ? (
         <Button asChild className="h-11 justify-self-start">

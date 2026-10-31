@@ -11,7 +11,7 @@ import { FOTO_FICHA } from "@/lib/validacao/cliente";
 
 const t = textos.clientes.tecnica;
 const erros = textos.clientes.erros;
-const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
+const etiqueta = "text-mini font-semibold tracking-wide text-muted-foreground uppercase";
 const ajudaFoto = descreverFicheiro({
   formatos: Object.keys(FOTO_FICHA.tipos),
   maxBytes: FOTO_FICHA.maxBytes,

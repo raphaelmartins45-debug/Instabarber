@@ -75,7 +75,7 @@ export async function SeccaoEquipa({
             }))}
         />
       ) : null}
-      <h3 className="text-[15px] font-bold">{textos.paineis.equipa.registar}</h3>
+      <h3 className="text-secao font-bold">{textos.paineis.equipa.registar}</h3>
       <FormularioBarbeiro />
     </div>
   );

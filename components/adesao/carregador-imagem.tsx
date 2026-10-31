@@ -86,7 +86,7 @@ export function CarregadorImagem({
     <div className="grid gap-1.5">
       <label
         htmlFor={id}
-        className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase"
+        className="text-mini font-semibold tracking-wide text-muted-foreground uppercase"
       >
         {rotulo}
       </label>

@@ -5,7 +5,7 @@ export function Esqueleto({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={cn("rounded-xl bg-foreground/[.06] motion-safe:animate-pulse", className)}
+      className={cn("rounded-xl bg-foreground/6 motion-safe:animate-pulse", className)}
     />
   );
 }

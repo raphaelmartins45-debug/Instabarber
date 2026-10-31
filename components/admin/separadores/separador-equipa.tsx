@@ -18,7 +18,7 @@ export async function SeparadorEquipa({ barbearia }: { barbearia: Barbearia }) {
   return (
     <div className="grid gap-4">
       <section className="grid gap-2 rounded-lg border bg-card p-4">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.donos}</h2>
+        <h2 className="text-secao font-bold">{t.donos}</h2>
         {donos.map((d) => (
           <p key={d.id} className="text-sm">
             {d.nome} · {d.email}
@@ -27,7 +27,7 @@ export async function SeparadorEquipa({ barbearia }: { barbearia: Barbearia }) {
         <BotaoBoasVindas inquilinoId={barbearia.id} />
       </section>
       <section className="grid gap-2">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.profissionais}</h2>
+        <h2 className="text-secao font-bold">{t.profissionais}</h2>
         <p className="text-sm text-muted-foreground">
           {t.ativos(equipa.filter((p) => p.ativo).length, barbearia.profissionais_contratados)}
         </p>

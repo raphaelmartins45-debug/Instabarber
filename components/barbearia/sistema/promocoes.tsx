@@ -99,7 +99,7 @@ export function Promocoes({ promocoes }: { promocoes: Promocao[] }) {
         className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2"
         onSubmit={(e) => (e.preventDefault(), correr(() => novaPromocao(v), t.criada))}
       >
-        <h3 className="text-[15px] font-bold sm:col-span-2">{t.nova}</h3>
+        <h3 className="text-secao font-bold sm:col-span-2">{t.nova}</h3>
         {campo("titulo", t.titulo)}
         {campo("descricao", t.descricao)}
         {campo("inicio", t.inicio, "date")}

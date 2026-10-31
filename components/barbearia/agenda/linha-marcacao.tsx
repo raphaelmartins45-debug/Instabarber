@@ -56,7 +56,7 @@ export function LinhaMarcacao({
       </div>
       <span
         className={cn(
-          "justify-self-start rounded px-2 py-0.5 text-[11px] font-semibold tracking-wide uppercase",
+          "justify-self-start rounded px-2 py-0.5 text-mini font-semibold tracking-wide uppercase",
           concluida ? "bg-sucesso/15 text-sucesso" : "bg-muted text-muted-foreground",
         )}
       >

@@ -57,7 +57,7 @@ export default async function GeradorDeDocumentos({
   return (
     <section className="grid gap-8">
       <header className="grid gap-1">
-        <h1 className="text-[22px] font-extrabold tracking-tight">{t.titulo}</h1>
+        <h1 className="text-titulo font-extrabold tracking-tight">{t.titulo}</h1>
         <p className="text-sm text-muted-foreground">{t.ajuda}</p>
       </header>
       <Secao id="documentos-lead" titulo={t.ecra.leadTitulo}>

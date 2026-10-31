@@ -30,7 +30,7 @@ export function ComunicadosInicio({
             <Megaphone className="size-4" aria-hidden />
             {t.titulo}
           </p>
-          <h2 className="text-[15px] font-bold">{c.titulo}</h2>
+          <h2 className="text-secao font-bold">{c.titulo}</h2>
           <p className="text-sm whitespace-pre-line">{c.texto}</p>
           <Button
             type="button"

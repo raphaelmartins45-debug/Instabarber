@@ -13,7 +13,7 @@ import { CaixaPreco } from "./caixa-preco";
 import { SeletorProfissionais } from "./seletor-profissionais";
 
 const t = textos.adesao.contratacao;
-const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
+const etiqueta = "text-mini font-semibold tracking-wide text-muted-foreground uppercase";
 
 /** Passo 4: plano, periodicidade, profissionais, preço, o que fica incluído e confirmação (D.6, D.9, D.13). */
 export function PassoContratacao({
@@ -89,7 +89,7 @@ export function PassoContratacao({
       />
 
       <section className="grid gap-2">
-        <h3 className="text-[15px] font-bold">
+        <h3 className="text-secao font-bold">
           {t.incluido} · {t.planos[plano]}
         </h3>
         <ul className="grid gap-1 text-sm sm:grid-cols-2" data-testid="lista-incluida">

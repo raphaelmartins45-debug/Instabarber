@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -41,9 +42,13 @@ export function PedidosPendentes({ pedidos }: { pedidos: PedidoPendente[] }) {
   return (
     <section id="pedidos" className="grid gap-2" data-testid="painel-pedidos">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.pendentes}</h2>
-        <Link href="/admin/pedidos" className="text-sm underline-offset-4 hover:underline">
+        <h2 className="text-secao font-bold">{t.pendentes}</h2>
+        <Link
+          href="/admin/pedidos"
+          className="inline-flex items-center gap-1 text-sm font-medium text-ligacao underline-offset-4 hover:underline"
+        >
           {t.verPedidos}
+          <ChevronRight aria-hidden className="size-4" />
         </Link>
       </div>
       {aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null}

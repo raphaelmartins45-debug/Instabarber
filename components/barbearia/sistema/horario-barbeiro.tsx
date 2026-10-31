@@ -21,7 +21,7 @@ export function HorarioBarbeiro({ id, inicial }: { id: string; inicial: FaixaHor
   const caixa = "h-11 rounded-md border bg-card px-2 text-sm";
   return (
     <fieldset className="grid gap-2">
-      <legend className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+      <legend className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
         {t.horarioProprio}
       </legend>
       <p className="text-xs text-muted-foreground">

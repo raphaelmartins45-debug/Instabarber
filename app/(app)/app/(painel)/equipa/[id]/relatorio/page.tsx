@@ -29,7 +29,7 @@ export default async function RelatorioProfissional({
   const r = await relatorioDoMes(bd, b, mes, id, area.grelha.ativas);
   return (
     <PainelProfissional area={area} atual="relatorio">
-      <h1 className="text-[22px] font-extrabold">{t.tituloProfissional}</h1>
+      <h1 className="text-titulo font-extrabold">{t.tituloProfissional}</h1>
       <Relatorio
         r={r}
         meses={mesesDoRelatorio()}

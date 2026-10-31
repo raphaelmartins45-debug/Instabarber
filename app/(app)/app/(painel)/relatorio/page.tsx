@@ -27,7 +27,7 @@ export default async function RelatorioGestor({
   const r = await relatorioDoMes(bd, b, mes, null, grelha.ativas);
   return (
     <PainelGestor atual="relatorio">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       <Relatorio
         r={r}
         meses={mesesDoRelatorio()}

@@ -51,7 +51,7 @@ export function Capa({ d, t }: { d: DadosCapa; t: TextosPublicos }) {
         <div className="grid items-center gap-8 md:grid-cols-[1fr_auto]">
           <div className="order-2 grid gap-3 md:order-1 md:max-w-md">
             {d.cidade ? (
-              <span className="justify-self-start rounded-full border border-current/30 px-3 py-1 text-[11px] font-bold tracking-wider uppercase">
+              <span className="justify-self-start rounded-full border border-current/30 px-3 py-1 text-mini font-bold tracking-wider uppercase">
                 {t.capa.barbeariaEm(d.cidade)}
               </span>
             ) : null}

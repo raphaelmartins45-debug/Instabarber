@@ -7,7 +7,10 @@ import { BotaoSair } from "./botao-sair";
 import { PaletaComandos } from "./paleta-comandos";
 import { SeletorAparencia } from "./seletor-aparencia";
 
-/** Barra superior dos painéis, em vidro: marca, camada, procura (Ctrl K), aparência e «Sair». */
+/**
+ * Barra superior dos painéis, sólida: marca, camada, procura (Ctrl K), aparência e «Sair». Os
+ * botões têm todos 40 px de altura e o mesmo desenho (D-183).
+ */
 export function CabecalhoPainel({
   camada,
   vista,
@@ -25,7 +28,7 @@ export function CabecalhoPainel({
   acaoSair?: () => Promise<{ destino: string }>;
 }) {
   return (
-    <header className="vidro sticky top-0 z-40 border-b border-border">
+    <header className="barra sticky top-0 z-40 border-b border-border">
       <div className="flex h-16 items-center gap-2 px-4 sm:gap-3 md:gap-4 md:px-6">
         {/* Logótipo horizontal a partir de 640 px; no telemóvel, só o ícone, para caber o nome. */}
         <Image
@@ -66,7 +69,7 @@ export function CabecalhoPainel({
         {extra}
         {comandos ? <PaletaComandos itens={comandos} /> : null}
         <SeletorAparencia />
-        <BotaoSair acao={acaoSair} className="" />
+        <BotaoSair acao={acaoSair} className="h-10" />
       </div>
     </header>
   );

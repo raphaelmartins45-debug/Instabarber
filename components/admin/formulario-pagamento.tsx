@@ -12,7 +12,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 
 const t = textos.admin.pagamentos;
 const erros: Record<string, string> = t.erros;
-const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
+const etiqueta = "text-mini font-semibold tracking-wide text-muted-foreground uppercase";
 
 type Opcao = { id: string; rotulo: string };
 
@@ -101,7 +101,7 @@ export function FormularioPagamento({
       className="grid gap-3 rounded-lg border bg-card p-4 sm:grid-cols-2"
       onSubmit={(e) => (e.preventDefault(), enviar())}
     >
-      <h3 className="text-[15px] font-bold sm:col-span-2">
+      <h3 className="text-secao font-bold sm:col-span-2">
         {tipo === "fatura" ? t.novaFatura : t.novoRecebimento}
       </h3>
       {barbearias.length > 1 ? selecao("inquilino_id", t.campos.barbearia, barbearias) : null}

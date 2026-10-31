@@ -28,7 +28,7 @@ export default async function FichaBarbearia({
     <section className="grid gap-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="grid gap-1">
-          <h1 className="text-[22px] font-extrabold" data-testid="ficha-nome">
+          <h1 className="text-titulo font-extrabold" data-testid="ficha-nome">
             {b.nome}
           </h1>
           <p className="text-sm text-muted-foreground">

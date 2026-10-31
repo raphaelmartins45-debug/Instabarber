@@ -34,7 +34,7 @@ export function ListasPagamentos({
   return (
     <div className="grid gap-4 lg:grid-cols-2">
       <section className="grid content-start gap-2">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.faturas}</h2>
+        <h2 className="text-secao font-bold">{t.faturas}</h2>
         <TabelaCartoes<Fatura>
           linhas={faturas}
           chave={(f) => f.id}
@@ -64,7 +64,7 @@ export function ListasPagamentos({
         />
       </section>
       <section className="grid content-start gap-2">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.recebimentos}</h2>
+        <h2 className="text-secao font-bold">{t.recebimentos}</h2>
         <TabelaCartoes<Recebimento>
           linhas={recebimentos}
           chave={(r) => r.id}

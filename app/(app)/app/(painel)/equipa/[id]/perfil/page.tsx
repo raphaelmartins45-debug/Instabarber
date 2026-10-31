@@ -27,7 +27,7 @@ export default async function PerfilProfissional({ params }: { params: Promise<{
   const pode = !area.contexto.apoio;
   return (
     <PainelProfissional area={area} atual="perfil">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       {pode ? (
         <FormularioPerfil
           profissionalId={id}

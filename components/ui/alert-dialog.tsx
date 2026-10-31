@@ -21,7 +21,7 @@ function AlertDialogContent({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
   return (
     <AlertDialogPrimitive.Portal>
-      <AlertDialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[rgba(9,9,11,.6)] backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+      <AlertDialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
       <AlertDialogPrimitive.Content
         className={cn(
           // No telemóvel, folha inferior (com a margem do «home indicator»); no computador, centrado.

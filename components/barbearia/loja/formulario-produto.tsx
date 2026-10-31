@@ -53,7 +53,7 @@ export function FormularioProduto({ produto }: { produto: Produto | null }) {
         <span className="flex items-center gap-2">
           <span
             className={cn(
-              "rounded px-2 py-0.5 text-[11px] font-semibold uppercase",
+              "rounded px-2 py-0.5 text-mini font-semibold uppercase",
               estado === "esgotado"
                 ? "bg-destructive/10 text-destructive"
                 : estado === "repor"
@@ -85,7 +85,7 @@ export function FormularioProduto({ produto }: { produto: Produto | null }) {
       }
       className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2"
     >
-      {!produto ? <h3 className="text-[15px] font-bold sm:col-span-2">{t.produto.novo}</h3> : null}
+      {!produto ? <h3 className="text-secao font-bold sm:col-span-2">{t.produto.novo}</h3> : null}
       <input type="hidden" name="id" value={produto?.id ?? ""} />
       <Campo id={`p-${id}-nome`} name="nome" rotulo={t.produto.nome} defaultValue={produto?.nome} />
       <Campo

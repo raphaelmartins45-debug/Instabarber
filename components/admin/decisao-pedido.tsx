@@ -78,7 +78,7 @@ export function DecisaoPedido(props: {
             onChange={(e) => setProfissionais(e.target.value)}
           />
           <label className="grid gap-1.5 text-sm">
-            <span className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+            <span className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
               {textos.admin.ficha.campos.plano}
             </span>
             <select
@@ -94,7 +94,7 @@ export function DecisaoPedido(props: {
             </select>
           </label>
           <label className="grid gap-1.5 text-sm">
-            <span className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+            <span className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
               {textos.admin.ficha.campos.periodicidade}
             </span>
             <select

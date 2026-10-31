@@ -28,7 +28,7 @@ export function PaginaDocumentoLegal({ documento }: { documento: DocumentoLegal 
         ))}
         {documento.seccoes.map((s) => (
           <section key={s.titulo} className="grid gap-2">
-            <h2 className="text-[15px] font-bold text-ligacao">{s.titulo}</h2>
+            <h2 className="text-secao font-bold">{s.titulo}</h2>
             {s.paragrafos.map((p) => (
               <p key={p}>{p}</p>
             ))}

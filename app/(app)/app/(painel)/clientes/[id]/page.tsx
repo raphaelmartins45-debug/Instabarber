@@ -94,7 +94,7 @@ export default async function FichaCliente({ params }: { params: Promise<{ id: s
       <Link href={voltar} className="text-sm text-ligacao underline-offset-4 hover:underline">
         {t.voltar}
       </Link>
-      <h1 className="text-[22px] font-extrabold" data-testid="ficha-cliente">
+      <h1 className="text-titulo font-extrabold" data-testid="ficha-cliente">
         {cliente.nome}
       </h1>
       {bloqueio?.data && contexto.eGestor && !contexto.apoio ? <PermitirMarcacao id={id} /> : null}

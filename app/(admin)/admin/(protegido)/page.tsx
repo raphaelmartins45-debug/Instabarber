@@ -128,7 +128,7 @@ export default async function PainelGeral() {
 
   return (
     <section className="grid gap-6">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold tracking-tight">{t.titulo}</h1>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Indicador
           rotulo={t.ativas}
@@ -170,10 +170,14 @@ export default async function PainelGeral() {
         }))}
       />
       <ListaAlertas alertas={alertas} />
-      <section className="grid gap-2">
-        <h2 className="text-[15px] font-bold text-ligacao">{t.atividade}</h2>
+      <section className="grid gap-2" aria-labelledby="painel-atividade">
+        <h2 id="painel-atividade" className="text-secao font-bold">
+          {t.atividade}
+        </h2>
         <SeparadorAuditoria limite={10} />
-        <ApagarAuditoria />
+        <div className="flex justify-end">
+          <ApagarAuditoria />
+        </div>
       </section>
     </section>
   );

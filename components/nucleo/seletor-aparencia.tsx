@@ -63,9 +63,9 @@ export function SeletorAparencia() {
         aria-label={t.titulo}
         title={t.titulo}
         onClick={() => setAberto((a) => !a)}
-        className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors duration-200 ease-sistema hover:bg-foreground/[.06] hover:text-foreground"
+        className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors duration-200 ease-sistema hover:bg-foreground/6 hover:text-foreground"
       >
-        <Palette aria-hidden className="size-[18px]" />
+        <Palette aria-hidden className="size-4.5" />
       </button>
       {aberto ? (
         <div

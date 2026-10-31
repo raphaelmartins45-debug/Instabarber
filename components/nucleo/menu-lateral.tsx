@@ -65,12 +65,12 @@ export function MenuLateral({ itens, atual }: { itens: ItemMontado[]; atual: str
           aria-expanded={!recolhido}
           aria-label={recolhido ? textos.paineis.expandirMenu : textos.paineis.recolherMenu}
           title={recolhido ? textos.paineis.expandirMenu : textos.paineis.recolherMenu}
-          className="flex size-10 items-center justify-center rounded-lg text-terciario transition-colors duration-200 ease-sistema hover:bg-foreground/[.06] hover:text-foreground"
+          className="flex size-10 items-center justify-center rounded-lg text-terciario transition-colors duration-200 ease-sistema hover:bg-foreground/6 hover:text-foreground"
         >
           {recolhido ? (
-            <PanelLeftOpen aria-hidden className="size-[18px]" />
+            <PanelLeftOpen aria-hidden className="size-4.5" />
           ) : (
-            <PanelLeftClose aria-hidden className="size-[18px]" />
+            <PanelLeftClose aria-hidden className="size-4.5" />
           )}
         </button>
       </div>

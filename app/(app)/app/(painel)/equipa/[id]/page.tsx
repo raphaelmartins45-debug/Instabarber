@@ -35,7 +35,7 @@ export default async function InicioProfissional({ params }: { params: Promise<{
   const agora = new Date();
   return (
     <PainelProfissional area={area} atual="inicio">
-      <h1 className="text-[22px] font-extrabold">{area.profissional.nome_apresentado}</h1>
+      <h1 className="text-titulo font-extrabold">{area.profissional.nome_apresentado}</h1>
       <IndicadoresProfissional
         i={indicadores}
         metas={area.grelha.ativas.has("metas_profissional")}

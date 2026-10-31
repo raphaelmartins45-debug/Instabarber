@@ -14,7 +14,7 @@ export default async function Pedidos() {
   const pedidos = await listarPedidos(await criarClienteServidor());
   return (
     <section className="grid gap-4">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       <TabelaCartoes<PedidoAdesaoLinha>
         linhas={pedidos}
         chave={(p) => p.id}

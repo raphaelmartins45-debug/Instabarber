@@ -57,7 +57,7 @@ export function Confirmacao({
   return (
     <div className="grid gap-4" data-testid="marcacao-confirmada">
       <h2 className="text-xl font-extrabold">{m.feita}</h2>
-      <p className="text-[15px] font-semibold first-letter:uppercase">
+      <p className="text-secao font-semibold first-letter:uppercase">
         {m.resumo(servico, barbeiro, dataLongaNaLingua(inicio, lingua), horaCurta(inicio))}
       </p>
       <p>

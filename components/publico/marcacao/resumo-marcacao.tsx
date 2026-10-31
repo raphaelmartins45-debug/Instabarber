@@ -28,7 +28,7 @@ export function ResumoMarcacao({
   const m = t.marcacao;
   const linha = (rotulo: string, valor: string | undefined) => (
     <div className="grid gap-0.5">
-      <dt className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+      <dt className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
         {rotulo}
       </dt>
       <dd className={valor ? "font-semibold" : "text-muted-foreground"}>

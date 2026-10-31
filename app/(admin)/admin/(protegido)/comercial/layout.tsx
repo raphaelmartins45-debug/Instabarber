@@ -11,7 +11,7 @@ export default async function LayoutComercial({ children }: { children: ReactNod
   const { papel } = await exigirEquipaPlataforma();
   return (
     <section className="grid gap-5">
-      <h1 className="text-[22px] font-extrabold tracking-tight">{textos.comercial.titulo}</h1>
+      <h1 className="text-titulo font-extrabold tracking-tight">{textos.comercial.titulo}</h1>
       <NavComercial administrador={eAdministrador(papel)} />
       {children}
     </section>

@@ -24,7 +24,7 @@ export default async function SaudeDasBarbearias() {
   );
   return (
     <section className="grid gap-6">
-      <h1 className="text-[22px] font-extrabold tracking-tight">{t.saude.titulo}</h1>
+      <h1 className="text-titulo font-extrabold tracking-tight">{t.saude.titulo}</h1>
       <p className="text-sm text-muted-foreground">{t.saude.ajuda}</p>
       <p className="font-semibold" data-testid="saude-contagem">
         {t.saude.contagem(

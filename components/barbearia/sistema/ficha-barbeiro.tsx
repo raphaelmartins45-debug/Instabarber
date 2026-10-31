@@ -75,7 +75,7 @@ export function FichaBarbeiro({
       aria-labelledby="ficha-barbeiro"
       data-testid="ficha-barbeiro"
     >
-      <h3 id="ficha-barbeiro" className="text-[15px] font-bold">
+      <h3 id="ficha-barbeiro" className="text-secao font-bold">
         {t.ficha} · {ficha.nome}
       </h3>
       <form
@@ -134,7 +134,7 @@ export function FichaBarbeiro({
           </>
         ) : null}
         <fieldset className="grid gap-2 sm:col-span-2">
-          <legend className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+          <legend className="text-mini font-semibold tracking-wide text-muted-foreground uppercase">
             {t.porServico}
           </legend>
           <p className="text-xs text-muted-foreground">{t.porServicoAjuda}</p>

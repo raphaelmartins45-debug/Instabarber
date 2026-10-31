@@ -36,7 +36,7 @@ export function GuiaoVisita() {
             </Button>
           ) : null}
         </div>
-        <div className="h-1.5 overflow-hidden rounded-full bg-foreground/[.08]" aria-hidden>
+        <div className="h-1.5 overflow-hidden rounded-full bg-foreground/8" aria-hidden>
           <div
             className="h-full origin-left rounded-full bg-destaque transition-transform duration-300 ease-sistema motion-reduce:transition-none"
             style={{ transform: `scaleX(${feitos.size / total})` }}
@@ -56,7 +56,7 @@ export function GuiaoVisita() {
                 onClick={() => alternar(i)}
                 className={cn(
                   "grid w-full grid-cols-[2rem_minmax(0,1fr)] gap-3 rounded-xl border p-3 text-left transition-[border-color,background-color,transform] duration-150 ease-sistema active:scale-[0.99]",
-                  feito ? "border-[rgba(var(--ac-rgb),.45)] bg-[rgba(var(--ac-rgb),.05)]" : "",
+                  feito ? "border-destaque/45 bg-destaque/5" : "",
                 )}
               >
                 <span

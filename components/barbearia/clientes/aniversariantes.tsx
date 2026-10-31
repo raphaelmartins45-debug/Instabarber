@@ -37,7 +37,7 @@ export function Aniversariantes({
     );
   return (
     <section className="grid gap-3" aria-labelledby="aniversarios">
-      <h2 id="aniversarios" className="text-[15px] font-bold">
+      <h2 id="aniversarios" className="text-secao font-bold">
         {t.titulo(nomeDoMes(mes))}
       </h2>
       {desconto ? <p className="text-sm text-muted-foreground">{t.desconto(desconto)}</p> : null}

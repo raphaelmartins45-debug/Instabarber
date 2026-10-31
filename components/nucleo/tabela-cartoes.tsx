@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
-// Tabela no computador; abaixo de 768 px, um cartão por registo com pares rótulo-valor (I.3.1).
+// Tabela no computador; abaixo de 768 px, um cartão por registo (I.3.1): a primeira coluna é o
+// título do cartão e as outras ficam em pares rótulo-valor compactos (D-183).
 
 export type Coluna<T> = { id: string; rotulo: string; valor: (linha: T) => ReactNode };
 
@@ -18,14 +19,15 @@ export function TabelaCartoes<T>({
   testId?: string;
 }) {
   if (linhas.length === 0) return <p className="text-sm text-muted-foreground">{vazio}</p>;
+  const [primeira, ...resto] = colunas;
   return (
     <>
-      <div className="cartao hidden overflow-x-auto rounded-2xl md:block">
+      <div className="cartao hidden overflow-x-auto rounded-xl md:block">
         <table className="w-full text-sm">
-          <thead className="vidro sticky top-0 border-b text-left text-[11px] tracking-[0.08em] text-terciario uppercase">
+          <thead className="border-b bg-campo text-left">
             <tr>
               {colunas.map((c) => (
-                <th key={c.id} scope="col" className="px-4 py-3 font-semibold">
+                <th key={c.id} scope="col" className="rotulo px-4 py-2.5">
                   {c.rotulo}
                 </th>
               ))}
@@ -35,11 +37,11 @@ export function TabelaCartoes<T>({
             {linhas.map((l) => (
               <tr
                 key={chave(l)}
-                className="border-b border-border/60 transition-colors last:border-0 hover:bg-foreground/[.03]"
+                className="border-b border-border/60 transition-colors duration-150 last:border-0 hover:bg-campo"
                 data-testid={testId}
               >
                 {colunas.map((c) => (
-                  <td key={c.id} className="numero px-4 py-3 align-middle">
+                  <td key={c.id} className="numero px-4 py-2.5 align-middle">
                     {c.valor(l)}
                   </td>
                 ))}
@@ -48,15 +50,22 @@ export function TabelaCartoes<T>({
           </tbody>
         </table>
       </div>
-      <ul className="grid gap-2 md:hidden">
+      <ul className="cartao divide-y divide-border overflow-hidden rounded-xl md:hidden">
         {linhas.map((l) => (
-          <li key={chave(l)} className="cartao grid gap-2 rounded-2xl p-4" data-testid={testId}>
-            {colunas.map((c) => (
-              <div key={c.id} className="flex justify-between gap-3 text-sm">
-                <span className="rotulo">{c.rotulo}</span>
-                <span className="numero text-right">{c.valor(l)}</span>
-              </div>
-            ))}
+          <li key={chave(l)} className="grid gap-1.5 px-4 py-3" data-testid={testId}>
+            {primeira ? (
+              <div className="numero font-medium [overflow-wrap:anywhere]">{primeira.valor(l)}</div>
+            ) : null}
+            {resto.length ? (
+              <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 text-sm">
+                {resto.map((c) => (
+                  <div key={c.id} className="contents">
+                    <dt className="text-xs text-muted-foreground">{c.rotulo}</dt>
+                    <dd className="numero text-right [overflow-wrap:anywhere]">{c.valor(l)}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
           </li>
         ))}
       </ul>

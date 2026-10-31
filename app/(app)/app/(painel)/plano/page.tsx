@@ -35,7 +35,7 @@ export default async function MeuPlano() {
   const fora = catalogo.filter((f) => !grelha.ativas.has(f.chave));
   return (
     <PainelGestor atual="plano">
-      <h1 className="text-[22px] font-extrabold">{t.titulo}</h1>
+      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
       <ResumoPlano
         b={b}
         faturas={faturas}

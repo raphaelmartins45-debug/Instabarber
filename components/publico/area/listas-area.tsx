@@ -16,7 +16,7 @@ export function SeccaoArea({
 }) {
   return (
     <section className="grid gap-2 rounded-2xl border bg-card p-4" data-testid={testId}>
-      <h2 className="text-[15px] font-bold">{titulo}</h2>
+      <h2 className="text-secao font-bold">{titulo}</h2>
       {children}
     </section>
   );

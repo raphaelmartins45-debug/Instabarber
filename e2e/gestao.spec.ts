@@ -33,7 +33,7 @@ test("saúde, arranque e crescimento a partir da pasta Gestão do negócio", asy
     await expect(page.locator("#menu-mais")).toHaveCount(0);
     await page.getByRole("button", { name: "Mais", exact: true }).click();
     await expect(page.locator("#menu-mais")).toBeVisible();
-    await page.getByTestId("mais-fundo").click({ position: { x: 20, y: 250 } });
+    await page.getByTestId("mais-fundo").click({ position: { x: 20, y: 100 } });
     await expect(page.locator("#menu-mais")).toHaveCount(0);
   }
   await expect(page.getByTestId("saude-contagem")).toContainText("em risco");

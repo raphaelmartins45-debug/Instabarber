@@ -58,7 +58,7 @@ export function ContadorNumero({
           disabled={desativado}
           aria-describedby={ajuda ? `${id}-ajuda` : undefined}
           onChange={(e) => aoMudar(limitar(Number(e.target.value.replace(/\D/g, "")) || 0))}
-          className="numero h-10 w-16 min-w-0 rounded-md border border-input bg-foreground/[.03] text-center text-base font-semibold tabular-nums disabled:opacity-60"
+          className="numero h-10 w-16 min-w-0 rounded-md border border-input bg-campo text-center text-base font-semibold tabular-nums disabled:opacity-60"
         />
         <Button
           type="button"

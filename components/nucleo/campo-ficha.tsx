@@ -7,7 +7,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 import { cn } from "@/lib/utils";
 
 const rotulos: Record<string, string> = textos.admin.ficha.campos;
-const etiqueta = "text-[11px] font-semibold tracking-wide text-muted-foreground uppercase";
+const etiqueta = "text-mini font-semibold tracking-wide text-muted-foreground uppercase";
 const TIPOS_INPUT: Record<string, string> = {
   hora: "time",
   data: "date",

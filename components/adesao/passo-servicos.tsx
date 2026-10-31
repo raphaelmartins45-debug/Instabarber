@@ -19,7 +19,7 @@ export function PassoServicos() {
   return (
     <div className="grid gap-6">
       <section className="grid gap-3">
-        <h3 className="text-[15px] font-bold">{t.titulo}</h3>
+        <h3 className="text-secao font-bold">{t.titulo}</h3>
         <p className="text-sm text-muted-foreground">{t.ajuda}</p>
         {servicos.fields.map((f, i) => (
           <div
@@ -71,7 +71,7 @@ export function PassoServicos() {
       </section>
 
       <section className="grid gap-3">
-        <h3 className="text-[15px] font-bold">{t.equipa}</h3>
+        <h3 className="text-secao font-bold">{t.equipa}</h3>
         <p className="text-sm text-muted-foreground">{t.equipaAjuda}</p>
         {equipa.fields.map((f, i) => (
           <div
@@ -107,7 +107,7 @@ export function PassoServicos() {
       </section>
 
       <fieldset className="grid gap-2">
-        <legend className="mb-1 text-[15px] font-bold">{t.caixa}</legend>
+        <legend className="mb-1 text-secao font-bold">{t.caixa}</legend>
         <p className="text-sm text-muted-foreground">{t.caixaAjuda}</p>
         {(["A", "B", "C"] as const).map((m) => (
           <label

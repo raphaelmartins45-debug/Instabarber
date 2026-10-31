@@ -1,33 +1,30 @@
 "use client";
 
 import { Ellipsis } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type ItemMontado, planificar } from "@/lib/funcionalidades/menus";
 import { textos } from "@/lib/i18n/pt-PT";
 import { cn } from "@/lib/utils";
-import { IconeMenu } from "./icone-menu";
+import { EntradaInferior } from "./entrada-inferior";
+import { FolhaMais } from "./folha-mais";
 
 const VISIVEIS = 5;
+/** Quanto é preciso descer ou subir (px) para a barra se esconder ou voltar. */
+const LIMIAR = 12;
 
 /**
- * Navegação inferior abaixo de 768 px (I.3.1): ícone e rótulo curto, no máximo cinco
- * entradas; o resto num menu «Mais». Alvos de toque com 44 px no mínimo. O «Mais» fecha ao mudar
- * de página, ao tocar fora dele e com Esc, para nunca ficar por cima do conteúdo.
+ * Navegação inferior abaixo de 768 px (I.3.1): ícone e rótulo curto, no máximo cinco entradas; o
+ * resto na folha «Mais». A barra esconde-se ao descer a página e volta ao subir; a folha fecha ao
+ * mudar de página, ao tocar no fundo e com Esc, e o fundo não desliza enquanto está aberta (D-183).
  */
 export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atual: string }) {
   const [aberto, setAberto] = useState(false);
+  const [oculta, setOculta] = useState(false);
+  const ultimoY = useRef(0);
   const caminho = usePathname();
-  useEffect(() => setAberto(false), [caminho]);
-  useEffect(() => {
-    if (!aberto) return;
-    const tecla = (e: KeyboardEvent) => e.key === "Escape" && setAberto(false);
-    window.addEventListener("keydown", tecla);
-    return () => window.removeEventListener("keydown", tecla);
-  }, [aberto]);
   // As pastas (ex.: «Gestão do negócio») vão sempre para o «Mais», com o título e as entradas
-  // de dentro por baixo, como num menu de banco; as entradas soltas enchem a barra.
+  // de dentro por baixo; as entradas soltas enchem a barra.
   const simples = menu.filter((i) => !i.filhos);
   const pastas = menu.filter((i) => i.filhos);
   const cabem = !pastas.length && simples.length <= VISIVEIS;
@@ -35,51 +32,73 @@ export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atu
   const resto = cabem ? [] : simples.slice(VISIVEIS - 1);
   const restoAtivo = [...resto, ...planificar(pastas)].some((i) => i.id === atual);
 
+  useEffect(() => {
+    setAberto(false);
+    setOculta(false);
+  }, [caminho]);
+
+  useEffect(() => {
+    if (!aberto) return;
+    const tecla = (e: KeyboardEvent) => e.key === "Escape" && setAberto(false);
+    const raiz = document.documentElement;
+    const antes = raiz.style.overflow;
+    raiz.style.overflow = "hidden";
+    window.addEventListener("keydown", tecla);
+    return () => {
+      raiz.style.overflow = antes;
+      window.removeEventListener("keydown", tecla);
+    };
+  }, [aberto]);
+
+  useEffect(() => {
+    let pedido = 0;
+    const aoDeslizar = () => {
+      cancelAnimationFrame(pedido);
+      pedido = requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const delta = y - ultimoY.current;
+        if (Math.abs(delta) < LIMIAR) return;
+        setOculta(delta > 0 && y > 64);
+        ultimoY.current = y;
+      });
+    };
+    window.addEventListener("scroll", aoDeslizar, { passive: true });
+    return () => {
+      cancelAnimationFrame(pedido);
+      window.removeEventListener("scroll", aoDeslizar);
+    };
+  }, []);
+
   return (
     <>
       {aberto ? (
-        <div
-          aria-hidden
-          data-testid="mais-fundo"
-          onClick={() => setAberto(false)}
-          className="fixed inset-0 z-30 bg-black/30 md:hidden"
-        />
+        <>
+          <div
+            aria-hidden
+            data-testid="mais-fundo"
+            onClick={() => setAberto(false)}
+            className="fixed inset-0 z-30 bg-black/40 transition-opacity duration-200 starting:opacity-0 md:hidden"
+          />
+          <FolhaMais
+            resto={resto}
+            pastas={pastas}
+            atual={atual}
+            aoFechar={() => setAberto(false)}
+          />
+        </>
       ) : null}
       <nav
         aria-label={textos.paineis.menuRotulo}
-        className="vidro fixed inset-x-0 bottom-0 z-40 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden"
+        data-oculta={oculta && !aberto ? "" : undefined}
+        className={cn(
+          "barra fixed inset-x-0 bottom-0 z-40 border-t border-border pb-[env(safe-area-inset-bottom)] transition-transform duration-200 ease-sistema md:hidden",
+          oculta && !aberto && "translate-y-full",
+        )}
       >
-        {aberto ? (
-          <ul
-            id="menu-mais"
-            className="grid max-h-[60dvh] gap-1 overflow-y-auto overscroll-contain border-b bg-elevado p-2"
-          >
-            {resto.map((item) => (
-              <li key={item.id} data-menu={item.id}>
-                <Entrada item={item} atual={atual} horizontal />
-              </li>
-            ))}
-            {pastas.map((pasta) => (
-              <li key={pasta.id} className="grid gap-1 pt-2" data-menu={pasta.id}>
-                <span className="flex min-h-11 items-center gap-3 px-3 text-sm font-semibold">
-                  <IconeMenu id={pasta.id} className="size-5" />
-                  {pasta.rotulo}
-                </span>
-                <ul className="grid gap-1">
-                  {pasta.filhos!.map((f) => (
-                    <li key={f.id} data-menu={f.id} className="pl-6">
-                      <Entrada item={f} atual={atual} horizontal />
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        ) : null}
         <ul className="flex">
           {fixos.map((item) => (
             <li key={item.id} className="flex-1" data-menu={item.id}>
-              <Entrada item={item} atual={atual} />
+              <EntradaInferior item={item} atual={atual} />
             </li>
           ))}
           {!cabem ? (
@@ -90,7 +109,7 @@ export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atu
                 aria-controls="menu-mais"
                 onClick={() => setAberto((a) => !a)}
                 className={cn(
-                  "flex min-h-14 w-full flex-col items-center justify-center gap-0.5 text-[11px]",
+                  "flex min-h-14 w-full flex-col items-center justify-center gap-0.5 text-mini transition-colors duration-150",
                   restoAtivo || aberto ? "font-semibold text-foreground" : "text-terciario",
                 )}
               >
@@ -102,46 +121,5 @@ export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atu
         </ul>
       </nav>
     </>
-  );
-}
-
-function Entrada({
-  item,
-  atual,
-  horizontal,
-}: {
-  item: ItemMontado;
-  atual: string;
-  horizontal?: boolean;
-}) {
-  const classe = horizontal
-    ? "flex min-h-11 items-center gap-3 rounded-md px-3 text-sm"
-    : "flex min-h-14 flex-col items-center justify-center gap-0.5 px-1 text-center text-[11px] leading-tight";
-  if (item.estado === "upgrade") {
-    return (
-      <span
-        aria-disabled="true"
-        title={textos.paineis.upgrade}
-        className={cn(classe, "text-terciario/60")}
-      >
-        <IconeMenu id={item.id} className="size-5" />
-        {item.rotulo}
-      </span>
-    );
-  }
-  const ativo = item.id === atual;
-  return (
-    <Link
-      href={item.href}
-      aria-current={ativo ? "page" : undefined}
-      className={cn(
-        classe,
-        ativo ? "font-semibold text-foreground" : "text-terciario",
-        horizontal && ativo && "bg-accent",
-      )}
-    >
-      <IconeMenu id={item.id} className={cn("size-5", ativo && "text-ligacao")} />
-      {item.rotulo}
-    </Link>
   );
 }

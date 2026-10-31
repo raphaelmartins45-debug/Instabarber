@@ -101,17 +101,17 @@ export function PaletaComandos({ itens }: { itens: ItemMontado[] }) {
         type="button"
         onClick={() => setAberta(true)}
         aria-label={t.abrir}
-        className="flex h-10 items-center gap-2 rounded-lg border border-border bg-foreground/[.03] px-3 text-sm text-muted-foreground transition-colors duration-200 ease-sistema hover:text-foreground"
+        className="flex size-10 items-center justify-center gap-2 rounded-lg text-sm text-muted-foreground transition-colors duration-150 hover:bg-foreground/6 hover:text-foreground lg:w-auto lg:justify-start lg:border lg:border-border lg:bg-campo lg:px-3"
       >
         <Search aria-hidden className="size-4" />
         <span className="hidden lg:inline">{t.abrir}</span>
-        <kbd className="hidden rounded border border-border px-1.5 text-[11px] text-terciario lg:inline">
+        <kbd className="hidden rounded border border-border px-1.5 text-mini text-terciario lg:inline">
           {t.atalho}
         </kbd>
       </button>
       {aberta ? (
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 px-4 pt-[12vh] backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 px-4 pt-[12vh]"
           onMouseDown={(e) => e.target === e.currentTarget && setAberta(false)}
         >
           <div
@@ -119,7 +119,7 @@ export function PaletaComandos({ itens }: { itens: ItemMontado[] }) {
             aria-modal="true"
             aria-label={t.titulo}
             data-testid="paleta-comandos"
-            className="flutuante animate-entrada w-full max-w-lg overflow-hidden rounded-2xl shadow-flutuante"
+            className="flutuante w-full max-w-lg overflow-hidden rounded-2xl shadow-flutuante"
           >
             <div className="flex items-center gap-3 border-b border-border px-4">
               <Search aria-hidden className="size-4 text-terciario" />
