@@ -28,6 +28,14 @@ test("saúde, arranque e crescimento a partir da pasta Gestão do negócio", asy
     await page.getByRole("button", { name: "Gestão do negócio" }).filter({ visible: true }).click();
   await page.getByRole("link", { name: "Saúde das barbearias" }).filter({ visible: true }).click();
   await expect(page).toHaveURL("/admin/saude");
+  if (info.project.name === "telemovel") {
+    // O «Mais» fecha ao mudar de página, para não tapar o conteúdo; também fecha ao tocar fora.
+    await expect(page.locator("#menu-mais")).toHaveCount(0);
+    await page.getByRole("button", { name: "Mais", exact: true }).click();
+    await expect(page.locator("#menu-mais")).toBeVisible();
+    await page.getByTestId("mais-fundo").click({ position: { x: 20, y: 250 } });
+    await expect(page.locator("#menu-mais")).toHaveCount(0);
+  }
   await expect(page.getByTestId("saude-contagem")).toContainText("em risco");
   await expect(
     page.getByTestId("saude").filter({ visible: true, hasText: BARBEARIA_A.nome }),

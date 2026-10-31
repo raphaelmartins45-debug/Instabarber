@@ -2,7 +2,8 @@
 
 import { Ellipsis } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { type ItemMontado, planificar } from "@/lib/funcionalidades/menus";
 import { textos } from "@/lib/i18n/pt-PT";
 import { cn } from "@/lib/utils";
@@ -12,10 +13,19 @@ const VISIVEIS = 5;
 
 /**
  * Navegação inferior abaixo de 768 px (I.3.1): ícone e rótulo curto, no máximo cinco
- * entradas; o resto num menu «Mais». Alvos de toque com 44 px no mínimo.
+ * entradas; o resto num menu «Mais». Alvos de toque com 44 px no mínimo. O «Mais» fecha ao mudar
+ * de página, ao tocar fora dele e com Esc, para nunca ficar por cima do conteúdo.
  */
 export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atual: string }) {
   const [aberto, setAberto] = useState(false);
+  const caminho = usePathname();
+  useEffect(() => setAberto(false), [caminho]);
+  useEffect(() => {
+    if (!aberto) return;
+    const tecla = (e: KeyboardEvent) => e.key === "Escape" && setAberto(false);
+    window.addEventListener("keydown", tecla);
+    return () => window.removeEventListener("keydown", tecla);
+  }, [aberto]);
   // As pastas (ex.: «Gestão do negócio») vão sempre para o «Mais», com o título e as entradas
   // de dentro por baixo, como num menu de banco; as entradas soltas enchem a barra.
   const simples = menu.filter((i) => !i.filhos);
@@ -26,58 +36,72 @@ export function MenuInferior({ itens: menu, atual }: { itens: ItemMontado[]; atu
   const restoAtivo = [...resto, ...planificar(pastas)].some((i) => i.id === atual);
 
   return (
-    <nav
-      aria-label={textos.paineis.menuRotulo}
-      className="vidro fixed inset-x-0 bottom-0 z-40 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden"
-    >
+    <>
       {aberto ? (
-        <ul className="grid max-h-[60dvh] gap-1 overflow-y-auto border-b bg-elevado p-2">
-          {resto.map((item) => (
-            <li key={item.id} data-menu={item.id}>
-              <Entrada item={item} atual={atual} horizontal />
-            </li>
-          ))}
-          {pastas.map((pasta) => (
-            <li key={pasta.id} className="grid gap-1 pt-2" data-menu={pasta.id}>
-              <span className="flex min-h-11 items-center gap-3 px-3 text-sm font-semibold">
-                <IconeMenu id={pasta.id} className="size-5" />
-                {pasta.rotulo}
-              </span>
-              <ul className="grid gap-1">
-                {pasta.filhos!.map((f) => (
-                  <li key={f.id} data-menu={f.id} className="pl-6">
-                    <Entrada item={f} atual={atual} horizontal />
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+        <div
+          aria-hidden
+          data-testid="mais-fundo"
+          onClick={() => setAberto(false)}
+          className="fixed inset-0 z-30 bg-black/30 md:hidden"
+        />
       ) : null}
-      <ul className="flex">
-        {fixos.map((item) => (
-          <li key={item.id} className="flex-1" data-menu={item.id}>
-            <Entrada item={item} atual={atual} />
-          </li>
-        ))}
-        {!cabem ? (
-          <li className="flex-1">
-            <button
-              type="button"
-              aria-expanded={aberto}
-              onClick={() => setAberto((a) => !a)}
-              className={cn(
-                "flex min-h-14 w-full flex-col items-center justify-center gap-0.5 text-[11px]",
-                restoAtivo || aberto ? "font-semibold text-foreground" : "text-terciario",
-              )}
-            >
-              <Ellipsis aria-hidden className="size-5" />
-              {textos.comum.mais}
-            </button>
-          </li>
+      <nav
+        aria-label={textos.paineis.menuRotulo}
+        className="vidro fixed inset-x-0 bottom-0 z-40 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden"
+      >
+        {aberto ? (
+          <ul
+            id="menu-mais"
+            className="grid max-h-[60dvh] gap-1 overflow-y-auto overscroll-contain border-b bg-elevado p-2"
+          >
+            {resto.map((item) => (
+              <li key={item.id} data-menu={item.id}>
+                <Entrada item={item} atual={atual} horizontal />
+              </li>
+            ))}
+            {pastas.map((pasta) => (
+              <li key={pasta.id} className="grid gap-1 pt-2" data-menu={pasta.id}>
+                <span className="flex min-h-11 items-center gap-3 px-3 text-sm font-semibold">
+                  <IconeMenu id={pasta.id} className="size-5" />
+                  {pasta.rotulo}
+                </span>
+                <ul className="grid gap-1">
+                  {pasta.filhos!.map((f) => (
+                    <li key={f.id} data-menu={f.id} className="pl-6">
+                      <Entrada item={f} atual={atual} horizontal />
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
         ) : null}
-      </ul>
-    </nav>
+        <ul className="flex">
+          {fixos.map((item) => (
+            <li key={item.id} className="flex-1" data-menu={item.id}>
+              <Entrada item={item} atual={atual} />
+            </li>
+          ))}
+          {!cabem ? (
+            <li className="flex-1">
+              <button
+                type="button"
+                aria-expanded={aberto}
+                aria-controls="menu-mais"
+                onClick={() => setAberto((a) => !a)}
+                className={cn(
+                  "flex min-h-14 w-full flex-col items-center justify-center gap-0.5 text-[11px]",
+                  restoAtivo || aberto ? "font-semibold text-foreground" : "text-terciario",
+                )}
+              >
+                <Ellipsis aria-hidden className="size-5" />
+                {textos.comum.mais}
+              </button>
+            </li>
+          ) : null}
+        </ul>
+      </nav>
+    </>
   );
 }
 
