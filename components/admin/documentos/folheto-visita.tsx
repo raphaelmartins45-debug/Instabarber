@@ -45,11 +45,19 @@ export function FolhetoVisita({ telefone }: { telefone: string | null }) {
       {!telefone && !aviso?.ok ? (
         <p className="text-sm text-muted-foreground">{t.semTelefone}</p>
       ) : null}
-      <Button asChild className="justify-self-start">
-        <a href="/admin/documentos/folheto" download>
-          {t.descarregar}
-        </a>
-      </Button>
+      {/* O mesmo folheto em fundo preto ou branco (D-185). */}
+      <div className="flex flex-wrap gap-2">
+        <Button asChild>
+          <a href="/admin/documentos/folheto?tema=preto" download>
+            {t.folhetoPreto}
+          </a>
+        </Button>
+        <Button asChild variant="outline">
+          <a href="/admin/documentos/folheto?tema=branco" download>
+            {t.folhetoBranco}
+          </a>
+        </Button>
+      </div>
     </div>
   );
 }

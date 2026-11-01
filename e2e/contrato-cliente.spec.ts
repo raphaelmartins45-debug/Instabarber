@@ -136,6 +136,9 @@ test("contrato enviado, carregado pelo cliente, recusado e aprovado; folheto", a
   await folheto.getByLabel("O meu telefone").fill("912 000 111");
   await folheto.getByRole("button", { name: "Guardar" }).click();
   await expect(folheto.getByText("Telefone guardado.")).toBeVisible();
+  await expect(folheto.getByRole("link", { name: "Descarregar branco" })).toBeVisible();
+  const branco = await page.request.get("/admin/documentos/folheto?tema=branco");
+  expect(branco.headers()["content-type"]).toBe("application/pdf");
   const r = await page.request.get("/admin/documentos/folheto");
   expect(r.headers()["content-type"]).toBe("application/pdf");
   const corpo = (await r.body()).toString("latin1");

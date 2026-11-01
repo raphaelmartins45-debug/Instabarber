@@ -6,7 +6,7 @@ import { INTER_400, INTER_700, INTER_800 } from "./letra-inter";
 export const LETRA = "Inter";
 
 // O estilo comum dos PDFs (D-184): a mesma paleta do modo claro do sistema (D-134) e o dourado da
-// marca (Parte I) só em pormenores, a mesma letra (Helvetica) e a mesma assinatura em todos.
+// marca (Parte I) só em pormenores, a mesma letra (Inter) e a mesma assinatura em todos.
 
 export type Cor = [number, number, number];
 

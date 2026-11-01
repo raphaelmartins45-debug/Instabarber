@@ -32,6 +32,8 @@ export const documentos = {
     telefoneGuardado: "Telefone guardado.",
     telefoneInvalido: "Telefone inválido.",
     semTelefone: "Sem telefone no registo, o folheto sai só com o nome e o e-mail.",
+    folhetoPreto: "Descarregar preto",
+    folhetoBranco: "Descarregar branco",
     documentos: {
       guia: {
         titulo: "Guia de arranque",
@@ -349,7 +351,7 @@ export const documentos = {
     pagina: (n: number, total: number) => `${n} / ${total}`,
   },
   folheto: {
-    nomeFicheiro: "InstaBarber-folheto.pdf",
+    nomeFicheiro: (tema: string) => `InstaBarber-folheto-${tema}.pdf`,
     titulo: "Tudo o que uma barbearia precisa,",
     tituloDestaque: "num só sistema.",
     subtitulo:

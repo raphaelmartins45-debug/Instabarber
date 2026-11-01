@@ -14,7 +14,11 @@ const { chromium } = require("@playwright/test");
   await p.emulateMedia({ reducedMotion: "reduce" });
   await p.goto("file://" + process.argv[1], { waitUntil: "load" });
   await p.waitForTimeout(1500);
-  await (await p.$(".pub")).screenshot({ path: process.argv[2] + "/telemovel.png" });
+  // O telemóvel com fundo transparente, para servir no folheto preto e no branco.
+  await p.addStyleTag({ content: "html,body,section,main,header,.hero,.wrap{background:transparent!important}" });
+  await (await p.$(".pub")).screenshot({ path: process.argv[2] + "/telemovel.png", omitBackground: true });
+  await p.reload();
+  await p.waitForTimeout(1500);
   const agenda = await p.$("#p-agenda");
   await agenda.scrollIntoViewIfNeeded();
   await p.waitForTimeout(800);
@@ -26,12 +30,16 @@ saida=lib/pdf/imagens-landing.ts
 {
   echo "// Gerado por scripts/gerar-imagens-landing.sh a partir de landing/index.html. Não editar."
   echo "// Imagens reais da aplicação, como na landing, em JPEG base64 (D-184)."
-  for nome in telemovel agenda; do
-    convert "$tmp/$nome.png" -resize 720x -strip -quality 82 "$tmp/$nome.jpg"
+  # O telemóvel em PNG (transparente); a agenda em JPEG.
+  convert "$tmp/telemovel.png" -resize 720x -strip -colors 160 "PNG8:$tmp/telemovel-final.png"
+  convert "$tmp/agenda.png" -resize 720x -strip -quality 82 "$tmp/agenda-final.jpg"
+  for par in "telemovel:telemovel-final.png:PNG" "agenda:agenda-final.jpg:JPEG"; do
+    IFS=: read -r nome ficheiro formato <<< "$par"
     echo ""
     echo "export const ${nome^^} = {"
-    echo "  proporcao: $(identify -format "%[fx:w/h]" "$tmp/$nome.jpg"),"
-    echo "  dados: \"$(base64 -w0 "$tmp/$nome.jpg")\","
+    echo "  formato: \"$formato\" as const,"
+    echo "  proporcao: $(identify -format "%[fx:w/h]" "$tmp/$ficheiro"),"
+    echo "  dados: \"$(base64 -w0 "$tmp/$ficheiro")\","
     echo "};"
   done
 } > "$saida"

@@ -12,9 +12,16 @@ import {
   desenharLogo,
   FUNDO,
   LETRA,
+  AMARELO_CLARO,
+  CINZA_ESCURO,
+  OURO_TEXTO,
+  REALCE,
+  TINTA,
 } from "./estilo";
+
+const CINZA_CLARO_PAPEL: Cor = [0x65, 0x65, 0x6e];
 import { TELEMOVEL } from "./imagens-landing";
-import { LOGO_DOURADO } from "./logos-marca";
+import { LOGO_DOURADO, LOGO_PRETO } from "./logos-marca";
 
 // Folheto da visita (D-181, D-184): uma página A4 escura, como a landing. No topo, o título com
 // «num só sistema.» a dourado e a página pública no telemóvel; a meio, os dois cartões de preços
@@ -22,14 +29,38 @@ import { LOGO_DOURADO } from "./logos-marca";
 // a marca «Recomendado»); no fundo, o QR do site e a assinatura de quem o gera. Letra Inter.
 
 const t = textos.documentos.folheto;
-const BRANCO: Cor = [0xf4, 0xf4, 0xf5];
-const CINZA: Cor = [0xa1, 0xa1, 0xaa];
-const CINZA_FUNDO: Cor = [0x8b, 0x8b, 0x94];
-/** Os cartões da landing: cinza-escuro no Basic, um tom quente no Pro. */
-const CARTAO: Cor = [0x18, 0x18, 0x1b];
-const CARTAO_PRO: Cor = [0x1d, 0x19, 0x12];
+/** As duas versões (D-185): preta, como a landing, e branca, para imprimir com menos tinta. */
+const TEMAS = {
+  preto: {
+    fundo: FUNDO,
+    texto: [0xf4, 0xf4, 0xf5] as Cor,
+    cinza: [0xa1, 0xa1, 0xaa] as Cor,
+    nota: [0x8b, 0x8b, 0x94] as Cor,
+    cartao: [0x18, 0x18, 0x1b] as Cor,
+    cartaoPro: [0x1d, 0x19, 0x12] as Cor,
+    acento: DOURADO,
+    logo: LOGO_DOURADO,
+  },
+  branco: {
+    fundo: [0xff, 0xff, 0xff] as Cor,
+    texto: TINTA,
+    cinza: CINZA_ESCURO,
+    nota: CINZA_CLARO_PAPEL,
+    cartao: REALCE,
+    cartaoPro: AMARELO_CLARO,
+    acento: OURO_TEXTO,
+    logo: LOGO_PRETO,
+  },
+};
 
-export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Assinatura }) {
+export function gerarFolheto(d: {
+  tema: keyof typeof TEMAS;
+  regime: RegimeIva;
+  site: string;
+  contacto: Assinatura;
+}) {
+  const { fundo, texto: BRANCO, cinza: CINZA, nota: CINZA_FUNDO, cartao: CARTAO } = TEMAS[d.tema];
+  const { cartaoPro: CARTAO_PRO, acento: ACENTO, logo } = TEMAS[d.tema];
   const doc = criarDocumento();
   const L = doc.internal.pageSize.getWidth();
   const A = doc.internal.pageSize.getHeight();
@@ -42,8 +73,8 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
   const partir = (texto: string, largura: number) =>
     doc.splitTextToSize(texto, largura) as string[];
 
-  doc.setFillColor(...FUNDO).rect(0, 0, L, A, "F");
-  desenharLogo(doc, LOGO_DOURADO, M, 12, 11);
+  doc.setFillColor(...fundo).rect(0, 0, L, A, "F");
+  desenharLogo(doc, logo, M, 12, 11);
 
   // Topo: o título da landing à esquerda e a página pública no telemóvel à direita.
   const larguraTelemovel = 60;
@@ -51,7 +82,7 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
   const alturaTelemovel = larguraTelemovel / TELEMOVEL.proporcao;
   doc.addImage(
     TELEMOVEL.dados,
-    "JPEG",
+    TELEMOVEL.formato,
     xTelemovel,
     30,
     larguraTelemovel,
@@ -65,7 +96,7 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
   const titulo = partir(t.titulo, coluna);
   doc.text(titulo, M, y, { lineHeightFactor: 1.02, charSpace: -0.3 });
   y += titulo.length * 10.8;
-  fonte(30, "black", DOURADO).text(t.tituloDestaque, M, y, { charSpace: -0.3 });
+  fonte(30, "black", ACENTO).text(t.tituloDestaque, M, y, { charSpace: -0.3 });
   y += 10;
   fonte(10.5, "normal", CINZA);
   const apoio = partir(t.subtitulo, coluna);
@@ -73,8 +104,22 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
   y += apoio.length * 5.5 + 3;
   fonte(9.5, "bold", BRANCO).text(t.garantias, M, y);
 
+  // O que o sistema faz: seis pontos em duas colunas, por baixo do texto e ao lado do telemóvel.
+  y += 11;
+  const larguraPonto = (coluna - 6) / 2;
+  t.funcionalidades.forEach(([nome, texto], i) => {
+    const x = M + (i % 2) * (larguraPonto + 6);
+    const yy = y + Math.floor(i / 2) * 15;
+    doc.setFillColor(...DOURADO).rect(x, yy - 3.1, 1.1, 11, "F");
+    fonte(9, "bold", BRANCO).text(nome, x + 4, yy);
+    fonte(8, "normal", CINZA).text(partir(texto, larguraPonto - 4).slice(0, 2), x + 4, yy + 4.3, {
+      lineHeightFactor: 1.3,
+    });
+  });
+  y += 3 * 15;
+
   // Os dois cartões de preços, como na landing.
-  const yCartoes = 30 + alturaTelemovel + 10;
+  const yCartoes = Math.max(30 + alturaTelemovel, y) + 8;
   const g = 6;
   const largura = (L - 2 * M - g) / 2;
   const altura = 78;
@@ -119,6 +164,11 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
   const lado = 24;
   const matriz = codigoQr(d.site);
   doc.setFillColor(255, 255, 255).roundedRect(M, yFundo, lado, lado, 2, 2, "F");
+  if (d.tema === "branco")
+    doc
+      .setDrawColor(...REALCE)
+      .setLineWidth(0.4)
+      .roundedRect(M, yFundo, lado, lado, 2, 2, "S");
   if (matriz) {
     const m = (lado - 4) / matriz.length;
     doc.setFillColor(0, 0, 0);
@@ -130,9 +180,9 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
   }
   fonte(13, "bold", BRANCO).text(t.cta, M + lado + 6, yFundo + 7);
   fonte(9, "normal", CINZA).text(t.qr, M + lado + 6, yFundo + 12.5);
-  fonte(10.5, "bold", DOURADO).text(d.site.replace(/^https?:\/\//, ""), M + lado + 6, yFundo + 19);
+  fonte(10.5, "bold", ACENTO).text(d.site.replace(/^https?:\/\//, ""), M + lado + 6, yFundo + 19);
   const xContacto = M + largura + g;
-  fonte(9, "bold", DOURADO).text(t.contactoTitulo, xContacto, yFundo + 2);
+  fonte(9, "bold", ACENTO).text(t.contactoTitulo, xContacto, yFundo + 2);
   desenharAssinatura(doc, xContacto, yFundo + 8.5, d.contacto, { nome: BRANCO, linhas: CINZA });
 
   fonte(7, "normal", CINZA_FUNDO).text(

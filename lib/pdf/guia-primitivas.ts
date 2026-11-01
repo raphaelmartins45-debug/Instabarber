@@ -174,14 +174,23 @@ export function criarGuia(o: { marca: string; seccao: (n: number) => string }) {
    * passa para a página seguinte inteira.
    */
   const aoLado = (
-    img: { proporcao: number; dados: string },
+    img: { proporcao: number; dados: string; formato: "PNG" | "JPEG" },
     larguraImg: number,
     bloco: () => void,
   ) => {
     const h = larguraImg / img.proporcao;
     espaco(Math.min(h, 120) + 4);
     const topo = y - 5;
-    doc.addImage(img.dados, "JPEG", L - M - larguraImg, topo, larguraImg, h, undefined, "FAST");
+    doc.addImage(
+      img.dados,
+      img.formato,
+      L - M - larguraImg,
+      topo,
+      larguraImg,
+      h,
+      undefined,
+      "FAST",
+    );
     largura = util - larguraImg - 9;
     bloco();
     largura = util;
