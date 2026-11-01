@@ -23,6 +23,10 @@ const t = textos.documentos.folheto;
 const BRANCO: Cor = [0xf4, 0xf4, 0xf5];
 const CINZA_CLARO: Cor = [0xa1, 0xa1, 0xaa];
 const CINZA_FUNDO: Cor = [0x8b, 0x8b, 0x94];
+/** Só no folheto (D-184): papel claro e areia, para a faixa de preços parecer impressa. */
+const PAPEL: Cor = [0xf3, 0xee, 0xe5];
+const AREIA: Cor = [0xe6, 0xdd, 0xce];
+const CINZA_PAPEL: Cor = [0x5c, 0x56, 0x4e];
 
 export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Assinatura }) {
   const doc = criarDocumento();
@@ -72,47 +76,51 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
   const largura = (L - 2 * M - 10) / 2;
   t.funcionalidades.forEach(([nome, texto], i) => {
     const x = M + (i % 2) * (largura + 10);
-    const yy = y + Math.floor(i / 2) * 14.5;
+    const yy = y + Math.floor(i / 2) * 13;
     doc.setFillColor(...DOURADO).rect(x, yy - 3, 1.2, 9, "F");
     fonte(10.5, "bold", BRANCO).text(nome, x + 4.5, yy);
     fonte(8.5, "normal", CINZA_CLARO).text(partir(texto, largura - 5)[0]!, x + 4.5, yy + 4.6);
   });
 
-  // Faixa dourada em três módulos: à esquerda o «desde» por dia; à direita, cada plano num
-  // cartão escuro próprio, com o nome, o valor por dia em grande e o mensal e o anual por baixo.
-  const yFaixa = 204;
-  const altura = 50;
-  doc.setFillColor(...DOURADO).rect(0, yFaixa, L, altura, "F");
+  // Faixa de preços em papel claro, ao jeito de uma tabela de preços impressa: à esquerda o
+  // «desde» em algarismos grandes de serifa; à direita, cada plano numa coluna de cor que vai de
+  // ponta a ponta da faixa (o Basic em areia, o Pro a dourado), sem cartões nem riscas.
+  const yFaixa = 202;
+  const altura = 52;
+  doc.setFillColor(...PAPEL).rect(0, yFaixa, L, altura, "F");
   const [basic, pro] = (["basic", "pro"] as const).map((p) => simularPreco(p, 0, false, d.regime));
+  fonte(10, "bold", FUNDO).text(t.desde, M, yFaixa + 15);
   const desde = formatarDinheiro(valorPorDiaCent(basic!.mensalCent));
-  fonte(11, "bold", FUNDO).text(t.desde, M, yFaixa + 14);
-  fonte(42, "bold", FUNDO).text(desde, M, yFaixa + 31);
-  const largDesde = doc.getTextWidth(desde);
-  fonte(13, "bold", FUNDO).text(t.porDia, M + largDesde + 3, yFaixa + 31);
-  fonte(10, "normal", FUNDO).text(t.cafe, M, yFaixa + 40);
-  const larguraCartao = 47;
-  const g = 5;
+  doc
+    .setFont("times", "bold")
+    .setFontSize(56)
+    .setTextColor(...FUNDO)
+    .text(desde, M - 0.5, yFaixa + 35);
+  fonte(11, "bold", FUNDO).text(t.porDia, M, yFaixa + 42);
+  fonte(9.5, "normal", CINZA_PAPEL).text(t.cafe, M + 22, yFaixa + 42);
+  const larguraPlano = 52;
   [basic!, pro!].forEach((s, i) => {
-    const x = L - M - (2 - i) * larguraCartao - (1 - i) * g;
-    const y0 = yFaixa + 6;
-    const h = altura - 12;
-    doc.setFillColor(...FUNDO).rect(x, y0, larguraCartao, h, "F");
-    fonte(10, "bold", DOURADO).text(textos.vendas.simulador.planos[s.plano], x + 5, y0 + 8);
-    fonte(8, "normal", CINZA_CLARO).text(t.barbeiros[s.plano]!, x + 5, y0 + 12.5);
+    const x = L - (2 - i) * larguraPlano;
+    doc.setFillColor(...(i === 0 ? AREIA : DOURADO)).rect(x, yFaixa, larguraPlano, altura, "F");
+    fonte(12, "bold", FUNDO).text(textos.vendas.simulador.planos[s.plano], x + 7, yFaixa + 12);
+    fonte(8.5, "normal", FUNDO).text(t.barbeiros[s.plano]!, x + 7, yFaixa + 17);
     const dia = formatarDinheiro(valorPorDiaCent(s.mensalCent));
-    fonte(18, "bold", BRANCO).text(dia, x + 5, y0 + 22);
-    const largDia = doc.getTextWidth(dia);
-    fonte(8.5, "bold", BRANCO).text(t.porDia, x + 6.5 + largDia, y0 + 22);
-    fonte(8, "normal", CINZA_CLARO).text(
+    doc
+      .setFont("times", "bold")
+      .setFontSize(30)
+      .setTextColor(...FUNDO)
+      .text(dia, x + 6.5, yFaixa + 31);
+    fonte(9, "bold", FUNDO).text(t.porDia, x + 7, yFaixa + 37);
+    fonte(8.5, "normal", FUNDO).text(
       [t.mensal(formatarDinheiro(s.mensalCent)), t.porAno(formatarDinheiro(s.anualCent))],
-      x + 5,
-      y0 + 28.5,
+      x + 7,
+      yFaixa + 43,
     );
   });
 
   // Fundo: QR do site, o convite e a assinatura de quem gera o folheto.
   const yFundo = yFaixa + altura + 8;
-  const lado = 24;
+  const lado = 22;
   const matriz = codigoQr(d.site);
   doc.setFillColor(255, 255, 255).rect(M, yFundo, lado, lado, "F");
   if (matriz) {
