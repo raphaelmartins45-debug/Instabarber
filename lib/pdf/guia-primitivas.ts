@@ -5,10 +5,9 @@ import {
   type Cor,
   criarDocumento,
   desenharLogo,
-  rotuloEspacado,
   DOURADO,
   FUNDO,
-  LINHA_FORTE as BORDA,
+  REALCE,
   OURO_TEXTO,
 } from "./estilo";
 
@@ -31,6 +30,8 @@ export function criarGuia(o: { marca: string; seccao: (n: number) => string }) {
   let y = 0;
   let pagina = 0;
   let tituloAtual = "";
+  /** Largura do texto: a página toda, ou a coluna ao lado de uma imagem (`aoLado`). */
+  let largura = util;
 
   const fonte = (tamanho: number, peso: "normal" | "bold" = "normal", cor: Cor = FUNDO) =>
     doc
@@ -45,18 +46,16 @@ export function criarGuia(o: { marca: string; seccao: (n: number) => string }) {
     doc.addPage();
     pagina += 1;
     tituloAtual = titulo;
-    desenharLogo(doc, LOGO_PRETO, M, 10, 6.5);
-    fonte(7.5, "bold", TER);
-    rotuloEspacado(doc, `${o.marca} · ${o.seccao(pagina)}`, L - M, 14.6, "right");
-    doc
-      .setDrawColor(...BORDA)
-      .setLineWidth(0.25)
-      .line(M, 20.5, L - M, 20.5);
-    y = 34;
-    fonte(20, "bold");
+    desenharLogo(doc, LOGO_PRETO, M, 11, 7);
+    fonte(9, "normal", TER).text(`${o.marca} · ${o.seccao(pagina)}`, L - M, 16, {
+      align: "right",
+    });
+    y = 42;
+    fonte(26, "bold");
     const linhas = quebrar(titulo, util);
     doc.text(linhas, M, y);
-    y += linhas.length * 8 + 2;
+    doc.setFillColor(...DOURADO).rect(M, y + linhas.length * 10 - 6.5, 14, 1.2, "F");
+    y += linhas.length * 10 + 5;
   };
   /** Se o bloco não cabe, continua numa página nova com o mesmo título. */
   const espaco = (mm: number) => {
@@ -66,119 +65,132 @@ export function criarGuia(o: { marca: string; seccao: (n: number) => string }) {
     }
   };
   const intro = (texto: string) => {
-    fonte(11, "normal", SEC);
-    const linhas = quebrar(texto, util);
+    fonte(12, "normal", SEC);
+    const linhas = quebrar(texto, largura);
     doc.text(linhas, M, y);
-    y += linhas.length * 5.2 + 4;
+    y += linhas.length * 5.9 + 5;
   };
   const h3 = (texto: string) => {
-    espaco(18);
-    y += 2;
-    fonte(12.5, "bold").text(texto, M, y);
-    y += 6.5;
+    espaco(20);
+    y += 4;
+    fonte(14, "bold").text(texto, M, y);
+    y += 7.5;
   };
   const paragrafo = (texto: string, cor: Cor = FUNDO) => {
-    fonte(10.5, "normal", cor);
-    const linhas = quebrar(texto, util);
-    espaco(linhas.length * 5);
-    fonte(10.5, "normal", cor);
+    fonte(11, "normal", cor);
+    const linhas = quebrar(texto, largura);
+    espaco(linhas.length * 5.4);
+    fonte(11, "normal", cor);
     doc.text(linhas, M, y);
-    y += linhas.length * 5 + 2;
+    y += linhas.length * 5.4 + 2.5;
   };
   const passos = (lista: string[]) => {
     lista.forEach((p, i) => {
-      fonte(10.5);
-      const linhas = quebrar(p, util - 10);
-      espaco(linhas.length * 5 + 2);
-      doc.setFillColor(...FUNDO).circle(M + 3.2, y - 1.3, 3.2, "F");
-      fonte(8.5, "bold", DOURADO).text(String(i + 1), M + 3.2, y - 0.1, { align: "center" });
-      fonte(10.5).text(linhas, M + 10, y);
-      y += linhas.length * 5 + 2.6;
+      fonte(11);
+      const linhas = quebrar(p, largura - 11);
+      espaco(linhas.length * 5.4 + 3);
+      doc.setFillColor(...FUNDO).circle(M + 3.5, y - 1.4, 3.5, "F");
+      fonte(9, "bold", DOURADO).text(String(i + 1), M + 3.5, y - 0.1, { align: "center" });
+      fonte(11).text(linhas, M + 11, y);
+      y += linhas.length * 5.4 + 3.4;
     });
     y += 1;
   };
   const lista = (itens: string[]) => {
     itens.forEach((item) => {
-      fonte(10.5);
-      const linhas = quebrar(item, util - 6);
-      espaco(linhas.length * 5);
-      fonte(10.5);
-      doc.setFillColor(...DOURADO).circle(M + 1.3, y - 1.3, 1, "F");
+      fonte(11);
+      const linhas = quebrar(item, largura - 6);
+      espaco(linhas.length * 5.4);
+      fonte(11);
+      doc.setFillColor(...DOURADO).rect(M, y - 2.6, 2, 2, "F");
       doc.text(linhas, M + 6, y);
-      y += linhas.length * 5 + 1.6;
+      y += linhas.length * 5.4 + 2.2;
     });
     y += 1;
   };
   const nota = (texto: string) => {
-    fonte(10);
-    const linhas = quebrar(texto, util - 12);
-    const h = linhas.length * 5 + 7;
-    espaco(h + 2);
-    doc.setFillColor(...CREME).roundedRect(M, y - 2, util, h, 2, 2, "F");
-    doc.setFillColor(...DOURADO).rect(M, y - 2, 1.4, h, "F");
-    fonte(10).text(linhas, M + 6, y + 3.4);
-    y += h + 4;
+    fonte(11);
+    const linhas = quebrar(texto, util - 16);
+    const h = linhas.length * 5.4 + 10;
+    espaco(h + 4);
+    y += 2;
+    doc.setFillColor(...CREME).rect(M, y - 2, util, h, "F");
+    doc.setFillColor(...DOURADO).rect(M, y - 2, 2, h, "F");
+    fonte(11).text(linhas, M + 8, y + 5);
+    y += h + 5;
   };
   /** Dois cartões por linha: rótulo, título, endereço e texto. */
   const cartoes = (lista: { rotulo: string; titulo: string; url: string; texto: string }[]) => {
     const g = 5;
-    const w = (util - g) / 2;
+    // Um cartão sozinho ocupa a largura toda.
+    const w = lista.length === 1 ? util : (util - g) / 2;
     for (let i = 0; i < lista.length; i += 2) {
       const par = lista.slice(i, i + 2);
       const alturas = par.map((c) => {
-        fonte(10, "bold");
-        const url = quebrar(c.url, w - 10).length;
-        fonte(9.5);
-        return 22 + url * 4.6 + quebrar(c.texto, w - 10).length * 4.6;
+        fonte(10.5, "bold");
+        const url = quebrar(c.url, w - 12).length;
+        fonte(10);
+        return 27 + url * 5 + quebrar(c.texto, w - 12).length * 5;
       });
       const h = Math.max(...alturas);
       espaco(h);
       par.forEach((c, j) => {
         const x = M + j * (w + g);
         const destaque = i === 0 && j === 0;
-        doc.setFillColor(...(destaque ? CREME : ([255, 255, 255] as Cor)));
-        doc.setDrawColor(...(destaque ? DOURADO : BORDA)).setLineWidth(0.3);
-        doc.roundedRect(x, y, w, h, 3, 3, "FD");
-        let yy = y + 7;
-        fonte(7.5, "bold", TER).text(c.rotulo.toUpperCase(), x + 5, yy);
-        yy += 6;
-        fonte(12, "bold").text(c.titulo, x + 5, yy);
-        yy += 6;
-        fonte(10, "bold", OURO_TEXTO);
-        const url = quebrar(c.url, w - 10);
-        doc.text(url, x + 5, yy);
-        yy += url.length * 4.6 + 1.5;
-        fonte(9.5, "normal", SEC).text(quebrar(c.texto, w - 10), x + 5, yy);
+        // Campos de cor lisa, sem contorno: o acesso de quem lê em dourado, os outros em cinza.
+        doc.setFillColor(...(destaque ? DOURADO : REALCE)).rect(x, y, w, h, "F");
+        let yy = y + 8;
+        fonte(9, "bold", destaque ? FUNDO : TER).text(c.rotulo, x + 6, yy);
+        yy += 7;
+        fonte(13.5, "bold").text(c.titulo, x + 6, yy);
+        yy += 6.5;
+        fonte(10.5, "bold", destaque ? FUNDO : OURO_TEXTO);
+        const url = quebrar(c.url, w - 12);
+        doc.text(url, x + 6, yy);
+        yy += url.length * 5 + 2;
+        fonte(10, "normal", destaque ? FUNDO : SEC).text(quebrar(c.texto, w - 12), x + 6, yy);
       });
       y += h + g;
     }
     y += 1;
   };
   const tabela = (linhas: [string, string][]) => {
-    linhas.forEach(([a, b]) => {
-      fonte(10);
-      const textoB = quebrar(b, util - 52);
-      espaco(textoB.length * 4.8 + 3);
-      fonte(10, "bold").text(a, M, y);
-      fonte(10, "normal", SEC).text(textoB, M + 52, y);
-      y += textoB.length * 4.8 + 2;
-      doc
-        .setDrawColor(...BORDA)
-        .setLineWidth(0.2)
-        .line(M, y - 3, L - M, y - 3);
-      y += 1.2;
+    // Linhas alternadas em cor lisa, sem riscas finas.
+    linhas.forEach(([a, b], i) => {
+      fonte(10.5);
+      const textoB = quebrar(b, util - 58);
+      const h = textoB.length * 5 + 4.4;
+      espaco(h + 1);
+      if (i % 2 === 0) doc.setFillColor(...REALCE).rect(M, y - 4.6, util, h, "F");
+      fonte(10.5, "bold").text(a, M + 4, y);
+      fonte(10.5, "normal", SEC).text(textoB, M + 54, y);
+      y += h;
     });
-    y += 2;
+    y += 4;
+  };
+  /**
+   * Uma imagem real da aplicação à direita, com o texto do bloco na coluna ao lado. Se não couber,
+   * passa para a página seguinte inteira.
+   */
+  const aoLado = (
+    img: { proporcao: number; dados: string },
+    larguraImg: number,
+    bloco: () => void,
+  ) => {
+    const h = larguraImg / img.proporcao;
+    espaco(Math.min(h, 120) + 4);
+    const topo = y - 5;
+    doc.addImage(img.dados, "JPEG", L - M - larguraImg, topo, larguraImg, h, undefined, "FAST");
+    largura = util - larguraImg - 9;
+    bloco();
+    largura = util;
+    y = Math.max(y, topo + h + 8);
   };
   const fechar = (rodape: string) => {
     const total = doc.getNumberOfPages();
     for (let n = 2; n <= total; n++) {
       doc.setPage(n);
-      doc
-        .setDrawColor(...BORDA)
-        .setLineWidth(0.2)
-        .line(M, A - 16, L - M, A - 16);
-      fonte(8, "normal", TER).text(rodape, M, A - 10);
+      fonte(8.5, "normal", TER).text(rodape, M, A - 10);
       doc.text(String(n), L - M, A - 10, { align: "right" });
     }
     return doc;
@@ -187,7 +199,7 @@ export function criarGuia(o: { marca: string; seccao: (n: number) => string }) {
   // prettier-ignore
   return {
     doc, L, A, M, fonte, quebrar, novaPagina, espaco, intro, h3, paragrafo, passos, lista, nota,
-    cartoes, tabela, fechar,
+    cartoes, tabela, aoLado, fechar,
     get y() {
       return y;
     },

@@ -29,22 +29,29 @@ export type DadosResumoConta = {
 export function gerarResumoConta(d: DadosResumoConta) {
   const f = criarFolha({ titulo: t.titulo, cor: DOURADO });
   f.subtitulo(d.barbearia);
+  f.y += 4;
+  // O que a barbearia quer saber primeiro: quanto paga, e até quando está em dia.
+  f.destaque(t.valor, formatarDinheiro(d.valorCent), [
+    [
+      t.pagamento,
+      a.estadosPagamento[d.estadoPagamento as keyof typeof a.estadosPagamento] ?? d.estadoPagamento,
+    ],
+    ...(d.proximoVencimento
+      ? [[t.vencimento, dataCurta(d.proximoVencimento)] as [string, string]]
+      : []),
+  ]);
   f.titulo(t.planoTitulo);
-  f.linha(t.plano, a.planos[d.plano as keyof typeof a.planos] ?? d.plano);
-  f.linha(
-    t.periodicidade,
-    a.periodicidades[d.periodicidade as keyof typeof a.periodicidades] ?? d.periodicidade,
-  );
-  f.linha(t.profissionais, String(d.profissionais));
-  f.linha(t.dominio, d.dominioProprio ? t.sim : t.nao);
-  if (d.descontoPct > 0) f.linha(t.desconto, `${d.descontoPct} %`);
-  f.linha(t.valor, formatarDinheiro(d.valorCent), true);
-  f.linha(t.estado, a.estados[d.estado as keyof typeof a.estados] ?? d.estado);
-  f.linha(
-    t.pagamento,
-    a.estadosPagamento[d.estadoPagamento as keyof typeof a.estadosPagamento] ?? d.estadoPagamento,
-  );
-  if (d.proximoVencimento) f.linha(t.vencimento, dataCurta(d.proximoVencimento));
+  f.grelha([
+    [t.plano, a.planos[d.plano as keyof typeof a.planos] ?? d.plano],
+    [
+      t.periodicidade,
+      a.periodicidades[d.periodicidade as keyof typeof a.periodicidades] ?? d.periodicidade,
+    ],
+    [t.profissionais, String(d.profissionais)],
+    [t.dominio, d.dominioProprio ? t.sim : t.nao],
+    [t.estado, a.estados[d.estado as keyof typeof a.estados] ?? d.estado],
+    ...(d.descontoPct > 0 ? [[t.desconto, `${d.descontoPct} %`] as [string, string]] : []),
+  ]);
   f.titulo(t.recebimentosTitulo);
   if (d.recebimentos.length)
     f.tabela(

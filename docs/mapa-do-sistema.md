@@ -120,7 +120,7 @@ Cada receita: **onde mexer → como verificar → como desfazer**.
 | Trocar um **rótulo de barbearia** (ex.: «Barbeiro») | `lib/vertical/barbearia.ts` | Nenhum rótulo do núcleo fica fora deste ficheiro |
 | Trocar um **preço** | **Atualização 10** (`docs/atualizacoes/`) | Passos da U-10 |
 | Trocar o **telefone** | **Atualização 8** | Passos da U-8 |
-| Mudar o **logótipo** ou o favicon | `public/marca/` (D-35) e a Parte I; nos PDFs, correr `scripts/gerar-logos-pdf.sh`; se a landing mudar, `scripts/gerar-imagens-folheto.sh` para a imagem do folheto (D-184) | Cabeçalho, rodapé, favicon, PDF |
+| Mudar o **logótipo** ou o favicon | `public/marca/` (D-35) e a Parte I; nos PDFs, correr `scripts/gerar-logos-pdf.sh`; se a landing mudar, `scripts/gerar-imagens-landing.sh` para a imagem do folheto (D-184) | Cabeçalho, rodapé, favicon, PDF |
 | Mudar a **ordem ou o nome** de um item de menu | A montagem do menu em `lib/funcionalidades/` (o menu sai das funcionalidades ligadas) | Cada papel vê só o que lhe pertence |
 | **Acrescentar um campo** a um formulário | Esquema Zod em `lib/validacao/` + coluna por migração + repositório + componente + testes (a mesma validação no formulário e no servidor) | Teste de cada camada e migração em ensaio |
 | Mudar uma **mensagem de WhatsApp** | `lib/regras/mensagens.ts` (modelos) e os testes | O `wa.me` abre com o texto certo, número em E.164 |

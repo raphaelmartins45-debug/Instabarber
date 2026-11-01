@@ -293,7 +293,6 @@ export const documentos = {
     nomeFicheiro: (slug: string) => `InstaBarber-cartaz-${slug}.pdf`,
     titulo: "Marque a sua próxima visita",
     texto: "Aponte a câmara do telemóvel ao código. Marca em segundos, a qualquer hora.",
-    rodape: "Marcações com InstaBarber",
   },
   resumo: {
     nomeFicheiro: (slug: string) => `InstaBarber-resumo-da-conta-${slug}.pdf`,

@@ -3,6 +3,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 import type { EnderecosBarbearia } from "@/lib/inquilino/encaminhar";
 import { assinatura, capa } from "./guia-capa";
 import { criarGuia, type Imagem } from "./guia-primitivas";
+import { TELEMOVEL } from "./imagens-landing";
 
 // Guia de arranque personalizado (D-181): o guia de acesso (D-180) com o nome, o logótipo e os
 // endereços da barbearia, uma página de boas-vindas e a assinatura do Apoio ao cliente (D-184). Vai em anexo
@@ -40,8 +41,11 @@ export function gerarGuiaBarbearia(d: DadosGuia) {
   b.paragrafos(d.barbearia).forEach((p) => g.paragrafo(p));
   g.h3(b.primeirosPassos);
   g.passos([...b.passos]);
-  g.h3(b.impressoesTitulo);
-  g.lista([...b.impressoes]);
+  // O que os clientes vão ver, ao lado da página pública real no telemóvel (como na landing).
+  g.aoLado(TELEMOVEL, 50, () => {
+    g.h3(b.impressoesTitulo);
+    g.lista([...b.impressoes]);
+  });
   g.nota(b.notaArranque);
 
   // 2 · Os acessos, com os endereços desta barbearia

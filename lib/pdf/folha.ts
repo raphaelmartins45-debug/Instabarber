@@ -17,6 +17,8 @@ import {
 import {
   type Barra,
   desenharBarras,
+  desenharDestaque,
+  desenharGrelha,
   desenharLead,
   desenharMeta,
   desenharSobretitulo,
@@ -179,6 +181,8 @@ export function criarFolha(o: { titulo: string; cor: Cor; numerar?: boolean }) {
     sobretitulo: (texto: string) => desenharSobretitulo(folha, texto),
     lead: (texto: string) => desenharLead(folha, texto),
     meta: (pares: [string, string][]) => desenharMeta(folha, pares),
+    destaque: (r: string, v: string, n: [string, string][]) => desenharDestaque(folha, r, v, n),
+    grelha: (pares: [string, string][], colunas = 3) => desenharGrelha(folha, pares, colunas),
     lista: (itens: string[], colunas: 1 | 2 = 1) => desenharLista(folha, itens, colunas),
     passos: (itens: string[]) => desenharPassos(folha, itens),
     nota: (texto: string) => desenharNota(folha, texto),
@@ -189,6 +193,15 @@ export function criarFolha(o: { titulo: string; cor: Cor; numerar?: boolean }) {
 
 export type FolhaBase = Omit<
   Folha,
-  "sobretitulo" | "lead" | "meta" | "lista" | "passos" | "nota" | "tabela" | "barras"
+  | "sobretitulo"
+  | "lead"
+  | "meta"
+  | "destaque"
+  | "grelha"
+  | "lista"
+  | "passos"
+  | "nota"
+  | "tabela"
+  | "barras"
 >;
 export type Folha = ReturnType<typeof criarFolha>;

@@ -12,7 +12,7 @@ import {
   desenharLogo,
   FUNDO,
 } from "./estilo";
-import { TELEMOVEL } from "./imagens-folheto";
+import { TELEMOVEL } from "./imagens-landing";
 import { LOGO_DOURADO } from "./logos-marca";
 
 // Folheto da visita (D-181, D-184): uma página A4 escura, com o topo da landing (o título com

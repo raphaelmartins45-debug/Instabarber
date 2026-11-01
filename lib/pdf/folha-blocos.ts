@@ -163,3 +163,44 @@ export function desenharMeta(f: FolhaBase, pares: [string, string][]) {
   doc.line(M, f.y - 3, L - M, f.y - 3);
   f.y += 4;
 }
+
+/** O valor principal numa faixa escura, grande, com notas à direita (D-184). */
+export function desenharDestaque(
+  f: FolhaBase,
+  rotulo: string,
+  valor: string,
+  notas: [string, string][],
+) {
+  const { doc, M, util, fonte } = f;
+  const h = 34;
+  f.espaco(h + 6);
+  doc.setFillColor(...TINTA).rect(M, f.y, util, h, "F");
+  doc.setFillColor(...DOURADO).rect(M, f.y, 2, h, "F");
+  fonte(10, "bold", [0xa1, 0xa1, 0xaa]).text(rotulo, M + 9, f.y + 11);
+  fonte(30, "bold", DOURADO).text(valor, M + 9, f.y + 25);
+  notas.forEach(([r, v], i) => {
+    const x = M + util * 0.55 + i * (util * 0.22);
+    fonte(9, "normal", [0xa1, 0xa1, 0xaa]).text(r, x, f.y + 13);
+    fonte(13, "bold", [0xf4, 0xf4, 0xf5]).text(v, x, f.y + 21);
+  });
+  f.y += h + 8;
+}
+
+/** Dados em grelha de campos lisos (sem riscas): rótulo pequeno e valor (D-184). */
+export function desenharGrelha(f: FolhaBase, pares: [string, string][], colunas = 3) {
+  const { doc, M, util, fonte } = f;
+  const g = 3;
+  const w = (util - g * (colunas - 1)) / colunas;
+  const h = 17;
+  for (let i = 0; i < pares.length; i += colunas) {
+    f.espaco(h + g);
+    pares.slice(i, i + colunas).forEach(([r, v], j) => {
+      const x = M + j * (w + g);
+      doc.setFillColor(0xf4, 0xf4, 0xf5).rect(x, f.y, w, h, "F");
+      fonte(9, "normal", CINZA_ESCURO).text(r, x + 5, f.y + 6.5);
+      fonte(12.5, "bold").text(v, x + 5, f.y + 13);
+    });
+    f.y += h + g;
+  }
+  f.y += 4;
+}

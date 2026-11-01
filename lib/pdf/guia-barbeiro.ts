@@ -2,6 +2,7 @@ import type { Assinatura } from "@/lib/documentos/assinatura";
 import { textos } from "@/lib/i18n/pt-PT";
 import { assinatura, capa } from "./guia-capa";
 import { criarGuia, type Imagem } from "./guia-primitivas";
+import { AGENDA } from "./imagens-landing";
 
 // Guia do barbeiro (D-181): o endereço /barbeiro da barbearia, o primeiro acesso e o dia a dia,
 // com a marca da barbearia. O gestor entrega-o a cada barbeiro novo. Assina o Apoio ao cliente,
@@ -31,11 +32,14 @@ export function gerarGuiaBarbeiro(d: {
   g.novaPagina(p.titulo);
   g.intro(p.intro);
   g.cartoes([{ ...p.cartao, url: curto(d.barbeiro) }]);
-  g.h3(p.primeiroTitulo);
-  g.passos(p.primeiro(curto(d.barbeiro)));
-  g.h3(p.appTitulo);
-  g.lista([...p.app]);
-  g.paragrafo(p.esqueceu);
+  // O primeiro acesso ao lado da agenda real do painel (como na landing).
+  g.aoLado(AGENDA, 66, () => {
+    g.h3(p.primeiroTitulo);
+    g.passos(p.primeiro(curto(d.barbeiro)));
+    g.h3(p.appTitulo);
+    g.lista([...p.app]);
+    g.paragrafo(p.esqueceu);
+  });
 
   const q = t.dia;
   g.novaPagina(q.titulo);
