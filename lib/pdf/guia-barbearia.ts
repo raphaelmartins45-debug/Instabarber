@@ -1,10 +1,11 @@
+import type { Assinatura } from "@/lib/documentos/assinatura";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { EnderecosBarbearia } from "@/lib/inquilino/encaminhar";
 import { assinatura, capa } from "./guia-capa";
 import { criarGuia, type Imagem } from "./guia-primitivas";
 
 // Guia de arranque personalizado (D-181): o guia de acesso (D-180) com o nome, o logótipo e os
-// endereços da barbearia, uma página de boas-vindas e a assinatura de quem o gerou. Vai em anexo
+// endereços da barbearia, uma página de boas-vindas e a assinatura do Apoio ao cliente (D-184). Vai em anexo
 // nas boas-vindas da aprovação e descarrega-se ou reenvia-se no Gerador de documentos.
 
 const t = textos.documentos.guia;
@@ -14,7 +15,7 @@ export type DadosGuia = {
   responsavel: string;
   logo: Imagem | null;
   enderecos: EnderecosBarbearia;
-  assinatura: { nome: string; funcao: string };
+  assinatura: Assinatura;
 };
 
 /** Endereço sem o protocolo, como se escreve e se lê. */
@@ -80,7 +81,7 @@ export function gerarGuiaBarbearia(d: DadosGuia) {
   g.passos([...q.cliente]);
   g.h3(q.ajudaTitulo);
   g.tabela(q.ajuda);
-  assinatura(g, { despedida: q.despedida, ...d.assinatura });
+  assinatura(g, { despedida: q.despedida, assinatura: d.assinatura });
 
   return g.fechar(t.rodape(d.barbearia));
 }

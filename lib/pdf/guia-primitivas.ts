@@ -1,21 +1,25 @@
-import { jsPDF } from "jspdf";
-import { type Cor, DOURADO } from "./folha";
+import {
+  AMARELO_CLARO as CREME,
+  CINZA as TER,
+  CINZA_ESCURO as SEC,
+  type Cor,
+  criarDocumento,
+  DOURADO,
+  FUNDO,
+  LINHA_FORTE as BORDA,
+  OURO_TEXTO,
+} from "./estilo";
+
+export { FUNDO, OURO_TEXTO } from "./estilo";
 
 // Peças dos guias personalizados (D-181): o aspeto do guia de acesso em HTML (D-180), feito em
 // jsPDF para se gerar no servidor. Capa escura, páginas brancas com cabeçalho e rodapé,
-// cartões, passos numerados e notas com a barra dourada.
-
-export const FUNDO: Cor = [0x09, 0x09, 0x0b];
-export const OURO_TEXTO: Cor = [0xb8, 0x76, 0x0a];
-const SEC: Cor = [0x52, 0x52, 0x5b];
-const TER: Cor = [0x71, 0x71, 0x7a];
-const BORDA: Cor = [0xe4, 0xe4, 0xe7];
-const CREME: Cor = [0xff, 0xf8, 0xec];
+// cartões, passos numerados e notas com a barra dourada. Cores do estilo comum (D-184).
 
 export type Imagem = { dados: string; formato: "PNG" | "JPEG" | "WEBP" };
 
 export function criarGuia(o: { marca: string; seccao: (n: number) => string }) {
-  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const doc = criarDocumento();
   const L = doc.internal.pageSize.getWidth();
   const A = doc.internal.pageSize.getHeight();
   const M = 18;

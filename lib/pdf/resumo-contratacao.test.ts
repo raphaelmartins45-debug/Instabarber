@@ -10,7 +10,7 @@ const dados = {
   profissionais: 5,
   decomposicao: [
     { rotulo: "Plano base", valorCent: 3900 },
-    { rotulo: "2 profissional(is) extra", valorCent: 2000 },
+    { rotulo: "2 profissionais extra", valorCent: 2000 },
   ],
   preco: { semIva: 5900, comIva: 7257, ivaTaxa: 23 as const },
   textoIva: "IVA a 23 % incluído",

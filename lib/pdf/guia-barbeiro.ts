@@ -1,15 +1,22 @@
+import type { Assinatura } from "@/lib/documentos/assinatura";
 import { textos } from "@/lib/i18n/pt-PT";
-import { capa } from "./guia-capa";
+import { assinatura, capa } from "./guia-capa";
 import { criarGuia, type Imagem } from "./guia-primitivas";
 
 // Guia do barbeiro (D-181): o endereço /barbeiro da barbearia, o primeiro acesso e o dia a dia,
-// com a marca da barbearia. O gestor entrega-o a cada barbeiro novo.
+// com a marca da barbearia. O gestor entrega-o a cada barbeiro novo. Assina o Apoio ao cliente,
+// como os outros manuais (D-184).
 
 const t = textos.documentos.barbeiro;
 
 const curto = (url: string) => url.replace(/^https?:\/\//, "");
 
-export function gerarGuiaBarbeiro(d: { barbearia: string; logo: Imagem | null; barbeiro: string }) {
+export function gerarGuiaBarbeiro(d: {
+  barbearia: string;
+  logo: Imagem | null;
+  barbeiro: string;
+  assinatura: Assinatura;
+}) {
   const g = criarGuia({ marca: t.marca, seccao: (n) => `${n} · ${t.seccoes[n - 1] ?? ""}` });
   capa(g, {
     logo: d.logo,
@@ -38,5 +45,6 @@ export function gerarGuiaBarbeiro(d: { barbearia: string; logo: Imagem | null; b
   g.h3(q.dicasTitulo);
   g.passos([...q.dicas]);
   g.nota(q.ajuda);
+  assinatura(g, { despedida: textos.documentos.guia.equipa.despedida, assinatura: d.assinatura });
   return g.fechar(t.rodape(d.barbearia));
 }

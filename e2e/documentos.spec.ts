@@ -4,7 +4,8 @@ import { entrarEquipa } from "./auxiliares/entrar";
 import { codigoTotp } from "./auxiliares/totp";
 
 // Gerador de documentos (D-181): a proposta rápida cria o lead e gera a proposta; os documentos
-// personalizados da barbearia descarregam-se em PDF, com a assinatura de quem os gera.
+// personalizados da barbearia descarregam-se em PDF; a proposta assina quem a gera e os manuais
+// o Apoio ao cliente (D-184).
 
 test.skip(!temSupabase, "Precisa do Supabase local (scripts/e2e-local.sh)");
 test.setTimeout(3 * 60_000);
@@ -45,6 +46,10 @@ test("proposta rápida e documentos personalizados da barbearia", async ({ page 
   const pdf = page.getByRole("link", { name: "Descarregar a proposta" });
   const resposta = await page.request.get((await pdf.getAttribute("href"))!);
   expect(resposta.headers()["content-type"]).toBe("application/pdf");
+  // Assina quem a gerou, com o cargo (D-184).
+  const proposta = (await resposta.body()).toString("latin1");
+  expect(proposta).toContain("Raphael Martins");
+  expect(proposta).toContain("Gestor comercial");
 
   // 2. O lead aparece no Gerador, com a proposta.
   await page.getByRole("link", { name: "Abrir a ficha do lead" }).click();
@@ -53,7 +58,8 @@ test("proposta rápida e documentos personalizados da barbearia", async ({ page 
   await page.goto(`/admin/documentos?lead=${leadId}`);
   await expect(page.getByTestId("documentos-do-lead")).toContainText(/PRP-/);
 
-  // 3. Documentos da barbearia: os quatro PDFs; o guia leva os endereços e a assinatura.
+  // 3. Documentos da barbearia: os quatro PDFs; o guia leva os endereços e assina o Apoio ao
+  // cliente (D-184).
   await page.goto(`/admin/documentos?barbearia=${BARBEARIA_A.id}`);
   const cartoes = page.getByTestId("documentos-barbearia");
   await expect(cartoes.getByRole("link", { name: "Descarregar PDF" })).toHaveCount(4);
@@ -64,7 +70,8 @@ test("proposta rápida e documentos personalizados da barbearia", async ({ page 
     const corpo = (await r.body()).toString("latin1");
     if (tipo === "guia") {
       expect(corpo).toContain(`${BARBEARIA_A.slug}.localhost:3000/gestor`);
-      expect(corpo).toContain("Raphael Martins");
+      expect(corpo).toContain("Apoio ao cliente");
+      expect(corpo).toContain("apoio@instabarber.pt");
     }
     if (tipo === "resumo") expect(corpo).toContain("documento fiscal");
   }

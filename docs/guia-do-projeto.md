@@ -42,7 +42,7 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 | `docs/mapa-do-sistema.md` | **Pedidos de manutenção:** classifica o pedido e diz onde mexer e como verificar |
 | `docs/mapa-gerado.md` | Lista gerada das rotas e ficheiros (`scripts/gerar-mapa.sh`; não se edita) |
 | `PROGRESSO.md` | Estado real: fases, trabalhos paralelos, pendentes do dono, módulos por ativar |
-| `DECISOES.md` | As decisões (D-01 a D-183), com data. **Prevalece** quando duas regras se contradizem |
+| `DECISOES.md` | As decisões (D-01 a D-184), com data. **Prevalece** quando duas regras se contradizem |
 | `docs/esquema/` | Fonte única da base de dados (tabelas, funções, RLS, dados iniciais) e os testes SQL |
 | `supabase/migrations/` | As migrações aplicadas (01 a 17), copiadas do esquema |
 | `fases/` | O plano de cada fase e os critérios (J.1, verificados em `fases/verificacao-j1.md`) |
@@ -96,6 +96,7 @@ decisão no `DECISOES.md`.
 | Contrato por e-mail | 27/10/2026 | O cliente carrega o contrato assinado por ligação segura; conferir, agradecer e adesão; folheto da visita | 19 | D-181 |
 | Apoio às vendas em módulos | 31/10/2026 | Visão geral por fases e um módulo por página, com o acabamento das skills de Emil Kowalski | — | D-182 |
 | Revisão visual | 31/10/2026 | Sistema de design mais seco, tokens com nome, folha «Mais» e barra que se esconde no telemóvel | — | D-183 |
+| Documentos e e-mails | 01/11/2026 | Estilo comum dos PDFs, assinaturas fixas (comercial e Apoio ao cliente), e-mails em blocos com botões | — | D-184 |
 
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.
@@ -131,7 +132,8 @@ cola-o ou configura as variáveis no ambiente da sessão.
 | `COPIA_SENHA` | Cifrar e decifrar as cópias de segurança | Só no gestor de palavras-passe do dono. **Sem ela, as cópias não abrem** |
 | `VERCEL_TOKEN` | CLI da Vercel (estado dos deploys, variáveis) | Vercel → Account → Tokens. Âmbito `raphaels-projects-6bccea88` |
 | `RESEND_API_KEY`, `EMAIL_REMETENTE`, `EMAIL_NOTIFICACOES`, `EMAIL_COMERCIAL` | E-mails | Resend → API Keys |
-| `TELEFONE_COMERCIAL`, `TELEFONE_COMERCIAL_TXT` | WhatsApp comercial nos e-mails | Dono |
+| `TELEFONE_COMERCIAL`, `TELEFONE_COMERCIAL_TXT` | WhatsApp comercial nos e-mails e, quando o registo de quem gera não tem telefone, nas propostas e no folheto (D-184) | Dono |
+| `TELEFONE_APOIO_TXT` | WhatsApp do Apoio ao cliente na assinatura dos manuais e do resumo da conta; sem ela, usa-se o comercial (D-184). Opcional | Dono |
 | `PRESTADORA_NOME`, `_NIF`, `_MORADA`, `_QUALIDADE`, `_ASSINANTE`, `PRESTADORA_REGIME_IVA` | Contratos, propostas, faturas; regime `isento` | Dono (e Vercel → Settings → Environment Variables) |
 | `ROOT_DOMAIN` | Domínio principal (`instabarber.pt`; `localhost` nos ensaios) | — |
 | `FATURACAO_PLATAFORMA`, `INVOICEXPRESS_CONTA`, `INVOICEXPRESS_CHAVE` | Fatura automática (desligada até haver os três) | InvoiceXpress (ver PROGRESSO) |

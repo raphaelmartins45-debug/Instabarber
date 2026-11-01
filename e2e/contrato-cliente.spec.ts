@@ -129,7 +129,7 @@ test("contrato enviado, carregado pelo cliente, recusado e aprovado; folheto", a
   await expect(contrato).toContainText("Assinado a");
   await expect(page.getByTestId("historico-lead")).toContainText("O cliente carregou o contrato");
 
-  // 5. Folheto com o nome e o telefone do registo de quem o gera.
+  // 5. Folheto assinado por quem o gera: nome, cargo e telefone do registo (D-184).
   await page.goto("/admin/documentos");
   await page.waitForLoadState("networkidle");
   const folheto = page.getByTestId("folheto-visita");
@@ -140,5 +140,6 @@ test("contrato enviado, carregado pelo cliente, recusado e aprovado; folheto", a
   expect(r.headers()["content-type"]).toBe("application/pdf");
   const corpo = (await r.body()).toString("latin1");
   expect(corpo).toContain("Raphael Martins");
+  expect(corpo).toContain("Gestor comercial");
   expect(corpo).toContain("912 000 111");
 });

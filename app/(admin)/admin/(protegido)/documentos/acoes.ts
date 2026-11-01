@@ -41,7 +41,10 @@ export async function propostaRapida(dados: DadosPropostaRapida): Promise<Result
   revalidatePath("/admin/comercial");
   if (!(await guardarBriefing(bd, leadId, esquemaBriefing.parse(briefing), quem.userId)))
     return { ok: true, leadId, propostaId: null, erro: "generico" };
-  const r = await gerarPropostaDoLead(bd, leadId, eAdministrador(quem.papel));
+  const r = await gerarPropostaDoLead(bd, leadId, {
+    administrador: eAdministrador(quem.papel),
+    userId: quem.userId,
+  });
   revalidatePath("/admin/documentos");
   // O lead fica criado mesmo que a proposta falhe: o erro aparece e continua-se na ficha.
   return r.ok
@@ -49,12 +52,12 @@ export async function propostaRapida(dados: DadosPropostaRapida): Promise<Result
     : { ok: true, leadId, propostaId: null, erro: r.erro, campos: r.campos };
 }
 
-/** Envia outra vez o guia de arranque ao proprietário, assinado por quem envia. */
+/** Envia outra vez o guia de arranque ao proprietário (assina o Apoio ao cliente, D-184). */
 export async function enviarGuia(inquilinoId: string): Promise<{ ok: boolean }> {
-  const quem = await exigirSuperAdmin();
+  await exigirSuperAdmin();
   if (!z.string().uuid().safeParse(inquilinoId).success) return { ok: false };
   const bd = await criarClienteServidor();
-  const guia = await pdfGuiaDeArranque(bd, inquilinoId, quem.userId);
+  const guia = await pdfGuiaDeArranque(bd, inquilinoId);
   if (!guia?.para) return { ok: false };
   const ok = await enviarEmail(() =>
     envioGuia({

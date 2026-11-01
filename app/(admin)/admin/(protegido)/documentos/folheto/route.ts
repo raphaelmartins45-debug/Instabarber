@@ -6,17 +6,16 @@ import { gerarFolheto } from "@/lib/pdf/folheto";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
-// Folheto da visita (D-181): com o nome, o telefone e o e-mail do registo de quem o gera. Toda
-// a equipa InstaBarber com dois fatores; os outros, 404.
+// Folheto da visita (D-181): assinado por quem o gera, com o nome, o cargo, o WhatsApp e o
+// e-mail do registo (D-184). Toda a equipa InstaBarber com dois fatores; os outros, 404.
 
 export async function GET() {
   const quem = await lerSuperAdmin();
   if (!quem.aal2) return new Response(null, { status: 404 });
-  const contacto = await assinaturaDe(await criarClienteServidor(), quem.userId);
   const pdf = gerarFolheto({
     regime: lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
     site: `https://${DOMINIO}`,
-    contacto: { ...contacto, email: contacto.email ?? quem.email },
+    contacto: await assinaturaDe(await criarClienteServidor(), quem.userId),
   });
   return new Response(pdf.output("arraybuffer"), {
     headers: {

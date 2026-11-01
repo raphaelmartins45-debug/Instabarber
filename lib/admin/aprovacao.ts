@@ -146,8 +146,8 @@ export async function aprovarPedido(
     entidadeId: pedidoId,
     detalhes: { slug, plano, periodicidade, profissionais },
   });
-  // O guia de arranque personalizado vai em anexo, assinado por quem aprova (D-181).
-  const guia = await pdfGuiaDeArranque(bd, inquilinoId, admin.userId);
+  // O guia de arranque personalizado vai em anexo, assinado pelo Apoio ao cliente (D-184).
+  const guia = await pdfGuiaDeArranque(bd, inquilinoId);
   const emailEnviado = await enviarEmail(() =>
     boasVindas({
       para: pedido.email_acesso,
@@ -194,7 +194,7 @@ export async function reenviarBoasVindas(
   inquilinoId: string,
   barbearia: { nome: string; slug: string },
 ): Promise<boolean> {
-  const admin = await exigirSuperAdmin();
+  await exigirSuperAdmin();
   const bd = await criarClienteServidor();
   const [dono] = await listarProprietarios(bd, inquilinoId);
   if (!dono?.email) return false;
@@ -211,7 +211,7 @@ export async function reenviarBoasVindas(
     entidade: "perfis",
     entidadeId: dono.id,
   });
-  const guia = await pdfGuiaDeArranque(bd, inquilinoId, admin.userId);
+  const guia = await pdfGuiaDeArranque(bd, inquilinoId);
   return enviarEmail(() =>
     boasVindas({
       para: dono.email!,

@@ -41,11 +41,10 @@ export async function guardar(leadId: string, dados: DadosBriefing): Promise<Res
 export async function gerar(leadId: string): Promise<Resultado> {
   const quem = await exigirEquipaPlataforma();
   if (!uuid.safeParse(leadId).success) return { ok: false, erro: "generico" };
-  const r = await gerarPropostaDoLead(
-    await criarClienteServidor(),
-    leadId,
-    eAdministrador(quem.papel),
-  );
+  const r = await gerarPropostaDoLead(await criarClienteServidor(), leadId, {
+    administrador: eAdministrador(quem.papel),
+    userId: quem.userId,
+  });
   if (r.ok) revalidar(leadId);
   return r;
 }

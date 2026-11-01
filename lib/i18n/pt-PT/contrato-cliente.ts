@@ -34,11 +34,12 @@ export const contratoCliente = {
     ],
     passosTitulo: "Para concluir, são quatro passos:",
     passos: [
-      "1. Leia o contrato com calma. Qualquer dúvida, responda a este e-mail.",
-      "2. Escreva a data e assine na última página, à mão ou com a assinatura digital (Cartão de Cidadão ou Chave Móvel Digital).",
-      "3. Guarde-o em PDF (digitalizado ou fotografado com boa luz, todas as páginas).",
-      "4. Carregue o PDF assinado nesta ligação:",
+      "Leia o contrato com calma. Qualquer dúvida, responda a este e-mail.",
+      "Escreva a data e assine na última página, à mão ou com a assinatura digital (Cartão de Cidadão ou Chave Móvel Digital).",
+      "Guarde-o em PDF (digitalizado ou fotografado com boa luz, todas as páginas).",
+      "Carregue o PDF assinado no botão abaixo.",
     ],
+    carregarBotao: "Carregar o contrato assinado",
     ligacaoNota: "A ligação é só sua e vale 30 dias.",
     depois:
       "Depois de conferirmos o contrato, recebe a confirmação e a ligação para o formulário de adesão, onde envia o logótipo e os dados da barbearia.",
@@ -46,17 +47,17 @@ export const contratoCliente = {
     obrigadoAssunto: (numero: string) => `Contrato ${numero} assinado: bem-vindo à InstaBarber`,
     obrigado: (numero: string) => [
       `Recebemos e conferimos o contrato ${numero}. Obrigado pela confiança: a partir de agora, estamos juntos.`,
-      "O próximo passo é o formulário de adesão, já preenchido com os dados do contrato. Lá envia o logótipo, as fotografias, o horário e os serviços da barbearia:",
+      "O próximo passo é o formulário de adesão, já preenchido com os dados do contrato. Lá envia o logótipo, as fotografias, o horário e os serviços da barbearia.",
     ],
+    adesaoBotao: "Abrir o formulário de adesão",
     adesaoNota: "A ligação é de uso único e vale 14 dias.",
     obrigadoDepois:
       "Assim que a adesão for aprovada, recebe o e-mail de boas-vindas com o acesso ao painel e o guia de arranque da sua barbearia, com os seus endereços e os primeiros passos.",
     recusaAssunto: (numero: string) => `Contrato ${numero}: falta um pormenor`,
-    recusa: (numero: string, motivo: string) => [
+    recusa: (numero: string) =>
       `Recebemos o contrato ${numero} assinado, obrigado. Antes de o aprovarmos, falta um pormenor:`,
-      motivo,
-      "Pode carregar o PDF corrigido nesta ligação nova:",
-    ],
+    recusaDepois: "Preparámos uma ligação nova para carregar o PDF corrigido.",
+    corrigidoBotao: "Carregar o PDF corrigido",
     avisoAssunto: (numero: string, nome: string) =>
       `Contrato ${numero} carregado pelo cliente · ${nome}`,
     aviso: (numero: string, nome: string) =>

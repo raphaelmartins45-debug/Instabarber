@@ -103,11 +103,14 @@ export const documentos = {
     pdf: "Descarregar a proposta",
     ficha: "Abrir a ficha do lead",
   },
-  funcoes: {
-    super_admin: "InstaBarber",
-    gestor_plataforma: "InstaBarber",
-    comercial: "Comercial InstaBarber",
-  } as Record<string, string>,
+  assinatura: {
+    cargos: {
+      super_admin: "Gestor comercial",
+      gestor_plataforma: "Gestor comercial",
+      comercial: "Comercial",
+    } as Record<string, string>,
+    apoio: "Apoio ao cliente",
+  },
   guia: {
     nomeFicheiro: (slug: string) => `InstaBarber-guia-${slug}.pdf`,
     marca: "InstaBarber · Guia de arranque",

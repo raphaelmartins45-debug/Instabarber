@@ -1,12 +1,14 @@
 import type { Briefing } from "@/lib/comercial/briefing";
+import type { Assinatura } from "@/lib/documentos/assinatura";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { centimosDeNumeric, formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { formatarNumero } from "@/lib/formatacao/numeros";
 import { textos } from "@/lib/i18n/pt-PT";
 import { criarFolha, DOURADO } from "./folha";
 
-// PDF da proposta (N.5): A4, identidade da Performa LAB, dez secções, «Não é documento fiscal»
-// no rodapé. Gera-se da fotografia guardada em propostas.dados, por isso é sempre o mesmo.
+// PDF da proposta (N.5): A4, papel timbrado da InstaBarber, as dez secções e «Não é documento
+// fiscal» no rodapé. Gera-se da fotografia guardada em propostas.dados, por isso é sempre o
+// mesmo. Assina quem a gerou, com o cargo, o WhatsApp e o e-mail (D-184).
 
 const t = textos.comercial.pdf;
 const b = textos.comercial.briefing;
@@ -36,10 +38,14 @@ export type DadosPdfProposta = {
     solucao: { dor: string; funcionalidades: string[] }[];
     valor_para_si_cent: number | null;
     mensal_com_iva_cent: number;
+    /** Quem gerou a proposta, fixado na geração (D-184); as antigas não o têm. */
+    assinatura?: Assinatura;
   };
   /** Texto do modelo «condicoes_proposta» aprovado (N.8), em Markdown simples. */
   condicoes: string | null;
-  contacto: { email: string; telefone: string };
+  /** A pessoa do lead a quem se dirige. */
+  destinatario: string | null;
+  assinatura: Assinatura;
 };
 
 const dinheiro = (numeric: string) => formatarDinheiro(centimosDeNumeric(numeric));
@@ -56,15 +62,17 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
   const f = criarFolha({ marca: t.marca, titulo: t.titulo, cor: DOURADO });
   const br = d.dados.briefing;
 
-  // 1 · Capa
+  // 1 · Capa (o tipo de documento já está no cabeçalho)
   f.subtitulo(br.nome_comercial || br.firma);
-  f.linha(t.numero, `${d.numero} · ${textos.comercial.propostas.versao(d.versao)}`, true);
-  f.linha(t.data, dataCurta(d.criadaEm));
-  f.linha(
-    t.validade,
-    d.validaAte ? dataCurta(`${d.validaAte}T12:00:00Z`) : t.validadeDias(d.validadeDias),
-  );
-  f.linha(t.contacto, [d.contacto.email, d.contacto.telefone].filter(Boolean).join(" · "));
+  if (d.destinatario) f.lead(t.preparadaPara(d.destinatario));
+  f.meta([
+    [t.numero, `${d.numero} · ${textos.comercial.propostas.versao(d.versao)}`],
+    [t.data, dataCurta(d.criadaEm)],
+    [
+      t.validade,
+      d.validaAte ? dataCurta(`${d.validaAte}T12:00:00Z`) : t.validadeDias(d.validadeDias),
+    ],
+  ]);
 
   // 2 · O que ouvimos
   f.titulo(t.ouvimos);
@@ -74,21 +82,26 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
     f.linha(t.clientesAtivos, formatarNumero(br.clientes_ativos));
   if (br.valor_visita_cent) f.linha(t.valorVisita, formatarDinheiro(br.valor_visita_cent));
   if (br.faltas_semana !== undefined) f.linha(t.faltasSemana, formatarNumero(br.faltas_semana));
-  if (br.objetivo) f.paragrafo(`${t.objetivo}: ${br.objetivo}`);
+  if (br.objetivo) {
+    f.subtituloSeccao(t.objetivo);
+    f.paragrafo(br.objetivo);
+  }
 
-  // 3 · A solução
+  // 3 · A solução, dor a dor
   f.titulo(t.solucao);
-  for (const s of d.dados.solucao)
-    f.paragrafo(
-      `${b.dores[s.dor] ?? s.dor}: ${s.funcionalidades.length ? s.funcionalidades.join(", ") : t.semFuncionalidade}`,
-    );
+  for (const s of d.dados.solucao) {
+    f.subtituloSeccao(b.dores[s.dor] ?? s.dor);
+    if (s.funcionalidades.length) f.lista(s.funcionalidades);
+    else f.paragrafo(t.semFuncionalidade);
+  }
 
   // 4 · O que fica incluído
   f.titulo(t.incluido);
-  f.paragrafo(d.dados.incluidas.join(" · "));
+  f.lista(d.dados.incluidas, 2);
 
-  // 5 · Investimento
-  f.titulo(t.investimento);
+  // 5 · Investimento, numa só página sempre que caiba
+  const linhasInvestimento = 3 + d.dados.decomposicao.length + (d.descontoPct > 0 ? 1 : 0);
+  f.titulo(t.investimento, linhasInvestimento * 7.6 + 30);
   f.linha(t.plano, d.plano);
   f.linha(t.periodicidade, d.periodicidade);
   f.linha(t.profissionais, String(d.profissionais));
@@ -101,19 +114,21 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
       `−${formatarDinheiro(bruto - centimosDeNumeric(d.valorSemIva))}`,
     );
   }
-  f.linha(t.semIva, dinheiro(d.valorSemIva));
-  f.linha(t.comIva, dinheiro(d.valorComIva), true);
-  f.paragrafo(
-    d.ivaTaxa === 0
-      ? t.isento
-      : t.ivaIncluido(
-          formatarDinheiro(centimosDeNumeric(d.valorComIva) - centimosDeNumeric(d.valorSemIva)),
-        ),
-  );
+  if (d.ivaTaxa === 0) {
+    f.total(t.total, dinheiro(d.valorComIva));
+    f.legal(t.isento);
+  } else {
+    f.linha(t.semIva, dinheiro(d.valorSemIva));
+    f.linha(
+      t.iva(d.ivaTaxa),
+      formatarDinheiro(centimosDeNumeric(d.valorComIva) - centimosDeNumeric(d.valorSemIva)),
+    );
+    f.total(t.comIva, dinheiro(d.valorComIva));
+  }
   if (centimosDeNumeric(d.taxaSemIva) > 0) f.linha(t.taxaMigracao, dinheiro(d.taxaSemIva));
   if (d.dados.valor_para_si_cent) {
     f.titulo(t.valorParaSi);
-    f.paragrafo(
+    f.nota(
       t.valorParaSiTexto(
         formatarDinheiro(d.dados.valor_para_si_cent),
         formatarNumero(
@@ -126,7 +141,9 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
   // 6 · Desafio de 90 dias (só Pro) e 7 · Condições de lançamento
   if (d.desafio) {
     f.titulo(t.desafio);
-    t.desafioTexto.forEach((p) => f.paragrafo(p));
+    const [promessa, ...condicoes] = t.desafioTexto;
+    f.paragrafo(promessa!);
+    condicoes.forEach((c) => f.legal(c));
   }
   if (d.condicoesLancamento) {
     f.titulo(t.lancamento);
@@ -135,18 +152,18 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
 
   // 8 · Como arrancamos
   f.titulo(t.arranque);
-  t.arranquePassos.forEach((p, i) => f.paragrafo(`${i + 1}. ${p}`));
+  f.passos([...t.arranquePassos]);
 
-  // 9 · Condições (modelo aprovado)
+  // 9 · Próximo passo e assinatura de quem gerou a proposta
+  f.titulo(t.proximoPasso, 60);
+  f.paragrafo(t.proximoPassoTexto);
+  f.assinatura(d.assinatura, t.despedida);
+
+  // 10 · Condições (modelo aprovado), em letra pequena no fim
   f.titulo(t.condicoes);
   (d.condicoes ? linhasDoModelo(d.condicoes) : [textos.comercial.modelos.semCondicoes]).forEach(
-    (l) => f.paragrafo(l),
+    (l) => f.legal(l),
   );
-
-  // 10 · Próximo passo e assinatura
-  f.titulo(t.proximoPasso);
-  f.paragrafo(t.proximoPassoTexto);
-  f.paragrafo(t.assinatura);
 
   return f.fechar(t.rodape, t.pagina);
 }

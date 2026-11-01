@@ -29,6 +29,7 @@ export const textos = {
     assinatura: "InstaBarber · Performa LAB",
     assinaturaComercial: "Comercial InstaBarber",
     apoio: "apoio@instabarber.pt",
+    emailBotaoAlternativa: "Se o botão não abrir, use esta ligação:",
     instagram: { texto: "@instabarberpt", url: "https://www.instagram.com/instabarberpt/" },
   },
   contacto: {

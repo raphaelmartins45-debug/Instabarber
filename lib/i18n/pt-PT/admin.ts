@@ -395,22 +395,26 @@ export const admin = {
   emails: {
     boasVindasAssunto: (barbearia: string) => `Bem-vindo ao InstaBarber · ${barbearia}`,
     ola: (nome: string) => `Olá ${nome},`,
-    ativa: (barbearia: string) => `A ${barbearia} já está ativa no InstaBarber.`,
+    ativa: (barbearia: string) =>
+      `A ${barbearia} já está ativa no InstaBarber. Obrigado pela confiança.`,
     definir:
-      "Para entrar, defina a sua palavra-passe nesta ligação (válida durante 24 horas e só uma vez):",
+      "Para entrar pela primeira vez, defina a sua palavra-passe. A ligação vale 24 horas e só pode ser usada uma vez.",
+    definirBotao: "Definir a palavra-passe",
     jaTemConta: "Entre com o e-mail e a palavra-passe que já usa no InstaBarber.",
-    pagina: (url: string) => `Página pública da barbearia: ${url}`,
-    painel: (url: string) => `Painel de gestão: ${url}`,
+    enderecosTitulo: "Os seus endereços",
+    pagina: "Página pública",
+    painel: "Painel de gestão",
     equipa:
-      "Para dar acesso aos barbeiros, registe-os em Gestão do sistema: cada um recebe o convite por e-mail.",
+      "Para dar acesso aos barbeiros, registe-os em Equipa: cada um recebe o convite por e-mail.",
     imagensTitulo: "Imagens da página",
+    imagensIntro: "Para a página ficar completa, prepare estas imagens:",
     imagens: [
       "Logótipo: PNG, SVG ou WEBP, com fundo transparente, até 1 MB e com pelo menos 512 × 512 px. Com fundo branco aparece um quadrado branco sobre a capa.",
       "Fotografia da fachada: JPG ou WEBP, até 3 MB, com pelo menos 1600 × 900 px (16:9). É a primeira imagem da galeria; sem ela, a capa usa a cor do logótipo.",
       "Galeria: até 6 fotografias contando com a fachada, JPG ou WEBP, até 3 MB cada, com pelo menos 1200 × 800 px.",
     ],
     guiaAnexo: (barbearia: string) =>
-      `Em anexo vai o guia de arranque da ${barbearia}: os seus endereços, os primeiros passos e como entra cada pessoa. Guarde-o à mão nos primeiros dias.`,
+      `Segue em anexo o guia de arranque da ${barbearia}, com os seus endereços, os primeiros passos e a forma como entra cada pessoa. Vale a pena tê-lo à mão nos primeiros dias.`,
     guiaAssunto: (barbearia: string) => `O guia de arranque da ${barbearia}`,
     guiaReenvio: (barbearia: string) =>
       `Como pediu, segue em anexo o guia de arranque da ${barbearia}, com os endereços de cada painel e os primeiros passos.`,
@@ -418,10 +422,10 @@ export const admin = {
     despedida: "Com os melhores cumprimentos,",
     rejeicaoAssunto: (barbearia: string) => `Pedido de adesão ao InstaBarber · ${barbearia}`,
     rejeicao: (barbearia: string) =>
-      `Analisámos o pedido de adesão da ${barbearia} e, por agora, não o podemos aprovar.`,
-    motivo: (motivo: string) => `Motivo: ${motivo}`,
+      `Obrigado pelo interesse no InstaBarber. Analisámos o pedido de adesão da ${barbearia} e, por agora, não o podemos aprovar.`,
+    motivoTitulo: "Motivo",
     rejeicaoContacto:
-      "Se quiser falar connosco sobre isto, responda a este e-mail ou escreva para comercial@instabarber.pt.",
+      "Se quiser falar connosco sobre isto, responda a este e-mail ou escreva para comercial@instabarber.pt. Teremos todo o gosto em ajudar.",
   },
   design: {
     titulo: "Catálogo de design",

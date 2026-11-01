@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { type Briefing, esquemaBriefing } from "@/lib/comercial/briefing";
 import type { PropostaMontada } from "@/lib/comercial/proposta";
+import type { Assinatura } from "@/lib/documentos/assinatura";
 import type { ClienteBD } from "@/lib/supabase/tipos";
 import type { Database } from "@/types/database";
 import { falhaDeLeitura } from "../erros";
@@ -81,10 +82,11 @@ export async function obterProposta(bd: ClienteBD, id: string): Promise<Proposta
 }
 
 /** Cria uma versão nova (as anteriores abertas ficam «substituída»). Devolve o id ou o erro. */
+/** A proposta montada, com quem a assina fixado na fotografia (D-184). */
 export async function criarProposta(
   bd: ClienteBD,
   leadId: string,
-  p: PropostaMontada,
+  p: PropostaMontada & { dados: { assinatura: Assinatura } },
 ): Promise<{ id: string } | { erro: string }> {
   const { data, error } = await bd.rpc("criar_proposta", {
     p_lead: uuid.parse(leadId),

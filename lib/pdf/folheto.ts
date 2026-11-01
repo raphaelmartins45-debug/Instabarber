@@ -1,25 +1,29 @@
-import { jsPDF } from "jspdf";
+import type { Assinatura } from "@/lib/documentos/assinatura";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
-import { formatarTelefone } from "@/lib/formatacao/telefone";
 import { textos } from "@/lib/i18n/pt-PT";
 import { EXTRA_CENT, type RegimeIva } from "@/lib/regras/mensalidade";
 import { codigoQr } from "@/lib/regras/qr";
 import { simularPreco } from "@/lib/regras/vendas";
-import { DOURADO } from "./folha";
-import { FUNDO, OURO_TEXTO } from "./guia-primitivas";
+import {
+  AMARELO_CLARO,
+  CINZA_ESCURO as CINZA,
+  criarDocumento,
+  DOURADO,
+  desenharAssinatura,
+  FUNDO,
+  LINHA_FORTE,
+  OURO_TEXTO,
+  rotuloEspacado,
+} from "./estilo";
 
 // Folheto da visita (D-181): uma página A4 com a promessa, o que o sistema faz, os preços pela
-// fórmula única, o QR do site e os contactos de quem o gera (nome, telefone e e-mail do registo).
+// fórmula única, o QR do site e a assinatura de quem o gera: o nome, o cargo, o WhatsApp e o
+// e-mail do registo (D-184).
 
 const t = textos.documentos.folheto;
-const CINZA: [number, number, number] = [0x52, 0x52, 0x5b];
 
-export function gerarFolheto(d: {
-  regime: RegimeIva;
-  site: string;
-  contacto: { nome: string; funcao: string; telefone: string | null; email: string | null };
-}) {
-  const doc = new jsPDF({ unit: "mm", format: "a4" });
+export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Assinatura }) {
+  const doc = criarDocumento();
   const L = doc.internal.pageSize.getWidth();
   const A = doc.internal.pageSize.getHeight();
   const M = 16;
@@ -55,12 +59,15 @@ export function gerarFolheto(d: {
   y += 3 * 22 + 6;
 
   // Preços pela fórmula única.
-  fonte(13, "bold", OURO_TEXTO).text(t.precosTitulo, M, y);
+  fonte(13, "bold", FUNDO).text(t.precosTitulo, M, y);
   y += 8;
   (["basic", "pro"] as const).forEach((plano, i) => {
     const s = simularPreco(plano, 0, false, d.regime);
     const x = M + i * (largura + 8);
-    doc.setDrawColor(0xe4, 0xe4, 0xe7).setLineWidth(0.3).roundedRect(x, y, largura, 30, 3, 3, "S");
+    doc
+      .setDrawColor(...LINHA_FORTE)
+      .setLineWidth(0.3)
+      .roundedRect(x, y, largura, 30, 2, 2, "S");
     fonte(10, "bold", FUNDO).text(
       t.plano(textos.vendas.simulador.planos[plano], t.barbeiros[plano]!),
       x + 5,
@@ -80,8 +87,8 @@ export function gerarFolheto(d: {
   );
   y += 12;
 
-  // QR do site e os contactos de quem gera o folheto.
-  const lado = 44;
+  // QR do site e a assinatura de quem gera o folheto.
+  const lado = 40;
   const matriz = codigoQr(d.site);
   if (matriz) {
     const m = lado / matriz.length;
@@ -92,20 +99,16 @@ export function gerarFolheto(d: {
       }),
     );
   }
-  fonte(13, "bold", FUNDO).text(t.cta, M + lado + 8, y + 8);
-  fonte(10, "normal", CINZA).text(t.qr, M + lado + 8, y + 14);
-  fonte(11, "bold", OURO_TEXTO).text(d.site.replace(/^https?:\/\//, ""), M + lado + 8, y + 21);
+  const xt = M + lado + 6;
+  const xc = L / 2 + 4;
+  fonte(12.5, "bold", FUNDO).text(t.cta, xt, y + 8);
+  fonte(9.5, "normal", CINZA).text(doc.splitTextToSize(t.qr, xc - xt - 6) as string[], xt, y + 14);
+  fonte(10.5, "bold", OURO_TEXTO).text(d.site.replace(/^https?:\/\//, ""), xt, y + 26);
 
-  const xc = L / 2 + 14;
-  doc.setFillColor(0xff, 0xf8, 0xec).roundedRect(xc, y - 2, L - M - xc, lado + 2, 3, 3, "F");
-  fonte(9, "bold", OURO_TEXTO).text(t.contactoTitulo.toUpperCase(), xc + 5, y + 6);
-  fonte(13, "bold", FUNDO).text(d.contacto.nome, xc + 5, y + 14);
-  fonte(9.5, "normal", CINZA).text(d.contacto.funcao, xc + 5, y + 20);
-  const linhas = [
-    d.contacto.telefone ? formatarTelefone(d.contacto.telefone) : null,
-    d.contacto.email,
-  ].filter((l): l is string => !!l);
-  linhas.forEach((l, i) => fonte(11, "bold", FUNDO).text(l, xc + 5, y + 29 + i * 6.5));
+  doc.setFillColor(...AMARELO_CLARO).roundedRect(xc, y - 2, L - M - xc, lado + 2, 2, 2, "F");
+  fonte(7.5, "bold", OURO_TEXTO);
+  rotuloEspacado(doc, t.contactoTitulo, xc + 6, y + 6);
+  desenharAssinatura(doc, xc + 6, y + 15, d.contacto);
 
   fonte(8.5, "normal", CINZA).text(t.rodape, L / 2, A - 10, { align: "center" });
   return doc;

@@ -128,39 +128,24 @@ export const comprovativos = {
         `Conferir e aprovar: ${d.ligacao}`,
       ].join("\n"),
     confirmadoAssunto: (barbearia: string) => `Pagamento confirmado · ${barbearia}`,
-    confirmado: (d: {
-      responsavel: string;
-      barbearia: string;
-      periodo: string;
-      valor: string;
-      metodo: string;
-      data: string;
-      vencimento: string;
-    }) =>
-      [
-        `Olá ${d.responsavel},`,
-        "",
-        `Confirmamos o pagamento da mensalidade da ${d.barbearia}.`,
-        "",
-        `Período: ${d.periodo}`,
-        `Valor: ${d.valor}`,
-        `Método: ${d.metodo}`,
-        `Data do pagamento: ${d.data}`,
-        `Próximo vencimento: ${d.vencimento}`,
-        "",
-        "Este e-mail não é documento fiscal. A fatura segue em separado.",
-        "Pode consultar os pagamentos em «O meu plano».",
-      ].join("\n"),
+    ola: (nome: string) => `Olá ${nome},`,
+    confirmado: (barbearia: string) =>
+      `Confirmamos o pagamento da mensalidade da ${barbearia}. Obrigado.`,
+    campos: {
+      periodo: "Período",
+      valor: "Valor",
+      metodo: "Método",
+      data: "Data do pagamento",
+      vencimento: "Próximo vencimento",
+    },
+    naoFiscal: "Este e-mail não é documento fiscal. A fatura segue em separado.",
+    consultar: "Pode consultar os pagamentos em «O meu plano».",
     recusadoAssunto: (barbearia: string) =>
       `Comprovativo de pagamento por confirmar · ${barbearia}`,
-    recusado: (d: { responsavel: string; periodo: string; motivo: string }) =>
-      [
-        `Olá ${d.responsavel},`,
-        "",
-        `Não conseguimos confirmar o comprovativo do período ${d.periodo}.`,
-        `Motivo: ${d.motivo}`,
-        "",
-        "Pode enviar outro em «O meu plano». Qualquer dúvida, responda a este e-mail.",
-      ].join("\n"),
+    recusado: (periodo: string) =>
+      `Não conseguimos confirmar o comprovativo do período ${periodo}.`,
+    motivo: "Motivo",
+    reenviar: "Pode enviar outro em «O meu plano». Qualquer dúvida, responda a este e-mail.",
+    despedida: "Com os melhores cumprimentos,",
   },
 };

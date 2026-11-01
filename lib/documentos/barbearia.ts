@@ -1,9 +1,11 @@
 import "server-only";
+import { variavelOpcional } from "@/lib/configuracao/ambiente";
+import { type Assinatura, assinaturaApoio, assinaturaComercial } from "./assinatura";
+import { DOMINIO } from "@/lib/email/enderecos";
 import { origemDoPedido } from "@/lib/inquilino/endereco";
 import { enderecosDaBarbearia, type EnderecosBarbearia } from "@/lib/inquilino/encaminhar";
 import { obterBarbearia } from "@/lib/repositorios/admin/barbearias";
 import { listarProprietarios, perfilDePlataforma } from "@/lib/repositorios/perfis";
-import { textos } from "@/lib/i18n/pt-PT";
 import type { ClienteBD } from "@/lib/supabase/tipos";
 
 // Os dados de uma barbearia para os documentos personalizados (D-181): nome, logótipo, cor,
@@ -47,19 +49,19 @@ export async function barbeariaDoDocumento(
 }
 
 /**
- * Quem assina os documentos (D-181): o nome do registo de quem os gera, na Equipa InstaBarber
- * (o dono, o gestor ou o comercial). Sem nome, fica a marca.
+ * A assinatura comercial de quem gera o documento (D-184): o nome, o cargo, o telefone e o
+ * e-mail do registo, na Equipa InstaBarber; o que faltar vem da equipa comercial.
  */
-export async function assinaturaDe(
-  bd: ClienteBD,
-  userId: string,
-): Promise<{ nome: string; funcao: string; email: string | null; telefone: string | null }> {
-  const p = await perfilDePlataforma(bd, userId);
-  const funcoes = textos.documentos.funcoes;
-  return {
-    nome: p?.nome || textos.marca.nome,
-    funcao: funcoes[p?.papel ?? ""] ?? textos.marca.nome,
-    email: p?.email ?? null,
-    telefone: p?.telefone ?? null,
-  };
+export async function assinaturaDe(bd: ClienteBD, userId: string): Promise<Assinatura> {
+  return assinaturaComercial(await perfilDePlataforma(bd, userId), {
+    telefone: variavelOpcional("TELEFONE_COMERCIAL_TXT") ?? null,
+    email: `comercial@${DOMINIO}`,
+  });
+}
+
+/** A assinatura dos manuais (D-184): «Apoio ao cliente», com o WhatsApp do apoio e apoio@. */
+export function assinaturaDoApoio(): Assinatura {
+  return assinaturaApoio(
+    variavelOpcional("TELEFONE_APOIO_TXT") ?? variavelOpcional("TELEFONE_COMERCIAL_TXT") ?? null,
+  );
 }

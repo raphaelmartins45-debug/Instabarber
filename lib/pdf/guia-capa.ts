@@ -1,10 +1,12 @@
-import { DOURADO } from "./folha";
-import { FUNDO, type Guia, type Imagem } from "./guia-primitivas";
+import type { Assinatura } from "@/lib/documentos/assinatura";
+import { ALTURA_ASSINATURA, CINZA_ESCURO, DOURADO, desenharAssinatura, FUNDO } from "./estilo";
+import type { Guia, Imagem } from "./guia-primitivas";
 
-// Capa e assinatura dos guias personalizados (D-181).
+// Capa e assinatura dos guias personalizados (D-181, D-184).
 
+/** Texto secundário e terciário sobre o fundo escuro (`--texto-2` e `--texto-3` do escuro). */
 const CINZA_CLARO: [number, number, number] = [0xa1, 0xa1, 0xaa];
-const TER: [number, number, number] = [0x71, 0x71, 0x7a];
+const TER: [number, number, number] = [0x8b, 0x8b, 0x94];
 
 /** Capa escura: logótipo (ou a inicial), título, nome da barbearia e o rodapé da marca. */
 export function capa(
@@ -42,18 +44,15 @@ export function capa(
   doc.text(o.rodape[1], L - 20, A - 20, { align: "right" });
 }
 
-/** Assinatura no fim (D-181): o nome de quem gerou, a função e a marca. */
-export function assinatura(g: Guia, o: { despedida: string; nome: string; funcao: string }) {
-  g.espaco(30);
+/** Assinatura no fim (D-184): nos manuais, «Apoio ao cliente», com o WhatsApp e o e-mail. */
+export function assinatura(g: Guia, o: { despedida: string; assinatura: Assinatura }) {
+  g.espaco(ALTURA_ASSINATURA + 20);
   g.y += 4;
-  g.fonte(10.5, "normal", TER).text(o.despedida, g.M, g.y);
-  g.y += 12;
+  g.fonte(10.5, "normal", CINZA_ESCURO).text(o.despedida, g.M, g.y);
+  g.y += 7;
   g.doc
     .setDrawColor(...DOURADO)
     .setLineWidth(0.4)
-    .line(g.M, g.y - 5, g.M + 60, g.y - 5);
-  g.fonte(12, "bold").text(o.nome, g.M, g.y);
-  g.y += 5.5;
-  g.fonte(9.5, "normal", TER).text(o.funcao, g.M, g.y);
-  g.y += 6;
+    .line(g.M, g.y, g.M + 40, g.y);
+  g.y = desenharAssinatura(g.doc, g.M, g.y + 7, o.assinatura) + 2;
 }

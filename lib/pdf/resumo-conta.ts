@@ -1,10 +1,12 @@
+import type { Assinatura } from "@/lib/documentos/assinatura";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { criarFolha, DOURADO } from "./folha";
 
 // Resumo da conta de uma barbearia (D-181): o plano, o valor pela fórmula única e os pagamentos
-// registados. «Não é documento fiscal» em todas as páginas (CLAUDE.md §3).
+// registados. «Não é documento fiscal» em todas as páginas (CLAUDE.md §3). Assina o Apoio ao
+// cliente, a quem se pergunta sobre a conta (D-184).
 
 const t = textos.documentos.resumo;
 const a = textos.admin;
@@ -21,6 +23,7 @@ export type DadosResumoConta = {
   estadoPagamento: string;
   proximoVencimento: string | null;
   recebimentos: { data: string; metodo: string; valorCent: number }[];
+  assinatura: Assinatura;
 };
 
 export function gerarResumoConta(d: DadosResumoConta) {
@@ -53,6 +56,7 @@ export function gerarResumoConta(d: DadosResumoConta) {
       ]),
     );
   else f.paragrafo(t.semRecebimentos);
-  f.paragrafo(t.nota);
+  f.legal(t.nota);
+  f.assinatura(d.assinatura);
   return f.fechar(t.rodape, t.pagina);
 }

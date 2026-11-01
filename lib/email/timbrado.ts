@@ -1,16 +1,19 @@
 import { textos } from "@/lib/i18n/pt-PT";
 
-// E-mail timbrado (D-102): cabeçalho preto com a logo, corpo claro, assinatura a negrito e rodapé preto
-// com o e-mail comercial e o Instagram. Layout em tabelas e estilos em linha, que é o que os clientes
-// de e-mail suportam. Todo o texto que vem do visitante passa por escapeHtml.
+// E-mail timbrado (D-102, D-184): cabeçalho preto com a logo, corpo claro, assinatura e rodapé
+// preto com o e-mail de quem responde e o Instagram. O corpo é uma lista de blocos (parágrafo,
+// lista, botão, destaque, pares rótulo-valor, subtítulo); dos mesmos blocos saem o HTML e o texto
+// simples, para as duas versões dizerem sempre o mesmo. Layout em tabelas e estilos em linha, que
+// é o que os clientes de e-mail suportam. Todo o texto passa por escapeHtml.
 
 const COR = {
   tinta: "#12100E",
   ouro: "#F5A623",
   creme: "#F7F5F1",
   texto: "#1B1814",
+  secundario: "#6A645B",
   suave: "#A9A298",
-  linha: "#E4DFD5",
+  ligacao: "#945C00",
   fundo: "#EDEAE4",
 } as const;
 
@@ -30,34 +33,98 @@ export function escapeHtml(valor: string): string {
     .replace(/'/g, "&#39;");
 }
 
-export type DadosTimbrado = {
+/** Um bloco do corpo: um parágrafo (texto) ou uma das peças com forma própria. */
+export type BlocoEmail =
+  | string
+  | { titulo: string }
+  | { lista: readonly string[]; numerada?: boolean }
+  | { botao: string; url: string; nota?: string }
+  | { destaque: string; nota?: string }
+  | { pares: readonly (readonly [string, string])[] };
+
+export type CorpoEmail = {
+  /** Vazia quando o texto já a traz (o lembrete que o operador reviu). */
   saudacao: string;
-  paragrafos: string[];
-  /** Caixa de destaque (por exemplo, a referência do pedido). */
-  destaque?: { titulo: string; nota?: string };
-  paragrafosFinais: string[];
+  corpo: readonly BlocoEmail[];
   despedida: string;
-  /** Linhas da assinatura, a negrito. */
-  assinatura: string[];
+  /** A primeira linha a negrito (o nome); as outras em cinzento-escuro (D-184). */
+  assinatura: readonly string[];
+};
+
+export type DadosTimbrado = CorpoEmail & {
   logoUrl: string;
   iconeEmailUrl: string;
   iconeInstagramUrl: string;
   rodape: { email: string; instagramTexto: string; instagramUrl: string };
 };
 
-function paragrafo(texto: string): string {
-  return `<p style="margin:0 0 16px 0;font-family:${FONTE};font-size:15px;line-height:1.6;color:${COR.texto};">${escapeHtml(texto)}</p>`;
+const estiloTexto = `font-family:${FONTE};font-size:15px;line-height:1.6;color:${COR.texto};`;
+const p = (html: string, margem = "0 0 16px 0") =>
+  `<p style="margin:${margem};${estiloTexto}">${html}</p>`;
+const ligacao = (url: string, texto = url) =>
+  `<a href="${escapeHtml(url)}" style="color:${COR.ligacao};text-decoration:underline;word-break:break-all;">${escapeHtml(texto)}</a>`;
+
+function blocoHtml(b: BlocoEmail): string {
+  if (typeof b === "string") return p(escapeHtml(b));
+  if ("titulo" in b) return p(`<strong>${escapeHtml(b.titulo)}</strong>`, "24px 0 8px 0");
+  if ("lista" in b) {
+    const tag = b.numerada ? "ol" : "ul";
+    const itens = b.lista
+      .map((i) => `<li style="margin:0 0 8px 0;${estiloTexto}">${escapeHtml(i)}</li>`)
+      .join("");
+    return `<${tag} style="margin:0 0 16px 0;padding:0 0 0 22px;">${itens}</${tag}>`;
+  }
+  if ("botao" in b)
+    return `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:4px 0 12px 0;"><tr><td ${fixo(COR.ouro)}border-radius:6px;"><a href="${escapeHtml(b.url)}" style="display:inline-block;padding:13px 24px;font-family:${FONTE};font-size:15px;font-weight:bold;line-height:1.2;color:${COR.tinta};text-decoration:none;border-radius:6px;">${escapeHtml(b.botao)}</a></td></tr></table>
+<p style="margin:0 0 20px 0;font-family:${FONTE};font-size:13px;line-height:1.5;color:${COR.secundario};">${
+      b.nota ? `${escapeHtml(b.nota)} ` : ""
+    }${escapeHtml(textos.marca.emailBotaoAlternativa)} ${ligacao(b.url)}</p>`;
+  if ("destaque" in b)
+    return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px 0;"><tr><td ${fixo(COR.creme)}border-left:3px solid ${COR.ouro};padding:14px 16px;${estiloTexto}"><strong>${escapeHtml(b.destaque)}</strong>${
+      b.nota
+        ? `<br><span style="font-size:13px;color:${COR.secundario};">${escapeHtml(b.nota)}</span>`
+        : ""
+    }</td></tr></table>`;
+  const linhas = b.pares
+    .map(
+      ([rotulo, valor]) =>
+        `<tr><td valign="top" style="padding:6px 16px 6px 0;font-family:${FONTE};font-size:13px;line-height:1.5;color:${COR.secundario};white-space:nowrap;">${escapeHtml(rotulo)}</td><td valign="top" style="padding:6px 0;font-family:${FONTE};font-size:15px;line-height:1.5;color:${COR.texto};">${
+          /^https?:\/\//.test(valor) ? ligacao(valor) : `<strong>${escapeHtml(valor)}</strong>`
+        }</td></tr>`,
+    )
+    .join("");
+  return `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px 0;">${linhas}</table>`;
+}
+
+function blocoTexto(b: BlocoEmail): string {
+  if (typeof b === "string") return b;
+  if ("titulo" in b) return b.titulo;
+  if ("lista" in b)
+    return b.lista.map((i, n) => (b.numerada ? `${n + 1}. ${i}` : `- ${i}`)).join("\n");
+  if ("botao" in b) return [`${b.botao}: ${b.url}`, ...(b.nota ? [b.nota] : [])].join("\n");
+  if ("destaque" in b) return [b.destaque, ...(b.nota ? [b.nota] : [])].join("\n");
+  return b.pares.map(([rotulo, valor]) => `${rotulo}: ${valor}`).join("\n");
+}
+
+/** A versão em texto simples, dos mesmos blocos do HTML. */
+export function textoDoEmail(d: CorpoEmail, rodape?: string): string {
+  return [
+    d.saudacao,
+    ...d.corpo.map(blocoTexto),
+    d.despedida,
+    d.assinatura.join("\n"),
+    rodape ?? "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 export function emailTimbrado(d: DadosTimbrado): string {
-  const destaque = d.destaque
-    ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px 0;"><tr><td ${fixo(COR.creme)}border-left:3px solid ${COR.ouro};padding:14px 16px;font-family:${FONTE};font-size:15px;line-height:1.5;color:${COR.texto};"><strong>${escapeHtml(d.destaque.titulo)}</strong>${
-        d.destaque.nota
-          ? `<br><span style="font-size:13px;color:#6A645B;">${escapeHtml(d.destaque.nota)}</span>`
-          : ""
-      }</td></tr></table>`
-    : "";
-  const assinatura = d.assinatura.map((l) => `<strong>${escapeHtml(l)}</strong>`).join("<br>");
+  const [nome = "", ...outras] = d.assinatura;
+  const assinatura = [
+    `<strong style="color:${COR.tinta};">${escapeHtml(nome)}</strong>`,
+    ...outras.map((l) => `<span style="color:${COR.secundario};">${escapeHtml(l)}</span>`),
+  ].join("<br>");
   const { email, instagramTexto, instagramUrl } = d.rodape;
   return `<!doctype html>
 <html lang="pt-PT">
@@ -68,12 +135,10 @@ export function emailTimbrado(d: DadosTimbrado): string {
 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;">
 <tr><td ${fixo(COR.tinta)}padding:24px 32px;border-bottom:3px solid ${COR.ouro};"><img src="${escapeHtml(d.logoUrl)}" width="170" alt="${escapeHtml(textos.marca.nome)}" style="display:block;border:0;outline:none;height:auto;max-width:170px;font-family:${FONTE};font-size:20px;font-weight:bold;color:${COR.ouro};"></td></tr>
 <tr><td ${fixo("#FFFFFF")}padding:32px 32px 8px 32px;">
-${paragrafo(d.saudacao)}
-${d.paragrafos.map(paragrafo).join("\n")}
-${destaque}
-${d.paragrafosFinais.map(paragrafo).join("\n")}
-<p style="margin:24px 0 4px 0;font-family:${FONTE};font-size:15px;line-height:1.6;color:${COR.texto};">${escapeHtml(d.despedida)}</p>
-<p style="margin:16px 0 24px 0;font-family:${FONTE};font-size:15px;line-height:1.6;color:${COR.texto};">${assinatura}</p>
+${d.saudacao ? p(escapeHtml(d.saudacao)) : ""}
+${d.corpo.map(blocoHtml).join("\n")}
+${d.despedida ? p(escapeHtml(d.despedida), "24px 0 4px 0") : ""}
+${nome ? `<p style="margin:12px 0 24px 0;${estiloTexto}">${assinatura}</p>` : ""}
 </td></tr>
 <tr><td ${fixo(COR.tinta)}padding:20px 32px;font-family:${FONTE};font-size:13px;line-height:1.7;color:${COR.suave};">
 <table role="presentation" cellspacing="0" cellpadding="0" border="0">

@@ -1,8 +1,7 @@
-import { jsPDF } from "jspdf";
 import { textos } from "@/lib/i18n/pt-PT";
 import { codigoQr } from "@/lib/regras/qr";
 import { corDoTexto } from "@/lib/regras/contraste";
-import { corDeHex } from "./folha";
+import { corDeHex, criarDocumento } from "./estilo";
 import type { Imagem } from "./guia-primitivas";
 
 // Cartaz do balcão (D-181): A4 na cor da barbearia, com o logótipo, o nome e o código QR da
@@ -19,7 +18,7 @@ export function gerarCartaz(d: {
   /** O endereço escrito por baixo (a página). */
   endereco: string;
 }) {
-  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const doc = criarDocumento();
   const L = doc.internal.pageSize.getWidth();
   const A = doc.internal.pageSize.getHeight();
   const fundo = /^#[0-9a-f]{6}$/i.test(d.cor ?? "") ? d.cor! : "#12100E";

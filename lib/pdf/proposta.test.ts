@@ -37,7 +37,13 @@ const base = {
     valor_para_si_cent: 13200,
     mensal_com_iva_cent: 4797,
   },
-  contacto: { email: "comercial@instabarber.pt", telefone: "+351 900 000 000" },
+  destinatario: "Miguel Sousa",
+  assinatura: {
+    nome: "Raphael Martins",
+    cargo: "Gestor comercial",
+    telefone: "912 345 678",
+    email: "raphael@instabarber.pt",
+  },
 };
 
 describe("PDF da proposta (N.5)", () => {
@@ -50,6 +56,24 @@ describe("PDF da proposta (N.5)", () => {
     expect(pdf).toContain("Desafio de 90 dias");
     expect(pdf).toContain("Não há fidelização");
     expect(pdf).not.toMatch(/recibo|fatura/i);
+  });
+
+  it("assina quem a gerou: nome, cargo, WhatsApp e e-mail (D-184)", () => {
+    const pdf = gerarPdfProposta({ ...base, condicoes: null }).output();
+    for (const parte of ["Raphael Martins", "Gestor comercial", "912 345 678", "raphael@"])
+      expect(pdf).toContain(parte);
+    expect(pdf).toContain("Preparada para Miguel Sousa");
+  });
+
+  it("isento de IVA: um só total, com a nota do artigo 53.º", () => {
+    const pdf = gerarPdfProposta({
+      ...base,
+      condicoes: null,
+      ivaTaxa: 0,
+      valorComIva: "39.00",
+    }).output();
+    expect(pdf).not.toContain("Total com IVA");
+    expect(pdf).toContain("Artigo 53");
   });
 
   it("sem modelo de condições aprovado, o PDF avisa em vez de inventar texto jurídico", () => {

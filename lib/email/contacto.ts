@@ -3,10 +3,11 @@ import { textos } from "@/lib/i18n/pt-PT";
 import type { PedidoContactoFase1, PedidoContactoFase2 } from "@/lib/validacao/contacto";
 import { variavelOpcional } from "@/lib/configuracao/ambiente";
 import { DOMINIO, enderecos } from "./enderecos";
-import { emailTimbrado } from "./timbrado";
 import type { Email } from "./enviar";
+import { emailDaMarca } from "./timbrado-marca";
 
-// Modelos dos e-mails do pedido de contacto da landing (D-46, D-50). Só texto simples.
+// Modelos dos e-mails do pedido de contacto da landing (D-46, D-50): os avisos internos em texto
+// simples; a resposta ao visitante timbrada, com a assinatura comercial (D-101, D-184).
 
 const t = textos.contacto;
 // Os leads do site ficam no CRM do Admin (N.3), só no domínio principal.
@@ -78,41 +79,26 @@ export function assinaturaComercial(): string[] {
 export function respostaVisitante(ref: string, p: PedidoContactoFase1): Email {
   const primeiroNome = p.nome.split(/\s+/)[0] ?? p.nome;
   const r = t.respostaVisitante;
-  const assinatura = assinaturaComercial();
   const comercial = enderecos.comercial();
   const { texto: instagramTexto, url: instagramUrl } = textos.marca.instagram;
-  const texto = [
-    r.saudacao(primeiroNome),
-    "",
-    ...r.paragrafos.flatMap((x) => [x, ""]),
-    r.referencia(ref),
-    r.dicaReferencia,
-    "",
-    ...r.paragrafosFinais.flatMap((x) => [x, ""]),
-    r.despedida,
-    "",
-    ...assinatura,
-    "",
-    `${comercial} · Instagram: ${instagramTexto} (${instagramUrl})`,
-  ].join("\n");
-  const html = emailTimbrado({
-    saudacao: r.saudacao(primeiroNome),
-    paragrafos: [...r.paragrafos],
-    destaque: { titulo: r.referencia(ref), nota: r.dicaReferencia },
-    paragrafosFinais: [...r.paragrafosFinais],
-    despedida: r.despedida,
-    assinatura,
-    logoUrl: `https://${DOMINIO}/marca/logo-horizontal-dourado.png`,
-    iconeEmailUrl: `https://${DOMINIO}/marca/icone-email-dourado.png`,
-    iconeInstagramUrl: `https://${DOMINIO}/marca/icone-instagram-dourado.png`,
-    rodape: { email: comercial, instagramTexto, instagramUrl },
-  });
   return {
     de: enderecos.apoio(),
     para: p.email,
     responderPara: comercial,
     assunto: r.assunto(ref),
-    texto,
-    html,
+    ...emailDaMarca(
+      {
+        saudacao: r.saudacao(primeiroNome),
+        corpo: [
+          ...r.paragrafos,
+          { destaque: r.referencia(ref), nota: r.dicaReferencia },
+          ...r.paragrafosFinais,
+        ],
+        despedida: r.despedida,
+        assinatura: assinaturaComercial(),
+      },
+      comercial,
+      `${comercial} · Instagram: ${instagramTexto} (${instagramUrl})`,
+    ),
   };
 }

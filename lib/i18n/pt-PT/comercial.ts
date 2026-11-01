@@ -224,11 +224,11 @@ export const comercial = {
   pdf: {
     marca: "InstaBarber",
     titulo: "Proposta comercial",
+    preparadaPara: (nome: string) => `Preparada para ${nome}`,
     numero: "Número",
     data: "Data",
     validade: "Válida até",
-    validadeDias: (n: number) => `${n} dias a contar do envio`,
-    contacto: "Contacto",
+    validadeDias: (n: number) => `${n} dias após o envio`,
     ouvimos: "O que ouvimos",
     comoMarcam: "Como marcam hoje",
     clientesAtivos: "Clientes ativos (estimativa)",
@@ -249,6 +249,8 @@ export const comercial = {
     taxaMigracao: "Taxa de migração (pagamento único, sem IVA)",
     semIva: "Total sem IVA",
     comIva: "Total com IVA",
+    total: "Total",
+    iva: (taxa: number) => `IVA à taxa de ${taxa} %`,
     ivaIncluido: (valor: string) => `IVA à taxa de 23 % incluído: ${valor}.`,
     isento:
       "Ao preço estipulado não acresce IVA, por se encontrar enquadrado no regime de isenção do Artigo 53.º do CIVA.",
@@ -272,8 +274,8 @@ export const comercial = {
     condicoes: "Condições",
     proximoPasso: "Próximo passo",
     proximoPassoTexto:
-      "Para avançar, responda a aceitar a proposta. Enviamos o contrato e a ligação de adesão.",
-    assinatura: "InstaBarber · Performa LAB",
+      "Para avançar, basta responder a aceitar a proposta. Enviamos-lhe o contrato e a ligação de adesão.",
+    despedida: "Com os melhores cumprimentos,",
     rodape: "Proposta comercial. Não é documento fiscal.",
     pagina: (n: number, total: number) => `Página ${n} de ${total}`,
   },
@@ -327,7 +329,8 @@ export const comercial = {
     daProposta: (numero: string) => `Da proposta ${numero}`,
     pdf: {
       titulo: "Contrato",
-      anexoI: (numero: string) => `Anexo I · Proposta aceite n.º ${numero}`,
+      anexo: "Anexo I",
+      anexoI: (numero: string) => `Proposta aceite n.º ${numero}`,
       anexoIAjuda: "Fotografia da proposta aceite, tal como foi enviada.",
       rodape: "Contrato de prestação de serviços. Não é documento fiscal.",
     },

@@ -8,7 +8,7 @@ import { precoDaBarbearia } from "@/lib/regras/receita";
 import { obterBarbearia } from "@/lib/repositorios/admin/barbearias";
 import { listarRecebimentos } from "@/lib/repositorios/admin/pagamentos";
 import type { ClienteBD } from "@/lib/supabase/tipos";
-import { barbeariaDoDocumento } from "./barbearia";
+import { assinaturaDoApoio, barbeariaDoDocumento } from "./barbearia";
 import { type Ficheiro, pdfGuiaDeArranque } from "./guia";
 import { lerLogo } from "./logo";
 import type { TipoDocumento } from "./tipos";
@@ -25,9 +25,8 @@ export async function documentoDaBarbearia(
   bd: ClienteBD,
   inquilinoId: string,
   tipo: TipoDocumento,
-  userId: string,
 ): Promise<Ficheiro | null> {
-  if (tipo === "guia") return pdfGuiaDeArranque(bd, inquilinoId, userId);
+  if (tipo === "guia") return pdfGuiaDeArranque(bd, inquilinoId);
   const b = await barbeariaDoDocumento(bd, inquilinoId);
   if (!b) return null;
   if (tipo === "resumo") {
@@ -56,6 +55,7 @@ export async function documentoDaBarbearia(
             metodo: r.metodo,
             valorCent: r.valor_centimos,
           })),
+          assinatura: assinaturaDoApoio(),
         }),
       ),
     };
@@ -64,7 +64,14 @@ export async function documentoDaBarbearia(
   if (tipo === "barbeiro")
     return {
       nome: t.barbeiro.nomeFicheiro(b.slug),
-      conteudo: pdf(gerarGuiaBarbeiro({ barbearia: b.nome, logo, barbeiro: b.enderecos.barbeiro })),
+      conteudo: pdf(
+        gerarGuiaBarbeiro({
+          barbearia: b.nome,
+          logo,
+          barbeiro: b.enderecos.barbeiro,
+          assinatura: assinaturaDoApoio(),
+        }),
+      ),
     };
   return {
     nome: t.cartaz.nomeFicheiro(b.slug),

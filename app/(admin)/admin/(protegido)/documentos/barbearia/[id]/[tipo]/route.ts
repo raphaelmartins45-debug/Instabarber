@@ -21,7 +21,6 @@ export async function GET(
     await criarClienteServidor(),
     id,
     tipo as (typeof TIPOS_DOCUMENTO)[number],
-    quem.userId,
   );
   if (!f) return new Response(null, { status: 404 });
   return new Response(new Uint8Array(f.conteudo), {

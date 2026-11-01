@@ -12,7 +12,12 @@ const dados = {
     cliente: "https://judah.instabarber.pt/cliente",
     marcar: "https://judah.instabarber.pt/marcar",
   },
-  assinatura: { nome: "Raphael Martins", funcao: "InstaBarber" },
+  assinatura: {
+    nome: "Apoio ao cliente",
+    cargo: null,
+    telefone: "912 345 678",
+    email: "apoio@instabarber.pt",
+  },
 };
 
 describe("guia de arranque personalizado", () => {
@@ -22,7 +27,8 @@ describe("guia de arranque personalizado", () => {
     const texto = doc.output();
     expect(texto).toContain("judah.instabarber.pt/gestor");
     expect(texto).toContain("judah.instabarber.pt/barbeiro");
-    expect(texto).toContain("Raphael Martins");
+    expect(texto).toContain("Apoio ao cliente");
+    expect(texto).toContain("912 345 678");
     expect(texto).toContain("Judah Barber");
   });
 });

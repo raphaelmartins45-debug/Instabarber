@@ -3,15 +3,24 @@ import { gerarCartaz } from "./cartaz";
 import { gerarGuiaBarbeiro } from "./guia-barbeiro";
 import { gerarResumoConta } from "./resumo-conta";
 
+const apoio = {
+  nome: "Apoio ao cliente",
+  cargo: null,
+  telefone: "912 345 678",
+  email: "apoio@instabarber.pt",
+};
+
 describe("documentos da barbearia", () => {
   it("guia do barbeiro com o endereço /barbeiro", () => {
     const doc = gerarGuiaBarbeiro({
       barbearia: "Judah Barber",
       logo: null,
       barbeiro: "https://judah.instabarber.pt/barbeiro",
+      assinatura: apoio,
     });
     expect(doc.getNumberOfPages()).toBe(3);
     expect(doc.output()).toContain("judah.instabarber.pt/barbeiro");
+    expect(doc.output()).toContain("Apoio ao cliente");
   });
 
   it("cartaz numa página, com o endereço escrito", () => {
@@ -39,6 +48,7 @@ describe("documentos da barbearia", () => {
       estadoPagamento: "em_dia",
       proximoVencimento: "2026-11-27",
       recebimentos: [{ data: "2026-10-27", metodo: "mbway", valorCent: 3999 }],
+      assinatura: apoio,
     });
     const texto = doc.output();
     expect(texto).toContain("documento fiscal");

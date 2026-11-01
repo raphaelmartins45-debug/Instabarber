@@ -1,6 +1,7 @@
 import "server-only";
 import { aplicarCondicoes } from "@/lib/comercial/condicoes";
 import { emFaltaParaProposta } from "@/lib/comercial/briefing";
+import { assinaturaDe } from "@/lib/documentos/barbearia";
 import { montarProposta } from "@/lib/comercial/proposta";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { lerCondicoes } from "@/lib/repositorios/comercial/condicoes";
@@ -22,21 +23,22 @@ export const codigoErro = (mensagem: string) =>
 export async function gerarPropostaDoLead(
   bd: ClienteBD,
   leadId: string,
-  administrador: boolean,
+  quem: { administrador: boolean; userId: string },
 ): Promise<ResultadoProposta> {
   const briefing = await lerBriefing(bd, leadId);
   const falta = emFaltaParaProposta(briefing);
   if (falta.length) return { ok: false, erro: "em_falta", campos: falta };
-  const [catalogo, pacotes, condicoes] = await Promise.all([
+  const [catalogo, pacotes, condicoes, assinatura] = await Promise.all([
     listarFuncionalidades(bd),
     listarPacotes(bd),
     lerCondicoes(bd),
+    assinaturaDe(bd, quem.userId),
   ]);
   // Descontos e taxa de migração (D-161): a base de dados confere outra vez os limites.
   const descontos = aplicarCondicoes(
     { mensalidade: briefing.desconto_mensalidade_pct, taxa: briefing.desconto_taxa_pct },
     condicoes,
-    administrador,
+    quem.administrador,
   );
   if (!descontos.ok) return { ok: false, erro: descontos.erro };
   const proposta = montarProposta(
@@ -46,7 +48,11 @@ export async function gerarPropostaDoLead(
     lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
     descontos,
   );
-  const r = await criarProposta(bd, leadId, proposta);
+  // Quem gera a proposta assina-a; fica na fotografia, para o PDF ser sempre o mesmo (D-184).
+  const r = await criarProposta(bd, leadId, {
+    ...proposta,
+    dados: { ...proposta.dados, assinatura },
+  });
   if ("erro" in r) return { ok: false, erro: codigoErro(r.erro) };
   return { ok: true, id: r.id };
 }
