@@ -44,7 +44,7 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 | `PROGRESSO.md` | Estado real: fases, trabalhos paralelos, pendentes do dono, módulos por ativar |
 | `DECISOES.md` | As decisões (D-01 a D-188), com data. **Prevalece** quando duas regras se contradizem |
 | `docs/esquema/` | Fonte única da base de dados (tabelas, funções, RLS, dados iniciais) e os testes SQL |
-| `supabase/migrations/` | As migrações aplicadas (01 a 17), copiadas do esquema |
+| `supabase/migrations/` | As migrações aplicadas (01 a 20), copiadas do esquema |
 | `fases/` | O plano de cada fase e os critérios (J.1, verificados em `fases/verificacao-j1.md`) |
 | `docs/parte-*.md` | A especificação, uma Parte por ficheiro (índice em `docs/00-indice.md`) |
 | `docs/manual-do-operador.md` | Os procedimentos manuais P-00 a P-30 |
@@ -98,6 +98,7 @@ decisão no `DECISOES.md`.
 | Revisão visual | 31/10/2026 | Sistema de design mais seco, tokens com nome, folha «Mais» e barra que se esconde no telemóvel | — | D-183 |
 | Documentos e e-mails | 01/11/2026 | Logótipos oficiais e capas nos PDFs, assinaturas fixas (comercial e Apoio ao cliente), valor por dia no folheto, e-mails em blocos com botões. Logótipos dos PDFs: `scripts/gerar-logos-pdf.sh` | — | D-184 |
 | Placa do balcão | 01/11/2026 | O gestor escolhe o modelo e os textos e descarrega a placa do QR; letra Inter embutida nos PDFs (`scripts/gerar-letra-pdf.sh`) | — | D-185 |
+| Endurecimento das funções | 01/11/2026 | Avisos de segurança do Supabase lidos pelo conector; EXECUTE do anon retirado a 11 funções; `search_path` fixo em 4 | 20 | D-189 |
 | Equipa: editar e apagar | 01/11/2026 | O dono edita nome, e-mail e telefone de qualquer pessoa da equipa e apaga contas escolhendo para quem vão os leads | — | D-186 |
 | Segurança | 01/11/2026 | Cabeçalhos de segurança, CSV sem fórmulas, limites de tentativas na entrada e na recuperação | — | D-187 |
 | Zod 4 e Resend 6 | 01/11/2026 | Dependências atualizadas com autorização; `z.guid()` em vez de `uuid()`; formulários com entrada e saída | — | D-188 |

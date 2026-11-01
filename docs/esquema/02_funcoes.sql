@@ -82,12 +82,12 @@ $$;
 
 -- Sessões de sistema (migrações, chave de serviço, funções desta base).
 create or replace function public.e_sistema() returns boolean
-language sql stable as $$
+language sql stable set search_path = '' as $$
   select current_user in ('postgres','service_role','supabase_admin')
 $$;
 
 create or replace function public.campos_alterados(p_antes jsonb, p_depois jsonb) returns text[]
-language sql immutable as $$
+language sql immutable set search_path = '' as $$
   select coalesce(array_agg(k), '{}') from jsonb_object_keys(p_depois) k
    where p_antes -> k is distinct from p_depois -> k
 $$;
@@ -262,10 +262,10 @@ create trigger acertos_proteger before update or delete on acertos
 -- -----------------------------------------------------------------------------
 
 create or replace function public.hora_local(p timestamptz) returns timestamp
-language sql immutable as $$ select p at time zone 'Europe/Lisbon' $$;
+language sql immutable set search_path = '' as $$ select p at time zone 'Europe/Lisbon' $$;
 
 create or replace function public.instante_lisboa(p_dia date, p_hora time) returns timestamptz
-language sql immutable as $$ select (p_dia + p_hora) at time zone 'Europe/Lisbon' $$;
+language sql immutable set search_path = '' as $$ select (p_dia + p_hora) at time zone 'Europe/Lisbon' $$;
 
 -- Valida uma vaga. Devolve nulo se é válida, ou o código do motivo.
 -- p_publico = verdadeiro aplica as regras da página pública (aberto, antecedência, janela).
@@ -2633,6 +2633,10 @@ grant execute on function public.fixar_texto_contrato(uuid, text), public.e_dono
   public.e_comercial(), public.meus_leads(),
   public.lead_acessivel(uuid), public.pasta_lead_acessivel(text), public.carteira_comercial(uuid)
   to authenticated;
+-- Estas quatro entram em políticas RLS sem papel (perfis, leads, lead_eventos, storage.objects):
+-- quem consulta tem de as poder executar, tal como e_super_admin(). Sem sessão, não dão acesso a nada.
+grant execute on function public.e_dono_plataforma(), public.e_comercial(), public.meus_leads(),
+  public.pasta_lead_acessivel(text) to anon;
 
 -- Painel comercial (D-162): cada função verifica o papel.
 revoke all on function public.distribuir_leads_comercial() from public, anon, authenticated;

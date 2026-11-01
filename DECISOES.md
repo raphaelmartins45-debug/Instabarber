@@ -1018,3 +1018,12 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Sem mudança:** a chamada `resend.emails.send` (from, to, subject, text, html, replyTo, attachments) é igual na versão 6.
 - **Resultado:** `npm audit --omit=dev` sem vulnerabilidades altas (restam baixas e moderadas em dependências de desenvolvimento e de ferramentas).
 
+
+## D-189 · 01/11/2026 · Endurecimento das funções (avisos do Supabase) — dono e técnica
+- **Pedido do dono:** ler o RLS e os avisos de segurança dos dois projetos pelo conector do Supabase e corrigir o que for preciso.
+- **Lido (ensaio e produção, iguais):** RLS em 66 de 66 tabelas. Avisos: as 8 vistas `publico_*` sem `security_invoker` (de propósito, B11 e D-187); 41 funções `security definer` executáveis pelo anon; 4 funções SQL sem `search_path` fixo; `btree_gist` no esquema `public`; validade dos códigos por e-mail acima de 1 hora; proteção contra palavras-passe expostas desligada.
+- **Causa:** as funções criadas nas migrações 11 a 14 receberam EXECUTE para o anon pelos privilégios por omissão do Supabase, embora o esquema só as desse a authenticated. Todas já recusavam quem não tem papel; não havia acesso indevido.
+- **Corrigido (migração 20, `20261101000020_endurecer_funcoes.sql`):** retirado o EXECUTE ao anon em 11 funções da equipa InstaBarber e dos comunicados. Ficam com o anon, e o esquema passa a dizê-lo, `e_dono_plataforma()`, `e_comercial()`, `meus_leads()` e `pasta_lead_acessivel(text)`: entram em políticas RLS sem papel (perfis, leads, lead_eventos, storage.objects) e, sem elas, as consultas de quem não tem sessão davam erro de permissão. `search_path = ''` em `e_sistema`, `campos_alterados`, `hora_local` e `instante_lisboa`.
+- **Teste novo:** `testes/99b_endurecimento_funcoes.sql`, com uma lista fechada das 30 funções `security definer` que o anon pode executar: uma função nova fica fora até ser acrescentada de propósito.
+- **Verificado:** 681 testes SQL a passar (PostgreSQL 16 com o shim, pelas migrações e pelo `docs/esquema`, com funções, políticas, colunas, restrições e permissões iguais). Aplicada no ensaio pelo conector, com o registo em `schema_migrations`; os avisos do ensaio baixaram para 30 funções do anon e sem o aviso do `search_path`.
+- **Fica de fora:** `btree_gist` continua no `public` (mudá-la pode partir a restrição `sem_sobreposicao`). A validade dos códigos e a proteção das palavras-passe são definições do painel do Supabase, a mudar pelo dono.
