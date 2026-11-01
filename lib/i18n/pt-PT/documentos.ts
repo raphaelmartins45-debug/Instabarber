@@ -21,8 +21,9 @@ export const documentos = {
     barbearia: "Barbearia",
     descarregar: "Descarregar PDF",
     enviarGuia: "Enviar ao proprietário",
-    guiaEnviado: "Guia enviado por e-mail ao proprietário.",
-    guiaNaoEnviado: "Não foi possível enviar. Confirme o e-mail do proprietário e tente outra vez.",
+    guiaEnviado: (email: string) => `Guia enviado para ${email}.`,
+    guiaNaoEnviado:
+      "Não foi possível enviar. Confirme o e-mail da barbearia (ou do proprietário) e tente outra vez.",
     folhetoTitulo: "Folheto da visita",
     folhetoAjuda:
       "Uma página A4 para deixar na barbearia: o que o InstaBarber faz, os preços e os seus contactos (nome, telefone e e-mail do seu registo).",

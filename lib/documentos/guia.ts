@@ -4,6 +4,7 @@ import type { EnderecosBarbearia } from "@/lib/inquilino/encaminhar";
 import { gerarGuiaBarbearia } from "@/lib/pdf/guia-barbearia";
 import type { ClienteBD } from "@/lib/supabase/tipos";
 import { assinaturaDoApoio, barbeariaDoDocumento } from "./barbearia";
+import { destinoDoGuia } from "./destino";
 import { lerLogo } from "./logo";
 
 export type Ficheiro = { nome: string; conteudo: Buffer };
@@ -32,7 +33,7 @@ export async function pdfGuiaDeArranque(
   return {
     nome: textos.documentos.guia.nomeFicheiro(b.slug),
     conteudo: Buffer.from(doc.output("arraybuffer")),
-    para: b.dono?.email ?? null,
+    para: destinoDoGuia(b.email, b.dono?.email),
     barbearia: b.nome,
     responsavel: b.responsavel,
     enderecos: b.enderecos,

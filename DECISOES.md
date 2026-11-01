@@ -1028,3 +1028,8 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Verificado:** 681 testes SQL a passar (PostgreSQL 16 com o shim, pelas migrações e pelo `docs/esquema`, com funções, políticas, colunas, restrições e permissões iguais). Aplicada no ensaio pelo conector, com o registo em `schema_migrations`; os avisos do ensaio baixaram para 30 funções do anon e sem o aviso do `search_path`.
 - **Produção (01/11/2026):** aplicada pelo conector **sem a cópia cifrada prévia**, por decisão do dono (só permissões, sem dados; desfaz-se com um `grant`). Depois: `sem_rls` = 0 em 66 tabelas, 30 funções do anon, `search_path` fixo nas 4, `instabarber.pt` a responder 200.
 - **Fica de fora:** `btree_gist` continua no `public` (mudá-la pode partir a restrição `sem_sobreposicao`). A validade dos códigos e a proteção das palavras-passe são definições do painel do Supabase, a mudar pelo dono.
+
+## D-190 · 01/11/2026 · O guia reenviado vai para o e-mail da barbearia — dono e técnica
+- **Problema do dono:** mudou o e-mail da barbearia de ensaio e o guia de arranque enviado do Gerador de documentos não chegava.
+- **Causa:** o reenvio usava o e-mail da **conta do proprietário** (o de entrada), não o da **ficha da barbearia**; os e-mails dos pagamentos já usavam o da ficha. O ecrã dizia «enviado ao proprietário» sem dizer para onde.
+- **Corrigido:** o guia vai para o e-mail da ficha da barbearia; sem ele, para o da conta do proprietário (`lib/documentos/destino.ts`, com testes). O aviso de sucesso mostra o endereço usado. O convite e as boas-vindas da aprovação continuam a ir para a conta do proprietário (precisam da ligação de entrada).

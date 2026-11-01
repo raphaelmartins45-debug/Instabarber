@@ -52,8 +52,11 @@ export async function propostaRapida(dados: DadosPropostaRapida): Promise<Result
     : { ok: true, leadId, propostaId: null, erro: r.erro, campos: r.campos };
 }
 
-/** Envia outra vez o guia de arranque ao proprietário (assina o Apoio ao cliente, D-184). */
-export async function enviarGuia(inquilinoId: string): Promise<{ ok: boolean }> {
+/**
+ * Envia outra vez o guia de arranque (assina o Apoio ao cliente, D-184) para o e-mail da ficha da
+ * barbearia, ou o do proprietário sem ele (D-190). Devolve o endereço usado, para o ecrã o mostrar.
+ */
+export async function enviarGuia(inquilinoId: string): Promise<{ ok: boolean; para?: string }> {
   await exigirSuperAdmin();
   if (!z.guid().safeParse(inquilinoId).success) return { ok: false };
   const bd = await criarClienteServidor();
@@ -74,7 +77,7 @@ export async function enviarGuia(inquilinoId: string): Promise<{ ok: boolean }> 
       entidade: "inquilinos",
       entidadeId: inquilinoId,
     });
-  return { ok };
+  return { ok, para: guia.para };
 }
 
 /** O telefone de quem está na equipa, para o folheto (vazio apaga). */

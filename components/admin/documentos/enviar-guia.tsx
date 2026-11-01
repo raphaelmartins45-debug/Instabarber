@@ -8,9 +8,9 @@ import { textos } from "@/lib/i18n/pt-PT";
 
 const t = textos.documentos.ecra;
 
-/** Reenvia o guia de arranque ao proprietário por e-mail, com o PDF em anexo (D-181). */
+/** Reenvia o guia de arranque por e-mail, com o PDF em anexo (D-181), e diz para onde foi (D-190). */
 export function EnviarGuia({ inquilinoId }: { inquilinoId: string }) {
-  const [ok, setOk] = useState<boolean>();
+  const [r, setR] = useState<{ ok: boolean; para?: string }>();
   const [aEnviar, iniciar] = useTransition();
   return (
     <div className="grid gap-2">
@@ -19,12 +19,14 @@ export function EnviarGuia({ inquilinoId }: { inquilinoId: string }) {
         size="sm"
         variant="outline"
         disabled={aEnviar}
-        onClick={() => iniciar(async () => setOk((await enviarGuia(inquilinoId)).ok))}
+        onClick={() => iniciar(async () => setR(await enviarGuia(inquilinoId)))}
       >
         {t.enviarGuia}
       </Button>
-      {ok === undefined ? null : (
-        <Aviso tipo={ok ? "sucesso" : "erro"}>{ok ? t.guiaEnviado : t.guiaNaoEnviado}</Aviso>
+      {r === undefined ? null : (
+        <Aviso tipo={r.ok ? "sucesso" : "erro"}>
+          {r.ok ? t.guiaEnviado(r.para ?? "") : t.guiaNaoEnviado}
+        </Aviso>
       )}
     </div>
   );

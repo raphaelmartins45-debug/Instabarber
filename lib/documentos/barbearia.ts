@@ -16,6 +16,8 @@ export type BarbeariaDoDocumento = {
   nome: string;
   slug: string;
   cidade: string | null;
+  /** O e-mail da ficha da barbearia (contacto), que pode ser diferente do da conta do dono. */
+  email: string | null;
   responsavel: string;
   cor: string | null;
   logoUrl: string | null;
@@ -35,6 +37,7 @@ export async function barbeariaDoDocumento(
     nome: b.nome,
     slug: b.slug,
     cidade: b.cidade,
+    email: b.email,
     responsavel: b.responsavel || dono?.nome || b.nome,
     cor: b.capa_cor,
     logoUrl: b.logo_url,
