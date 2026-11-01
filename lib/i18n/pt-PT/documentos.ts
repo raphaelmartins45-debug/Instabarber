@@ -113,13 +113,12 @@ export const documentos = {
   },
   guia: {
     nomeFicheiro: (slug: string) => `InstaBarber-guia-${slug}.pdf`,
-    marca: "InstaBarber · Guia de arranque",
+    marca: "Guia de arranque",
     seccoes: ["Bem-vindo", "Os acessos", "Painel de gestão", "Barbeiros e clientes"],
     capaSobre: "Bem-vindo à InstaBarber",
     capaTexto:
       "O seu guia de arranque: os endereços da sua barbearia, como entra cada pessoa e o que fazer nos primeiros dias.",
     rodapeCapa: "instabarber.pt",
-    rodapeMarca: "InstaBarber · Performa LAB",
     rodape: (barbearia: string) => `InstaBarber · Guia de arranque · ${barbearia}`,
     boasVindas: {
       titulo: (responsavel: string) => `Olá, ${responsavel}.`,
@@ -241,7 +240,7 @@ export const documentos = {
   },
   barbeiro: {
     nomeFicheiro: (slug: string) => `InstaBarber-guia-do-barbeiro-${slug}.pdf`,
-    marca: "InstaBarber · Guia do barbeiro",
+    marca: "Guia do barbeiro",
     seccoes: ["O seu painel", "O dia a dia"],
     capaSobre: "Guia do barbeiro",
     capaTexto: "Como entra no seu painel e o que encontra lá, do telemóvel ou do computador.",
@@ -298,7 +297,6 @@ export const documentos = {
   },
   resumo: {
     nomeFicheiro: (slug: string) => `InstaBarber-resumo-da-conta-${slug}.pdf`,
-    marca: "InstaBarber",
     titulo: "Resumo da conta",
     planoTitulo: "Plano",
     plano: "Plano",
@@ -321,7 +319,6 @@ export const documentos = {
   },
   folheto: {
     nomeFicheiro: "InstaBarber-folheto.pdf",
-    marca: "InstaBarber",
     titulo: "Tudo o que a barbearia precisa, reunido num só sistema.",
     subtitulo: "Sem pagar por cada serviço. No computador e no telemóvel.",
     funcionalidades: [
@@ -336,6 +333,8 @@ export const documentos = {
     plano: (nome: string, barbeiros: string) => `${nome} · ${barbeiros}`,
     barbeiros: { basic: "1 barbeiro", pro: "3 barbeiros incluídos" } as Record<string, string>,
     porMes: "por mês",
+    porDia: "por dia",
+    mensal: (valor: string) => `${valor} por mês`,
     anual: (valor: string) => `ou ${valor} por ano (dois meses grátis)`,
     extra: (valor: string) => `Pro: cada barbeiro a mais, ${valor} por mês.`,
     iva: { isento: "Ao preço não acresce IVA.", normal: "IVA incluído." } as Record<string, string>,

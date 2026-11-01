@@ -4,11 +4,15 @@ import {
   CINZA_ESCURO as SEC,
   type Cor,
   criarDocumento,
+  desenharLogo,
+  rotuloEspacado,
   DOURADO,
   FUNDO,
   LINHA_FORTE as BORDA,
   OURO_TEXTO,
 } from "./estilo";
+
+import { LOGO_PRETO } from "./logos-marca";
 
 export { FUNDO, OURO_TEXTO } from "./estilo";
 
@@ -41,9 +45,14 @@ export function criarGuia(o: { marca: string; seccao: (n: number) => string }) {
     doc.addPage();
     pagina += 1;
     tituloAtual = titulo;
-    fonte(8, "bold", OURO_TEXTO).text(o.marca.toUpperCase(), M, 16);
-    fonte(8, "bold", TER).text(o.seccao(pagina).toUpperCase(), L - M, 16, { align: "right" });
-    y = 30;
+    desenharLogo(doc, LOGO_PRETO, M, 10, 6.5);
+    fonte(7.5, "bold", TER);
+    rotuloEspacado(doc, `${o.marca} · ${o.seccao(pagina)}`, L - M, 14.6, "right");
+    doc
+      .setDrawColor(...BORDA)
+      .setLineWidth(0.25)
+      .line(M, 20.5, L - M, 20.5);
+    y = 34;
     fonte(20, "bold");
     const linhas = quebrar(titulo, util);
     doc.text(linhas, M, y);

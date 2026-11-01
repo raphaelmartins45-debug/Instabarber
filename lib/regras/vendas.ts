@@ -49,6 +49,11 @@ export function simularPreco(
   };
 }
 
+/** O preço mensal em euros por dia (12 meses em 365 dias), para o mostrar em destaque (D-184). */
+export function valorPorDiaCent(mensalCent: number): number {
+  return Math.round((mensalCent * 12) / 365);
+}
+
 /**
  * O que os clientes que deixaram de vir podem valer: perdidos × visita × 0,4 (F.1, N.4). A
  * única fórmula: o briefing (`valorParaSiCent`) e a calculadora da visita usam esta.

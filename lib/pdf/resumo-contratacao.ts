@@ -27,7 +27,7 @@ export type DadosResumo = {
 };
 
 export function gerarResumoContratacao(d: DadosResumo): jsPDF {
-  const f = criarFolha({ marca: textos.marca.nome, titulo: t.titulo, cor: DOURADO });
+  const f = criarFolha({ titulo: t.titulo, cor: DOURADO });
   f.subtitulo(d.contratante);
   f.meta([
     [t.data, d.data],

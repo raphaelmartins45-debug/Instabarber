@@ -1,4 +1,14 @@
-import { AMARELO_CLARO, CINZA, type Cor, DOURADO, LINHA, LINHA_FORTE, TINTA } from "./estilo";
+import {
+  AMARELO_CLARO,
+  CINZA,
+  CINZA_ESCURO,
+  type Cor,
+  DOURADO,
+  LINHA,
+  LINHA_FORTE,
+  rotuloEspacado,
+  TINTA,
+} from "./estilo";
 import type { FolhaBase } from "./folha";
 
 // Os blocos da folha dos documentos de gestão (D-184): listas, passos, notas, tabelas e barras.
@@ -116,4 +126,40 @@ export function desenharBarras(f: FolhaBase, cor: Cor, valores: Barra[]) {
     );
   });
   f.y = y + alturaMax + 10;
+}
+
+/** Rótulo pequeno por cima do título do documento. */
+export function desenharSobretitulo(f: FolhaBase, texto: string) {
+  f.fonte(8, "bold", CINZA);
+  rotuloEspacado(f.doc, texto, f.M, f.y);
+  f.y += 7;
+}
+
+/** Linha de apoio por baixo do título («Preparada para…»). */
+export function desenharLead(f: FolhaBase, texto: string) {
+  f.fonte(11, "normal", CINZA_ESCURO);
+  const linhas = f.quebrar(texto, f.util);
+  f.doc.text(linhas, f.M, f.y);
+  f.y += linhas.length * 5.4 + 3;
+}
+
+/** Dados de capa em colunas: rótulo pequeno e valor (número, data, validade). */
+export function desenharMeta(f: FolhaBase, pares: [string, string][]) {
+  const { doc, M, L, util, fonte, quebrar } = f;
+  f.espaco(16);
+  f.y += 3;
+  doc
+    .setDrawColor(...LINHA)
+    .setLineWidth(0.25)
+    .line(M, f.y - 5, L - M, f.y - 5);
+  const w = util / pares.length;
+  pares.forEach(([rotulo, valor], i) => {
+    const x = M + i * w;
+    fonte(7.5, "bold", CINZA);
+    rotuloEspacado(doc, rotulo, x, f.y, "left", 0.3);
+    fonte(10.5, "bold").text(quebrar(valor, w - 4), x, f.y + 5.5);
+  });
+  f.y += 12;
+  doc.line(M, f.y - 3, L - M, f.y - 3);
+  f.y += 4;
 }

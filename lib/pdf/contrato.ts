@@ -92,7 +92,7 @@ function assinaturas(f: Folha, linhas: string[][]) {
 }
 
 export function gerarPdfContrato(d: DadosPdfContrato) {
-  const f = criarFolha({ marca: p.marca, titulo: t.titulo, cor: DOURADO });
+  const f = criarFolha({ titulo: t.titulo, cor: DOURADO });
   for (const b of blocosDoTexto(d.texto)) {
     if (b.tipo === "tabela") {
       if (b.linhas.some((l) => l.some((c) => TRACO.test(c)))) assinaturas(f, b.linhas);

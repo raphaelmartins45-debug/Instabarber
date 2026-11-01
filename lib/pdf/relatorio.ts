@@ -29,7 +29,7 @@ export function gerarRelatorioPdf(
   r: RelatorioMes,
   o: { barbearia: string; titulo: string; cor: string; mensagens: boolean },
 ): ArrayBuffer {
-  const f = criarFolha({ marca: t.pdf.marca, titulo: t.pdf.de(o.titulo), cor: corDeHex(o.cor) });
+  const f = criarFolha({ titulo: t.pdf.de(o.titulo), cor: corDeHex(o.cor) });
   f.subtitulo(`${o.barbearia} · ${mesPorExtenso(r.mes)}`);
   let n = 0;
   const bloco = (nome: string) => f.titulo(`${++n}. ${nome}`);

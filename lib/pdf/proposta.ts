@@ -5,6 +5,7 @@ import { centimosDeNumeric, formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { formatarNumero } from "@/lib/formatacao/numeros";
 import { textos } from "@/lib/i18n/pt-PT";
 import { criarFolha, DOURADO } from "./folha";
+import { capaEscura } from "./folha-capa";
 
 // PDF da proposta (N.5): A4, papel timbrado da InstaBarber, as dez secções e «Não é documento
 // fiscal» no rodapé. Gera-se da fotografia guardada em propostas.dados, por isso é sempre o
@@ -59,20 +60,25 @@ const linhasDoModelo = (md: string) =>
     .filter((l) => l && !l.startsWith("#"));
 
 export function gerarPdfProposta(d: DadosPdfProposta) {
-  const f = criarFolha({ marca: t.marca, titulo: t.titulo, cor: DOURADO });
+  const f = criarFolha({ titulo: t.titulo, cor: DOURADO, numerar: true });
   const br = d.dados.briefing;
 
-  // 1 · Capa (o tipo de documento já está no cabeçalho)
-  f.subtitulo(br.nome_comercial || br.firma);
-  if (d.destinatario) f.lead(t.preparadaPara(d.destinatario));
-  f.meta([
-    [t.numero, `${d.numero} · ${textos.comercial.propostas.versao(d.versao)}`],
-    [t.data, dataCurta(d.criadaEm)],
-    [
-      t.validade,
-      d.validaAte ? dataCurta(`${d.validaAte}T12:00:00Z`) : t.validadeDias(d.validadeDias),
+  // 1 · Capa escura com o logótipo, o título, os dados e quem assina
+  capaEscura(f, {
+    rotulo: t.titulo,
+    titulo: br.nome_comercial || br.firma,
+    lead: d.destinatario ? t.preparadaPara(d.destinatario) : null,
+    meta: [
+      [t.numero, `${d.numero} · ${textos.comercial.propostas.versao(d.versao)}`],
+      [t.data, dataCurta(d.criadaEm)],
+      [
+        t.validade,
+        d.validaAte ? dataCurta(`${d.validaAte}T12:00:00Z`) : t.validadeDias(d.validadeDias),
+      ],
     ],
-  ]);
+    assinatura: d.assinatura,
+    site: t.site,
+  });
 
   // 2 · O que ouvimos
   f.titulo(t.ouvimos);

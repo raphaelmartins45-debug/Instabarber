@@ -27,7 +27,7 @@ export type DadosResumoConta = {
 };
 
 export function gerarResumoConta(d: DadosResumoConta) {
-  const f = criarFolha({ marca: t.marca, titulo: t.titulo, cor: DOURADO });
+  const f = criarFolha({ titulo: t.titulo, cor: DOURADO });
   f.subtitulo(d.barbearia);
   f.titulo(t.planoTitulo);
   f.linha(t.plano, a.planos[d.plano as keyof typeof a.planos] ?? d.plano);

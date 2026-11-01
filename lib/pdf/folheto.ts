@@ -3,15 +3,16 @@ import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { EXTRA_CENT, type RegimeIva } from "@/lib/regras/mensalidade";
 import { codigoQr } from "@/lib/regras/qr";
-import { simularPreco } from "@/lib/regras/vendas";
+import { simularPreco, valorPorDiaCent } from "@/lib/regras/vendas";
+import { LOGO_DOURADO } from "./logos-marca";
 import {
   AMARELO_CLARO,
   CINZA_ESCURO as CINZA,
   criarDocumento,
   DOURADO,
   desenharAssinatura,
+  desenharLogo,
   FUNDO,
-  LINHA_FORTE,
   OURO_TEXTO,
   rotuloEspacado,
 } from "./estilo";
@@ -35,7 +36,7 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
 
   // Cabeça escura com a marca e a promessa.
   doc.setFillColor(...FUNDO).rect(0, 0, L, 74, "F");
-  fonte(14, "bold", DOURADO).text(t.marca, M, 18);
+  desenharLogo(doc, LOGO_DOURADO, M, 11, 12);
   fonte(23, "bold", [0xf4, 0xf4, 0xf5]);
   const titulo = doc.splitTextToSize(t.titulo, L - 2 * M) as string[];
   doc.text(titulo, M, 36);
@@ -64,22 +65,30 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
   (["basic", "pro"] as const).forEach((plano, i) => {
     const s = simularPreco(plano, 0, false, d.regime);
     const x = M + i * (largura + 8);
+    // O valor por dia em destaque, que é o que fica na cabeça; o mensal e o anual por baixo.
+    const destaque = plano === "pro";
     doc
-      .setDrawColor(...LINHA_FORTE)
-      .setLineWidth(0.3)
-      .roundedRect(x, y, largura, 30, 2, 2, "S");
-    fonte(10, "bold", FUNDO).text(
+      .setFillColor(...(destaque ? FUNDO : AMARELO_CLARO))
+      .roundedRect(x, y, largura, 40, 2, 2, "F");
+    fonte(10, "bold", destaque ? DOURADO : FUNDO).text(
       t.plano(textos.vendas.simulador.planos[plano], t.barbeiros[plano]!),
-      x + 5,
-      y + 8,
+      x + 6,
+      y + 9,
     );
-    const preco = formatarDinheiro(s.mensalCent);
-    fonte(20, "bold", FUNDO).text(preco, x + 5, y + 19);
-    const larguraPreco = doc.getTextWidth(preco);
-    fonte(9, "normal", CINZA).text(t.porMes, x + 7 + larguraPreco, y + 19);
-    fonte(8.5, "normal", CINZA).text(t.anual(formatarDinheiro(s.anualCent)), x + 5, y + 26);
+    const dia = formatarDinheiro(valorPorDiaCent(s.mensalCent));
+    fonte(30, "bold", destaque ? DOURADO : FUNDO).text(dia, x + 6, y + 23);
+    fonte(11, "bold", destaque ? [0xf4, 0xf4, 0xf5] : FUNDO).text(
+      t.porDia,
+      x + 8 + doc.setFontSize(30).getTextWidth(dia),
+      y + 23,
+    );
+    fonte(9, "normal", destaque ? [0xa1, 0xa1, 0xaa] : CINZA).text(
+      [t.mensal(formatarDinheiro(s.mensalCent)), t.anual(formatarDinheiro(s.anualCent))],
+      x + 6,
+      y + 30,
+    );
   });
-  y += 37;
+  y += 47;
   fonte(9, "normal", CINZA).text(
     `${t.extra(formatarDinheiro(EXTRA_CENT.pro))} ${t.iva[d.regime]}`,
     M,

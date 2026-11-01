@@ -47,11 +47,12 @@ const base = {
 };
 
 describe("PDF da proposta (N.5)", () => {
-  it("rodapé «Não é documento fiscal» em todas as páginas, preço com IVA e desafio", () => {
+  it("capa sem rodapé; «Não é documento fiscal» em todas as outras páginas e desafio", () => {
     const doc = gerarPdfProposta({ ...base, condicoes: "# Condições\n\n1. Não há fidelização." });
     const paginas = doc.getNumberOfPages();
     const pdf = doc.output();
-    expect(pdf.split("documento fiscal").length - 1).toBe(paginas);
+    // A capa não leva rodapé; as outras páginas levam.
+    expect(pdf.split("documento fiscal").length - 1).toBe(paginas - 1);
     expect(pdf).toContain("PRP-2026-0001");
     expect(pdf).toContain("Desafio de 90 dias");
     expect(pdf).toContain("Não há fidelização");

@@ -24,7 +24,7 @@ export function gerarGuiaBarbeiro(d: {
     sobre: t.capaSobre,
     titulo: d.barbearia,
     texto: t.capaTexto,
-    rodape: [textos.documentos.guia.rodapeCapa, textos.documentos.guia.rodapeMarca],
+    site: textos.documentos.guia.rodapeCapa,
   });
 
   const p = t.painel;

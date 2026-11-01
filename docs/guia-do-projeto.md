@@ -96,7 +96,7 @@ decisão no `DECISOES.md`.
 | Contrato por e-mail | 27/10/2026 | O cliente carrega o contrato assinado por ligação segura; conferir, agradecer e adesão; folheto da visita | 19 | D-181 |
 | Apoio às vendas em módulos | 31/10/2026 | Visão geral por fases e um módulo por página, com o acabamento das skills de Emil Kowalski | — | D-182 |
 | Revisão visual | 31/10/2026 | Sistema de design mais seco, tokens com nome, folha «Mais» e barra que se esconde no telemóvel | — | D-183 |
-| Documentos e e-mails | 01/11/2026 | Estilo comum dos PDFs, assinaturas fixas (comercial e Apoio ao cliente), e-mails em blocos com botões | — | D-184 |
+| Documentos e e-mails | 01/11/2026 | Logótipos oficiais e capas nos PDFs, assinaturas fixas (comercial e Apoio ao cliente), valor por dia no folheto, e-mails em blocos com botões. Logótipos dos PDFs: `scripts/gerar-logos-pdf.sh` | — | D-184 |
 
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.

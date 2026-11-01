@@ -31,7 +31,7 @@ export function gerarGuiaBarbearia(d: DadosGuia) {
     sobre: t.capaSobre,
     titulo: d.barbearia,
     texto: t.capaTexto,
-    rodape: [t.rodapeCapa, t.rodapeMarca],
+    site: textos.documentos.guia.rodapeCapa,
   });
 
   // 1 · Boas-vindas e primeiros passos

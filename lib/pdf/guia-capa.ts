@@ -1,14 +1,21 @@
 import type { Assinatura } from "@/lib/documentos/assinatura";
-import { ALTURA_ASSINATURA, CINZA_ESCURO, DOURADO, desenharAssinatura, FUNDO } from "./estilo";
+import {
+  ALTURA_ASSINATURA,
+  CINZA_ESCURO,
+  DOURADO,
+  desenharAssinatura,
+  desenharLogo,
+  FUNDO,
+} from "./estilo";
 import type { Guia, Imagem } from "./guia-primitivas";
+import { LOGO_DOURADO } from "./logos-marca";
 
 // Capa e assinatura dos guias personalizados (D-181, D-184).
 
-/** Texto secundário e terciário sobre o fundo escuro (`--texto-2` e `--texto-3` do escuro). */
+/** Texto secundário sobre o fundo escuro (`--texto-2` do modo escuro). */
 const CINZA_CLARO: [number, number, number] = [0xa1, 0xa1, 0xaa];
-const TER: [number, number, number] = [0x8b, 0x8b, 0x94];
 
-/** Capa escura: logótipo (ou a inicial), título, nome da barbearia e o rodapé da marca. */
+/** Capa escura: o logótipo da barbearia (ou a inicial), o título e o logótipo da InstaBarber. */
 export function capa(
   g: Guia,
   o: {
@@ -17,22 +24,28 @@ export function capa(
     sobre: string;
     titulo: string;
     texto: string;
-    rodape: [string, string];
+    site: string;
   },
 ) {
   const { doc, L, A, fonte } = g;
   doc.setFillColor(...FUNDO).rect(0, 0, L, A, "F");
+  doc.setFillColor(...DOURADO).rect(0, 0, L, 2, "F");
+  // O logótipo da barbearia num quadro branco, para se ler sempre sobre a capa escura.
+  doc.setFillColor(255, 255, 255).roundedRect(20, 36, 62, 62, 4, 4, "F");
+  let comLogo = false;
   if (o.logo) {
     try {
-      doc.addImage(o.logo.dados, o.logo.formato, 20, 26, 42, 42, undefined, "FAST");
+      // Cabe no quadro de 52 mm sem deformar.
+      const { width, height } = doc.getImageProperties(o.logo.dados);
+      const escala = 52 / Math.max(width, height);
+      const [w, h] = [width * escala, height * escala];
+      doc.addImage(o.logo.dados, o.logo.formato, 51 - w / 2, 67 - h / 2, w, h, undefined, "FAST");
+      comLogo = true;
     } catch {
-      o.logo = null;
+      comLogo = false;
     }
   }
-  if (!o.logo) {
-    doc.setFillColor(0x27, 0x27, 0x2a).circle(41, 47, 21, "F");
-    fonte(30, "bold", DOURADO).text(o.inicial, 41, 57.5, { align: "center" });
-  }
+  if (!comLogo) fonte(40, "bold", FUNDO).text(o.inicial, 51, 75, { align: "center" });
   doc.setFillColor(...DOURADO).roundedRect(20, 168, 34, 1.4, 0.7, 0.7, "F");
   fonte(12, "normal", CINZA_CLARO).text(o.sobre, 20, 182);
   fonte(30, "bold", [0xf4, 0xf4, 0xf5]);
@@ -40,8 +53,8 @@ export function capa(
   doc.text(titulo, 20, 196);
   const yTexto = 196 + titulo.length * 12;
   fonte(12.5, "normal", CINZA_CLARO).text(g.quebrar(o.texto, 130), 20, yTexto);
-  fonte(9, "normal", TER).text(o.rodape[0], 20, A - 20);
-  doc.text(o.rodape[1], L - 20, A - 20, { align: "right" });
+  desenharLogo(doc, LOGO_DOURADO, 20, A - 30, 11);
+  fonte(10, "bold", DOURADO).text(o.site, L - 20, A - 22, { align: "right" });
 }
 
 /** Assinatura no fim (D-184): nos manuais, «Apoio ao cliente», com o WhatsApp e o e-mail. */

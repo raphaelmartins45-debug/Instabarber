@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  valorPorDiaCent,
   contaPerdas,
   decomporMensalidade,
   profissionaisDoPlano,
@@ -74,5 +75,13 @@ describe("decomposição da mensalidade", () => {
     const l = decomporMensalidade("basic", 1, false, "normal");
     expect(l.map((x) => x.tipo)).toEqual(["base", "iva"]);
     expect(soma(l)).toBe(simularPreco("basic", 1, false, "normal").mensalCent);
+  });
+});
+
+describe("valorPorDiaCent (D-184)", () => {
+  it("o mensal em 12 meses a dividir por 365 dias, ao cêntimo", () => {
+    expect(valorPorDiaCent(1999)).toBe(66);
+    expect(valorPorDiaCent(3999)).toBe(131);
+    expect(valorPorDiaCent(0)).toBe(0);
   });
 });

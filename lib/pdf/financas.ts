@@ -10,7 +10,7 @@ export function gerarPdfFinancas(
   cabecalho: string[],
   seccoes: { titulo: string; linhas: Record<string, unknown>[] }[],
 ) {
-  const f = criarFolha({ marca: textos.marca.nome, titulo: textos.financas.titulo, cor: DOURADO });
+  const f = criarFolha({ titulo: textos.financas.titulo, cor: DOURADO });
   f.subtitulo(cabecalho[0]!);
   cabecalho.slice(1).forEach((l) => f.legal(l));
   for (const s of seccoes) {

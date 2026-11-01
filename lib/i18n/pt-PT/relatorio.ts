@@ -105,7 +105,6 @@ export const relatorio = {
       `Está a ${percentagem} % do objetivo. Faltam ${valor} por dia nos ${dias} dias que restam.`,
   },
   pdf: {
-    marca: "Performa LAB",
     de: (nome: string) => `Relatório de ${nome}`,
     pagina: (n: number, total: number) => `Página ${n} de ${total}`,
   },

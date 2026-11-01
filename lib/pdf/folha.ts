@@ -6,7 +6,10 @@ import {
   type Cor,
   criarDocumento,
   desenharAssinatura,
+  desenharLogo,
+  DOURADO,
   LINHA,
+  OURO_TEXTO,
   REALCE,
   rotuloEspacado,
   TINTA,
@@ -14,11 +17,15 @@ import {
 import {
   type Barra,
   desenharBarras,
+  desenharLead,
+  desenharMeta,
+  desenharSobretitulo,
   desenharLista,
   desenharNota,
   desenharPassos,
   desenharTabela,
 } from "./folha-blocos";
+import { LOGO_PRETO } from "./logos-marca";
 
 export { type Cor, corDeHex, DOURADO } from "./estilo";
 
@@ -28,7 +35,7 @@ export { type Cor, corDeHex, DOURADO } from "./estilo";
 
 const M = 20;
 
-export function criarFolha(o: { marca: string; titulo: string; cor: Cor }) {
+export function criarFolha(o: { titulo: string; cor: Cor; numerar?: boolean }) {
   const doc = criarDocumento();
   const L = doc.internal.pageSize.getWidth();
   const A = doc.internal.pageSize.getHeight();
@@ -45,14 +52,14 @@ export function criarFolha(o: { marca: string; titulo: string; cor: Cor }) {
 
   const cabecalho = () => {
     doc.setFillColor(...o.cor).rect(0, 0, L, 1.6, "F");
-    fonte(12, "bold").text(o.marca, M, 15);
+    desenharLogo(doc, LOGO_PRETO, M, 9.5, 7.5);
     fonte(7.5, "bold", CINZA);
-    rotuloEspacado(doc, o.titulo, L - M, 15, "right");
+    rotuloEspacado(doc, o.titulo, L - M, 14.6, "right");
     doc
       .setDrawColor(...LINHA)
       .setLineWidth(0.25)
-      .line(M, 20, L - M, 20);
-    y = 32;
+      .line(M, 21, L - M, 21);
+    y = 33;
   };
   const novaPagina = () => {
     doc.addPage();
@@ -63,12 +70,6 @@ export function criarFolha(o: { marca: string; titulo: string; cor: Cor }) {
     if (y + mm > A - 24) novaPagina();
   };
 
-  /** Rótulo pequeno por cima do título do documento. */
-  const sobretitulo = (texto: string) => {
-    fonte(8, "bold", CINZA);
-    rotuloEspacado(doc, texto, M, y);
-    y += 7;
-  };
   /** O título do documento (primeira página). */
   const subtitulo = (texto: string) => {
     fonte(20, "bold");
@@ -77,38 +78,17 @@ export function criarFolha(o: { marca: string; titulo: string; cor: Cor }) {
     doc.text(linhas, M, y);
     y += linhas.length * 8 + 2;
   };
-  /** Linha de apoio por baixo do título («Preparada para…»). */
-  const lead = (texto: string) => {
-    fonte(11, "normal", CINZA_ESCURO);
-    const linhas = quebrar(texto, util);
-    doc.text(linhas, M, y);
-    y += linhas.length * 5.4 + 3;
-  };
-  /** Dados de capa em colunas: rótulo pequeno e valor (número, data, validade). */
-  const meta = (pares: [string, string][]) => {
-    espaco(16);
-    y += 3;
-    doc
-      .setDrawColor(...LINHA)
-      .setLineWidth(0.25)
-      .line(M, y - 5, L - M, y - 5);
-    const w = util / pares.length;
-    pares.forEach(([rotulo, valor], i) => {
-      const x = M + i * w;
-      fonte(7.5, "bold", CINZA);
-      rotuloEspacado(doc, rotulo, x, y, "left", 0.3);
-      fonte(10.5, "bold").text(quebrar(valor, w - 4), x, y + 5.5);
-    });
-    y += 12;
-    doc.line(M, y - 3, L - M, y - 3);
-    y += 4;
-  };
-  /** Título de secção; `manter` é o espaço que o conteúdo a seguir precisa na mesma página. */
+  let seccao = 0;
+  /** Título de secção, com o número a dourado quando a folha numera (`numerar`). */
   const titulo = (texto: string, manter = 18) => {
     espaco(manter);
-    y += 5;
-    fonte(12.5, "bold").text(texto, M, y);
-    y += 6.5;
+    y += 6;
+    if (o.numerar) {
+      fonte(12.5, "bold", OURO_TEXTO).text(String(++seccao).padStart(2, "0"), M, y);
+      fonte(13, "bold").text(texto, M + 10, y);
+    } else fonte(13, "bold").text(texto, M, y);
+    doc.setFillColor(...DOURADO).rect(M, y + 2.2, 8, 0.7, "F");
+    y += 9;
   };
   const subtituloSeccao = (texto: string) => {
     espaco(12);
@@ -160,16 +140,25 @@ export function criarFolha(o: { marca: string; titulo: string; cor: Cor }) {
     }
     y = desenharAssinatura(doc, M, y, a) + 2;
   };
+  let comCapa = false;
+  /** A página 1 passa a ser uma capa (folha-capa.ts): sem cabeçalho nem rodapé, fora da contagem. */
+  const capa = (desenhar: () => void) => {
+    comCapa = true;
+    doc.setFillColor(255, 255, 255).rect(0, 0, L, A, "F");
+    desenhar();
+    novaPagina();
+  };
   const fechar = (rodape: string, pagina: (n: number, total: number) => string) => {
-    const total = doc.getNumberOfPages();
-    for (let n = 1; n <= total; n++) {
+    const inicio = comCapa ? 2 : 1;
+    const total = doc.getNumberOfPages() - inicio + 1;
+    for (let n = inicio; n <= doc.getNumberOfPages(); n++) {
       doc.setPage(n);
       doc
         .setDrawColor(...LINHA)
         .setLineWidth(0.25)
         .line(M, A - 16, L - M, A - 16);
       fonte(7.5, "normal", CINZA).text(rodape, M, A - 10.5);
-      doc.text(pagina(n, total), L - M, A - 10.5, { align: "right" });
+      doc.text(pagina(n - inicio + 1, total), L - M, A - 10.5, { align: "right" });
     }
     return doc;
   };
@@ -177,8 +166,8 @@ export function criarFolha(o: { marca: string; titulo: string; cor: Cor }) {
   cabecalho();
   // prettier-ignore
   const folha = {
-    doc, L, A, M, util, fonte, quebrar, novaPagina, espaco, sobretitulo, subtitulo, lead, meta,
-    titulo, subtituloSeccao, linha, total, paragrafo, legal, assinatura, fechar,
+    doc, L, A, M, util, fonte, quebrar, novaPagina, espaco, subtitulo,
+    titulo, subtituloSeccao, linha, total, paragrafo, legal, assinatura, capa, fechar,
     get y() {
       return y;
     },
@@ -187,6 +176,9 @@ export function criarFolha(o: { marca: string; titulo: string; cor: Cor }) {
     },
   };
   return Object.assign(folha, {
+    sobretitulo: (texto: string) => desenharSobretitulo(folha, texto),
+    lead: (texto: string) => desenharLead(folha, texto),
+    meta: (pares: [string, string][]) => desenharMeta(folha, pares),
     lista: (itens: string[], colunas: 1 | 2 = 1) => desenharLista(folha, itens, colunas),
     passos: (itens: string[]) => desenharPassos(folha, itens),
     nota: (texto: string) => desenharNota(folha, texto),
@@ -195,5 +187,8 @@ export function criarFolha(o: { marca: string; titulo: string; cor: Cor }) {
   });
 }
 
-export type FolhaBase = Omit<Folha, "lista" | "passos" | "nota" | "tabela" | "barras">;
+export type FolhaBase = Omit<
+  Folha,
+  "sobretitulo" | "lead" | "meta" | "lista" | "passos" | "nota" | "tabela" | "barras"
+>;
 export type Folha = ReturnType<typeof criarFolha>;

@@ -89,20 +89,40 @@ export const ALTURA_ASSINATURA = 6 + 3 * 4.6;
  * A assinatura (D-184): o nome a preto e negrito; por baixo, sem negrito e em cinzento-escuro,
  * o cargo, o WhatsApp e o e-mail. Devolve o y a seguir à última linha.
  */
-export function desenharAssinatura(doc: jsPDF, x: number, y: number, a: Assinatura): number {
+export function desenharAssinatura(
+  doc: jsPDF,
+  x: number,
+  y: number,
+  a: Assinatura,
+  cores: { nome: Cor; linhas: Cor } = { nome: TINTA, linhas: CINZA_ESCURO },
+): number {
   doc
     .setFont("helvetica", "bold")
     .setFontSize(11)
-    .setTextColor(...TINTA)
+    .setTextColor(...cores.nome)
     .text(a.nome, x, y);
   let yy = y + 5.4;
   doc
     .setFont("helvetica", "normal")
     .setFontSize(9.5)
-    .setTextColor(...CINZA_ESCURO);
+    .setTextColor(...cores.linhas);
   for (const linha of linhasDaAssinatura(a)) {
     doc.text(linha, x, yy);
     yy += 4.6;
   }
   return yy;
+}
+
+/** Um logótipo oficial da InstaBarber (gerado em logos-marca.ts), com a altura em mm. */
+export function desenharLogo(
+  doc: jsPDF,
+  logo: { proporcao: number; dados: string },
+  x: number,
+  y: number,
+  altura: number,
+  alinhamento: "left" | "right" | "center" = "left",
+) {
+  const largura = altura * logo.proporcao;
+  const x0 = alinhamento === "right" ? x - largura : alinhamento === "center" ? x - largura / 2 : x;
+  doc.addImage(logo.dados, "PNG", x0, y, largura, altura, undefined, "FAST");
 }

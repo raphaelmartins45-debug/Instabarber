@@ -222,9 +222,9 @@ export const comercial = {
     } as Record<string, string>,
   },
   pdf: {
-    marca: "InstaBarber",
     titulo: "Proposta comercial",
     preparadaPara: (nome: string) => `Preparada para ${nome}`,
+    site: "instabarber.pt",
     numero: "Número",
     data: "Data",
     validade: "Válida até",
