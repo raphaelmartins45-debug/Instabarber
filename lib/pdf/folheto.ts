@@ -78,28 +78,36 @@ export function gerarFolheto(d: { regime: RegimeIva; site: string; contacto: Ass
     fonte(8.5, "normal", CINZA_CLARO).text(partir(texto, largura - 5)[0]!, x + 4.5, yy + 4.6);
   });
 
-  // Faixa dourada: o valor por dia em destaque e os dois planos.
-  const yFaixa = 206;
-  const altura = 44;
+  // Faixa dourada em três módulos: à esquerda o «desde» por dia; à direita, cada plano num
+  // cartão escuro próprio, com o nome, o valor por dia em grande e o mensal e o anual por baixo.
+  const yFaixa = 204;
+  const altura = 50;
   doc.setFillColor(...DOURADO).rect(0, yFaixa, L, altura, "F");
   const [basic, pro] = (["basic", "pro"] as const).map((p) => simularPreco(p, 0, false, d.regime));
   const desde = formatarDinheiro(valorPorDiaCent(basic!.mensalCent));
-  fonte(11, "bold", FUNDO).text(t.desde, M, yFaixa + 12);
-  fonte(44, "bold", FUNDO).text(desde, M, yFaixa + 29);
+  fonte(11, "bold", FUNDO).text(t.desde, M, yFaixa + 14);
+  fonte(42, "bold", FUNDO).text(desde, M, yFaixa + 31);
   const largDesde = doc.getTextWidth(desde);
-  fonte(14, "bold", FUNDO).text(t.porDia, M + largDesde + 3, yFaixa + 29);
-  fonte(10, "normal", FUNDO).text(t.cafe, M, yFaixa + 37);
-  const xPlanos = 112;
+  fonte(13, "bold", FUNDO).text(t.porDia, M + largDesde + 3, yFaixa + 31);
+  fonte(10, "normal", FUNDO).text(t.cafe, M, yFaixa + 40);
+  const larguraCartao = 47;
+  const g = 5;
   [basic!, pro!].forEach((s, i) => {
-    const x = xPlanos + i * 44;
-    fonte(9, "bold", FUNDO).text(
-      partir(t.plano(textos.vendas.simulador.planos[s.plano], t.barbeiros[s.plano]!), 40),
-      x,
-      yFaixa + 12,
+    const x = L - M - (2 - i) * larguraCartao - (1 - i) * g;
+    const y0 = yFaixa + 6;
+    const h = altura - 12;
+    doc.setFillColor(...FUNDO).rect(x, y0, larguraCartao, h, "F");
+    fonte(10, "bold", DOURADO).text(textos.vendas.simulador.planos[s.plano], x + 5, y0 + 8);
+    fonte(8, "normal", CINZA_CLARO).text(t.barbeiros[s.plano]!, x + 5, y0 + 12.5);
+    const dia = formatarDinheiro(valorPorDiaCent(s.mensalCent));
+    fonte(18, "bold", BRANCO).text(dia, x + 5, y0 + 22);
+    const largDia = doc.getTextWidth(dia);
+    fonte(8.5, "bold", BRANCO).text(t.porDia, x + 6.5 + largDia, y0 + 22);
+    fonte(8, "normal", CINZA_CLARO).text(
+      [t.mensal(formatarDinheiro(s.mensalCent)), t.porAno(formatarDinheiro(s.anualCent))],
+      x + 5,
+      y0 + 28.5,
     );
-    fonte(17, "bold", FUNDO).text(formatarDinheiro(valorPorDiaCent(s.mensalCent)), x, yFaixa + 25);
-    fonte(8.5, "bold", FUNDO).text(t.porDia, x, yFaixa + 30);
-    fonte(8, "normal", FUNDO).text(t.mensal(formatarDinheiro(s.mensalCent)), x, yFaixa + 36);
   });
 
   // Fundo: QR do site, o convite e a assinatura de quem gera o folheto.

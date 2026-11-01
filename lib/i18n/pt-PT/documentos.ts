@@ -340,6 +340,7 @@ export const documentos = {
     porMes: "por mês",
     porDia: "por dia",
     mensal: (valor: string) => `${valor} por mês`,
+    porAno: (valor: string) => `${valor} por ano`,
     anual: (valor: string) => `ou ${valor} por ano (dois meses grátis)`,
     extra: (valor: string) => `Pro: cada barbeiro a mais, ${valor} por mês.`,
     iva: { isento: "Ao preço não acresce IVA.", normal: "IVA incluído." } as Record<string, string>,
