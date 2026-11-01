@@ -19,7 +19,7 @@ export const esquemaComunicado = z
     texto: z.string().trim().min(1, "texto").max(3000, "texto"),
     destino: z.enum(["todas", "plano", "barbearia"]),
     plano: z.union([z.literal(""), z.enum(["basic", "pro"])]).default(""),
-    inquilino_id: z.union([z.literal(""), z.string().uuid()]).default(""),
+    inquilino_id: z.union([z.literal(""), z.guid()]).default(""),
     inicio: data,
     fim: z.union([z.literal(""), data]).default(""),
   })

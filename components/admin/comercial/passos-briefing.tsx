@@ -17,7 +17,7 @@ type Form = UseFormReturn<DadosBriefing>;
 /** Valor da visita em euros, guardado em cêntimos (CLAUDE.md §5). */
 function ValorVisita({ form }: { form: Form }) {
   const inicial = form.getValues("valor_visita_cent");
-  const [texto, setTexto] = useState(inicial ? textoDeCentimos(inicial) : "");
+  const [texto, setTexto] = useState(inicial ? textoDeCentimos(Number(inicial)) : "");
   return (
     <Campo
       id="briefing-valor_visita"

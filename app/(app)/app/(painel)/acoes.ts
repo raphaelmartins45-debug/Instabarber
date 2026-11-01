@@ -9,7 +9,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 /** «Já enviei»: a equipa confirma à mão que mandou o código pelo WhatsApp (regra 7). */
 export async function confirmarEnvioCodigo(id: string): Promise<{ ok: boolean }> {
-  const v = z.string().uuid().safeParse(id);
+  const v = z.guid().safeParse(id);
   if (!v.success) return { ok: false };
   const { barbearia } = await exigirGestorParaEscrever();
   const ok = await marcarCodigoEnviado(await criarClienteServidor(), barbearia.id, v.data);
@@ -19,7 +19,7 @@ export async function confirmarEnvioCodigo(id: string): Promise<{ ok: boolean }>
 
 /** «Li» num comunicado da InstaBarber (D-160); a função na base de dados confere o gestor. */
 export async function lerComunicado(id: string): Promise<{ ok: boolean }> {
-  const v = z.string().uuid().safeParse(id);
+  const v = z.guid().safeParse(id);
   if (!v.success) return { ok: false };
   const { barbearia } = await exigirGestorParaEscrever();
   const ok = await marcarComunicadoLido(await criarClienteServidor(), v.data, barbearia.id);

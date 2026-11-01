@@ -27,7 +27,7 @@ import { esquemaDadosMarcacao } from "@/lib/validacao/marcacao";
 
 // Marcação pública (E.4, F.7): a página só mostra; a base de dados decide.
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 const dia = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
 async function barbearia(slug: string) {

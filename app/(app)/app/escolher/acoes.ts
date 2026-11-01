@@ -9,7 +9,7 @@ import { COOKIE_BARBEARIA } from "@/lib/equipa/contexto";
 // o painel confirma o perfil e o RLS confirma cada leitura.
 
 export async function escolherBarbearia(dados: FormData): Promise<void> {
-  const id = z.string().uuid().safeParse(dados.get("barbearia"));
+  const id = z.guid().safeParse(dados.get("barbearia"));
   if (id.success) {
     (await cookies()).set(COOKIE_BARBEARIA, id.data, {
       httpOnly: true,

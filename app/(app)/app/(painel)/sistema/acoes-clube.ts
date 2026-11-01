@@ -21,7 +21,7 @@ import { esquemaPlano } from "@/lib/validacao/sistema";
 
 export type Resultado = { ok: true } | { ok: false; erro: string };
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 function revalidar() {
   revalidatePath("/app", "layout");

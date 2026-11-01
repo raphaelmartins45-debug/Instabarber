@@ -18,6 +18,7 @@ import { PassoContratacao } from "./passo-contratacao";
 import { PassoIdentidade } from "./passo-identidade";
 import { PassoServicos } from "./passo-servicos";
 import { PedidoEnviado } from "./pedido-enviado";
+import type { z } from "zod";
 
 const t = textos.adesao;
 const PASSOS = ["identidade", "contactos", "servicos", "contratacao"] as const;
@@ -37,7 +38,7 @@ export function FormularioAdesao(props: {
   const [erro, setErro] = useState<string>();
   const [resumo, setResumo] = useState<DadosResumo>();
   const [aEnviar, iniciar] = useTransition();
-  const form = useForm<DadosPedidoAdesao>({
+  const form = useForm<DadosPedidoAdesao, unknown, z.output<typeof esquemaPedidoAdesao>>({
     resolver: zodResolver(esquemaPedidoAdesao),
     defaultValues: props.inicial ?? VALORES_VAZIOS,
   });

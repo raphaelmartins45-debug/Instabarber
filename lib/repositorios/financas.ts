@@ -10,7 +10,7 @@ import { falhaDeLeitura } from "./erros";
 // Finanças da Performa LAB (O.4). Só o super_admin com dois fatores lê e escreve (RLS); o
 // estado das contas calcula-se ao ler, na vista contas_pagar_com_estado (D-16).
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 export type CustoLinha = Custo & { id: string; nota: string };
 export type Conta = {

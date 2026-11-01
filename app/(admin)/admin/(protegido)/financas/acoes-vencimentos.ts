@@ -22,7 +22,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 type Resultado<T = object> = ({ ok: true } & T) | { ok: false; erro: string };
 const texto = z.string().trim().min(1).max(2000);
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 const revalidar = () => {
   revalidatePath("/admin/financas/vencimentos");

@@ -10,7 +10,7 @@ import { type DadosApoio, esquemaApoio } from "@/lib/validacao/gestao";
 // Registo de apoio (D-160). Só o super_admin com dois fatores; o RLS volta a verificar.
 
 type Resultado = { ok: true } | { ok: false; erro: string };
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 function revalidar(inquilinoId: string) {
   revalidatePath(`/admin/barbearias/${inquilinoId}/apoio`);

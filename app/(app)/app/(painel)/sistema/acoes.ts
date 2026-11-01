@@ -89,7 +89,7 @@ export async function registarBarbeiro(dados: DadosRegistarBarbeiro): Promise<Re
 
 export async function reenviarConviteBarbeiro(profissionalId: string): Promise<{ ok: boolean }> {
   const { barbearia } = await exigirGestorParaEscrever();
-  const id = z.string().uuid().safeParse(profissionalId);
+  const id = z.guid().safeParse(profissionalId);
   if (!id.success) return { ok: false };
   const bd = await criarClienteServidor();
   const profissional = await obterProfissional(bd, barbearia.id, id.data);
@@ -103,7 +103,7 @@ export async function reenviarConviteBarbeiro(profissionalId: string): Promise<{
 
 export type ResultadoFichaBarbeiro = { ok: true } | { ok: false; erro: string };
 
-const idProfissional = z.string().uuid();
+const idProfissional = z.guid();
 
 /** Comissão por omissão e por serviço, modelo de caixa e renda (F.4.8, F.4.11). */
 export async function guardarFichaBarbeiro(

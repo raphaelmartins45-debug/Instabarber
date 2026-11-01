@@ -29,7 +29,7 @@ export const esquemaDefinirPalavraPasse = z
   .refine((v) => v.palavra_passe === v.repetir, { message: "diferentes", path: ["repetir"] });
 
 export const esquemaCodigoTotp = z.object({
-  fator: z.string().uuid(),
+  fator: z.guid(),
   codigo: z
     .string()
     .trim()

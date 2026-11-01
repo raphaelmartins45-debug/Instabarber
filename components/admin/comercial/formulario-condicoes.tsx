@@ -10,6 +10,7 @@ import { Campo } from "@/components/nucleo/campo";
 import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
 import { type DadosCondicoes, esquemaCondicoes } from "@/lib/validacao/condicoes";
+import type { z } from "zod";
 
 const t = textos.comercial.condicoes;
 
@@ -18,7 +19,11 @@ export function FormularioCondicoes({ inicial }: { inicial: DadosCondicoes }) {
   const router = useRouter();
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aGuardar, iniciar] = useTransition();
-  const { register, handleSubmit, formState, getValues } = useForm<DadosCondicoes>({
+  const { register, handleSubmit, formState, getValues } = useForm<
+    DadosCondicoes,
+    unknown,
+    z.output<typeof esquemaCondicoes>
+  >({
     resolver: zodResolver(esquemaCondicoes),
     defaultValues: inicial,
   });

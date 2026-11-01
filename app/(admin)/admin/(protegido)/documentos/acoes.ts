@@ -55,7 +55,7 @@ export async function propostaRapida(dados: DadosPropostaRapida): Promise<Result
 /** Envia outra vez o guia de arranque ao proprietário (assina o Apoio ao cliente, D-184). */
 export async function enviarGuia(inquilinoId: string): Promise<{ ok: boolean }> {
   await exigirSuperAdmin();
-  if (!z.string().uuid().safeParse(inquilinoId).success) return { ok: false };
+  if (!z.guid().safeParse(inquilinoId).success) return { ok: false };
   const bd = await criarClienteServidor();
   const guia = await pdfGuiaDeArranque(bd, inquilinoId);
   if (!guia?.para) return { ok: false };

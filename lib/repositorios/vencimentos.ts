@@ -6,7 +6,7 @@ import { falhaDeLeitura } from "./erros";
 // super_admin com dois fatores); os lembretes só se escrevem pelas cinco funções da base de
 // dados, que fazem cumprir os estados.
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 export type Vencimento = {
   inquilinoId: string;

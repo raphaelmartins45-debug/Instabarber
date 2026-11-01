@@ -48,11 +48,11 @@ ficheiros `U-NN` pedidos, e segue o protocolo de segurança de lá.
 | Alojamento | Vercel, funções em fra1 (plano: ver §8) |
 | Estado de servidor | TanStack Query 5 |
 | Estado de interface | Zustand 5 |
-| Formulários | React Hook Form 7 com Zod 3 |
+| Formulários | React Hook Form 7 com Zod 4 |
 | Gráficos | Recharts 2 |
 | Datas | date-fns 4 e date-fns-tz 3, fuso Europe/Lisbon |
 | PDF | jsPDF 2 |
-| E-mail | Resend 4 |
+| E-mail | Resend 6 |
 | Testes | Vitest 2 e Playwright 1 |
 | Qualidade | ESLint 9 e Prettier 3 |
 

@@ -35,7 +35,7 @@ import {
 // e-mail, a pessoa define a palavra-passe); o perfil grava-se com a sessão do dono (RLS).
 
 type Resultado = { ok: true } | { ok: false; erro: string };
-const uuid = z.string().uuid();
+const uuid = z.guid();
 const destino = async () => `${await origemDoPedido()}/entrar/confirmar`;
 
 export async function convidar(dados: DadosConviteEquipa): Promise<Resultado> {

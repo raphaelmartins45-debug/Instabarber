@@ -37,7 +37,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 const t = textos.comercial.contratos;
 type Resultado<T = object> = ({ ok: true } & T) | { ok: false; erro: string; detalhe?: string };
-const uuid = z.string().uuid();
+const uuid = z.guid();
 const codigo = (m: string) => (/^[a-z_]+$/.test(m) ? m : "generico");
 
 function revalidar(leadId?: string) {

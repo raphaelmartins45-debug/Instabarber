@@ -14,7 +14,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 export type Resultado = { ok: true } | { ok: false; erro: string };
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 async function autorizar(profissionalId: string) {
   const contexto = await exigirEquipaParaEscrever();

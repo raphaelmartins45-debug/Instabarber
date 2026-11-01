@@ -38,7 +38,7 @@ async function depois(
 
 export async function aprovar(id: string): Promise<Resultado> {
   await exigirSuperAdmin();
-  if (!z.string().uuid().safeParse(id).success) return { ok: false, erro: "generico" };
+  if (!z.guid().safeParse(id).success) return { ok: false, erro: "generico" };
   const r = await aprovarComprovativo(await criarClienteServidor(), id);
   if (!r.ok) return { ok: false, erro: r.erro };
   return { ok: true, ...(await depois(id, true)) };
@@ -47,7 +47,7 @@ export async function aprovar(id: string): Promise<Resultado> {
 export async function recusar(id: string, motivo: string): Promise<Resultado> {
   await exigirSuperAdmin();
   const m = z.string().trim().min(3).max(600).safeParse(motivo);
-  if (!z.string().uuid().safeParse(id).success) return { ok: false, erro: "generico" };
+  if (!z.guid().safeParse(id).success) return { ok: false, erro: "generico" };
   if (!m.success) return { ok: false, erro: "motivo" };
   const r = await recusarComprovativo(await criarClienteServidor(), id, m.data);
   if (!r.ok) return { ok: false, erro: r.erro };

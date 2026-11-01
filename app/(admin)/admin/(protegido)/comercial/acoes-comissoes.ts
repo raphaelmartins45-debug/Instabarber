@@ -9,7 +9,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 // Comissões dos comerciais (D-162): só o dono e o gestor registam; a base de dados confere.
 
 const dados = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   data: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   passo: z.enum(["taxa", "paga"]),
 });

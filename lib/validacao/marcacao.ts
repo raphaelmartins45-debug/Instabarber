@@ -34,14 +34,14 @@ export const esquemaContactoPublico = esquemaDadosMarcacao.pick({
 
 /** A fila presencial pode criar o acesso logo, como a primeira marcação (F.9). */
 export const esquemaEntradaPresencial = esquemaContactoPublico.extend({
-  servicoId: z.union([z.string().uuid(), z.literal("")]).transform(vazio),
+  servicoId: z.union([z.guid(), z.literal("")]).transform(vazio),
   palavraPasse: esquemaDadosMarcacao.shape.palavraPasse,
 });
 
 /** Encomenda da loja (F.4.4): o contacto e as linhas; o stock confirma-se na base de dados. */
 export const esquemaEncomenda = esquemaContactoPublico.extend({
   linhas: z
-    .array(z.object({ produtoId: z.string().uuid(), quantidade: z.number().int().min(1).max(20) }))
+    .array(z.object({ produtoId: z.guid(), quantidade: z.number().int().min(1).max(20) }))
     .min(1, "pedido_vazio")
     .max(20),
 });

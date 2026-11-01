@@ -18,7 +18,7 @@ import { esquemaContactoPublico, esquemaEntradaPresencial } from "@/lib/validaca
 
 // Filas do lado do cliente (F.4.1, F.4.3): a base de dados decide; aqui valida-se e conta-se.
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 const dia = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
 async function dentroDoLimite() {

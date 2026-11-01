@@ -42,7 +42,7 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 | `docs/mapa-do-sistema.md` | **Pedidos de manutenção:** classifica o pedido e diz onde mexer e como verificar |
 | `docs/mapa-gerado.md` | Lista gerada das rotas e ficheiros (`scripts/gerar-mapa.sh`; não se edita) |
 | `PROGRESSO.md` | Estado real: fases, trabalhos paralelos, pendentes do dono, módulos por ativar |
-| `DECISOES.md` | As decisões (D-01 a D-186), com data. **Prevalece** quando duas regras se contradizem |
+| `DECISOES.md` | As decisões (D-01 a D-188), com data. **Prevalece** quando duas regras se contradizem |
 | `docs/esquema/` | Fonte única da base de dados (tabelas, funções, RLS, dados iniciais) e os testes SQL |
 | `supabase/migrations/` | As migrações aplicadas (01 a 17), copiadas do esquema |
 | `fases/` | O plano de cada fase e os critérios (J.1, verificados em `fases/verificacao-j1.md`) |
@@ -99,6 +99,8 @@ decisão no `DECISOES.md`.
 | Documentos e e-mails | 01/11/2026 | Logótipos oficiais e capas nos PDFs, assinaturas fixas (comercial e Apoio ao cliente), valor por dia no folheto, e-mails em blocos com botões. Logótipos dos PDFs: `scripts/gerar-logos-pdf.sh` | — | D-184 |
 | Placa do balcão | 01/11/2026 | O gestor escolhe o modelo e os textos e descarrega a placa do QR; letra Inter embutida nos PDFs (`scripts/gerar-letra-pdf.sh`) | — | D-185 |
 | Equipa: editar e apagar | 01/11/2026 | O dono edita nome, e-mail e telefone de qualquer pessoa da equipa e apaga contas escolhendo para quem vão os leads | — | D-186 |
+| Segurança | 01/11/2026 | Cabeçalhos de segurança, CSV sem fórmulas, limites de tentativas na entrada e na recuperação | — | D-187 |
+| Zod 4 e Resend 6 | 01/11/2026 | Dependências atualizadas com autorização; `z.guid()` em vez de `uuid()`; formulários com entrada e saída | — | D-188 |
 
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.
@@ -211,6 +213,7 @@ e `docs/mapa-do-sistema.md` (rotas e ficheiros novos), e este guia se mudou algu
 
 | Sintoma | Causa | O que fazer |
 | --- | --- | --- |
+| Um identificador válido é recusado pela validação | O `uuid()` do Zod 4 só aceita as versões da RFC 9562 | Usar `z.guid()` (D-188) |
 | `relation "inquilinos" does not exist` nos testes SQL; `db reset` falha | O Docker morreu | `(dockerd > /dev/null 2>&1 &)`, esperar, `npx supabase start`, `npx supabase db reset` |
 | `duplicate key … users_pkey` nos testes SQL | Correram duas vezes sobre a mesma base | `npx supabase db reset` e correr uma vez |
 | Esquema `teste` já existe | Uma corrida anterior parou a meio | `drop schema if exists teste cascade` |

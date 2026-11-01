@@ -14,7 +14,7 @@ import { esquemaProduto } from "@/lib/validacao/sistema";
 
 export type Resultado = { ok: true } | { ok: false; erro: string };
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 async function exigirLoja() {
   const contexto = await exigirGestorParaEscrever();

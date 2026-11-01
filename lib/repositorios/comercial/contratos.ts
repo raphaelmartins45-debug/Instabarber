@@ -10,7 +10,7 @@ export type Modelo = Database["public"]["Tables"]["modelos_documento"]["Row"];
 export type Contrato = Database["public"]["Tables"]["contratos"]["Row"];
 export type TipoModelo = "contrato" | "condicoes_proposta";
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 export const BUCKET_COMERCIAL = "comercial";
 
 export async function listarModelos(bd: ClienteBD): Promise<Modelo[]> {

@@ -18,7 +18,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 type Resultado = { ok: true; id?: string } | { ok: false; erro: string; campos?: string[] };
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 function revalidar(leadId: string) {
   revalidatePath(`/admin/comercial/leads/${leadId}`);

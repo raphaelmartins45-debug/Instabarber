@@ -12,6 +12,7 @@ import { hojeIso } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
 import { type DadosCusto, esquemaCusto } from "@/lib/validacao/financas";
 import { CampoEscolha } from "./campo-escolha";
+import type { z } from "zod";
 
 const t = textos.financas;
 
@@ -20,7 +21,11 @@ export function FormularioCusto({ id, inicial }: { id?: string; inicial?: DadosC
   const router = useRouter();
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aGuardar, iniciar] = useTransition();
-  const { register, handleSubmit, formState, getValues, reset } = useForm<DadosCusto>({
+  const { register, handleSubmit, formState, getValues, reset } = useForm<
+    DadosCusto,
+    unknown,
+    z.output<typeof esquemaCusto>
+  >({
     resolver: zodResolver(esquemaCusto),
     defaultValues: inicial ?? {
       descricao: "",

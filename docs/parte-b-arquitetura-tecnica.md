@@ -20,11 +20,11 @@ versões exatas estão na B.3.
 | Pagamentos | Nenhum processador ativo | Módulo preparado e desligado (G.4) |
 | Estado de servidor | TanStack Query 5 | Cache, revalidação e estados de carregamento |
 | Estado de interface | Zustand 5 | Apenas o que é local ao ecrã |
-| Formulários | React Hook Form 7 com Zod 3 | Um esquema Zod partilhado entre cliente e servidor |
+| Formulários | React Hook Form 7 com Zod 4 (D-188) | Um esquema Zod partilhado entre cliente e servidor |
 | Gráficos | Recharts 2 | Evolução no relatório e no painel |
 | Datas | date-fns 4 e date-fns-tz 3 | Fuso Europe/Lisbon obrigatório |
 | PDF | jsPDF 2 | Resumo da contratação e relatório mensal, gerados no servidor |
-| E-mail | Resend 4 | Convites, confirmação de adesão, confirmação de marcação |
+| E-mail | Resend 6 (D-188) | Convites, confirmação de adesão, confirmação de marcação |
 | Mensagens | Ligação direta `wa.me` | Sem API de operadora. Sem custo por mensagem |
 | Testes unitários | Vitest 2 | `lib/regras` e formatação |
 | Testes da base de dados | SQL em `docs/esquema/testes` | Isolamento, agenda e regras |
@@ -73,14 +73,14 @@ ou críticas.
     "@supabase/ssr": "0.5.2",
     "@tanstack/react-query": "5.62.11",
     "zustand": "5.0.2",
-    "react-hook-form": "7.54.2",
-    "@hookform/resolvers": "3.9.1",
-    "zod": "3.24.1",
+    "react-hook-form": "7.91.0",
+    "@hookform/resolvers": "5.9.2",
+    "zod": "4.6.7",
     "recharts": "2.15.0",
     "date-fns": "4.1.0",
     "date-fns-tz": "3.2.0",
     "jspdf": "2.5.2",
-    "resend": "4.0.1",
+    "resend": "6.37.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "tailwind-merge": "3.0.1",

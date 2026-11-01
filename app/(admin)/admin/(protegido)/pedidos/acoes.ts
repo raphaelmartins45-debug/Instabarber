@@ -17,7 +17,7 @@ export async function aprovar(
   pedidoId: string,
   ajustes: z.input<typeof esquemaAjustes>,
 ): Promise<ResultadoAprovacao> {
-  const id = z.string().uuid().safeParse(pedidoId);
+  const id = z.guid().safeParse(pedidoId);
   const a = esquemaAjustes.safeParse(ajustes);
   if (!id.success || !a.success) return { ok: false, erro: "falhou" };
   const r = await aprovarPedido(id.data, { ...a.data, slug: a.data.slug || undefined });
@@ -27,7 +27,7 @@ export async function aprovar(
 }
 
 export async function rejeitar(pedidoId: string, motivo: string): Promise<{ ok: boolean }> {
-  const id = z.string().uuid().safeParse(pedidoId);
+  const id = z.guid().safeParse(pedidoId);
   const m = z.string().trim().min(3).max(600).safeParse(motivo);
   if (!id.success || !m.success) return { ok: false };
   const ok = await rejeitarPedido(id.data, m.data);

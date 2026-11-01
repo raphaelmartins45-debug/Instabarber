@@ -70,7 +70,9 @@ export function FormularioLead({ id, inicial }: { id?: string; inicial?: DadosLe
   const [semelhantes, setSemelhantes] = useState<LeadSemelhante[]>([]);
   const [aGuardar, iniciar] = useTransition();
   const { register, handleSubmit, formState, getValues } = useForm<DadosNovoLead>({
-    resolver: zodResolver(id ? esquemaLead : esquemaNovoLead) as Resolver<DadosNovoLead>,
+    resolver: (id
+      ? zodResolver(esquemaLead)
+      : zodResolver(esquemaNovoLead)) as unknown as Resolver<DadosNovoLead>,
     defaultValues: inicial ? { ...VAZIO, ...inicial } : VAZIO,
   });
   const erro = (c?: string) => (c ? (t.erros[c] ?? t.erros.generico) : undefined);

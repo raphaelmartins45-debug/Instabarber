@@ -16,7 +16,7 @@ import { esquemaAcerto, esquemaConta, esquemaObjetivo } from "@/lib/validacao/fi
 export type Resultado = { ok: true } | { ok: false; erro: string };
 
 const tipo = z.enum(["custo", "despesa"]);
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 function revalidar() {
   revalidatePath("/app", "layout");

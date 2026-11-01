@@ -15,7 +15,7 @@ import { type DadosComunicado, esquemaComunicado } from "@/lib/validacao/gestao"
 // Comunicados aos gestores (D-160). Só o super_admin com dois fatores; o RLS volta a verificar.
 
 type Resultado = { ok: true } | { ok: false; erro: string };
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 export async function publicarComunicado(dados: DadosComunicado): Promise<Resultado> {
   const { userId } = await exigirSuperAdmin();

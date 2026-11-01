@@ -20,13 +20,13 @@ export const esquemaConta = z.object({
 });
 
 export const esquemaObjetivo = z.object({
-  profissionalId: z.union([z.string().uuid(), z.literal("")]).transform((v) => v || null),
+  profissionalId: z.union([z.guid(), z.literal("")]).transform((v) => v || null),
   mes: z.string().regex(/^\d{4}-\d{2}-01$/, "data"),
   valor: valorEuros,
 });
 
 export const esquemaAcerto = z.object({
-  profissionalId: z.string().uuid(),
+  profissionalId: z.guid(),
   mes: z.string().regex(/^\d{4}-\d{2}-01$/, "data"),
   data,
   metodo: z.enum(["dinheiro", "mbway", "transferencia"]),

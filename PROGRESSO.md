@@ -65,6 +65,8 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Documentos e e-mails com acabamento profissional: estilo comum dos PDFs, assinaturas fixas (comercial nas propostas e no folheto, Apoio ao cliente nos manuais), contrato com espaço de assinaturas, e-mails em blocos com botões (D-184) | Publicado | 01/11/2026 | Vitest da assinatura, das propostas, do contrato, dos guias e do timbrado (HTML e texto dos mesmos blocos); regressão de ponta a ponta; amostras de todos os PDFs e e-mails vistas antes e depois |
 | Placa do balcão feita pelo gestor: três modelos, textos sugeridos e editáveis, PDF na hora; cartaz do Admin pelo mesmo gerador (D-185) | Publicado | 01/11/2026 | Vitest das sugestões, da validação e dos três modelos; ensaio de ponta a ponta do gestor (escolher, mudar o título, descarregar) |
 | Equipa InstaBarber: editar nome, e-mail e telefone; apagar a conta escolhendo para quem passam os leads (D-186) | Publicado | 01/11/2026 | Ensaio de ponta a ponta do dono (convidar, desativar, editar o nome, apagar com o destino dos leads), no computador e no telemóvel |
+| Segurança: cabeçalhos, CSV sem fórmulas, caminhos seguros, limites na entrada e na recuperação (D-187) | Publicado | 01/11/2026 | Vitest novos (encaminhamento e CSV); cabeçalhos verificados em instabarber.pt |
+| Zod 4, Resend 6, resolvers 5 e React Hook Form 7.91 (D-188) | Publicado | 01/11/2026 | typecheck, lint, 377 Vitest, e2e completo; `npm audit --omit=dev` sem altas |
 
 ## Pendentes do dono
 

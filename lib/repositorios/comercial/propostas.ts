@@ -14,7 +14,7 @@ export type PropostaComLead = Proposta & {
   lead: { nome_contacto: string; nome_barbearia: string | null } | null;
 };
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 /** O briefing guardado do lead, ou um vazio com os valores por omissão. */
 export async function lerBriefing(bd: ClienteBD, leadId: string): Promise<Briefing> {

@@ -13,9 +13,8 @@ const rotulos = {
 
 /** As chaves do objeto por baixo dos .refine(). */
 function forma(esquema: z.ZodTypeAny): Record<string, unknown> {
-  let s = esquema;
-  while (s instanceof z.ZodEffects) s = s.innerType();
-  return (s as z.AnyZodObject).shape;
+  // No Zod 4, os .refine() ficam no próprio objeto: a forma lê-se diretamente.
+  return (esquema as z.ZodObject).shape;
 }
 
 describe("ficha da barbearia (E.1)", () => {

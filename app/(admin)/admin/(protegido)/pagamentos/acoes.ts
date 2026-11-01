@@ -18,7 +18,7 @@ const valor = z.string().transform((v, ctx) => {
 
 const esquemaFatura = z
   .object({
-    inquilino_id: z.string().uuid(),
+    inquilino_id: z.guid(),
     numero: z.string().trim().min(1, "numero").max(40),
     valor,
     periodo_inicio: data,
@@ -28,8 +28,8 @@ const esquemaFatura = z
   .refine((f) => f.periodo_inicio <= f.periodo_fim, { message: "periodo", path: ["periodo_fim"] });
 
 const esquemaRecebimento = z.object({
-  inquilino_id: z.string().uuid(),
-  fatura_id: z.union([z.string().uuid(), z.literal("")]).transform((v) => v || null),
+  inquilino_id: z.guid(),
+  fatura_id: z.union([z.guid(), z.literal("")]).transform((v) => v || null),
   valor,
   metodo: z.enum(["dinheiro", "mbway", "transferencia"]),
   data,

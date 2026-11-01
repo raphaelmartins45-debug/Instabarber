@@ -12,7 +12,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 // = bónus (não altera o preço). O gatilho auditar_interruptor regista cada alteração.
 
 const esquema = z.object({
-  inquilinoId: z.string().uuid(),
+  inquilinoId: z.guid(),
   ativas: z.array(z.object({ chave: z.string().regex(/^[a-z_]+$/), ativa: z.boolean() })).max(100),
 });
 
@@ -39,7 +39,7 @@ export async function guardarFuncionalidades(
 
 export async function reporPacote(inquilinoId: string): Promise<{ ok: boolean }> {
   await exigirSuperAdmin();
-  if (!z.string().uuid().safeParse(inquilinoId).success) return { ok: false };
+  if (!z.guid().safeParse(inquilinoId).success) return { ok: false };
   const ok = await aplicarPacote(await criarClienteServidor(), inquilinoId);
   revalidatePath(`/admin/barbearias/${inquilinoId}`, "layout");
   return { ok };

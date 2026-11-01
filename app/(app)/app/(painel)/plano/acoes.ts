@@ -14,7 +14,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 // isso não passa por exigirGestor. A função SQL verifica o proprietário, o ficheiro e o período.
 
 const esquema = z.object({
-  inquilinoId: z.string().uuid(),
+  inquilinoId: z.guid(),
   metodo: z.enum(["mbway", "transferencia"], { message: "metodo" }),
   valor: z
     .string()

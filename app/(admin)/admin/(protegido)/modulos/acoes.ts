@@ -33,7 +33,7 @@ export async function interruptorBarbearia(
 ): Promise<{ ok: boolean }> {
   const admin = await exigirSuperAdmin();
   const c = chave.safeParse(modulo);
-  if (!c.success || !z.string().uuid().safeParse(inquilinoId).success) return { ok: false };
+  if (!c.success || !z.guid().safeParse(inquilinoId).success) return { ok: false };
   const ok = await alternarModuloBarbearia(
     await criarClienteServidor(),
     inquilinoId,

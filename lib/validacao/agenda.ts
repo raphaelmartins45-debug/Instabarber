@@ -32,15 +32,15 @@ export const esquemaBalcao = z.object({
   telefone,
   nome: z.string().trim().max(80).optional().default(""),
   consentimento: z.boolean().default(false),
-  servicoId: z.string().uuid("servico_invalido"),
-  profissionalId: z.string().uuid("profissional_invalido"),
+  servicoId: z.guid("servico_invalido"),
+  profissionalId: z.guid("profissional_invalido"),
   inicio: z.string().datetime({ offset: true, message: "hora" }),
   valor: valorOpcional,
 });
 
 export const esquemaConcluir = z
   .object({
-    id: z.string().uuid(),
+    id: z.guid(),
     modo: z.enum(["normal", "credito_clube", "premio"]),
     valor: valorOpcional,
     cartaoCodigo: z

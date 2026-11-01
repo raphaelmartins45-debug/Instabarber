@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
 import { type DadosMeta, esquemaMeta } from "@/lib/validacao/financas";
 import { CampoEscolha } from "./campo-escolha";
+import type { z } from "zod";
 
 const t = textos.financas;
 
@@ -19,7 +20,11 @@ export function FormularioMeta({ mes }: { mes: string }) {
   const router = useRouter();
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aGuardar, iniciar] = useTransition();
-  const { register, handleSubmit, formState, getValues } = useForm<DadosMeta>({
+  const { register, handleSubmit, formState, getValues } = useForm<
+    DadosMeta,
+    unknown,
+    z.output<typeof esquemaMeta>
+  >({
     resolver: zodResolver(esquemaMeta),
     defaultValues: { mes, valor_sem_iva: "", base: "mrr" },
   });

@@ -125,7 +125,7 @@ export const passoContratacao = z
     preferencia_pagamento: z.enum(["mbway", "transferencia", "dinheiro"]),
     email_acesso: texto(160).toLowerCase().email("email"),
     observacoes: opcional(600),
-    aceitou_termos: z.literal(true, { errorMap: () => ({ message: "termos" }) }),
+    aceitou_termos: z.literal(true, { error: "termos" }),
   })
   .refine((v) => (v.plano === "basic" ? v.profissionais === 1 : v.profissionais >= INCLUIDOS.pro), {
     message: "profissionais",
@@ -152,5 +152,5 @@ export const esquemaCarregamento = z.object({
   posicao: z.number().int().min(1).max(6).default(1),
   formato: z.enum(["image/png", "image/svg+xml", "image/webp", "image/jpeg"]),
   tamanho: z.number().int().positive(),
-  pasta: z.string().uuid(),
+  pasta: z.guid(),
 });

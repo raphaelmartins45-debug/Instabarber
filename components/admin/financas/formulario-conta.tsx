@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { hojeIso } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
 import { type DadosConta, esquemaConta } from "@/lib/validacao/financas";
+import type { z } from "zod";
 
 const t = textos.financas;
 
@@ -19,7 +20,11 @@ export function FormularioConta({ id, inicial }: { id?: string; inicial?: DadosC
   const router = useRouter();
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aGuardar, iniciar] = useTransition();
-  const { register, handleSubmit, formState, getValues, reset } = useForm<DadosConta>({
+  const { register, handleSubmit, formState, getValues, reset } = useForm<
+    DadosConta,
+    unknown,
+    z.output<typeof esquemaConta>
+  >({
     resolver: zodResolver(esquemaConta),
     defaultValues: inicial ?? {
       fornecedor: "",

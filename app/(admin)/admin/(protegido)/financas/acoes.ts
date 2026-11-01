@@ -32,7 +32,7 @@ import {
 // Custos e contas a pagar (O.4). Só o super_admin com dois fatores; o RLS confere outra vez.
 
 type Resultado = { ok: true; n?: number } | { ok: false; erro: string };
-const uuid = z.string().uuid();
+const uuid = z.guid();
 const erroDe = (issues: { message: string }[]) => issues[0]?.message ?? "generico";
 
 function revalidar() {

@@ -5,7 +5,7 @@ import { z } from "zod";
 const contagem = z.coerce.number().int("meta").min(0, "meta").max(10000, "meta");
 
 export const esquemaMetaComercial = z.object({
-  userId: z.string().uuid("meta"),
+  userId: z.guid("meta"),
   mes: z.string().regex(/^\d{4}-\d{2}$/, "meta"),
   leadsNovos: contagem,
   propostas: contagem,

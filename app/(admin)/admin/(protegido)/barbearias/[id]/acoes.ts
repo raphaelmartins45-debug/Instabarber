@@ -24,7 +24,7 @@ import type { EsquemaFormulario, ResultadoFicha } from "@/lib/validacao/formular
 
 // Ações da ficha da barbearia (E.1). Só o super_admin com dois fatores; o RLS volta a verificar.
 
-const id = z.string().uuid();
+const id = z.guid();
 
 const caminho = (inquilinoId: string) => `/admin/barbearias/${inquilinoId}`;
 

@@ -18,7 +18,7 @@ export type Lead = Database["public"]["Tables"]["leads"]["Row"];
 export type EventoLead = Database["public"]["Tables"]["lead_eventos"]["Row"];
 export type LeadLinha = Lead & { temPasso2: boolean };
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 /** Ids dos leads que completaram o passo 2 do formulário do site (D-150). */
 async function comPasso2(bd: ClienteBD): Promise<Set<string>> {

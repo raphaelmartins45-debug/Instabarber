@@ -24,7 +24,7 @@ import { criarConvite } from "./acoes-contratos";
 // cliente carregou, aprovar (assina, cria o convite e agradece) ou recusar com o motivo.
 
 type Resultado = { ok: true; email?: boolean } | { ok: false; erro: string };
-const uuid = z.string().uuid();
+const uuid = z.guid();
 const codigo = (m: string) => (/^[a-z_]+$/.test(m) ? m : "generico");
 
 function revalidar(leadId: string) {

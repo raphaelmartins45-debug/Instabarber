@@ -14,7 +14,7 @@ import { esquemaPromocao } from "@/lib/validacao/sistema";
 // Promoções da página pública, na Gestão do sistema. A RLS confere outra vez que é o proprietário.
 
 type Resultado = { ok: true } | { ok: false; erro: string };
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 function revalidar(slug: string) {
   revalidatePath("/app", "layout");

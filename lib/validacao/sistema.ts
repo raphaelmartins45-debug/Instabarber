@@ -32,7 +32,7 @@ export const seccaoFidelizacao = z
   .object({
     selos_necessarios: inteiro(1, 50),
     premio_ativo: z.boolean(),
-    premio_servico_id: z.union([z.string().uuid(), z.literal("")]).transform((v) => v || null),
+    premio_servico_id: z.union([z.guid(), z.literal("")]).transform((v) => v || null),
   })
   .refine((v) => !v.premio_ativo || v.premio_servico_id, {
     message: "obrigatorio",
@@ -88,7 +88,7 @@ const dataHoraLocal = z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "data"
 
 export const esquemaAusencia = z
   .object({
-    profissionalId: z.union([z.string().uuid(), z.literal("")]).transform((v) => v || null),
+    profissionalId: z.union([z.guid(), z.literal("")]).transform((v) => v || null),
     tipo: z.enum(["ferias", "folga", "formacao", "doenca", "outro"]),
     inicio: dataHoraLocal,
     fim: dataHoraLocal,
@@ -156,7 +156,7 @@ export const esquemaFichaBarbeiro = z
       .string()
       .transform((v) => (v.trim() ? Number(v) : null))
       .refine((v) => v === null || (Number.isInteger(v) && v >= 1 && v <= 28), "numero"),
-    porServico: z.record(z.string().uuid(), z.string()).transform((r, ctx) =>
+    porServico: z.record(z.guid(), z.string()).transform((r, ctx) =>
       Object.entries(r).flatMap(([servicoId, v]) => {
         if (!v.trim()) return [];
         const n = Number(v.replace(",", "."));
@@ -181,7 +181,7 @@ export const esquemaPlano = z.object({
   transitaCredito: z.boolean(),
   renovacaoAuto: z.boolean(),
   ativo: z.boolean(),
-  servicos: z.record(z.string().uuid(), z.string()).transform((r, ctx) =>
+  servicos: z.record(z.guid(), z.string()).transform((r, ctx) =>
     Object.entries(r).flatMap(([servicoId, v]) => {
       if (!v.trim() || v.trim() === "0") return [];
       const n = Number(v);

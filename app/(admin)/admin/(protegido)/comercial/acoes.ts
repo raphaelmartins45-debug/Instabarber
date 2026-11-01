@@ -102,8 +102,8 @@ export async function apagarInativos(): Promise<
 /** Atribui o lead a um comercial, ou tira-lho (D-161). Só o dono e o gestor. */
 export async function atribuir(id: string, responsavel: string): Promise<Resultado> {
   await exigirSuperAdmin();
-  const v = z.union([z.literal(""), z.string().uuid()]).safeParse(responsavel);
-  if (!z.string().uuid().safeParse(id).success || !v.success)
+  const v = z.union([z.literal(""), z.guid()]).safeParse(responsavel);
+  if (!z.guid().safeParse(id).success || !v.success)
     return { ok: false, erro: "generico" };
   const ok = await atribuirResponsavel(await criarClienteServidor(), id, v.data || null);
   revalidar(id);

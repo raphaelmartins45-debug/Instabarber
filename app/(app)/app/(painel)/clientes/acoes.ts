@@ -19,7 +19,7 @@ import { esquemaDadosCliente, FOTO_FICHA } from "@/lib/validacao/cliente";
 // Ações sobre clientes (E.2, E.3). O RLS limita o barbeiro aos seus clientes.
 
 const esquemaMensagem = z.object({
-  clienteId: z.string().uuid(),
+  clienteId: z.guid(),
   tipo: z.enum(["recuperacao", "posvenda", "aniversario"]),
   conteudo: z.string().max(2000),
 });
@@ -45,7 +45,7 @@ export async function mensagemAberta(clienteId: string, tipo: string, conteudo: 
 
 export type Resultado = { ok: true } | { ok: false; erro: string };
 
-const uuid = z.string().uuid();
+const uuid = z.guid();
 
 /** Dados do cliente: só o gestor (o consentimento grava a data em que foi dado). */
 export async function guardarDadosCliente(

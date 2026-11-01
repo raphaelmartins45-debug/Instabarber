@@ -9,6 +9,7 @@ import { Campo } from "@/components/nucleo/campo";
 import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
 import { esquemaRegistarBarbeiro, type DadosRegistarBarbeiro } from "@/lib/validacao/barbeiro";
+import type { z } from "zod";
 
 const t = textos.paineis.equipa;
 const ERROS: Record<string, string> = { ...t.erros, generico: textos.acesso.erros.generico };
@@ -17,7 +18,11 @@ const ERROS: Record<string, string> = { ...t.erros, generico: textos.acesso.erro
 export function FormularioBarbeiro() {
   const [resultado, setResultado] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aEnviar, iniciar] = useTransition();
-  const { register, handleSubmit, formState, reset, getValues } = useForm<DadosRegistarBarbeiro>({
+  const { register, handleSubmit, formState, reset, getValues } = useForm<
+    DadosRegistarBarbeiro,
+    unknown,
+    z.output<typeof esquemaRegistarBarbeiro>
+  >({
     resolver: zodResolver(esquemaRegistarBarbeiro),
     defaultValues: { nome: "", email: "", nif: "" },
   });
