@@ -81,7 +81,14 @@ export function caminhoEntradaEquipa(host: HostResolvido, caminho = "/app"): str
 
 /** Aceita só caminhos relativos do próprio site (evita redirecionamentos para fora). */
 export function caminhoSeguro(texto: string | null | undefined, alternativa: string): string {
-  if (!texto || !texto.startsWith("/") || texto.startsWith("//") || texto.includes("\\")) {
+  // Também recusa carateres de controlo e espaços: «/\t/outro.site» vira «//outro.site» (D-187).
+  if (
+    !texto ||
+    !texto.startsWith("/") ||
+    texto.startsWith("//") ||
+    texto.includes("\\") ||
+    /[\u0000-\u0020\u007f]/.test(texto)
+  ) {
     return alternativa;
   }
   return texto;

@@ -15,6 +15,10 @@ export const LIMITES = {
   contratoClienteIp: { maximo: 10, janelaSegundos: 3600 },
   // Formulário de contacto da landing (N.3): os dois passos contam, por isso 10 por hora.
   contactoIp: { maximo: 10, janelaSegundos: 3600 },
+  // Entrada da equipa (por conta e IP) e recuperação da palavra-passe (por IP), D-187, além dos
+  // limites do próprio Supabase Auth.
+  entrarEquipaIp: { maximo: 20, janelaSegundos: 900 },
+  recuperarIp: { maximo: 5, janelaSegundos: 3600 },
   // Tradução automática dos serviços (D-176): por barbearia, para não gastar a quota do DeepL.
   traduzirBarbearia: { maximo: 40, janelaSegundos: 3600 },
 } as const;

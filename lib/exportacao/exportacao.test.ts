@@ -45,3 +45,16 @@ describe("exportação dos dados (E.1)", () => {
     expect(zip.readUInt32LE(zip.length - 22)).toBe(0x06054b50);
   });
 });
+
+describe("CSV sem fórmulas (D-187)", () => {
+  it("um texto que começa por =, +, -, @ leva uma plica; os números negativos não", () => {
+    const csv = paraCsv([
+      { nome: '=HYPERLINK("http://mau.pt")', nota: "+351 912", valor: "-12,00", mail: "@x" },
+    ]);
+    const linha = csv.split("\r\n")[1]!;
+    expect(linha).toContain(`"'=HYPERLINK(""http://mau.pt"")"`);
+    expect(linha).toContain("'+351 912");
+    expect(linha).toContain(";-12,00;");
+    expect(linha).toContain("'@x");
+  });
+});

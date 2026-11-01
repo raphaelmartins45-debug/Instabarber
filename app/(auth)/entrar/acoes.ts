@@ -2,7 +2,14 @@
 
 import { ePapelPlataforma } from "@/lib/admin/acesso";
 import { caminhoSeguro } from "@/lib/inquilino/encaminhar";
-import { entradaEquipaAqui, lerEndereco, origemDoPedido } from "@/lib/inquilino/endereco";
+import {
+  entradaEquipaAqui,
+  ipDoPedido,
+  lerEndereco,
+  origemDoPedido,
+} from "@/lib/inquilino/endereco";
+import { consumirLimite, LIMITES } from "@/lib/repositorios/limites";
+import { criarClienteServico } from "@/lib/supabase/servico";
 import { eContaCliente } from "@/lib/regras/conta-cliente";
 import { listarMeusPerfis } from "@/lib/repositorios/perfis";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
@@ -29,6 +36,10 @@ export async function entrarEquipa(dados: DadosEntradaEquipa): Promise<Resultado
   const v = esquemaEntradaEquipa.safeParse(dados);
   // As contas técnicas dos clientes não entram por aqui.
   if (!v.success || eContaCliente(v.data.email)) return { erro: "credenciais" };
+  // Limite de tentativas por conta e IP (D-187): trava a adivinha de palavras-passe.
+  const chave = `entrar:${v.data.email.toLowerCase()}:${await ipDoPedido()}`;
+  if (!(await consumirLimite(criarClienteServico(), chave, LIMITES.entrarEquipaIp)))
+    return { erro: "limite" };
 
   const bd = await criarClienteServidor();
   const { data, error } = await bd.auth.signInWithPassword({
@@ -49,6 +60,15 @@ export async function entrarEquipa(dados: DadosEntradaEquipa): Promise<Resultado
 export async function recuperarPalavraPasse(dados: { email: string }): Promise<Resultado> {
   const v = esquemaRecuperar.safeParse(dados);
   if (!v.success) return { erro: "email" };
+  // Limite por IP (D-187); a resposta continua a mesma, exista ou não a conta.
+  if (
+    !(await consumirLimite(
+      criarClienteServico(),
+      `recuperar:ip:${await ipDoPedido()}`,
+      LIMITES.recuperarIp,
+    ))
+  )
+    return { enviado: true };
   if (!eContaCliente(v.data.email)) {
     const bd = await criarClienteServidor();
     const destino = `${await origemDoPedido()}${await prefixoEquipa()}/entrar/confirmar`;

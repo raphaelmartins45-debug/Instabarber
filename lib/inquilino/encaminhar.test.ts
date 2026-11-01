@@ -142,6 +142,10 @@ describe("auxiliares", () => {
     expect(caminhoSeguro("https://mau.pt", "/app")).toBe("/app");
     expect(caminhoSeguro("/\\mau.pt", "/app")).toBe("/app");
     expect(caminhoSeguro(null, "/app")).toBe("/app");
+    // Carateres de controlo que o navegador apaga e transformam o caminho em «//mau.pt» (D-187).
+    expect(caminhoSeguro("/\t/mau.pt", "/app")).toBe("/app");
+    expect(caminhoSeguro("/\n/mau.pt", "/app")).toBe("/app");
+    expect(caminhoSeguro("/ /mau.pt", "/app")).toBe("/app");
   });
 
   it("os caminhos reservados são os mesmos que a base de dados recusa como slug", () => {

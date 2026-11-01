@@ -1,9 +1,18 @@
 // CSV para a exportação de dados (E.1): separador «;» (o Excel português abre-o diretamente),
 // BOM UTF-8, aspas quando é preciso. Objetos e listas saem em JSON.
 
+/**
+ * Um texto que comece por =, +, -, @ (ou tabulação) é lido pelo Excel como fórmula: um nome de
+ * cliente como «=HYPERLINK(...)» correria ao abrir o ficheiro (D-187). Esses textos levam uma
+ * plica à frente; os números negativos («-12,00») ficam como estão.
+ */
+const NUMERO = /^-?\d[\d\s.,]*$/;
+const neutralizar = (texto: string) =>
+  /^[=+\-@\t\r]/.test(texto) && !NUMERO.test(texto) ? `'${texto}` : texto;
+
 const celula = (v: unknown): string => {
   if (v === null || v === undefined) return "";
-  const texto = typeof v === "object" ? JSON.stringify(v) : String(v);
+  const texto = neutralizar(typeof v === "object" ? JSON.stringify(v) : String(v));
   return /[";\r\n]/.test(texto) ? `"${texto.replace(/"/g, '""')}"` : texto;
 };
 
