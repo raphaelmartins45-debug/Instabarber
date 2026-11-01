@@ -9,6 +9,7 @@ import {
   FUNDO,
   REALCE,
   OURO_TEXTO,
+  LETRA,
 } from "./estilo";
 
 import { LOGO_PRETO } from "./logos-marca";
@@ -35,7 +36,7 @@ export function criarGuia(o: { marca: string; seccao: (n: number) => string }) {
 
   const fonte = (tamanho: number, peso: "normal" | "bold" = "normal", cor: Cor = FUNDO) =>
     doc
-      .setFont("helvetica", peso)
+      .setFont(LETRA, peso)
       .setFontSize(tamanho)
       .setTextColor(...cor);
   const quebrar = (texto: string, largura: number) =>

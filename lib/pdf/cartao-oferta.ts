@@ -10,6 +10,7 @@ import {
   LINHA_FORTE,
   rotuloEspacado,
   TINTA,
+  LETRA,
 } from "./estilo";
 
 // Cartão oferta em PDF (F.4.9): com a marca da barbearia (a cor da capa) e «Não é documento
@@ -39,18 +40,18 @@ export function gerarCartaoOferta(d: DadosCartao): jsPDF {
   const sobre = corDeHex(corDoTexto(cor));
   doc
     .setTextColor(...sobre)
-    .setFont("helvetica", "bold")
+    .setFont(LETRA, "bold")
     .setFontSize(15)
     .text(d.barbearia, M, 13);
-  doc.setFont("helvetica", "normal").setFontSize(10).text(t.titulo, M, 20.5);
+  doc.setFont(LETRA, "normal").setFontSize(10).text(t.titulo, M, 20.5);
 
   doc
     .setTextColor(...TINTA)
-    .setFont("helvetica", "bold")
+    .setFont(LETRA, "bold")
     .setFontSize(26);
   doc.text(formatarDinheiro(d.valorCent), M, 45);
   doc
-    .setFont("helvetica", "normal")
+    .setFont(LETRA, "normal")
     .setFontSize(9.5)
     .setTextColor(...CINZA_ESCURO);
   const pessoas = [d.beneficiario ? t.para(d.beneficiario) : null, t.de(d.comprador)].filter(
@@ -65,7 +66,7 @@ export function gerarCartaoOferta(d: DadosCartao): jsPDF {
     .setLineWidth(0.3)
     .roundedRect(M, yCodigo, L - 2 * M, 13, 1.5, 1.5, "S");
   doc
-    .setFont("helvetica", "bold")
+    .setFont(LETRA, "bold")
     .setFontSize(7)
     .setTextColor(...CINZA);
   rotuloEspacado(doc, t.codigo, M + 4, yCodigo + 5);
@@ -74,13 +75,13 @@ export function gerarCartaoOferta(d: DadosCartao): jsPDF {
     .setTextColor(...TINTA)
     .text(d.codigo, M + 4, yCodigo + 10.5, { charSpace: 0.8 });
   doc
-    .setFont("helvetica", "normal")
+    .setFont(LETRA, "normal")
     .setFontSize(8.5)
     .setTextColor(...CINZA_ESCURO)
     .text(t.validade(d.validoAte), L - M - 4, yCodigo + 10.5, { align: "right" });
 
   doc.setFontSize(8).setTextColor(...CINZA);
   doc.text(doc.splitTextToSize(t.uso, L - 2 * M) as string[], M, yCodigo + 20);
-  doc.setFont("helvetica", "bold").text(t.fiscal, M, A - 6);
+  doc.setFont(LETRA, "bold").text(t.fiscal, M, A - 6);
   return doc;
 }

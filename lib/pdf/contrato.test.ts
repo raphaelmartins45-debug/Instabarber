@@ -1,5 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { blocosDoTexto, gerarPdfContrato } from "./contrato";
+
+import { registarTextoEscrito } from "./texto-escrito";
+
+let escrito: ReturnType<typeof registarTextoEscrito>;
+beforeEach(() => {
+  escrito = registarTextoEscrito();
+});
+afterEach(() => escrito.parar());
 
 describe("PDF do contrato", () => {
   it("lê títulos, parágrafos e listas do Markdown sem ênfase nem comentários", () => {
@@ -26,19 +34,21 @@ describe("PDF do contrato", () => {
         ],
       },
     ]);
-    const pdf = gerarPdfContrato({
-      texto: "# Contrato\n## Assinaturas\n| A | B |\n| --- | --- |\n| Ana | Rui |\n| ____ | ____ |",
-      proposta: {
-        numero: "IB-P-2026-0001",
-        plano: "Pro",
-        periodicidade: "Mensal",
-        profissionais: 3,
-        valorSemIva: "39.00",
-        valorComIva: "39.00",
-        decomposicao: [],
-        incluidas: [],
-      },
-    }).output();
+    const pdf =
+      gerarPdfContrato({
+        texto:
+          "# Contrato\n## Assinaturas\n| A | B |\n| --- | --- |\n| Ana | Rui |\n| ____ | ____ |",
+        proposta: {
+          numero: "IB-P-2026-0001",
+          plano: "Pro",
+          periodicidade: "Mensal",
+          profissionais: 3,
+          valorSemIva: "39.00",
+          valorComIva: "39.00",
+          decomposicao: [],
+          incluidas: [],
+        },
+      }) && escrito.texto();
     expect(pdf).not.toContain("| ---");
     expect(pdf).not.toContain("____");
     expect(pdf).toContain("Rui");

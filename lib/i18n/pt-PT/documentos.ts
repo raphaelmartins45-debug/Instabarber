@@ -291,8 +291,40 @@ export const documentos = {
   },
   cartaz: {
     nomeFicheiro: (slug: string) => `InstaBarber-cartaz-${slug}.pdf`,
-    titulo: "Marque a sua próxima visita",
-    texto: "Aponte a câmara do telemóvel ao código. Marca em segundos, a qualquer hora.",
+    instrucao: "Aponte a câmara do telemóvel ao código.",
+    premio: "Prémio",
+  },
+  /** A placa do balcão que o gestor monta e descarrega (D-185). */
+  placa: {
+    intro:
+      "Escolha o modelo, reveja os textos e descarregue o PDF para imprimir. Os textos vêm sugeridos; para mudar, apague e escreva o seu.",
+    modelo: "Modelo",
+    modelos: {
+      selos: { nome: "Selos", texto: "Papel claro com o cartão de selos desenhado." },
+      escuro: { nome: "Escuro e dourado", texto: "Fundo escuro com destaques a dourado." },
+      cor: { nome: "Cor da barbearia", texto: "A página toda na cor da sua marca." },
+    } as Record<string, { nome: string; texto: string }>,
+    campos: {
+      titulo: "Título",
+      tituloAjuda: "A frase grande, que se lê ao longe. Até 60 caracteres.",
+      frase: "Frase de apoio",
+      fraseAjuda: "Uma ou duas linhas por baixo do título. Até 140 caracteres.",
+      vantagem: "Vantagem em destaque",
+      vantagemAjuda: "O que o cliente ganha, num selo dourado. Até 60 caracteres.",
+    },
+    sugestoes: {
+      tituloSelos: "Marque online e acumule selos",
+      fraseSelos:
+        "Tenha todas as vantagens: escolha a hora, receba o lembrete e ganhe um selo a cada serviço.",
+      tituloSimples: "Marque a sua próxima visita online",
+      fraseSimples: "Escolha a hora que lhe dá jeito, sem telefonemas, e receba o lembrete no dia.",
+      vantagemPremio: (n: number, servico: string) => `Ao ${n}.º selo, ${servico} oferecido`,
+      vantagemSelos: "Um selo em cada serviço",
+      vantagemSimples: "Marque em segundos, a qualquer hora",
+    },
+    descarregar: "Descarregar PDF",
+    erro: "Reveja os textos: o título e a vantagem têm até 60 caracteres e a frase até 140.",
+    nomeFicheiro: (slug: string) => `placa-do-balcao-${slug}.pdf`,
   },
   resumo: {
     nomeFicheiro: (slug: string) => `InstaBarber-resumo-da-conta-${slug}.pdf`,
@@ -341,6 +373,22 @@ export const documentos = {
     porDia: "por dia",
     mensal: (valor: string) => `${valor} por mês`,
     porAno: (valor: string) => `${valor} por ano`,
+    recomendado: "Recomendado",
+    /** O que cada plano inclui, como nos cartões de preços da landing. */
+    inclui: {
+      basic: [
+        "Agenda, página pública e marcação online",
+        "Clientes, radar de risco e selos",
+        "Painel financeiro e relatório mensal",
+        "1 profissional",
+      ],
+      pro: [
+        "Tudo o que vai no Basic",
+        "3 profissionais incluídos",
+        "Mensagens prontas para WhatsApp",
+        "Painel por barbeiro, clube, loja e fila",
+      ],
+    } as Record<string, string[]>,
     anual: (valor: string) => `ou ${valor} por ano (dois meses grátis)`,
     extra: (valor: string) => `Pro: cada barbeiro a mais, ${valor} por mês.`,
     iva: { isento: "Ao preço não acresce IVA.", normal: "IVA incluído." } as Record<string, string>,

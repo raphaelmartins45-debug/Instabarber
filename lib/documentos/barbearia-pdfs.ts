@@ -1,6 +1,5 @@
 import "server-only";
 import { textos } from "@/lib/i18n/pt-PT";
-import { gerarCartaz } from "@/lib/pdf/cartaz";
 import { gerarGuiaBarbeiro } from "@/lib/pdf/guia-barbeiro";
 import { gerarResumoConta } from "@/lib/pdf/resumo-conta";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
@@ -11,6 +10,7 @@ import type { ClienteBD } from "@/lib/supabase/tipos";
 import { assinaturaDoApoio, barbeariaDoDocumento } from "./barbearia";
 import { type Ficheiro, pdfGuiaDeArranque } from "./guia";
 import { lerLogo } from "./logo";
+import { pdfPlaca } from "./placa";
 import type { TipoDocumento } from "./tipos";
 
 // Os documentos personalizados de uma barbearia no Gerador de documentos (D-181).
@@ -73,16 +73,7 @@ export async function documentoDaBarbearia(
         }),
       ),
     };
-  return {
-    nome: t.cartaz.nomeFicheiro(b.slug),
-    conteudo: pdf(
-      gerarCartaz({
-        barbearia: b.nome,
-        cor: b.cor,
-        logo,
-        qr: b.enderecos.marcar,
-        endereco: b.enderecos.pagina,
-      }),
-    ),
-  };
+  // O cartaz do balcão é a placa do gestor com os textos sugeridos (D-185).
+  const placa = await pdfPlaca(bd, inquilinoId);
+  return { nome: t.cartaz.nomeFicheiro(b.slug), conteudo: placa.conteudo };
 }

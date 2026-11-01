@@ -21,6 +21,7 @@ export const sistema = {
     promocoes: "Promoções",
     periodos: "Períodos de desconto",
     cartoes: "Cartões oferta",
+    placa: "Placa do balcão",
     orfas: "Marcações sem profissional",
   } as Record<string, string>,
   diasSemana,

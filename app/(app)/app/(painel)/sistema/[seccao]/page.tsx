@@ -9,6 +9,7 @@ import { SeccaoMarca } from "@/components/barbearia/sistema/seccao-marca";
 import { SeccaoOrfas } from "@/components/barbearia/sistema/seccao-orfas";
 import { SeccaoPromocoes } from "@/components/barbearia/sistema/seccao-promocoes";
 import { SeccaoPeriodos } from "@/components/barbearia/sistema/seccao-periodos";
+import { SeccaoPlaca } from "@/components/barbearia/sistema/seccao-placa";
 import { SeccaoServicos } from "@/components/barbearia/sistema/seccao-servicos";
 import { FormularioFicha } from "@/components/nucleo/formulario-ficha";
 import { valoresDe } from "@/lib/admin/ficha";
@@ -81,6 +82,7 @@ export default async function SeccaoSistema({
   else if (seccao === "clube") conteudo = <SeccaoClube inquilinoId={inq} />;
   else if (seccao === "promocoes") conteudo = <SeccaoPromocoes inquilinoId={inq} />;
   else if (seccao === "periodos") conteudo = <SeccaoPeriodos inquilinoId={inq} />;
+  else if (seccao === "placa") conteudo = <SeccaoPlaca inquilinoId={inq} />;
   else if (seccao === "cartoes")
     conteudo = <SeccaoCartoes inquilinoId={inq} barbearia={contexto.barbearia.nome} />;
   else conteudo = <SeccaoOrfas inquilinoId={inq} />;

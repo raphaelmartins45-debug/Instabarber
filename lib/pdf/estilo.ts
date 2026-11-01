@@ -1,5 +1,9 @@
 import { jsPDF } from "jspdf";
 import { type Assinatura, linhasDaAssinatura } from "@/lib/documentos/assinatura";
+import { INTER_400, INTER_700, INTER_800 } from "./letra-inter";
+
+/** A família de letra de todos os PDFs (estilos «normal», «bold» e «black»). */
+export const LETRA = "Inter";
 
 // O estilo comum dos PDFs (D-184): a mesma paleta do modo claro do sistema (D-134) e o dourado da
 // marca (Parte I) só em pormenores, a mesma letra (Helvetica) e a mesma assinatura em todos.
@@ -46,6 +50,12 @@ const normalizar = <T>(texto: T): T =>
       ? texto.map((t) => (typeof t === "string" ? t.replace(ESPACOS_FINOS, " ") : t))
       : texto) as T;
 
+/**
+ * Com a Inter embutida, o texto vai codificado dentro do PDF. Os testes ligam este observador
+ * (texto-escrito.ts) para verificar o que os geradores escrevem; fora dos testes fica vazio.
+ */
+export const observadorTexto: { registar?: (t: string | string[]) => void } = {};
+
 /** Um documento novo (A4 ao alto por omissão), com o texto normalizado ao medir e ao escrever. */
 export function criarDocumento(
   o: { formato?: "a4" | "a6"; orientacao?: "portrait" | "landscape" } = {},
@@ -55,11 +65,23 @@ export function criarDocumento(
     format: o.formato ?? "a4",
     orientation: o.orientacao ?? "portrait",
   });
+  // A Inter da marca (Parte I) em vez da Helvetica do PDF: normal, negrito e extranegrito.
+  for (const [peso, dados, estilo] of [
+    ["400", INTER_400, "normal"],
+    ["700", INTER_700, "bold"],
+    ["800", INTER_800, "black"],
+  ] as const) {
+    doc.addFileToVFS(`Inter-${peso}.ttf`, dados);
+    doc.addFont(`Inter-${peso}.ttf`, LETRA, estilo);
+  }
+  doc.setFont(LETRA, "normal");
   const texto = doc.text.bind(doc);
   const largura = doc.getTextWidth.bind(doc);
   const partir = doc.splitTextToSize.bind(doc);
-  doc.text = ((t: string | string[], ...resto: unknown[]) =>
-    (texto as (...a: unknown[]) => jsPDF)(normalizar(t), ...resto)) as jsPDF["text"];
+  doc.text = ((t: string | string[], ...resto: unknown[]) => {
+    observadorTexto.registar?.(normalizar(t));
+    return (texto as (...a: unknown[]) => jsPDF)(normalizar(t), ...resto);
+  }) as jsPDF["text"];
   doc.getTextWidth = (t: string) => largura(normalizar(t));
   doc.splitTextToSize = ((t: string, ...resto: unknown[]) =>
     (partir as (...a: unknown[]) => string[])(normalizar(t), ...resto)) as jsPDF["splitTextToSize"];
@@ -96,14 +118,16 @@ export function desenharAssinatura(
   a: Assinatura,
   cores: { nome: Cor; linhas: Cor } = { nome: TINTA, linhas: CINZA_ESCURO },
 ): number {
+  // Quem assina é o autor do documento (fica nas propriedades do PDF, legível sem abrir).
+  doc.setProperties({ author: [a.nome, ...linhasDaAssinatura(a)].join(" · ") });
   doc
-    .setFont("helvetica", "bold")
+    .setFont(LETRA, "bold")
     .setFontSize(11)
     .setTextColor(...cores.nome)
     .text(a.nome, x, y);
   let yy = y + 5.4;
   doc
-    .setFont("helvetica", "normal")
+    .setFont(LETRA, "normal")
     .setFontSize(9.5)
     .setTextColor(...cores.linhas);
   for (const linha of linhasDaAssinatura(a)) {

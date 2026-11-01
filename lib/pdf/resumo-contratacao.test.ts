@@ -1,5 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { gerarResumoContratacao } from "./resumo-contratacao";
+
+import { registarTextoEscrito } from "./texto-escrito";
+
+let escrito: ReturnType<typeof registarTextoEscrito>;
+beforeEach(() => {
+  escrito = registarTextoEscrito();
+});
+afterEach(() => escrito.parar());
 
 const dados = {
   contratante: "Barbearia Central",
@@ -25,7 +33,7 @@ describe("resumo da contratação (D.11)", () => {
     const doc = gerarResumoContratacao(dados);
     const paginas = doc.getNumberOfPages();
     expect(paginas).toBeGreaterThan(1);
-    const pdf = doc.output();
+    const pdf = escrito.texto();
     expect(pdf.split("documento fiscal").length - 1).toBe(paginas);
     expect(pdf).toContain(`de ${paginas}`);
     expect(pdf.toLowerCase()).not.toContain("palavra-passe");

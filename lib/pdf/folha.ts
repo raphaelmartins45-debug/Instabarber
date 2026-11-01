@@ -13,6 +13,7 @@ import {
   REALCE,
   rotuloEspacado,
   TINTA,
+  LETRA,
 } from "./estilo";
 import {
   type Barra,
@@ -46,7 +47,7 @@ export function criarFolha(o: { titulo: string; cor: Cor; numerar?: boolean }) {
 
   const fonte = (tamanho: number, peso: "normal" | "bold" = "normal", cor: Cor = TINTA) =>
     doc
-      .setFont("helvetica", peso)
+      .setFont(LETRA, peso)
       .setFontSize(tamanho)
       .setTextColor(...cor);
   const quebrar = (texto: string, largura: number) =>

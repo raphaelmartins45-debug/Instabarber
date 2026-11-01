@@ -20,6 +20,7 @@ export const SECCOES: readonly Seccao[] = [
   { id: "promocoes", chave: "pagina_publica" },
   { id: "periodos", chave: "precos_dinamicos" },
   { id: "cartoes", chave: "cartoes_oferta" },
+  { id: "placa", chave: "pagina_publica" },
   { id: "orfas", chave: "agenda_basica" },
 ];
 

@@ -1,7 +1,15 @@
-import { describe, expect, it } from "vitest";
-import { gerarCartaz } from "./cartaz";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { gerarPlaca } from "./placa";
 import { gerarGuiaBarbeiro } from "./guia-barbeiro";
 import { gerarResumoConta } from "./resumo-conta";
+
+import { registarTextoEscrito } from "./texto-escrito";
+
+let escrito: ReturnType<typeof registarTextoEscrito>;
+beforeEach(() => {
+  escrito = registarTextoEscrito();
+});
+afterEach(() => escrito.parar());
 
 const apoio = {
   nome: "Apoio ao cliente",
@@ -19,24 +27,32 @@ describe("documentos da barbearia", () => {
       assinatura: apoio,
     });
     expect(doc.getNumberOfPages()).toBe(3);
-    expect(doc.output()).toContain("judah.instabarber.pt/barbeiro");
-    expect(doc.output()).toContain("Apoio ao cliente");
+    expect(escrito.texto()).toContain("judah.instabarber.pt/barbeiro");
+    expect(escrito.texto()).toContain("Apoio ao cliente");
   });
 
-  it("cartaz numa página, com o endereço escrito", () => {
-    const doc = gerarCartaz({
-      barbearia: "Judah Barber",
-      cor: "#1E3A5F",
-      logo: null,
-      qr: "https://judah.instabarber.pt/marcar",
-      endereco: "https://judah.instabarber.pt",
-    });
-    expect(doc.getNumberOfPages()).toBe(1);
-    expect(doc.output()).toContain("judah.instabarber.pt");
+  it("placa do balcão nos três modelos, numa página, com o endereço e os textos (D-185)", () => {
+    for (const modelo of ["selos", "escuro", "cor"] as const) {
+      const doc = gerarPlaca({
+        modelo,
+        titulo: "Marque online e acumule selos",
+        frase: "Ganhe um selo a cada serviço.",
+        vantagem: "Ao 10.º selo, Corte oferecido",
+        barbearia: "Judah Barber",
+        cor: "#1E3A5F",
+        logo: null,
+        qr: "https://judah.instabarber.pt/marcar",
+        endereco: "https://judah.instabarber.pt",
+        selos: 10,
+      });
+      expect(doc.getNumberOfPages()).toBe(1);
+      const texto = escrito.texto();
+      expect(texto).toContain("judah.instabarber.pt");
+    }
   });
 
   it("resumo da conta diz que não é documento fiscal", () => {
-    const doc = gerarResumoConta({
+    gerarResumoConta({
       barbearia: "Judah Barber",
       plano: "pro",
       periodicidade: "mensal",
@@ -50,7 +66,7 @@ describe("documentos da barbearia", () => {
       recebimentos: [{ data: "2026-10-27", metodo: "mbway", valorCent: 3999 }],
       assinatura: apoio,
     });
-    const texto = doc.output();
+    const texto = escrito.texto();
     expect(texto).toContain("documento fiscal");
     expect(texto).toContain("MB WAY");
   });

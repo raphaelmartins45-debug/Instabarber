@@ -1,5 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { gerarGuiaBarbearia } from "./guia-barbearia";
+
+import { registarTextoEscrito } from "./texto-escrito";
+
+let escrito: ReturnType<typeof registarTextoEscrito>;
+beforeEach(() => {
+  escrito = registarTextoEscrito();
+});
+afterEach(() => escrito.parar());
 
 const dados = {
   barbearia: "Judah Barber",
@@ -24,7 +32,7 @@ describe("guia de arranque personalizado", () => {
   it("tem a capa e as quatro secções, com os endereços e a assinatura", () => {
     const doc = gerarGuiaBarbearia(dados);
     expect(doc.getNumberOfPages()).toBeGreaterThanOrEqual(5);
-    const texto = doc.output();
+    const texto = escrito.texto();
     expect(texto).toContain("judah.instabarber.pt/gestor");
     expect(texto).toContain("judah.instabarber.pt/barbeiro");
     expect(texto).toContain("Apoio ao cliente");

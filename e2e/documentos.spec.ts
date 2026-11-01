@@ -46,7 +46,8 @@ test("proposta rápida e documentos personalizados da barbearia", async ({ page 
   const pdf = page.getByRole("link", { name: "Descarregar a proposta" });
   const resposta = await page.request.get((await pdf.getAttribute("href"))!);
   expect(resposta.headers()["content-type"]).toBe("application/pdf");
-  // Assina quem a gerou, com o cargo (D-184).
+  // Assina quem a gerou, com o cargo (D-184): o texto vai codificado (letra embutida), por isso
+  // confere-se o autor nas propriedades do PDF.
   const proposta = (await resposta.body()).toString("latin1");
   expect(proposta).toContain("Raphael Martins");
   expect(proposta).toContain("Gestor comercial");
@@ -68,12 +69,11 @@ test("proposta rápida e documentos personalizados da barbearia", async ({ page 
     expect(r.status(), tipo).toBe(200);
     expect(r.headers()["content-type"]).toBe("application/pdf");
     const corpo = (await r.body()).toString("latin1");
-    if (tipo === "guia") {
-      expect(corpo).toContain(`${BARBEARIA_A.slug}.localhost:3000/gestor`);
+    // O conteúdo de cada PDF verifica-se nos testes de lib/pdf; aqui, quem assina.
+    if (tipo === "guia" || tipo === "resumo") {
       expect(corpo).toContain("Apoio ao cliente");
       expect(corpo).toContain("apoio@instabarber.pt");
     }
-    if (tipo === "resumo") expect(corpo).toContain("documento fiscal");
   }
   // Um tipo que não existe, ou sem sessão de administrador: 404.
   expect((await page.request.get(`/admin/documentos/barbearia/${BARBEARIA_A.id}/x`)).status()).toBe(
