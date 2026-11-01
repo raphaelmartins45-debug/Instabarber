@@ -3,8 +3,8 @@ import { contas, temSupabase } from "./auxiliares/dados";
 import { entrarEquipa } from "./auxiliares/entrar";
 import { codigoTotp } from "./auxiliares/totp";
 
-// Equipa InstaBarber (D-161): o comercial só tem o Comercial dos seus leads; o gestor
-// administra sem gerir contas; o dono convida e desativa.
+// Equipa InstaBarber (D-161, D-186): o comercial só tem o Comercial dos seus leads; o gestor
+// administra sem gerir contas; o dono convida, edita, desativa e apaga.
 
 test.skip(!temSupabase, "Precisa do Supabase local (scripts/e2e-local.sh)");
 test.setTimeout(2 * 60_000);
@@ -206,6 +206,19 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   await membro.getByRole("button", { name: "Desativar" }).click();
   await dono.getByRole("alertdialog").getByRole("button", { name: "Desativar" }).click();
   await expect(membro).toContainText("Desativada");
+
+  // Editar e apagar (D-186): o nome muda na lista; ao apagar, escolhe-se para quem vão os leads.
+  await membro.getByRole("button", { name: "Editar" }).click();
+  const edicao = dono.getByTestId("editar-membro").filter({ visible: true });
+  await edicao.getByLabel("Nome").fill(`Editado ${projeto}`);
+  await edicao.getByRole("button", { name: "Guardar" }).click();
+  const editado = dono.getByTestId("membro").filter({ visible: true, hasText: novo });
+  await expect(editado).toContainText(`Editado ${projeto}`);
+  await editado.getByRole("button", { name: "Apagar" }).click();
+  const quadro = dono.getByRole("alertdialog");
+  await expect(quadro.getByLabel("Para quem passam os leads desta pessoa")).toBeVisible();
+  await quadro.getByRole("button", { name: "Apagar a conta" }).click();
+  await expect(dono.getByTestId("membro").filter({ visible: true, hasText: novo })).toHaveCount(0);
 
   // Barbearia de demonstração (D-162): uma só para todos, por isso só num dos projetos.
   if (projeto === "computador") {

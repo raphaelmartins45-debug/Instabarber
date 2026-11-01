@@ -12,6 +12,18 @@ export const esquemaConviteEquipa = z.object({
 });
 export type DadosConviteEquipa = z.input<typeof esquemaConviteEquipa>;
 
+/**
+ * Editar uma pessoa da equipa (D-186): o nome (aparece nas propostas, no folheto e na assinatura),
+ * o e-mail de entrada (@instabarber.pt, conferido no servidor) e o telefone (vazio apaga; passa a
+ * E.164 no servidor).
+ */
+export const esquemaEdicaoEquipa = z.object({
+  nome: z.string().trim().min(2, "nome").max(120, "nome"),
+  email: z.string().trim().toLowerCase().email("email"),
+  telefone: z.string().trim().max(30, "telefone"),
+});
+export type DadosEdicaoEquipa = z.input<typeof esquemaEdicaoEquipa>;
+
 /** O e-mail tem de ser do domínio da InstaBarber (ou de um subdomínio, como o dos ensaios). */
 export function doDominio(email: string, dominio: string): boolean {
   const depois = email.toLowerCase().split("@")[1] ?? "";

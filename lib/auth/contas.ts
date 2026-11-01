@@ -124,6 +124,19 @@ export async function apagarContas(servico: ClienteBD, userIds: string[]): Promi
   return apagadas;
 }
 
+/**
+ * Muda o e-mail de entrada de uma conta da equipa InstaBarber, já confirmado (D-186, autorizado
+ * pelo dono). Falha se o e-mail já pertencer a outra conta.
+ */
+export async function mudarEmailConta(
+  servico: ClienteBD,
+  userId: string,
+  email: string,
+): Promise<boolean> {
+  const { error } = await servico.auth.admin.updateUserById(userId, { email, email_confirm: true });
+  return !error;
+}
+
 /** Ligação segura (tipo recuperação) para quem já tem conta: reenvio das boas-vindas. */
 export async function ligacaoDeRecuperacao(
   servico: ClienteBD,

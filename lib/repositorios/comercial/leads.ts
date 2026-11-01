@@ -192,6 +192,23 @@ export async function apagarLeadsInativos(bd: ClienteBD, meses = 12): Promise<nu
   return error ? null : data;
 }
 
+/**
+ * Passa todos os leads de uma pessoa para outra (ou deixa-os por atribuir), antes de apagar a
+ * conta (D-186). Só os administradores (RLS). Devolve quantos passaram, ou nulo se falhou.
+ */
+export async function passarLeads(
+  bd: ClienteBD,
+  de: string,
+  para: string | null,
+): Promise<number | null> {
+  const { data, error } = await bd
+    .from("leads")
+    .update({ responsavel_id: para, atualizado_em: new Date().toISOString() })
+    .eq("responsavel_id", uuid.parse(de))
+    .select("id");
+  return error ? null : data.length;
+}
+
 /** Atribui o lead a um comercial (ou tira-lho). Só os administradores (RLS e gatilho). */
 export async function atribuirResponsavel(
   bd: ClienteBD,

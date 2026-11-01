@@ -11,12 +11,13 @@ export type MembroEquipa = {
   email: string;
   papel: string;
   ativo: boolean;
+  telefone: string | null;
 };
 
 export async function listarEquipaPlataforma(bd: ClienteBD): Promise<MembroEquipa[]> {
   const { data, error } = await bd
     .from("perfis")
-    .select("id, user_id, nome, email, papel, ativo")
+    .select("id, user_id, nome, email, papel, ativo, telefone")
     .is("inquilino_id", null)
     .order("nome");
   if (error) falhaDeLeitura("perfis", error);
@@ -27,6 +28,7 @@ export async function listarEquipaPlataforma(bd: ClienteBD): Promise<MembroEquip
     email: p.email ?? "",
     papel: p.papel,
     ativo: p.ativo,
+    telefone: p.telefone,
   }));
 }
 
@@ -53,7 +55,13 @@ export async function criarPerfilPlataforma(
 export async function alterarMembro(
   bd: ClienteBD,
   perfilId: string,
-  alteracao: { papel?: string; ativo?: boolean },
+  alteracao: {
+    papel?: string;
+    ativo?: boolean;
+    nome?: string;
+    email?: string;
+    telefone?: string | null;
+  },
 ): Promise<boolean> {
   const { data, error } = await bd
     .from("perfis")

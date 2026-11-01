@@ -64,6 +64,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Revisão visual com a skill UI/UX Pro Max: sistema de design mais seco e sem efeitos decorativos, tokens com nome em todo o código, folha «Mais» e barra que se esconde no telemóvel, painel geral e auditoria em linguagem corrente (D-183) | Publicado | 31/10/2026 | Vitest do `cn()`, do resumo e dos nomes da auditoria; regressão de ponta a ponta completa; capturas antes e depois no telemóvel e no computador |
 | Documentos e e-mails com acabamento profissional: estilo comum dos PDFs, assinaturas fixas (comercial nas propostas e no folheto, Apoio ao cliente nos manuais), contrato com espaço de assinaturas, e-mails em blocos com botões (D-184) | Publicado | 01/11/2026 | Vitest da assinatura, das propostas, do contrato, dos guias e do timbrado (HTML e texto dos mesmos blocos); regressão de ponta a ponta; amostras de todos os PDFs e e-mails vistas antes e depois |
 | Placa do balcão feita pelo gestor: três modelos, textos sugeridos e editáveis, PDF na hora; cartaz do Admin pelo mesmo gerador (D-185) | Publicado | 01/11/2026 | Vitest das sugestões, da validação e dos três modelos; ensaio de ponta a ponta do gestor (escolher, mudar o título, descarregar) |
+| Equipa InstaBarber: editar nome, e-mail e telefone; apagar a conta escolhendo para quem passam os leads (D-186) | Publicado | 01/11/2026 | Ensaio de ponta a ponta do dono (convidar, desativar, editar o nome, apagar com o destino dos leads), no computador e no telemóvel |
 
 ## Pendentes do dono
 

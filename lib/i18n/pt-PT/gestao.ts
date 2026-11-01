@@ -181,6 +181,24 @@ export const gestao = {
     desativar: "Desativar",
     reativar: "Reativar",
     reenviar: "Reenviar convite",
+    editar: "Editar",
+    editarTitulo: (nome: string) => `Editar ${nome}`,
+    editarAjuda: "O nome assina as propostas, o folheto e os e-mails comerciais.",
+    telefone: "Telefone (WhatsApp)",
+    guardar: "Guardar",
+    cancelar: "Cancelar",
+    guardado: "Alterações guardadas.",
+    email: "E-mail de entrada (@instabarber.pt)",
+    apagar: "Apagar",
+    confirmarApagar: {
+      titulo: (nome: string) => `Apagar a conta de ${nome}?`,
+      texto:
+        "A pessoa deixa de existir no sistema e não pode voltar a entrar. As propostas e o histórico ficam. Não dá para desfazer.",
+      leads: "Para quem passam os leads desta pessoa",
+      ninguem: "Ninguém: ficam por atribuir",
+      confirmar: "Apagar a conta",
+    },
+    apagado: "Conta apagada.",
     reenviado: "Convite reenviado.",
     confirmarDesativar: {
       titulo: "Desativar a conta?",
@@ -189,6 +207,7 @@ export const gestao = {
     erros: {
       nome: "Escreva o nome.",
       email: "E-mail inválido.",
+      telefone: "Telefone inválido. Use o indicativo, por exemplo +351 912 345 678.",
       dominio: "Use um e-mail @instabarber.pt.",
       repetido: "Esta pessoa já está na equipa.",
       ja_entrou: "Esta pessoa já entrou; não precisa de convite.",
