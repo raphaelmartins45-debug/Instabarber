@@ -79,9 +79,9 @@ describe("decomposição da mensalidade", () => {
 });
 
 describe("valorPorDiaCent (D-184)", () => {
-  it("o mensal em 12 meses a dividir por 365 dias, ao cêntimo", () => {
-    expect(valorPorDiaCent(1999)).toBe(66);
-    expect(valorPorDiaCent(3999)).toBe(131);
+  it("o mensal a dividir por 30 dias, ao cêntimo, como na landing", () => {
+    expect(valorPorDiaCent(1999)).toBe(67);
+    expect(valorPorDiaCent(3999)).toBe(133);
     expect(valorPorDiaCent(0)).toBe(0);
   });
 });

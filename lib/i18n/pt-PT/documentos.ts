@@ -319,8 +319,12 @@ export const documentos = {
   },
   folheto: {
     nomeFicheiro: "InstaBarber-folheto.pdf",
-    titulo: "Tudo o que a barbearia precisa, reunido num só sistema.",
-    subtitulo: "Sem pagar por cada serviço. No computador e no telemóvel.",
+    titulo: "Tudo o que uma barbearia precisa,",
+    tituloDestaque: "num só sistema.",
+    subtitulo:
+      "Agenda, clientes, equipa e financeiro, com uma página de marcação que tem a marca da tua barbearia. E o que mais ninguém junta: mostra quem deixou de aparecer, quanto dinheiro isso representa e escreve a mensagem que o traz de volta.",
+    garantias: "Sem comissões sobre clientes. Sem custo por mensagem.",
+    diasNota: "Valor por dia calculado sobre 30 dias.",
     funcionalidades: [
       ["A tua página e marcação online", "Os clientes marcam a qualquer hora, sem criar conta."],
       ["Agenda e lembretes por WhatsApp", "Menos faltas, com o lembrete enviado num toque."],
@@ -329,8 +333,10 @@ export const documentos = {
       ["Fidelização e loja", "Cartão de selos, clube e produtos, tudo no mesmo sítio."],
       ["Relatório do mês", "Os números e o que fazer a seguir, sem folhas de cálculo."],
     ] as [string, string][],
-    precosTitulo: "Preços",
+    desde: "Desde",
+    cafe: "Menos do que um café por dia.",
     plano: (nome: string, barbeiros: string) => `${nome} · ${barbeiros}`,
+    alt: "A página da barbearia no telemóvel: marcação, fila, serviços, loja, clube e selos.",
     barbeiros: { basic: "1 barbeiro", pro: "3 barbeiros incluídos" } as Record<string, string>,
     porMes: "por mês",
     porDia: "por dia",

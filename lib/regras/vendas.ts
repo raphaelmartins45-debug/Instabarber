@@ -49,9 +49,9 @@ export function simularPreco(
   };
 }
 
-/** O preço mensal em euros por dia (12 meses em 365 dias), para o mostrar em destaque (D-184). */
+/** O preço mensal por dia, sobre 30 dias como na landing, para o mostrar em destaque (D-184). */
 export function valorPorDiaCent(mensalCent: number): number {
-  return Math.round((mensalCent * 12) / 365);
+  return Math.round(mensalCent / 30);
 }
 
 /**
