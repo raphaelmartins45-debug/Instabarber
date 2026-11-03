@@ -1,40 +1,25 @@
 import type { TextosPublicos } from "@/lib/i18n/publico";
 import { coresDaCapa } from "@/lib/publico/cores-capa";
-import type { Estilo } from "@/lib/publico/estilos";
-import { CapaAnuario } from "./anuario";
-import { CapaBairro } from "./bairro";
-import { CapaCartao } from "./cartao";
-import { CapaCartaz } from "./cartaz";
-import { CapaMonumento } from "./monumento";
-import { CapaPalco } from "./palco";
+import { MODELOS, type Modelo } from "@/lib/publico/estilos";
+import { CabecalhoCartao, CabecalhoMontra, CabecalhoPainel } from "./compostos";
 import type { DadosCapa, PropsCapa } from "./partes";
-import { CapaSalaEscura } from "./sala-escura";
-import { CapaVitrine } from "./vitrine";
+import { CabecalhoCentrado, CabecalhoDividido, CabecalhoFaixa } from "./simples";
 
 export type { DadosCapa } from "./partes";
 
-// A capa de cada modelo (D-198). As cores partem sempre da barbearia; o fundo de onde se calcula
-// o botão é o do logótipo, ou o papel, ou o escuro, conforme o modelo.
+// O cabeçalho de cada modelo (D-200): a cor é a do fundo do logótipo (ou a da barbearia), e o
+// modelo só decide a arrumação.
 
-const CAPAS: Record<Estilo, (p: PropsCapa) => React.ReactNode> = {
-  monumento: CapaMonumento,
-  sala_escura: CapaSalaEscura,
-  cartaz: CapaCartaz,
-  cartao: CapaCartao,
-  palco: CapaPalco,
-  bairro: CapaBairro,
-  anuario: CapaAnuario,
-  vitrine: CapaVitrine,
-};
-
-const FUNDO_FIXO: Partial<Record<Estilo, string>> = {
-  sala_escura: "#0F0E0D",
-  palco: "#141210",
-  vitrine: "#F6F3EE",
+const CABECALHOS: Record<Modelo["cabecalho"], (p: PropsCapa) => React.ReactNode> = {
+  centrado: CabecalhoCentrado,
+  dividido: CabecalhoDividido,
+  faixa: CabecalhoFaixa,
+  cartao: CabecalhoCartao,
+  painel: CabecalhoPainel,
+  montra: CabecalhoMontra,
 };
 
 export function CapaDoModelo({ d, t }: { d: DadosCapa; t: TextosPublicos }) {
-  const Capa = CAPAS[d.estilo];
-  const c = coresDaCapa(d.cor, FUNDO_FIXO[d.estilo] ?? d.logoFundo);
-  return <Capa d={d} t={t} c={c} />;
+  const Cabecalho = CABECALHOS[MODELOS[d.estilo].cabecalho];
+  return <Cabecalho d={d} t={t} c={coresDaCapa(d.cor, d.logoFundo)} />;
 }

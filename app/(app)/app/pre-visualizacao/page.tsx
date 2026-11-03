@@ -21,7 +21,7 @@ export default async function PreVisualizacao({
     ? (q.modelo as Estilo)
     : undefined;
   const cor = /^#[0-9A-Fa-f]{6}$/.test(q.cor ?? "") ? q.cor!.toUpperCase() : undefined;
-  // Só para ver: as ligações não saem da pré-visualização (a lista da Vitrine continua a mudar).
+  // Só para ver: as ligações não saem da pré-visualização.
   return (
     <div className="[&_a]:pointer-events-none">
       <PaginaPublica b={{ ...b, id: b.id, nome: b.nome }} sobrepor={{ estilo, cor }} />

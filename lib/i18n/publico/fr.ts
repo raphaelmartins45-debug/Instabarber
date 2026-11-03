@@ -40,6 +40,7 @@ export const fr = {
     almoco: (de: string, ate: string) => `Pause de ${de} à ${ate}`,
     loja: "Boutique",
     esgotado: "Épuisé",
+    verTodos: "Voir toutes les prestations",
     lojaNota: "Commandez et payez au comptoir, au moment du retrait.",
     encomendar: "Commander",
     clube: "Club",

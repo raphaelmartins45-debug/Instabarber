@@ -26,8 +26,8 @@ export function SeletorLingua({ atual, rotulo }: { atual: Lingua; rotulo: string
             })
           }
           className={cn(
-            "h-10 min-w-11 rounded-md border px-2 text-xs font-bold uppercase",
-            l === atual && "bg-foreground text-background",
+            "h-10 min-w-11 rounded-md border border-current/30 px-2 text-xs font-bold uppercase",
+            l === atual && "bg-current/15",
           )}
         >
           {l}

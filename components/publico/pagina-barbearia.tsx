@@ -8,18 +8,18 @@ import {
   BlocoMapa,
 } from "@/components/publico/blocos-info";
 import { CapaDoModelo } from "@/components/publico/capas";
+import { Corpo } from "@/components/publico/corpo";
 import { PaginaModelo } from "@/components/publico/pagina-modelo";
 import { Rodape } from "@/components/publico/rodape";
 import { formatarDinheiro, numericDeCentimos } from "@/lib/formatacao/dinheiro";
 import { lerEndereco, origemDoPedido, origemPrincipal } from "@/lib/inquilino/endereco";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
-import { coresDaCapa } from "@/lib/publico/cores-capa";
-import { estiloDe, type Estilo } from "@/lib/publico/estilos";
+import { botaoDoCorpo, coresDaCapa } from "@/lib/publico/cores-capa";
+import { estiloDe, MODELOS, type Estilo } from "@/lib/publico/estilos";
 import { proximaVaga } from "@/lib/publico/proxima-vaga";
 import { dadosHairSalon } from "@/lib/publico/dados-estruturados";
 import { textosDaPagina } from "@/lib/publico/lingua";
 import { redesSociais } from "@/lib/publico/redes";
-import { corDoTexto } from "@/lib/regras/contraste";
 import { estaAberta } from "@/lib/regras/horario";
 import { ligacaoWhatsApp } from "@/lib/regras/whatsapp";
 import {
@@ -34,7 +34,7 @@ const hm = (h: string | null) => (h ?? "").slice(0, 5);
 export type BarbeariaPublica = NonNullable<Awaited<ReturnType<typeof obterBarbeariaDoEndereco>>>;
 
 /**
- * A página pública da barbearia (E.6, D-198): a mesma para o público e para a pré-visualização da
+ * A página pública da barbearia (E.6, D-198, D-200): a mesma para o público e para a pré-visualização da
  * Gestão do sistema, onde `sobrepor` mostra um modelo e uma cor ainda por guardar.
  */
 export async function PaginaPublica({
@@ -67,6 +67,8 @@ export async function PaginaPublica({
   const whatsapp = b.whatsapp ? ligacaoWhatsApp(b.whatsapp, "") : null;
   const entrar = `${base}/cliente`;
   const estilo = sobrepor?.estilo ?? estiloDe(b.estilo_pagina);
+  const modelo = MODELOS[estilo];
+  const cores = coresDaCapa(cor, b.logo_fundo);
   // A próxima vaga do serviço principal (D-198): só com a marcação online aberta.
   const vaga = marcar && servicos[0]?.id ? await proximaVaga(bd, b.id, servicos[0].id, t) : null;
   const nomeServico = (s: (typeof servicos)[number]) =>
@@ -128,51 +130,58 @@ export async function PaginaPublica({
         lingua={lingua}
         nome={b.nome}
         logo={b.logo_url}
-        cor={cor}
-        corTexto={corDoTexto(cor)}
+        cores={cores}
+        botao={botaoDoCorpo(cor)}
         marcar={marcar}
         whatsapp={whatsapp}
         telefone={b.telefone}
         entrar={entrar}
       />
-      <main className="mx-auto max-w-6xl px-4 md:px-8">
-        <BlocoServicos
-          t={t}
-          marcar={marcar}
-          servicos={servicos.map((s) => ({
-            id: s.id ?? "",
-            nome: nomeServico(s),
-            descricao: descricaoServico(s),
-            duracao: s.duracao_min ?? 0,
-            precoCent: s.preco_centimos,
-          }))}
-        />
-        <BlocoPromocoes t={t} promocoes={promocoes} />
-        <BlocoEquipa t={t} equipa={equipa} />
-        <BlocoHistoria t={t} historia={b.historia} />
-        {/* Onde e quando, lado a lado no computador (D-198). */}
-        <div className="grid md:grid-cols-2 md:gap-x-16">
-          <BlocoMapa
-            t={t}
-            morada={[b.morada, b.codigo_postal, b.cidade].filter(Boolean).join(", ") || null}
-            mapa={b.google_maps_url}
-          />
-          <BlocoHorario
-            t={t}
-            abertura={hm(b.hora_abertura)}
-            fecho={hm(b.hora_fecho)}
-            descanso={b.dias_descanso ?? []}
-            almoco={
-              b.intervalo_almoco_inicio && b.intervalo_almoco_fim
-                ? [hm(b.intervalo_almoco_inicio), hm(b.intervalo_almoco_fim)]
-                : null
-            }
-            estado={estado}
-          />
-        </div>
-        <BlocosReceita t={t} inquilinoId={b.id} encomendar={`${base}/loja`} />
-        <BlocoContactos t={t} whatsapp={whatsapp} telefone={b.telefone} redes={redes} />
-      </main>
+      <Corpo
+        corpo={modelo.corpo}
+        principal={
+          <>
+            <BlocoServicos
+              t={t}
+              marcar={marcar}
+              modo={modelo.servicos}
+              servicos={servicos.map((s) => ({
+                id: s.id ?? "",
+                nome: nomeServico(s),
+                descricao: descricaoServico(s),
+                duracao: s.duracao_min ?? 0,
+                precoCent: s.preco_centimos,
+              }))}
+            />
+            <BlocoPromocoes t={t} promocoes={promocoes} />
+            <BlocoEquipa t={t} equipa={equipa} />
+            <BlocoHistoria t={t} historia={b.historia} />
+            <BlocosReceita t={t} inquilinoId={b.id} encomendar={`${base}/loja`} />
+          </>
+        }
+        visita={
+          <>
+            <BlocoMapa
+              t={t}
+              morada={[b.morada, b.codigo_postal, b.cidade].filter(Boolean).join(", ") || null}
+              mapa={b.google_maps_url}
+            />
+            <BlocoHorario
+              t={t}
+              abertura={hm(b.hora_abertura)}
+              fecho={hm(b.hora_fecho)}
+              descanso={b.dias_descanso ?? []}
+              almoco={
+                b.intervalo_almoco_inicio && b.intervalo_almoco_fim
+                  ? [hm(b.intervalo_almoco_inicio), hm(b.intervalo_almoco_fim)]
+                  : null
+              }
+              estado={estado}
+            />
+            <BlocoContactos t={t} whatsapp={whatsapp} telefone={b.telefone} redes={redes} />
+          </>
+        }
+      />
       <Rodape
         t={t}
         lingua={lingua}
@@ -182,8 +191,8 @@ export async function PaginaPublica({
         avaliacao={b.google_avaliacao_url}
         entrar={entrar}
         nome={b.nome}
-        estilo={estilo}
-        cores={coresDaCapa(cor, b.logo_fundo)}
+        logo={b.logo_url}
+        cores={cores}
       />
     </PaginaModelo>
   );

@@ -1,5 +1,6 @@
 import { ArrowRight, MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { formatarTelefone } from "@/lib/formatacao/telefone";
 import type { TextosPublicos } from "@/lib/i18n/publico";
 import type { CoresCapa } from "@/lib/publico/cores-capa";
@@ -7,7 +8,8 @@ import type { Estilo } from "@/lib/publico/estilos";
 import { cn } from "@/lib/utils";
 import { LogoCapa } from "../logo-capa";
 
-// Peças comuns às capas dos modelos (D-198): os dados, as ações e a imagem.
+// Peças comuns aos cabeçalhos dos modelos (D-198, D-200): os dados, o logótipo, o nome, as
+// informações e as ações. Tamanhos contidos: o nome é um título, não um cartaz.
 
 export type DadosCapa = {
   nome: string;
@@ -28,123 +30,153 @@ export type DadosCapa = {
   telefone: string | null;
   estado: string;
   entrar: string;
-  /** Os serviços com preço já formatado, para o modelo Vitrine. */
+  /** Os serviços com preço já formatado, para o cabeçalho Montra. */
   servicos: { id: string; nome: string; preco: string; duracao: string }[];
 };
 
 export type PropsCapa = { d: DadosCapa; t: TextosPublicos; c: CoresCapa };
 
+/** O fundo e o texto do cabeçalho, e as cores do botão para as peças lá dentro. */
+export const corDoCabecalho = (c: CoresCapa): CSSProperties =>
+  ({
+    backgroundColor: c.fundo,
+    color: c.tinta,
+    "--capa-destaque": c.destaque,
+    "--capa-tinta-destaque": c.tintaDestaque,
+  }) as CSSProperties;
+
 /** A morada numa linha: «Rua…, 20 · Viseu». */
 export const linhaMorada = (d: DadosCapa) => [d.morada, d.cidade].filter(Boolean).join(" · ");
 
-/** O botão principal (marcar), com a próxima vaga por cima; ou o aviso de marcações fechadas. */
-export function AcaoPrincipal({
-  d,
-  t,
-  c,
-  className,
-  vagaClasse = "text-4xl md:text-5xl",
-}: PropsCapa & { className?: string; vagaClasse?: string }) {
+/** O logótipo tal como é, sem moldura, sobre o fundo do cabeçalho (que é o dele). */
+export function Logo({ d, className }: { d: DadosCapa; className?: string }) {
+  if (!d.logo) return null;
   return (
-    <div className={cn("grid gap-4", className)}>
-      {d.aberta && d.vaga ? (
-        <p className="grid gap-1" data-testid="proxima-vaga">
-          <span className="text-sm opacity-75">{t.capa.proximaVaga}</span>
-          <span className={cn("titulo-estilo", vagaClasse)}>{d.vaga}</span>
-        </p>
-      ) : null}
-      {d.aberta ? (
-        <Link
-          href={d.marcar}
-          data-testid="acao-marcar"
-          className="flex h-16 items-center justify-between gap-4 px-6 text-lg font-semibold transition-[filter] hover:brightness-110 active:translate-y-px"
-          style={{
-            backgroundColor: `var(--capa-destaque, ${c.destaque})`,
-            color: `var(--capa-tinta-destaque, ${c.tintaDestaque})`,
-          }}
-        >
-          {t.capa.marcarAgora}
-          <ArrowRight aria-hidden className="size-5" />
-        </Link>
-      ) : (
-        <p
-          className="px-5 py-4 font-semibold"
-          style={{ backgroundColor: "color-mix(in srgb, currentColor 12%, transparent)" }}
-          data-testid="marcacoes-indisponiveis"
-        >
-          {t.capa.indisponivel}
-        </p>
-      )}
-    </div>
+    <LogoCapa
+      nome={d.nome}
+      logo={d.logo}
+      fundoGuardado={!!d.logoFundo}
+      cor={d.cor}
+      className={className}
+    />
   );
 }
 
-/** WhatsApp e chamada, um tom abaixo da ação principal, e o estado do momento. */
-export function AcoesSecundarias({ d, t }: Omit<PropsCapa, "c">) {
-  const classe =
-    "flex h-14 items-center justify-center gap-2 px-4 text-sm font-semibold transition-opacity hover:opacity-80";
-  const tom = { backgroundColor: "color-mix(in srgb, currentColor 12%, transparent)" };
+export function Nome({ d, className }: { d: DadosCapa; className?: string }) {
   return (
-    <div className="grid gap-3">
-      {d.whatsapp || d.telefone ? (
-        <div className="grid grid-cols-2 gap-2">
-          {d.whatsapp ? (
-            <a
-              href={d.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classe}
-              style={tom}
-            >
-              <MessageCircle aria-hidden className="size-4" />
-              {t.capa.falarAjuda}
-            </a>
-          ) : null}
-          {d.telefone ? (
-            <a href={`tel:${d.telefone}`} className={classe} style={tom}>
-              <Phone aria-hidden className="size-4" />
-              {formatarTelefone(d.telefone)}
-            </a>
-          ) : null}
-        </div>
-      ) : null}
-      <p className="flex items-center gap-2 text-sm font-semibold">
-        <span aria-hidden className="size-2 rounded-full bg-current" />
+    <h1 className={cn("titulo-estilo text-4xl md:text-5xl", className)} translate="no">
+      {d.nome}
+    </h1>
+  );
+}
+
+/** A morada e o estado do momento («Aberto agora · fecha às 19:30»). */
+export function Info({ d, className }: { d: DadosCapa; className?: string }) {
+  const morada = linhaMorada(d);
+  return (
+    <div className={cn("grid gap-1.5 text-sm", className)}>
+      {morada ? <p className="opacity-80">{morada}</p> : null}
+      <p className="flex items-center gap-2 font-semibold">
+        <span aria-hidden className="size-2 shrink-0 rounded-full bg-current" />
         {d.estado}
       </p>
     </div>
   );
 }
 
-/** A linha de topo: a morada e «Entrar». */
-export function Topo({ d, t, className }: Omit<PropsCapa, "c"> & { className?: string }) {
+/** «Entrar», no canto do cabeçalho. */
+export function Entrar({ d, t, className }: Omit<PropsCapa, "c"> & { className?: string }) {
   return (
-    <div className={cn("flex items-baseline justify-between gap-4", className)}>
-      <p className="text-sm font-medium opacity-80">{linhaMorada(d)}</p>
-      <Link
-        href={d.entrar}
-        className="shrink-0 text-sm font-semibold underline-offset-4 hover:underline"
+    <Link
+      href={d.entrar}
+      className={cn(
+        "inline-flex h-10 items-center text-sm font-semibold underline-offset-4 hover:underline",
+        className,
+      )}
+    >
+      {t.capa.entrar}
+    </Link>
+  );
+}
+
+/**
+ * Marcar (com a próxima vaga), WhatsApp e chamada. `tom="capa"` usa as cores do cabeçalho;
+ * `tom="corpo"` as do corpo claro (para as peças em cartão branco).
+ */
+export function Acoes({
+  d,
+  t,
+  tom = "capa",
+  centro,
+  className,
+}: Omit<PropsCapa, "c"> & { tom?: "capa" | "corpo"; centro?: boolean; className?: string }) {
+  const principal: CSSProperties =
+    tom === "capa"
+      ? { backgroundColor: "var(--capa-destaque)", color: "var(--capa-tinta-destaque)" }
+      : { backgroundColor: "var(--ac)", color: "var(--ac-sobre)" };
+  const botao =
+    "inline-flex h-12 items-center justify-center gap-2 rounded-[var(--raio)] px-5 text-sm font-semibold transition-[filter,opacity] active:translate-y-px";
+  const secundario = cn(
+    botao,
+    "border hover:opacity-80",
+    tom === "capa" ? "border-current/30" : "border-borda-forte bg-card",
+  );
+  return (
+    <div className={cn("grid gap-3", centro && "justify-items-center", className)}>
+      {d.aberta && d.vaga ? (
+        <p className="text-sm" data-testid="proxima-vaga">
+          <span className="opacity-75">{t.capa.proximaVaga} · </span>
+          <span className="font-semibold">{d.vaga}</span>
+        </p>
+      ) : null}
+      <div
+        className={cn(
+          "grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap",
+          centro && "sm:justify-center",
+        )}
       >
-        {t.capa.entrar}
-      </Link>
+        {d.aberta ? (
+          <Link
+            href={d.marcar}
+            data-testid="acao-marcar"
+            className={cn(botao, "px-6 hover:brightness-110")}
+            style={principal}
+          >
+            {t.capa.marcarAgora}
+            <ArrowRight aria-hidden className="size-4" />
+          </Link>
+        ) : (
+          <p
+            className={cn(botao, "border border-current/30")}
+            data-testid="marcacoes-indisponiveis"
+          >
+            {t.capa.indisponivel}
+          </p>
+        )}
+        <div className="grid grid-cols-2 gap-2 sm:flex">
+          {d.whatsapp ? (
+            <a href={d.whatsapp} target="_blank" rel="noopener noreferrer" className={secundario}>
+              <MessageCircle aria-hidden className="size-4" />
+              {t.capa.falarAjuda}
+            </a>
+          ) : null}
+          {d.telefone ? (
+            <a href={`tel:${d.telefone}`} className={secundario}>
+              <Phone aria-hidden className="size-4" />
+              {formatarTelefone(d.telefone)}
+            </a>
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }
 
 /**
- * A imagem da capa: a fotografia da fachada, se existir; senão o logótipo sobre a cor do fundo
- * dele (sem moldura); senão nada. `cobrir` faz a fotografia ocupar a caixa toda.
+ * A imagem grande do cabeçalho Painel: a fotografia da fachada, se existir; senão o logótipo
+ * sobre a cor do fundo dele.
  */
-export function ImagemCapa({
-  d,
-  className,
-  pintaFundo = true,
-}: {
-  d: DadosCapa;
-  className?: string;
-  /** Falso quando é a capa inteira (e não esta caixa) que toma a cor do fundo do logótipo. */
-  pintaFundo?: boolean;
-}) {
+export function ImagemCapa({ d, className }: { d: DadosCapa; className?: string }) {
   if (d.foto)
     return (
       // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
@@ -155,14 +187,9 @@ export function ImagemCapa({
         fetchPriority="high"
       />
     );
-  if (!d.logo) return null;
   return (
-    <div
-      data-fundo-logo={pintaFundo || undefined}
-      className={cn("flex size-full items-center justify-center p-[8%]", className)}
-      style={{ backgroundColor: d.logoFundo ?? d.cor }}
-    >
-      <LogoCapa nome={d.nome} logo={d.logo} fundoGuardado={!!d.logoFundo} cor={d.cor} />
+    <div className={cn("flex size-full items-center justify-center p-[10%]", className)}>
+      <Logo d={d} className="max-h-40 md:max-h-72" />
     </div>
   );
 }

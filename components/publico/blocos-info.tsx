@@ -1,17 +1,21 @@
+import { AtSign, MapPin, MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { formatarTelefone } from "@/lib/formatacao/telefone";
 import type { TextosPublicos } from "@/lib/i18n/publico";
-import { Bloco } from "./blocos";
+import { Bloco, CARTAO } from "./blocos";
 
-// Blocos de informação (E.6): história, onde estamos, horário e contactos.
+// Blocos de informação (E.6, D-200): história, onde estamos, horário e contactos, em cartões.
 
 export function BlocoHistoria({ t, historia }: { t: TextosPublicos; historia: string | null }) {
   if (!historia) return null;
   return (
     <Bloco id="historia" titulo={t.blocos.historia}>
-      <p className="max-w-4xl text-2xl leading-snug whitespace-pre-line text-pretty md:text-4xl md:leading-tight">
-        {historia}
-      </p>
+      <div className={`${CARTAO} p-5 md:p-8`}>
+        <p className="max-w-prose text-base leading-relaxed whitespace-pre-line text-pretty md:text-lg">
+          {historia}
+        </p>
+      </div>
     </Bloco>
   );
 }
@@ -28,17 +32,24 @@ export function BlocoMapa({
   if (!morada && !mapa) return null;
   return (
     <Bloco id="onde" titulo={t.blocos.ondeEstamos}>
-      {morada ? <p className="max-w-3xl text-3xl leading-tight md:text-5xl">{morada}</p> : null}
-      {mapa ? (
-        <a
-          href={mapa}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="justify-self-start bg-foreground px-6 py-4 font-semibold text-background transition-opacity hover:opacity-85"
-        >
-          {t.blocos.abrirMapa}
-        </a>
-      ) : null}
+      <div className={`${CARTAO} grid gap-4 p-5`}>
+        {morada ? (
+          <p className="flex gap-3 leading-snug">
+            <MapPin aria-hidden className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
+            {morada}
+          </p>
+        ) : null}
+        {mapa ? (
+          <a
+            href={mapa}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-11 items-center justify-center rounded-[var(--raio)] border border-borda-forte px-4 text-sm font-semibold transition-colors hover:bg-campo sm:justify-self-start"
+          >
+            {t.blocos.abrirMapa}
+          </a>
+        ) : null}
+      </div>
     </Bloco>
   );
 }
@@ -62,21 +73,72 @@ export function BlocoHorario({
   const ordem = [1, 2, 3, 4, 5, 6, 0];
   return (
     <Bloco id="horario" titulo={t.blocos.horario}>
-      <p className="text-xl font-semibold">{estado}</p>
-      <dl className="grid max-w-xl gap-1.5">
-        {ordem.map((d) => (
-          <div key={d} className="flex justify-between gap-4 bg-muted px-5 py-3">
-            <dt>{t.dias[d]}</dt>
-            <dd className="tabular-nums">
-              {descanso.includes(d) ? t.blocos.descanso : `${abertura}–${fecho}`}
-            </dd>
-          </div>
-        ))}
-      </dl>
-      {almoco ? (
-        <p className="text-sm text-muted-foreground">{t.blocos.almoco(almoco[0], almoco[1])}</p>
-      ) : null}
+      <div className={`${CARTAO} overflow-hidden`}>
+        <p className="flex items-center gap-2 border-b px-5 py-3.5 text-sm font-semibold">
+          <span aria-hidden className="size-2 rounded-full bg-current" />
+          {estado}
+        </p>
+        <dl className="divide-y text-sm">
+          {ordem.map((d) => (
+            <div key={d} className="flex justify-between gap-4 px-5 py-2.5">
+              <dt>{t.dias[d]}</dt>
+              <dd
+                className={
+                  descanso.includes(d) ? "text-muted-foreground" : "font-medium tabular-nums"
+                }
+              >
+                {descanso.includes(d) ? t.blocos.descanso : `${abertura}–${fecho}`}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        {almoco ? (
+          <p className="border-t px-5 py-3 text-sm text-muted-foreground">
+            {t.blocos.almoco(almoco[0], almoco[1])}
+          </p>
+        ) : null}
+      </div>
     </Bloco>
+  );
+}
+
+function Linha({
+  href,
+  icone,
+  rotulo,
+  valor,
+  fora,
+}: {
+  href: string;
+  icone: ReactNode;
+  rotulo: string;
+  valor: string;
+  fora?: boolean;
+}) {
+  const classe = "flex min-h-14 items-center gap-3 px-5 py-3 transition-colors hover:bg-campo";
+  const conteudo = (
+    <>
+      <span aria-hidden className="text-muted-foreground">
+        {icone}
+      </span>
+      <span className="grid flex-1">
+        <span className="text-xs text-muted-foreground">{rotulo}</span>
+        <span className="font-semibold">{valor}</span>
+      </span>
+    </>
+  );
+  return (
+    <li>
+      {fora ? (
+        <Link href={href} target="_blank" rel="noopener noreferrer" className={classe}>
+          {conteudo}
+        </Link>
+      ) : (
+        <a href={href} className={classe}>
+          {conteudo}
+        </a>
+      )}
+    </li>
   );
 }
 
@@ -92,32 +154,36 @@ export function BlocoContactos({
   redes: { rotulo: string; url: string }[];
 }) {
   if (!whatsapp && !telefone && redes.length === 0) return null;
-  const ligacao = "text-2xl font-semibold underline-offset-4 hover:underline md:text-3xl";
+  const icone = "size-5";
   return (
     <Bloco id="contactos" titulo={t.blocos.contactos}>
-      <ul className="grid gap-2">
+      <ul className={`${CARTAO} divide-y overflow-hidden`}>
         {whatsapp ? (
-          <li>
-            {t.blocos.whatsapp}:{" "}
-            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className={ligacao}>
-              {t.capa.falar}
-            </a>
-          </li>
+          <Linha
+            href={whatsapp}
+            fora
+            icone={<MessageCircle className={icone} />}
+            rotulo={t.blocos.whatsapp}
+            valor={t.capa.falar}
+          />
         ) : null}
         {telefone ? (
-          <li>
-            {t.blocos.telefone}:{" "}
-            <a href={`tel:${telefone}`} className={ligacao}>
-              {formatarTelefone(telefone)}
-            </a>
-          </li>
+          <Linha
+            href={`tel:${telefone}`}
+            icone={<Phone className={icone} />}
+            rotulo={t.blocos.telefone}
+            valor={formatarTelefone(telefone)}
+          />
         ) : null}
         {redes.map((r) => (
-          <li key={r.url}>
-            <Link href={r.url} target="_blank" rel="noopener noreferrer" className={ligacao}>
-              {r.rotulo}
-            </Link>
-          </li>
+          <Linha
+            key={r.url}
+            href={r.url}
+            fora
+            icone={<AtSign className={icone} />}
+            rotulo={r.rotulo}
+            valor={r.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+          />
         ))}
       </ul>
     </Bloco>

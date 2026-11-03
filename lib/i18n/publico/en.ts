@@ -40,6 +40,7 @@ export const en = {
     almoco: (de: string, ate: string) => `Break from ${de} to ${ate}`,
     loja: "Shop",
     esgotado: "Sold out",
+    verTodos: "See all services",
     lojaNota: "Order now and pay at the counter when you collect.",
     encomendar: "Order",
     clube: "Club",

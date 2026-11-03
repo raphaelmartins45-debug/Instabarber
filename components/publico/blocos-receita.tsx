@@ -36,7 +36,7 @@ export async function BlocosReceita({
           <p className="text-sm text-muted-foreground">{b.clubeNota}</p>
           <ul className="grid gap-3 sm:grid-cols-2">
             {clubes.map((c) => (
-              <li key={c.id} className="grid gap-1 rounded-xl border bg-card p-4">
+              <li key={c.id} className="grid gap-1 rounded-[var(--raio)] border bg-card p-4">
                 <span className="font-bold">{c.nome}</span>
                 <span className="text-lg font-extrabold">
                   {b.porMes(formatarDinheiro(c.precoCent))}
@@ -54,7 +54,7 @@ export async function BlocosReceita({
           <p className="text-sm text-muted-foreground">{b.lojaNota}</p>
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {produtos.map((p) => (
-              <li key={p.id} className="grid gap-2 rounded-xl border bg-card p-3">
+              <li key={p.id} className="grid gap-2 rounded-[var(--raio)] border bg-card p-3">
                 {p.fotoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
                   <img
@@ -74,7 +74,7 @@ export async function BlocosReceita({
           {produtos.some((p) => !p.esgotado) ? (
             <Link
               href={encomendar}
-              className="inline-flex h-12 items-center justify-center rounded-xl bg-foreground px-5 font-bold text-background sm:justify-self-start"
+              className="inline-flex h-12 items-center justify-center rounded-[var(--raio)] bg-primary px-5 font-bold text-primary-foreground sm:justify-self-start"
               data-testid="encomendar"
             >
               {b.encomendar}

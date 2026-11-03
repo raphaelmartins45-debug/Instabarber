@@ -3,17 +3,19 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { textosPublicos, type Lingua } from "@/lib/i18n/publico";
+import type { CoresCapa } from "@/lib/publico/cores-capa";
 
 /**
- * As barras da página pública (E.6): a fina, no topo, quando a capa sai do ecrã (logótipo, nome,
- * «Entrar» e «Marcar»); e a fixa no fundo, com as três ações, enquanto a página rola.
+ * As barras da página pública (E.6, D-200): a fina, no topo, nas cores do cabeçalho, quando ele
+ * sai do ecrã (logótipo, nome, «Entrar» e «Marcar»); e a fixa no fundo, no telemóvel, com as três
+ * ações, enquanto a página rola.
  */
 export function Barras({
   lingua,
   nome,
   logo,
-  cor,
-  corTexto,
+  cores,
+  botao,
   marcar,
   whatsapp,
   telefone,
@@ -22,8 +24,10 @@ export function Barras({
   lingua: Lingua;
   nome: string;
   logo: string | null;
-  cor: string;
-  corTexto: string;
+  /** As cores do cabeçalho, para a barra do topo. */
+  cores: CoresCapa;
+  /** O botão no corpo claro, para a barra do fundo. */
+  botao: { fundo: string; tinta: string };
   marcar: string | null;
   whatsapp: string | null;
   telefone: string | null;
@@ -38,12 +42,14 @@ export function Barras({
     obs.observe(capa);
     return () => obs.disconnect();
   }, []);
-  const botao = "flex h-11 flex-1 items-center justify-center rounded-lg px-3 text-sm font-bold";
+  const classeBotao =
+    "flex h-11 flex-1 items-center justify-center rounded-[var(--raio)] px-3 text-sm font-bold";
   return (
     <>
       <div
         aria-hidden={!rolou}
-        className={`fixed inset-x-0 top-0 z-30 bg-background text-foreground transition-transform ${rolou ? "translate-y-0" : "-translate-y-full"}`}
+        className={`fixed inset-x-0 top-0 z-30 transition-transform ${rolou ? "translate-y-0" : "-translate-y-full"}`}
+        style={{ backgroundColor: cores.fundo, color: cores.tinta }}
       >
         <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2">
           {logo ? (
@@ -53,7 +59,7 @@ export function Barras({
           <span className="flex-1 truncate text-sm font-bold">{nome}</span>
           <Link
             href={entrar}
-            className="flex h-10 items-center rounded-full border px-3 text-sm"
+            className="flex h-10 items-center rounded-[var(--raio)] border border-current/30 px-3 text-sm"
             tabIndex={rolou ? 0 : -1}
           >
             {t.capa.entrar}
@@ -61,8 +67,8 @@ export function Barras({
           {marcar ? (
             <Link
               href={marcar}
-              className="flex h-10 items-center rounded-full px-4 text-sm font-bold"
-              style={{ backgroundColor: cor, color: corTexto }}
+              className="flex h-10 items-center rounded-[var(--raio)] px-4 text-sm font-bold"
+              style={{ backgroundColor: cores.destaque, color: cores.tintaDestaque }}
               tabIndex={rolou ? 0 : -1}
             >
               {t.capa.marcarCurto}
@@ -72,11 +78,15 @@ export function Barras({
       </div>
       <nav
         aria-label={t.capa.marcar}
-        className="fixed inset-x-0 bottom-0 z-30 bg-background px-3 py-2 text-foreground md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 border-t bg-card px-3 py-2 text-foreground md:hidden"
       >
         <div className="mx-auto flex max-w-5xl gap-2">
           {marcar ? (
-            <Link href={marcar} className={botao} style={{ backgroundColor: cor, color: corTexto }}>
+            <Link
+              href={marcar}
+              className={classeBotao}
+              style={{ backgroundColor: botao.fundo, color: botao.tinta }}
+            >
               {t.capa.marcarCurto}
             </Link>
           ) : null}
@@ -85,13 +95,13 @@ export function Barras({
               href={whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className={`${botao} bg-[#1F9D55] text-white`}
+              className={`${classeBotao} bg-[#1F9D55] text-white`}
             >
               {t.blocos.whatsapp}
             </a>
           ) : null}
           {telefone ? (
-            <a href={`tel:${telefone}`} className={`${botao} border`}>
+            <a href={`tel:${telefone}`} className={`${classeBotao} border`}>
               {t.blocos.telefone}
             </a>
           ) : null}

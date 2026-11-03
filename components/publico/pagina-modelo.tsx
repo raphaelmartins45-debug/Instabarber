@@ -1,15 +1,11 @@
 import type { CSSProperties, ReactNode } from "react";
-import { ACABAMENTO, type Estilo } from "@/lib/publico/estilos";
+import { botaoDoCorpo, FUNDO_CORPO } from "@/lib/publico/cores-capa";
+import { MODELOS, type Estilo } from "@/lib/publico/estilos";
 import { variavelDoEstilo } from "./fontes";
 
-// O invólucro da página pública (D-198): as letras do modelo e as cores das secções. Redefine os
-// tokens do sistema (fundo, texto, camada, destaque) só dentro da página, para todos os blocos
-// seguirem o modelo sem saberem dele.
-
-const FUNDOS = {
-  claro: { fundo: "#F6F3EE", texto: "#141210", camada: "#EAE5DD", texto2: "#5E5850" },
-  escuro: { fundo: "#0F0E0D", texto: "#F2EFEA", camada: "#1E1C1A", texto2: "#A8A29A" },
-};
+// O invólucro da página pública (D-198, D-200): as letras do modelo e um corpo claro, igual em
+// todos os modelos, para se ler bem. Redefine os tokens do sistema (fundo, cartão, texto, borda,
+// destaque) só dentro da página, para os blocos seguirem o modelo sem saberem dele.
 
 const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(", ");
 
@@ -24,8 +20,8 @@ export function PaginaModelo({
   lingua: string;
   children: ReactNode;
 }) {
-  const a = ACABAMENTO[estilo];
-  const f = FUNDOS[a.fundo];
+  const m = MODELOS[estilo];
+  const botao = botaoDoCorpo(cor);
   return (
     <div
       lang={lingua}
@@ -33,12 +29,24 @@ export function PaginaModelo({
       className={`pagina-publica bg-background text-foreground ${variavelDoEstilo(estilo)}`}
       style={
         {
-          "--peso-titulo": a.peso,
-          "--sup-fundo": f.fundo,
-          "--texto": f.texto,
-          "--sup-camada": f.camada,
-          "--texto-2": f.texto2,
-          "--ac-rgb": rgb(cor),
+          colorScheme: "light",
+          "--peso-titulo": m.peso,
+          "--raio": `${m.raio}px`,
+          "--sup-fundo": FUNDO_CORPO,
+          "--sup-cartao": "#FFFFFF",
+          "--sup-elevado": "#FFFFFF",
+          "--sup-camada": "#ECE9E3",
+          "--borda": "rgba(22, 20, 18, 0.10)",
+          "--borda-forte": "rgba(22, 20, 18, 0.18)",
+          "--texto": "#161412",
+          "--texto-2": "#5A544D",
+          "--texto-3": "#6B655D",
+          "--campo": "rgba(22, 20, 18, 0.03)",
+          "--ac": botao.fundo,
+          "--ac-hi": botao.fundo,
+          "--ac-sobre": botao.tinta,
+          "--ac-rgb": rgb(botao.fundo),
+          "--ac-texto": "#161412",
         } as CSSProperties
       }
     >

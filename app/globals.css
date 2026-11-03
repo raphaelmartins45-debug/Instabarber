@@ -203,22 +203,24 @@
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
   }
-  /* Página pública (D-198): o texto e os títulos nas letras do modelo da barbearia. */
+  /* Página pública (D-198, D-200): o texto e os títulos nas letras do modelo da barbearia. */
   .pagina-publica {
     font-family: var(--letra-texto), system-ui, sans-serif;
   }
   .titulo-estilo {
     font-family: var(--letra-titulo), Georgia, serif;
     font-weight: var(--peso-titulo, 400);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  /* A Imbue é estreita e de olho pequeno: igualada às outras letras no mesmo tamanho. */
+  [data-estilo="monumento"] .titulo-estilo {
+    font-size-adjust: 0.5;
   }
   [data-estilo="cartaz"] .titulo-estilo {
     text-transform: uppercase;
-    letter-spacing: -0.04em;
-  }
-  [data-estilo="palco"] .titulo-estilo {
-    text-transform: lowercase;
+    letter-spacing: -0.02em;
   }
   .rotulo {
     font-size: 11px;

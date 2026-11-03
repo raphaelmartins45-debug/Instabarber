@@ -77,6 +77,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(app)/app/(painel)/sistema/[seccao]/page.tsx`
 - `app/(app)/app/(painel)/sistema/page.tsx`
 - `app/(app)/app/escolher/page.tsx`
+- `app/(app)/app/pre-visualizacao/page.tsx`
 - `app/(app)/app/suspensa/page.tsx`
 - `app/(auth)/entrar/confirmar/route.ts`
 - `app/(auth)/entrar/definir/page.tsx`
