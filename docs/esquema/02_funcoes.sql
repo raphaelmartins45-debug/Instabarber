@@ -1796,6 +1796,41 @@ begin
   on conflict (comunicado_id, inquilino_id) do nothing;
 end $$;
 
+-- Comunicados à equipa InstaBarber (D-191): para os comerciais ou para os gestores, todos ou
+-- uma pessoa. Cada pessoa lê e marca como lidos os seus por estas funções.
+create or replace function public.comunicado_para_equipa(p_comunicado uuid, p_user uuid) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (
+    select 1 from public.comunicados c join public.perfis p on p.user_id = p_user
+     where c.id = p_comunicado and c.inicio <= now() and (c.fim is null or c.fim > now())
+       and p.ativo and p.inquilino_id is null
+       and ((c.destino = 'comerciais' and p.papel = 'comercial')
+            or (c.destino = 'gestores' and p.papel = 'gestor_plataforma'))
+       and (c.destinatario_id is null or c.destinatario_id = p_user))
+$$;
+
+-- Os comunicados em vigor para quem está a usar o Admin que ainda não marcou como lidos.
+create or replace function public.meus_comunicados_equipa()
+returns table (id uuid, titulo text, texto text, inicio timestamptz)
+language sql stable security definer set search_path = '' as $$
+  select c.id, c.titulo, c.texto, c.inicio from public.comunicados c
+   where public.comunicado_para_equipa(c.id, auth.uid())
+     and not exists (select 1 from public.comunicado_leituras_equipa l
+                      where l.comunicado_id = c.id and l.user_id = auth.uid())
+   order by c.inicio desc;
+$$;
+
+create or replace function public.marcar_comunicado_lido_equipa(p_comunicado uuid) returns void
+language plpgsql security definer set search_path = '' as $$
+begin
+  if not public.comunicado_para_equipa(p_comunicado, auth.uid()) then
+    raise exception 'comunicado_invalido' using errcode = 'P0001';
+  end if;
+  insert into public.comunicado_leituras_equipa (comunicado_id, user_id)
+  values (p_comunicado, auth.uid())
+  on conflict (comunicado_id, user_id) do nothing;
+end $$;
+
 -- -----------------------------------------------------------------------------
 -- 8E · Equipa InstaBarber (D-161): o dono gere as contas; o comercial trabalha os seus leads.
 -- -----------------------------------------------------------------------------
@@ -2827,4 +2862,9 @@ revoke all on function public.meu_historico_cortes(uuid), public.foto_do_cliente
   from public, anon;
 grant execute on function public.meu_historico_cortes(uuid), public.foto_do_cliente(text, boolean),
   public.minhas_fotos_historico(uuid), public.mudar_consentimento_fotos(uuid, boolean)
+  to authenticated;
+
+revoke all on function public.comunicado_para_equipa(uuid, uuid), public.meus_comunicados_equipa(),
+  public.marcar_comunicado_lido_equipa(uuid) from public, anon;
+grant execute on function public.meus_comunicados_equipa(), public.marcar_comunicado_lido_equipa(uuid)
   to authenticated;

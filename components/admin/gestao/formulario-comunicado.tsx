@@ -15,13 +15,21 @@ import { CampoTextoLongo } from "./campo-texto-longo";
 
 const t = textos.gestao.comunicados;
 
-/** Novo comunicado aos gestores (D-160): para todas, para um plano ou para uma barbearia. */
+/**
+ * Novo comunicado (D-160, D-191): às barbearias (todas, um plano ou uma) ou à equipa InstaBarber
+ * (os comerciais ou os gestores, todos ou uma pessoa).
+ */
 export function FormularioComunicado({
   hoje,
   barbearias,
+  comerciais,
+  gestores,
 }: {
   hoje: string;
   barbearias: Record<string, string>;
+  /** As pessoas de cada grupo da equipa (D-191), para escolher uma. */
+  comerciais: Record<string, string>;
+  gestores: Record<string, string>;
 }) {
   const router = useRouter();
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
@@ -32,6 +40,7 @@ export function FormularioComunicado({
     destino: "todas",
     plano: "",
     inquilino_id: "",
+    destinatario_id: "",
     inicio: hoje,
     fim: "",
   };
@@ -87,6 +96,14 @@ export function FormularioComunicado({
             rotulo={t.campos.plano}
             opcoes={{ "": "", ...textos.admin.planos }}
             {...register("plano")}
+          />
+        ) : null}
+        {destino === "comerciais" || destino === "gestores" ? (
+          <CampoEscolha
+            id="com-pessoa"
+            rotulo={t.campos.pessoa}
+            opcoes={{ "": t.todosDoGrupo, ...(destino === "comerciais" ? comerciais : gestores) }}
+            {...register("destinatario_id")}
           />
         ) : null}
         {destino === "barbearia" ? (

@@ -1333,16 +1333,19 @@ create table comunicados (
   id            uuid primary key default gen_random_uuid(),
   titulo        text not null check (length(trim(titulo)) between 1 and 120),
   texto         text not null check (length(trim(texto)) between 1 and 3000),
-  destino       text not null check (destino in ('todas','plano','barbearia')),
+  destino       text not null check (destino in ('todas','plano','barbearia','comerciais','gestores')),
   plano         text check (plano in ('basic','pro')),
   inquilino_id  uuid references inquilinos(id) on delete cascade,
+  -- Uma pessoa da equipa (D-191), só nos destinos «comerciais» e «gestores»; nula = todos
+  destinatario_id uuid references auth.users(id) on delete cascade,
   inicio        timestamptz not null default now(),
   fim           timestamptz,
   criado_por    uuid references auth.users(id) on delete set null,
   criado_em     timestamptz not null default now(),
-  check ((destino = 'todas' and plano is null and inquilino_id is null)
-      or (destino = 'plano' and plano is not null and inquilino_id is null)
-      or (destino = 'barbearia' and inquilino_id is not null and plano is null)),
+  check ((destino = 'todas' and plano is null and inquilino_id is null and destinatario_id is null)
+      or (destino = 'plano' and plano is not null and inquilino_id is null and destinatario_id is null)
+      or (destino = 'barbearia' and inquilino_id is not null and plano is null and destinatario_id is null)
+      or (destino in ('comerciais','gestores') and plano is null and inquilino_id is null)),
   check (fim is null or fim > inicio)
 );
 create index comunicados_inicio on comunicados (inicio desc);
@@ -1353,6 +1356,14 @@ create table comunicado_leituras (
   lido_por       uuid references auth.users(id) on delete set null,
   lido_em        timestamptz not null default now(),
   primary key (comunicado_id, inquilino_id)
+);
+
+-- Quem da equipa InstaBarber leu cada comunicado (D-191): uma linha por pessoa.
+create table comunicado_leituras_equipa (
+  comunicado_id  uuid not null references comunicados(id) on delete cascade,
+  user_id        uuid not null references auth.users(id) on delete cascade,
+  lido_em        timestamptz not null default now(),
+  primary key (comunicado_id, user_id)
 );
 
 -- Condições comerciais (D-161): uma só linha. Os descontos e a taxa de migração estão

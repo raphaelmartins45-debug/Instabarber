@@ -570,9 +570,10 @@ Só a Performa LAB vê este registo; não entra na exportação dos dados da bar
 **Comunicado**
 
 1. `Admin → Gestão do negócio → Comunicados`.
-2. Título, texto, para quem (todas, um plano ou uma barbearia), primeiro e último dia. Publicar.
+2. Título, texto, para quem (todas, um plano ou uma barbearia; ou a equipa: os comerciais ou os gestores da InstaBarber, com «Pessoa» para escolher alguém em concreto), primeiro e último dia. Publicar.
 3. O aviso aparece no Início do gestor (só o gestor, não os barbeiros) até ele carregar em «Li». No admin vê-se quantas barbearias já leram.
-4. Para quem ainda não leu, «Avisar por WhatsApp» abre a conversa com a mensagem pronta; o envio é à mão.
+4. Para quem ainda não leu, «Avisar por WhatsApp» abre a conversa com a mensagem pronta; o envio é à mão (só nos comunicados às barbearias).
+   Os comunicados à equipa (D-191) aparecem no topo do Admin de quem os recebe (o comercial no Comercial, o gestor no painel geral) até carregar em «Li»; a lista mostra quantas pessoas já leram.
 5. «Terminar agora» tira o aviso do painel e guarda as leituras; «Apagar» tira-o de vez.
 
 **Confirmar:** o comunicado aparece «Em vigor» e a contagem de leituras sobe quando os gestores carregam em «Li».

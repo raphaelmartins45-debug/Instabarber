@@ -22,3 +22,15 @@ export async function marcarComunicadoLido(bd: ClienteBD, id: string, inquilinoI
   });
   return !error;
 }
+
+/** Os comunicados à equipa InstaBarber de quem está no Admin (D-191), ainda não lidos. */
+export async function meusComunicadosEquipa(bd: ClienteBD): Promise<ComunicadoPainel[]> {
+  const { data, error } = await bd.rpc("meus_comunicados_equipa");
+  if (error) falhaDeLeitura("meus_comunicados_equipa", error);
+  return data.map((c) => ({ id: c.id, titulo: c.titulo, texto: c.texto }));
+}
+
+export async function marcarComunicadoLidoEquipa(bd: ClienteBD, id: string) {
+  const { error } = await bd.rpc("marcar_comunicado_lido_equipa", { p_comunicado: id });
+  return !error;
+}

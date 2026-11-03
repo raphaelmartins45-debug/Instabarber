@@ -59,6 +59,9 @@ export const contas = (projeto: string) => ({
   // Campanhas comerciais (D-190).
   adminCampanhas: `admin-campanhas-${projeto}@teste.instabarber.pt`,
   donoCampanhas: `dono-campanhas-${projeto}@teste.instabarber.pt`,
+  // Comunicados à equipa (D-191).
+  adminComunicados: `admin-comunicados-${projeto}@teste.instabarber.pt`,
+  comercialComunicados: `comercial-comunicados-${projeto}@teste.instabarber.pt`,
   // Equipa InstaBarber (D-161): o dono que gere as contas, um gestor e um comercial.
   adminEquipa: `admin-equipa-${projeto}@teste.instabarber.pt`,
   gestor: `gestor-${projeto}@teste.instabarber.pt`,

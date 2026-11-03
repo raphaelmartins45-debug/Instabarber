@@ -1,7 +1,13 @@
 import { apagar, terminar } from "@/app/(admin)/admin/(protegido)/comunicados/acoes";
 import { BotaoAcao } from "@/components/admin/financas/botao-acao";
 import { Etiqueta } from "@/components/nucleo/etiqueta";
-import { alvosDoComunicado, estadoComunicado } from "@/lib/admin/comunicados";
+import {
+  alvosDoComunicado,
+  estadoComunicado,
+  paraEquipa,
+  type PessoaAlvo,
+  pessoasDoComunicado,
+} from "@/lib/admin/comunicados";
 import { dataCurta } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
 import type { Comunicado } from "@/lib/repositorios/admin/comunicados";
@@ -22,25 +28,33 @@ type Barbearia = {
 export function ListaComunicados({
   comunicados,
   barbearias,
+  equipa,
   agora,
 }: {
   comunicados: Comunicado[];
   barbearias: Barbearia[];
+  /** A equipa InstaBarber, para os comunicados aos comerciais e aos gestores (D-191). */
+  equipa: (PessoaAlvo & { nome: string })[];
   agora: Date;
 }) {
   if (comunicados.length === 0) return <p className="text-sm text-muted-foreground">{t.vazio}</p>;
   const nomes = new Map(barbearias.map((b) => [b.id, b.nome]));
   const para = (c: Comunicado) =>
-    c.destino === "plano"
-      ? `${t.destinos.plano}: ${textos.admin.planos[c.plano as "pro"]}`
-      : c.destino === "barbearia"
-        ? (nomes.get(c.inquilinoId ?? "") ?? t.destinos.barbearia)
-        : t.destinos.todas;
+    paraEquipa(c)
+      ? c.destinatarioId
+        ? `${t.destinos[c.destino]}: ${equipa.find((p) => p.userId === c.destinatarioId)?.nome ?? ""}`
+        : t.destinos[c.destino]!
+      : c.destino === "plano"
+        ? `${t.destinos.plano}: ${textos.admin.planos[c.plano as "pro"]}`
+        : c.destino === "barbearia"
+          ? (nomes.get(c.inquilinoId ?? "") ?? t.destinos.barbearia)
+          : t.destinos.todas!;
   return (
     <ul className="grid gap-3">
       {comunicados.map((c) => {
         const estado = estadoComunicado(c, agora);
-        const alvos = alvosDoComunicado(c, barbearias);
+        const equipaAlvo = paraEquipa(c) ? pessoasDoComunicado(c, equipa) : [];
+        const alvos = paraEquipa(c) ? [] : alvosDoComunicado(c, barbearias);
         const lidas = alvos.filter((b) => c.lidas.includes(b.id));
         // O último dia mostrado é o anterior ao fim gravado (o fim é a meia-noite seguinte).
         const ultimo = c.fim ? dataCurta(new Date(new Date(c.fim).getTime() - 1)) : null;
@@ -52,10 +66,17 @@ export function ListaComunicados({
             </div>
             <p className="text-sm whitespace-pre-line">{c.texto}</p>
             <p className="text-xs text-muted-foreground">
-              {t.para(para(c))} · {t.periodo(dataCurta(c.inicio), ultimo)}
+              {t.para(para(c) ?? "")} · {t.periodo(dataCurta(c.inicio), ultimo)}
             </p>
-            <p className="text-sm font-semibold">{t.leituras(lidas.length, alvos.length)}</p>
-            {estado === "ativo" ? (
+            <p className="text-sm font-semibold">
+              {paraEquipa(c)
+                ? t.leiturasEquipa(
+                    equipaAlvo.filter((p) => c.lidasEquipa.includes(p.userId)).length,
+                    equipaAlvo.length,
+                  )
+                : t.leituras(lidas.length, alvos.length)}
+            </p>
+            {estado === "ativo" && !paraEquipa(c) ? (
               <AvisoWhatsapp
                 titulo={c.titulo}
                 porLer={alvos.filter((b) => !c.lidas.includes(b.id))}

@@ -123,6 +123,20 @@ export default async function semear() {
     // Registo pelo painel (D-189).
     await perfil(bd, await criarConta(bd, c.adminRegisto), "super_admin", null, c.adminRegisto);
     await perfil(bd, await criarConta(bd, c.adminCampanhas), "super_admin", null, c.adminCampanhas);
+    await perfil(
+      bd,
+      await criarConta(bd, c.adminComunicados),
+      "super_admin",
+      null,
+      c.adminComunicados,
+    );
+    await perfil(
+      bd,
+      await criarConta(bd, c.comercialComunicados),
+      "comercial",
+      null,
+      c.comercialComunicados,
+    );
     // Contrato enviado ao cliente (D-181).
     const contratos = await criarConta(bd, c.adminContratos);
     await perfil(bd, contratos, "super_admin", null, c.adminContratos);

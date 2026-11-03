@@ -1046,3 +1046,9 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **O que se muda no ecrã:** ligar, data de fim, vagas, nome e texto. O que cada campanha oferece está na base de dados e muda-se por migração, com testes. Criar campanhas novas pelo ecrã fica para depois, se for preciso.
 - **Técnica:** migração 21 (`20261103000021_campanhas.sql`); testes SQL em `96i_campanhas.sql`; regras em `lib/comercial/campanhas.ts` e `precoDoPeriodo` (`lib/regras/receita.ts`).
 
+## D-191 · 03/11/2026 · Comunicados também para a equipa InstaBarber — dono
+- **Pedido do dono:** comunicados aos comerciais e aos gestores, com a mesma lógica dos das barbearias: escolhe-se o grupo e, se for para alguém em concreto, aparece ao lado a lista para escolher a pessoa.
+- **Como fica:** em «Para quem» há dois destinos novos, «Comerciais da InstaBarber» e «Gestores da InstaBarber»; o campo «Pessoa» mostra «Todos» e as pessoas ativas desse grupo. O comunicado aparece no topo do Admin de quem o recebe (o comercial no Comercial, o gestor no painel geral) até carregar em «Li». A lista dos comunicados mostra «Lido por X de Y pessoas». O aviso por WhatsApp fica só para as barbearias.
+- **Regras:** só os ativos do grupo recebem; quem sai da equipa deixa de os ver; as barbearias não os veem e os comunicados às barbearias não chegam à equipa. Leituras por pessoa em `comunicado_leituras_equipa`, escritas só por `marcar_comunicado_lido_equipa()`; a base de dados decide quem vê (`comunicado_para_equipa`, `meus_comunicados_equipa`).
+- **Técnica:** migração 22 (`20261103000022_comunicados_equipa.sql`); testes SQL em `96j_comunicados_equipa.sql`; e2e `comunicados-equipa`.
+

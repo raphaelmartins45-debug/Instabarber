@@ -231,6 +231,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `comissoes_servico`
 - `comprovativos_pagamento`
 - `comunicado_leituras`
+- `comunicado_leituras_equipa`
 - `comunicados`
 - `configuracao_comercial`
 - `contas_pagar`
@@ -308,6 +309,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `cliente_por_telefone()`
 - `clientes_do_profissional()`
 - `comunicado_para()`
+- `comunicado_para_equipa()`
 - `concluir_marcacao()`
 - `confirmar_lembrete_vencimento()`
 - `confirmar_reserva()`
@@ -356,6 +358,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `marcacoes_antes_gravar()`
 - `marcar_comissao_paga()`
 - `marcar_comunicado_lido()`
+- `marcar_comunicado_lido_equipa()`
 - `marcar_contrato_enviado()`
 - `marcar_falta()`
 - `marcar_proposta_enviada()`
@@ -364,6 +367,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `meu_historico_cortes()`
 - `meus_clientes()`
 - `meus_comunicados()`
+- `meus_comunicados_equipa()`
 - `meus_leads()`
 - `meus_profissionais()`
 - `minhas_fotos_historico()`

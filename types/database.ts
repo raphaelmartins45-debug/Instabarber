@@ -1113,10 +1113,38 @@ export type Database = {
           },
         ];
       };
+      comunicado_leituras_equipa: {
+        Row: {
+          comunicado_id: string;
+          lido_em: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          comunicado_id: string;
+          lido_em?: string;
+          user_id: string;
+        };
+        Update: {
+          comunicado_id?: string;
+          lido_em?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comunicado_leituras_equipa_comunicado_id_fkey";
+            columns: ["comunicado_id"];
+            isOneToOne: false;
+            referencedRelation: "comunicados";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       comunicados: {
         Row: {
           criado_em: string;
           criado_por: string | null;
+          destinatario_id: string | null;
           destino: string;
           fim: string | null;
           id: string;
@@ -1130,6 +1158,7 @@ export type Database = {
         Insert: {
           criado_em?: string;
           criado_por?: string | null;
+          destinatario_id?: string | null;
           destino: string;
           fim?: string | null;
           id?: string;
@@ -1142,6 +1171,7 @@ export type Database = {
         Update: {
           criado_em?: string;
           criado_por?: string | null;
+          destinatario_id?: string | null;
           destino?: string;
           fim?: string | null;
           id?: string;
@@ -5597,6 +5627,7 @@ export type Database = {
       };
       clientes_do_profissional: { Args: Record<PropertyKey, never>; Returns: string[] };
       comunicado_para: { Args: { p_comunicado: string; p_inquilino: string }; Returns: boolean };
+      comunicado_para_equipa: { Args: { p_comunicado: string; p_user: string }; Returns: boolean };
       concluir_marcacao: {
         Args: { p_marcacao: string; p_modo?: string; p_valor_cobrado?: number };
         Returns: string;
@@ -5757,6 +5788,7 @@ export type Database = {
         Args: { p_comunicado: string; p_inquilino: string };
         Returns: undefined;
       };
+      marcar_comunicado_lido_equipa: { Args: { p_comunicado: string }; Returns: undefined };
       marcar_contrato_enviado: { Args: { p_contrato: string }; Returns: undefined };
       marcar_falta: { Args: { p_marcacao: string }; Returns: undefined };
       marcar_proposta_enviada: { Args: { p_proposta: string }; Returns: undefined };
@@ -5784,6 +5816,15 @@ export type Database = {
       meus_clientes: { Args: Record<PropertyKey, never>; Returns: string[] };
       meus_comunicados: {
         Args: { p_inquilino: string };
+        Returns: {
+          id: string;
+          inicio: string;
+          texto: string;
+          titulo: string;
+        }[];
+      };
+      meus_comunicados_equipa: {
+        Args: Record<PropertyKey, never>;
         Returns: {
           id: string;
           inicio: string;

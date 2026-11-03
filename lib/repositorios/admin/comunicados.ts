@@ -10,16 +10,20 @@ export type Comunicado = {
   destino: string;
   plano: string | null;
   inquilinoId: string | null;
+  /** Uma pessoa da equipa (D-191); nula = o grupo todo. */
+  destinatarioId: string | null;
   inicio: string;
   fim: string | null;
   lidas: string[];
+  /** Quem da equipa já leu (D-191). */
+  lidasEquipa: string[];
 };
 
 export async function listarComunicados(bd: ClienteBD): Promise<Comunicado[]> {
   const { data, error } = await bd
     .from("comunicados")
     .select(
-      "id, titulo, texto, destino, plano, inquilino_id, inicio, fim, comunicado_leituras(inquilino_id)",
+      "id, titulo, texto, destino, plano, inquilino_id, destinatario_id, inicio, fim, comunicado_leituras(inquilino_id), comunicado_leituras_equipa(user_id)",
     )
     .order("inicio", { ascending: false });
   if (error) falhaDeLeitura("comunicados", error);
@@ -30,15 +34,17 @@ export async function listarComunicados(bd: ClienteBD): Promise<Comunicado[]> {
     destino: c.destino,
     plano: c.plano,
     inquilinoId: c.inquilino_id,
+    destinatarioId: c.destinatario_id,
     inicio: c.inicio,
     fim: c.fim,
     lidas: c.comunicado_leituras.map((l) => l.inquilino_id),
+    lidasEquipa: c.comunicado_leituras_equipa.map((l) => l.user_id),
   }));
 }
 
 export async function criarComunicado(
   bd: ClienteBD,
-  c: Omit<Comunicado, "id" | "lidas"> & { autor: string },
+  c: Omit<Comunicado, "id" | "lidas" | "lidasEquipa"> & { autor: string },
 ): Promise<boolean> {
   const { error } = await bd.from("comunicados").insert({
     titulo: c.titulo,
@@ -46,6 +52,7 @@ export async function criarComunicado(
     destino: c.destino,
     plano: c.plano,
     inquilino_id: c.inquilinoId,
+    destinatario_id: c.destinatarioId,
     inicio: c.inicio,
     fim: c.fim,
     criado_por: c.autor,

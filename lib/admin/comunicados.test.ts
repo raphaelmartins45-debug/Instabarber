@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { alvosDoComunicado, estadoComunicado } from "./comunicados";
+import {
+  alvosDoComunicado,
+  estadoComunicado,
+  paraEquipa,
+  pessoasDoComunicado,
+} from "./comunicados";
 
 const base = { destino: "todas", plano: null, inquilinoId: null, fim: null };
 const agora = new Date("2026-10-25T12:00:00Z");
@@ -39,5 +44,30 @@ describe("alvosDoComunicado", () => {
     expect(
       alvosDoComunicado({ ...base, inicio, destino: "barbearia", inquilinoId: "c" }, barbearias),
     ).toHaveLength(0);
+  });
+});
+
+describe("pessoasDoComunicado (D-191)", () => {
+  const equipa = [
+    { userId: "c1", papel: "comercial", ativo: true },
+    { userId: "c2", papel: "comercial", ativo: false },
+    { userId: "g1", papel: "gestor_plataforma", ativo: true },
+  ];
+  it("o grupo todo, só os ativos", () => {
+    expect(pessoasDoComunicado({ destino: "comerciais", destinatarioId: null }, equipa)).toEqual([
+      equipa[0],
+    ]);
+    expect(pessoasDoComunicado({ destino: "gestores", destinatarioId: null }, equipa)).toEqual([
+      equipa[2],
+    ]);
+  });
+  it("uma pessoa do grupo", () => {
+    expect(pessoasDoComunicado({ destino: "comerciais", destinatarioId: "g1" }, equipa)).toEqual(
+      [],
+    );
+    expect(pessoasDoComunicado({ destino: "gestores", destinatarioId: "g1" }, equipa)).toEqual([
+      equipa[2],
+    ]);
+    expect(paraEquipa({ destino: "todas" })).toBe(false);
   });
 });

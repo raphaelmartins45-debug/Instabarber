@@ -17,9 +17,11 @@ export const esquemaComunicado = z
   .object({
     titulo: z.string().trim().min(1, "titulo").max(120, "titulo"),
     texto: z.string().trim().min(1, "texto").max(3000, "texto"),
-    destino: z.enum(["todas", "plano", "barbearia"]),
+    destino: z.enum(["todas", "plano", "barbearia", "comerciais", "gestores"]),
     plano: z.union([z.literal(""), z.enum(["basic", "pro"])]).default(""),
     inquilino_id: z.union([z.literal(""), z.guid()]).default(""),
+    // Uma pessoa da equipa (D-191); vazio = todos os comerciais ou todos os gestores
+    destinatario_id: z.union([z.literal(""), z.guid()]).default(""),
     inicio: data,
     fim: z.union([z.literal(""), data]).default(""),
   })

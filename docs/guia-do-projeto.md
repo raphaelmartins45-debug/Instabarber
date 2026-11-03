@@ -42,7 +42,7 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 | `docs/mapa-do-sistema.md` | **Pedidos de manutenção:** classifica o pedido e diz onde mexer e como verificar |
 | `docs/mapa-gerado.md` | Lista gerada das rotas e ficheiros (`scripts/gerar-mapa.sh`; não se edita) |
 | `PROGRESSO.md` | Estado real: fases, trabalhos paralelos, pendentes do dono, módulos por ativar |
-| `DECISOES.md` | As decisões (D-01 a D-190), com data. **Prevalece** quando duas regras se contradizem |
+| `DECISOES.md` | As decisões (D-01 a D-191), com data. **Prevalece** quando duas regras se contradizem |
 | `docs/esquema/` | Fonte única da base de dados (tabelas, funções, RLS, dados iniciais) e os testes SQL |
 | `supabase/migrations/` | As migrações aplicadas (01 a 17), copiadas do esquema |
 | `fases/` | O plano de cada fase e os critérios (J.1, verificados em `fases/verificacao-j1.md`) |
@@ -101,6 +101,7 @@ decisão no `DECISOES.md`.
 | Equipa: editar e apagar | 01/11/2026 | O dono edita nome, e-mail e telefone de qualquer pessoa da equipa e apaga contas escolhendo para quem vão os leads | — | D-186 |
 | Segurança | 01/11/2026 | Cabeçalhos de segurança, CSV sem fórmulas, limites de tentativas na entrada e na recuperação | — | D-187 |
 | Zod 4 e Resend 6 | 01/11/2026 | Dependências atualizadas com autorização; `z.guid()` em vez de `uuid()`; formulários com entrada e saída | — | D-188 |
+| Comunicados à equipa | 03/11/2026 | Comunicados também aos comerciais e aos gestores da InstaBarber, ao grupo ou a uma pessoa | 22 | D-191 |
 | Campanhas comerciais | 03/11/2026 | Condições especiais escolhidas na proposta (Anual 14, Semestral, Primeiro mês, Muda já…), ligadas em Comercial → Campanhas; periodicidade semestral | 21 | D-190 |
 | Implementação, cortesia e registo pelo painel | 03/11/2026 | Pacotes Essencial (50 €) e com Formação (100 €) na proposta, metade para o comercial, cobrados no 1.º pagamento; cortesia sem vencimentos; «Registar barbearia» no Admin | 20 | D-189 |
 

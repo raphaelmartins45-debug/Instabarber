@@ -467,6 +467,9 @@ create policy apoio_registos_admin on apoio_registos for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 create policy comunicados_admin on comunicados for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+-- Leituras da equipa (D-191): só se escrevem por marcar_comunicado_lido_equipa().
+create policy comunicado_leituras_equipa_admin_ler on comunicado_leituras_equipa for select
+  using ((select public.e_super_admin()));
 
 -- Comercial (D-161)
 -- Na própria linha (e não por meus_leads()), para o comercial ler o lead que acabou de criar.
