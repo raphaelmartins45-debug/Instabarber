@@ -105,6 +105,8 @@ decisão no `DECISOES.md`.
 | Campanhas comerciais | 03/11/2026 | Condições especiais escolhidas na proposta (Anual 14, Semestral, Primeiro mês, Muda já…), ligadas em Comercial → Campanhas; periodicidade semestral | 21 | D-190 |
 | Implementação, cortesia e registo pelo painel | 03/11/2026 | Pacotes Essencial (50 €) e com Formação (100 €) na proposta, metade para o comercial, cobrados no 1.º pagamento; cortesia sem vencimentos; «Registar barbearia» no Admin | 20 | D-189 |
 
+**Passagem de sessão (03/11/2026):** as D-189, D-190 e D-191 (implementação, cortesia, registo pelo painel, campanhas, semestral, comunicados à equipa) estão no ramo `claude/peaceful-tesla-b3i3cg`, testadas no local, **e não estão no `main`**. Precisam das migrações 20, 21 e 22 aplicadas pelo P-16 (ensaio → cópia encriptada da produção → produção → `scripts/sql/verificar-rls.sql`) **antes** de publicar no `main`: o código lê colunas que só existem depois delas. Bloqueio: os tokens do Supabase no `.env.local` estão recusados (401); um token novo `sbp_` no ambiente (`SUPABASE_PRODUCAO_ACCESS_TOKEN`) desbloqueia. Na Vercel, `FATURACAO_PLATAFORMA=invoicexpress` está só em Preview (teste na série de demonstração); `INVOICEXPRESS_CHAVE` e `INVOICEXPRESS_CONTA` estão em Production e Preview.
+
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.
 
