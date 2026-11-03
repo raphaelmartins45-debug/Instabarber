@@ -164,6 +164,8 @@ testes `docs/esquema/testes/96d_comprovativos.sql` (FAT).
    série a usar e o IVA a 23 % (ou isenção M10, se o regime mudar, D-45).
 6. Os dados fiscais de cada barbearia certos na ficha: NIF, morada, código postal, cidade e e-mail.
 
+**Estado a 03/11/2026:** conta `michelleraphaelas` (dados fiscais da Prestadora, a Michelle); razão de isenção M10, imposto `Isento` a 0 % e meio de pagamento «Transferência bancária» (MB WAY incluído, a confirmar com o contabilista) predefinidos na conta. Na Vercel: `INVOICEXPRESS_CHAVE` e `INVOICEXPRESS_CONTA` em Production e Preview; `FATURACAO_PLATAFORMA=invoicexpress` **só em Preview**, para o teste no ensaio na série de demonstração. **Falta:** série própria registada na AT e pré-definida (hoje só existe a INVOICEXPRESSDEMO, não registada); depois, o interruptor em Production. A pedido do dono, a produção fica desligada até ao primeiro cliente pago.
+
 **Ativação** (eu faço, com os dados acima): pôr na Vercel `FATURACAO_PLATAFORMA=invoicexpress`,
 `INVOICEXPRESS_CONTA`, `INVOICEXPRESS_CHAVE` (e `INVOICEXPRESS_IVA`, se preciso); publicar;
 emitir uma fatura de teste a uma barbearia de ensaio e anulá-la no InvoiceXpress; depois ligar
