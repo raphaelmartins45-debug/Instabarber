@@ -8,7 +8,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 
 const t = textos.documentos.ecra;
 
-/** Reenvia o guia de arranque por e-mail, com o PDF em anexo (D-181), e diz para onde foi (D-190). */
+/** Reenvia o guia de arranque por e-mail, com o PDF em anexo (D-181), e diz para onde foi (D-193). */
 export function EnviarGuia({ inquilinoId }: { inquilinoId: string }) {
   const [r, setR] = useState<{ ok: boolean; para?: string }>();
   const [aEnviar, iniciar] = useTransition();

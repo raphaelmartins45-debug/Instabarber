@@ -15,6 +15,8 @@ export type Comprovativo = {
   periodo_fim: string;
   metodo: "mbway" | "transferencia";
   valor_centimos: number;
+  /** A parte do pagamento que coube à implementação, sem IVA (D-189); 0 nos outros. */
+  implementacao_centimos: number;
   pago_em: string;
   caminho: string;
   estado: "pendente" | "aprovado" | "recusado";
@@ -30,15 +32,20 @@ export type PeriodoAPagar = {
 };
 
 const COLUNAS =
-  "id, inquilino_id, fatura_id, periodo_inicio, periodo_fim, metodo, valor, pago_em, caminho, estado, motivo, enviado_em";
+  "id, inquilino_id, fatura_id, periodo_inicio, periodo_fim, metodo, valor, implementacao_sem_iva, pago_em, caminho, estado, motivo, enviado_em";
 
-type Linha = Omit<Comprovativo, "valor_centimos" | "metodo" | "estado"> & {
+type Linha = Omit<
+  Comprovativo,
+  "valor_centimos" | "implementacao_centimos" | "metodo" | "estado"
+> & {
   valor: number | string;
+  implementacao_sem_iva: number | string;
   metodo: string;
   estado: string;
 };
-const deLinha = ({ valor, metodo, estado, ...c }: Linha): Comprovativo => ({
+const deLinha = ({ valor, implementacao_sem_iva, metodo, estado, ...c }: Linha): Comprovativo => ({
   ...c,
+  implementacao_centimos: centimosDeNumeric(implementacao_sem_iva),
   metodo: metodo as Comprovativo["metodo"],
   estado: estado as Comprovativo["estado"],
   valor_centimos: centimosDeNumeric(valor),

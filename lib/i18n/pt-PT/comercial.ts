@@ -11,6 +11,7 @@ export const comercial = {
     modelos: "Modelos",
     desempenho: "Desempenho",
     condicoes: "Condições",
+    campanhas: "Campanhas",
   } as Record<string, string>,
   estados: {
     novo: "Novo",
@@ -150,7 +151,9 @@ export const comercial = {
       desafio_90: "Desafio de 90 dias (só Pro)",
       validade_dias: "Validade da proposta (dias)",
       desconto_mensalidade_pct: "Desconto na mensalidade (%)",
-      desconto_taxa_pct: "Desconto na taxa de migração (%)",
+      desconto_taxa_pct: "Desconto na implementação (%)",
+      implementacao: "Implementação",
+      campanha_id: "Condição especial",
       data_arranque: "Data de arranque pretendida",
       decisor_nome: "Nome de quem decide *",
       decisor_cargo: "Cargo",
@@ -173,10 +176,21 @@ export const comercial = {
       presenca_online: "Presença online",
     } as Record<string, string>,
     planos: { basic: "Basic", pro: "Pro" } as Record<string, string>,
-    periodicidades: { mensal: "Mensal", anual: "Anual" } as Record<string, string>,
+    periodicidades: { mensal: "Mensal", semestral: "Semestral", anual: "Anual" } as Record<
+      string,
+      string
+    >,
     preco: (comIva: string, semIva: string) => `${comIva} com IVA · ${semIva} sem IVA`,
     limite: (max: number) => `Até ${max} % sem autorização da Performa LAB.`,
-    taxa: (valor: string) => `Taxa de migração: ${valor} sem IVA, já com o desconto.`,
+    taxa: (valor: string) =>
+      `Implementação: ${valor} sem IVA, já com o desconto. Metade é a comissão do comercial.`,
+    semCampanha: "Nenhuma (condições normais do plano)",
+    campanhaPeriodicidade: (p: string) => `Pagamento: ${p.toLowerCase()}.`,
+    implementacoes: {
+      nenhuma: "Sem implementação",
+      essencial: "Implementação Essencial",
+      formacao: "Implementação com Formação",
+    } as Record<string, string>,
     valorParaSi: (valor: string) => `O que isto vale para si (estimativa): ${valor}`,
   },
   propostas: {
@@ -215,8 +229,10 @@ export const comercial = {
       lead_fechado: "O lead está ganho ou perdido.",
       desconto_acima_do_limite: "O desconto passa do limite do comercial. Peça à Performa LAB.",
       descontos_desligados: "Os descontos estão desligados.",
-      taxa_migracao_desligada: "A taxa de migração está desligada.",
-      taxa_migracao_invalida: "A taxa de migração mudou entretanto. Gere outra vez.",
+      taxa_migracao_desligada: "A implementação está desligada nas condições comerciais.",
+      taxa_migracao_invalida: "O preço da implementação mudou entretanto. Gere outra vez.",
+      campanha_invalida:
+        "Esta condição especial já não está disponível para este plano (desligada, fora da data ou sem vagas).",
       sem_permissao: "Este lead não está atribuído a si.",
       generico: "Não foi possível concluir. Tente outra vez.",
     } as Record<string, string>,
@@ -246,7 +262,26 @@ export const comercial = {
     extras: (n: number) => (n === 1 ? "1 profissional extra" : `${n} profissionais extra`),
     dominio: "Domínio próprio",
     desconto: (pct: number) => `Desconto de ${pct} % na mensalidade`,
-    taxaMigracao: "Taxa de migração (pagamento único, sem IVA)",
+    taxaMigracao: (nome: string) => `${nome} (pagamento único, sem IVA)`,
+    implementacao: "A implementação",
+    campanha: "Condição especial",
+    oferta: "Oferta",
+    implementacaoNota:
+      "Paga-se uma só vez, junto com o primeiro pagamento. Quem lhe apresentou esta proposta é quem faz a implementação.",
+    implementacaoInclui: {
+      essencial: [
+        "Configuração a partir do briefing: serviços e preços, horários, equipa e convites.",
+        "Página pública com o logótipo, as cores e as fotografias da barbearia.",
+        "Placa do balcão com o código QR, em PDF pronta a imprimir.",
+        "Guia de arranque por e-mail e acompanhamento na primeira semana.",
+      ],
+      formacao: [
+        "Tudo o que inclui a Implementação Essencial.",
+        "Importação da lista de clientes (CSV, Excel ou caderno fotografado).",
+        "Expositor em acrílico A5 para o balcão, com a placa impressa, e autocolante em vinil para a porta ou o espelho.",
+        "Formação no local com o dono e a equipa (20 a 30 minutos): marcar, concluir serviços e selos.",
+      ],
+    } as Record<string, string[]>,
     semIva: "Total sem IVA",
     comIva: "Total com IVA",
     total: "Total",
@@ -492,16 +527,52 @@ export const comercial = {
       n === 1 ? "1 proposta a expirar em 3 dias" : `${n} propostas a expirar em 3 dias`,
     abrir: "Abrir o funil",
   },
+  // Campanhas comerciais (D-190)
+  campanhas: {
+    titulo: "Campanhas",
+    ajuda:
+      "Condições especiais que o comercial escolhe na proposta. Só aparecem as ligadas, dentro da data e com vagas, para o plano da proposta. Para uma campanha de época, dê-lhe uma data de fim.",
+    ativa: "Ligada",
+    nome: "Nome",
+    texto: "Texto na proposta",
+    validaAte: "Válida até (opcional)",
+    vagas: "Vagas (opcional)",
+    usadas: (n: number, vagas: number | null) =>
+      vagas === null ? `${n} barbearias com esta campanha` : `${n} de ${vagas} vagas usadas`,
+    guardar: "Guardar",
+    guardado: "Guardado.",
+    planos: (p: string) => `Planos: ${p}`,
+    periodicidade: (p: string) => `Pagamento: ${p}`,
+    resumo: {
+      implementacaoOferta: (nome: string) => `${nome} de oferta`,
+      implementacaoPreco: (nome: string, valor: string) => `${nome} a ${valor}`,
+      mesesOferta: (n: number) => `+${n} meses de oferta no primeiro período`,
+      primeiroMes: "Primeiro mês sem mensalidade",
+      desconto: (pct: number, meses: number) => `${pct} % na mensalidade durante ${meses} meses`,
+      profissionais: (n: number, meses: number) =>
+        `${n} profissional extra de oferta durante ${meses} meses`,
+      dominio: (meses: number) => `Domínio próprio de oferta durante ${meses} meses`,
+    },
+    erros: {
+      nome: "O nome tem de 3 a 80 carateres.",
+      texto: "O texto tem de 10 a 600 carateres.",
+      data: "Indique uma data válida (ou deixe vazio).",
+      vagas: "As vagas são um número inteiro (ou deixe vazio).",
+      generico: "Não foi possível guardar. Tente outra vez.",
+    } as Record<string, string>,
+  },
   condicoes: {
     titulo: "Condições comerciais",
     ajuda:
-      "Descontos e taxa de migração das propostas. Ficam desligados até a cobrança estar pronta; com o interruptor desligado, nenhuma proposta os pode usar.",
+      "Descontos e implementação das propostas. Com o interruptor desligado, nenhuma proposta os pode usar.",
     descontosAtivos: "Descontos na mensalidade ligados",
     descontoMaxMensalidade: "Limite do comercial na mensalidade (%)",
-    taxaAtiva: "Taxa de migração ligada",
-    taxaBase: "Taxa de migração, sem IVA (€)",
-    taxaAjuda: "É a comissão do comercial que fechou o negócio.",
-    descontoMaxTaxa: "Limite do comercial na taxa de migração (%)",
+    taxaAtiva: "Implementação ligada",
+    precoEssencial: "Implementação Essencial, sem IVA (€)",
+    precoFormacao: "Implementação com Formação, sem IVA (€)",
+    taxaAjuda:
+      "Cobra-se no primeiro pagamento da barbearia. Metade do valor cobrado é a comissão do comercial que vendeu e faz a implementação.",
+    descontoMaxTaxa: "Limite do comercial no desconto da implementação (%)",
     guardar: "Guardar condições",
     guardado: "Condições guardadas.",
     desligado: "Desligado",
@@ -575,12 +646,12 @@ export const comercial = {
   comissoes: {
     titulo: "Comissões",
     ajuda:
-      "A taxa de migração dos contratos que fechou. Fica pendente até a barbearia pagar a taxa; depois é paga em 10 dias.",
+      "Metade da implementação dos contratos que fechou. Fica pendente até a barbearia fazer o primeiro pagamento; depois é paga em 10 dias.",
     ajudaAdmin:
-      "Registe quando a barbearia pagou a taxa de migração: a comissão vence 10 dias depois. Depois marque-a paga.",
+      "A comissão passa a «a pagar» quando aprova o primeiro pagamento da barbearia (com a implementação) e vence 10 dias depois. Se a barbearia pagou por fora, registe a data. Depois marque-a paga.",
     vazio: "Ainda não há comissões.",
     estados: {
-      pendente: "Pendente (taxa por pagar)",
+      pendente: "Pendente (implementação por pagar)",
       a_pagar: "A pagar",
       vencida: "Vencida",
       paga: "Paga",
@@ -597,8 +668,8 @@ export const comercial = {
     vence: (data: string) => `Até ${data}`,
     pagaEm: (data: string) => `Paga a ${data}`,
     resumo: (pendente: string, aPagar: string) => `${pendente} pendente · ${aPagar} a receber`,
-    taxaPaga: "Taxa paga em",
-    registarTaxa: "Registar taxa paga",
+    taxaPaga: "Implementação paga em",
+    registarTaxa: "Registar implementação paga",
     comissaoPaga: "Comissão paga em",
     marcarPaga: "Marcar paga",
     guardado: "Registado.",

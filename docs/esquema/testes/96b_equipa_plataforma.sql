@@ -98,26 +98,26 @@ select teste.erro($$select criar_proposta('e0000000-0000-0000-0000-00000000000a'
   '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"taxa_migracao_sem_iva":100}')$$,
   'DESC: sem a taxa de migração ligada não há taxa');
 select teste.como('10000000-0000-0000-0000-000000000001', 'aal2');
-update configuracao_comercial set descontos_ativos = true, taxa_migracao_ativa = true, taxa_migracao_sem_iva = 200;
+update configuracao_comercial set descontos_ativos = true, taxa_migracao_ativa = true, implementacao_essencial_sem_iva = 200;
 select teste.como('10000000-0000-0000-0000-00000000000a', 'aal2');
 select teste.erro($$select criar_proposta('e0000000-0000-0000-0000-00000000000a',
-  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":14.99,"valor_periodo_sem_iva":14.99,"valor_periodo_com_iva":18.44,"desconto_mensalidade_pct":25,"taxa_migracao_sem_iva":200}')$$,
+  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":14.99,"valor_periodo_sem_iva":14.99,"valor_periodo_com_iva":18.44,"desconto_mensalidade_pct":25,"implementacao":"essencial","taxa_migracao_sem_iva":200}')$$,
   'DESC: o comercial não passa dos 20 % na mensalidade');
 select teste.erro($$select criar_proposta('e0000000-0000-0000-0000-00000000000a',
-  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"desconto_taxa_pct":60,"taxa_migracao_sem_iva":80}')$$,
+  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"desconto_taxa_pct":60,"implementacao":"essencial","taxa_migracao_sem_iva":80}')$$,
   'DESC: o comercial não passa dos 50 % na taxa de migração');
 select teste.erro($$select criar_proposta('e0000000-0000-0000-0000-00000000000a',
-  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"desconto_taxa_pct":50,"taxa_migracao_sem_iva":150}')$$,
+  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"desconto_taxa_pct":50,"implementacao":"essencial","taxa_migracao_sem_iva":150}')$$,
   'DESC: a taxa tem de ser a da configuração com o desconto');
 select criar_proposta('e0000000-0000-0000-0000-00000000000a',
-  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":15.99,"valor_periodo_sem_iva":15.99,"valor_periodo_com_iva":19.67,"desconto_mensalidade_pct":20,"desconto_taxa_pct":50,"taxa_migracao_sem_iva":100}');
+  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":15.99,"valor_periodo_sem_iva":15.99,"valor_periodo_com_iva":19.67,"desconto_mensalidade_pct":20,"desconto_taxa_pct":50,"implementacao":"essencial","taxa_migracao_sem_iva":100}');
 select teste.ok((select desconto_mensalidade_pct = 20 and taxa_migracao_sem_iva = 100 from propostas_com_estado),
   'DESC: dentro dos limites a proposta fica com o desconto e a taxa');
 select teste.ok((select count(*) from propostas) = 1, 'COMC: só vê as suas propostas');
 
 select teste.como('10000000-0000-0000-0000-000000000001', 'aal2');
 select criar_proposta('e0000000-0000-0000-0000-000000000001',
-  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":13.99,"valor_periodo_sem_iva":13.99,"valor_periodo_com_iva":17.21,"desconto_mensalidade_pct":30,"taxa_migracao_sem_iva":200}');
+  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":13.99,"valor_periodo_sem_iva":13.99,"valor_periodo_com_iva":17.21,"desconto_mensalidade_pct":30,"implementacao":"essencial","taxa_migracao_sem_iva":200}');
 select teste.ok((select count(*) from propostas where desconto_mensalidade_pct = 30) = 1,
   'DESC: a Performa LAB pode dar mais do que o limite do comercial');
 insert into modelos_documento (id, tipo, versao, titulo, corpo, estado, aprovado_por, aprovado_em) values

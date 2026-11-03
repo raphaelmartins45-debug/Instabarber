@@ -9,7 +9,11 @@ import { dataCurta } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
-import { precoDaBarbearia } from "@/lib/regras/receita";
+import { implementacaoPorPagarCent } from "@/lib/regras/implementacao";
+import { ajusteDoPeriodo, type CampanhaDaBarbearia } from "@/lib/comercial/campanhas";
+import { precoDoPeriodo } from "@/lib/regras/receita";
+import { campanhaDaBarbearia } from "@/lib/repositorios/comercial/campanhas";
+import type { ClienteBD } from "@/lib/supabase/tipos";
 import type { Comprovativo } from "@/lib/repositorios/comprovativos";
 import type { ConfiguracaoBarbearia } from "@/lib/repositorios/painel/barbearia";
 
@@ -21,25 +25,51 @@ const dia = (d: string) => dataCurta(`${d}T12:00:00Z`);
 export const periodoDe = (c: { periodo_inicio: string; periodo_fim: string }) =>
   `${dia(c.periodo_inicio)} – ${dia(c.periodo_fim)}`;
 
-/** A mensalidade com IVA da barbearia (D.7), para comparar com o valor pago. */
-export const mensalidadeCent = (b: ConfiguracaoBarbearia) =>
-  precoDaBarbearia(b, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA)).comIva;
+/**
+ * A mensalidade com IVA do período que começa em `inicio` (D.7), com o ajuste da campanha
+ * (D-190): primeiro mês de oferta, desconto, profissionais e domínio temporários.
+ */
+export const mensalidadeCent = (
+  b: ConfiguracaoBarbearia,
+  campanha: CampanhaDaBarbearia | null = null,
+  inicio: string = b.proximo_vencimento ?? "",
+) =>
+  precoDoPeriodo(
+    b,
+    ajusteDoPeriodo(campanha, b, inicio),
+    lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
+  ).comIva;
+
+/** O que a barbearia deve pagar no período: a mensalidade e a implementação por pagar. */
+export async function valorEsperadoCent(bd: ClienteBD, b: ConfiguracaoBarbearia, inicio: string) {
+  const campanha = await campanhaDaBarbearia(bd, b.id);
+  return {
+    campanha,
+    mensalidade: mensalidadeCent(b, campanha, inicio),
+    implementacao: implementacaoCent(b),
+  };
+}
+
+/** A implementação com IVA ainda por pagar (D-189): vai junto com o primeiro pagamento. */
+export const implementacaoCent = (b: ConfiguracaoBarbearia) =>
+  implementacaoPorPagarCent(b, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA));
 
 export function avisarComprovativo(
   b: ConfiguracaoBarbearia,
   c: Comprovativo,
   fatura: string | null,
   ligacao: string,
+  esperadoCent: number,
 ): Promise<boolean> {
   return enviarEmail(() =>
     avisoComprovativo({
       barbearia: b.nome,
       responsavel: b.responsavel ?? textos.comum.vazio,
       plano: textos.admin.planos[b.plano as "basic" | "pro"] ?? b.plano,
-      periodicidade: textos.admin.periodicidades[b.periodicidade as "mensal" | "anual"],
+      periodicidade: textos.admin.periodicidades[b.periodicidade as "mensal"],
       periodo: periodoDe(c),
       fatura: fatura ?? t.admin.campos.semFatura,
-      esperado: formatarDinheiro(mensalidadeCent(b)),
+      esperado: formatarDinheiro(esperadoCent),
       valor: formatarDinheiro(c.valor_centimos),
       metodo: t.metodos[c.metodo] ?? c.metodo,
       data: dia(c.pago_em),

@@ -94,7 +94,7 @@ create table inquilinos (
 
   -- Campos protegidos: só o super_admin os altera (trigger no ficheiro 02)
   plano                         text not null default 'basic' check (plano in ('basic','pro')),
-  periodicidade                 text not null default 'mensal' check (periodicidade in ('mensal','anual')),
+  periodicidade                 text not null default 'mensal' check (periodicidade in ('mensal','semestral','anual')),
   profissionais_contratados     integer not null default 1 check (profissionais_contratados >= 1),
   estado                        text not null default 'pendente'
                                 check (estado in ('pendente','ativo','suspenso','cancelado')),
@@ -106,6 +106,18 @@ create table inquilinos (
                                 check (desconto_mensalidade_pct between 0 and 100),
   -- A barbearia de demonstração (D-162): fora das contas, da saúde, das métricas e do sitemap.
   demonstracao                  boolean not null default false,
+  -- Implementação contratada, cobrada no primeiro pagamento (D-189)
+  implementacao                 text not null default 'nenhuma'
+                                check (implementacao in ('nenhuma','essencial','formacao')),
+  implementacao_sem_iva         numeric(10,2) not null default 0 check (implementacao_sem_iva >= 0),
+  implementacao_paga_em         date,
+  -- Cortesia (D-189): sem vencimentos nem faturas até cortesia_ate (sem data, até se desligar)
+  cortesia                      boolean not null default false,
+  cortesia_ate                  date,
+  -- Campanha comercial (D-190): a condição especial da proposta e até quando dura a temporária
+  campanha_id                   uuid,                                  -- FK acrescentada no fim
+  campanha_ate                  date,
+  primeiro_pagamento_em         date,
   aprovado_em                   timestamptz,
   criado_em                     timestamptz not null default now(),
 
@@ -115,7 +127,9 @@ create table inquilinos (
   check (dias_descanso <@ array[0,1,2,3,4,5,6]::smallint[]),
   check (plano = 'pro' or profissionais_contratados = 1),
   check (plano = 'basic' or profissionais_contratados >= 3),
-  check (not desconto_aniversario_ativo or desconto_aniversario_percent is not null)
+  check (not desconto_aniversario_ativo or desconto_aniversario_percent is not null),
+  constraint inquilinos_implementacao check (implementacao <> 'nenhuma' or implementacao_sem_iva = 0),
+  constraint inquilinos_cortesia check (cortesia or cortesia_ate is null)
 );
 
 create unique index inquilinos_uma_demonstracao on inquilinos (demonstracao) where demonstracao;
@@ -811,7 +825,7 @@ create table pedidos_adesao (
   galeria_paths          text[] not null default '{}',
   -- contratação
   plano                  text not null default 'pro' check (plano in ('basic','pro')),
-  periodicidade          text not null default 'mensal' check (periodicidade in ('mensal','anual')),
+  periodicidade          text not null default 'mensal' check (periodicidade in ('mensal','semestral','anual')),
   profissionais          integer not null default 2 check (profissionais >= 1),
   mensalidade_calculada  numeric(10,2) not null,
   modelo_caixa           text not null default 'A' check (modelo_caixa in ('A','B','C')),
@@ -880,6 +894,8 @@ create table comprovativos_pagamento (
   decidido_por    uuid references auth.users(id) on delete set null,
   decidido_em     timestamptz,
   recebimento_id  uuid references recebimentos(id) on delete set null,
+  -- A parte do pagamento que coube à implementação (D-189), para a fatura com duas linhas
+  implementacao_sem_iva numeric(10,2) not null default 0 check (implementacao_sem_iva >= 0),
   check (periodo_fim >= periodo_inicio),
   check ((estado = 'pendente') = (decidido_em is null)),
   check (estado <> 'recusado' or motivo is not null)
@@ -1121,7 +1137,7 @@ create table propostas (
   estado                  text not null default 'rascunho'
                           check (estado in ('rascunho','enviada','aceite','recusada','substituida')),
   plano                   text not null check (plano in ('basic','pro')),
-  periodicidade           text not null default 'mensal' check (periodicidade in ('mensal','anual')),
+  periodicidade           text not null default 'mensal' check (periodicidade in ('mensal','semestral','anual')),
   profissionais           integer not null check (profissionais >= 1),
   dominio_proprio         boolean not null default false,
   desafio_90              boolean not null default false,
@@ -1134,8 +1150,13 @@ create table propostas (
   validade_dias           integer not null default 15 check (validade_dias between 1 and 90),
   valida_ate              date,
   dados                   jsonb not null default '{}',   -- fotografia completa do que foi proposto
-  -- Desconto na mensalidade e taxa de migração já com o desconto (D-161), desligados por omissão
+  -- Desconto na mensalidade e taxa de migração já com o desconto (D-161), desligados por omissão.
+  -- A taxa de migração é hoje a implementação (D-189): o pacote escolhido e o valor com o desconto.
   desconto_mensalidade_pct numeric(5,2) not null default 0 check (desconto_mensalidade_pct between 0 and 100),
+  implementacao           text not null default 'nenhuma' check (implementacao in ('nenhuma','essencial','formacao')),
+  -- Campanha escolhida (D-190) e a comissão do comercial, fixada na criação
+  campanha_id             uuid,                       -- FK acrescentada no fim
+  comissao_sem_iva        numeric(10,2) not null default 0 check (comissao_sem_iva >= 0),
   taxa_migracao_sem_iva   numeric(10,2) not null default 0 check (taxa_migracao_sem_iva >= 0),
   desconto_taxa_pct       numeric(5,2) not null default 0 check (desconto_taxa_pct between 0 and 100),
   pdf_path                text,
@@ -1149,7 +1170,8 @@ create table propostas (
   check (plano = 'basic' or profissionais >= 2),
   check (not desafio_90 or plano = 'pro'),
   check (valor_periodo_com_iva = round(valor_periodo_sem_iva * (1 + iva_taxa / 100), 2)),
-  check (estado <> 'recusada' or motivo_recusa is not null)
+  check (estado <> 'recusada' or motivo_recusa is not null),
+  constraint propostas_implementacao check (implementacao <> 'nenhuma' or taxa_migracao_sem_iva = 0)
 );
 create index propostas_lead on propostas (lead_id, versao desc);
 
@@ -1311,16 +1333,19 @@ create table comunicados (
   id            uuid primary key default gen_random_uuid(),
   titulo        text not null check (length(trim(titulo)) between 1 and 120),
   texto         text not null check (length(trim(texto)) between 1 and 3000),
-  destino       text not null check (destino in ('todas','plano','barbearia')),
+  destino       text not null check (destino in ('todas','plano','barbearia','comerciais','gestores')),
   plano         text check (plano in ('basic','pro')),
   inquilino_id  uuid references inquilinos(id) on delete cascade,
+  -- Uma pessoa da equipa (D-191), só nos destinos «comerciais» e «gestores»; nula = todos
+  destinatario_id uuid references auth.users(id) on delete cascade,
   inicio        timestamptz not null default now(),
   fim           timestamptz,
   criado_por    uuid references auth.users(id) on delete set null,
   criado_em     timestamptz not null default now(),
-  check ((destino = 'todas' and plano is null and inquilino_id is null)
-      or (destino = 'plano' and plano is not null and inquilino_id is null)
-      or (destino = 'barbearia' and inquilino_id is not null and plano is null)),
+  check ((destino = 'todas' and plano is null and inquilino_id is null and destinatario_id is null)
+      or (destino = 'plano' and plano is not null and inquilino_id is null and destinatario_id is null)
+      or (destino = 'barbearia' and inquilino_id is not null and plano is null and destinatario_id is null)
+      or (destino in ('comerciais','gestores') and plano is null and inquilino_id is null)),
   check (fim is null or fim > inicio)
 );
 create index comunicados_inicio on comunicados (inicio desc);
@@ -1333,6 +1358,14 @@ create table comunicado_leituras (
   primary key (comunicado_id, inquilino_id)
 );
 
+-- Quem da equipa InstaBarber leu cada comunicado (D-191): uma linha por pessoa.
+create table comunicado_leituras_equipa (
+  comunicado_id  uuid not null references comunicados(id) on delete cascade,
+  user_id        uuid not null references auth.users(id) on delete cascade,
+  lido_em        timestamptz not null default now(),
+  primary key (comunicado_id, user_id)
+);
+
 -- Condições comerciais (D-161): uma só linha. Os descontos e a taxa de migração estão
 -- desligados até a Performa LAB os ligar; os limites valem para o comercial.
 create table configuracao_comercial (
@@ -1340,12 +1373,46 @@ create table configuracao_comercial (
   descontos_ativos              boolean not null default false,
   desconto_max_mensalidade_pct  numeric(5,2) not null default 20
                                 check (desconto_max_mensalidade_pct between 0 and 100),
-  taxa_migracao_ativa           boolean not null default false,
-  taxa_migracao_sem_iva         numeric(10,2) not null default 0 check (taxa_migracao_sem_iva >= 0),
+  taxa_migracao_ativa           boolean not null default false,   -- a implementação ligada (D-189)
+  -- Preço dos dois pacotes de implementação, sem IVA (D-189); a comissão do comercial é metade.
+  implementacao_essencial_sem_iva numeric(10,2) not null default 50 check (implementacao_essencial_sem_iva >= 0),
+  implementacao_formacao_sem_iva  numeric(10,2) not null default 100 check (implementacao_formacao_sem_iva >= 0),
   desconto_max_taxa_pct         numeric(5,2) not null default 50
                                 check (desconto_max_taxa_pct between 0 and 100),
   atualizado_por                uuid references auth.users(id) on delete set null,
   atualizado_em                 timestamptz not null default now()
+);
+
+-- Campanhas comerciais (D-190): condições especiais que a Performa LAB liga e o comercial
+-- escolhe na proposta. Cada uma fixa o que oferece; a base de dados confere a proposta.
+create table campanhas_comerciais (
+  id                      uuid primary key default gen_random_uuid(),
+  chave                   text not null unique check (chave ~ '^[a-z0-9_]+$'),
+  nome                    text not null check (length(trim(nome)) between 3 and 80),
+  -- O texto que aparece na proposta, no contrato e em «O meu plano»
+  texto                   text not null check (length(trim(texto)) between 10 and 600),
+  ativa                   boolean not null default false,
+  valida_ate              date,
+  vagas                   integer check (vagas is null or vagas > 0),
+  ordem                   integer not null default 0,
+  planos                  text[] not null default '{basic,pro}' check (planos <@ array['basic','pro'] and cardinality(planos) > 0),
+  periodicidade           text check (periodicidade in ('mensal','semestral','anual')),
+  -- Implementação: o pacote que a campanha fixa e o preço sem IVA (nulo = preço normal; 0 = oferta)
+  implementacao           text check (implementacao in ('nenhuma','essencial','formacao')),
+  implementacao_sem_iva   numeric(10,2) check (implementacao_sem_iva >= 0),
+  -- Meses de oferta somados ao primeiro período pago (Anual 14: 12 pagos + 2)
+  meses_oferta            integer not null default 0 check (meses_oferta between 0 and 12),
+  -- O primeiro mês não paga mensalidade (paga-se só a implementação)
+  primeiro_mes_gratis     boolean not null default false,
+  -- Condição temporária, contada desde o primeiro pagamento: desconto, profissionais e domínio
+  meses_condicao          integer not null default 0 check (meses_condicao between 0 and 24),
+  desconto_temporario_pct numeric(5,2) not null default 0 check (desconto_temporario_pct between 0 and 100),
+  profissionais_gratis    integer not null default 0 check (profissionais_gratis between 0 and 10),
+  dominio_gratis          boolean not null default false,
+  criado_em               timestamptz not null default now(),
+  check (implementacao_sem_iva is null or implementacao is not null),
+  check ((meses_condicao > 0) = (desconto_temporario_pct > 0 or profissionais_gratis > 0 or dominio_gratis)),
+  check (not primeiro_mes_gratis or periodicidade = 'mensal')
 );
 
 -- Metas mensais de cada comercial (D-161): a Performa LAB define, o comercial vê as suas.
@@ -1377,3 +1444,9 @@ create table comissoes_comerciais (
   check ((estado = 'paga') = (paga_em is not null))
 );
 create index comissoes_comercial on comissoes_comerciais (comercial_id, estado);
+
+-- Campanha da barbearia (D-190): a tabela das campanhas vem depois da dos inquilinos.
+alter table inquilinos add constraint inquilinos_campanha_id_fkey
+  foreign key (campanha_id) references campanhas_comerciais(id) on delete restrict;
+alter table propostas add constraint propostas_campanha_id_fkey
+  foreign key (campanha_id) references campanhas_comerciais(id) on delete restrict;

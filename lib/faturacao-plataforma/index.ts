@@ -3,7 +3,7 @@ import { periodoDe } from "@/lib/admin/comprovativos";
 import { variavelOpcional } from "@/lib/configuracao/ambiente";
 import { hojeIso } from "@/lib/formatacao/datas";
 import { textos } from "@/lib/i18n/pt-PT";
-import { lerRegimeIva } from "@/lib/regras/mensalidade";
+import { lerRegimeIva, TAXA_IVA } from "@/lib/regras/mensalidade";
 import { type Comprovativo, registarFaturaDoComprovativo } from "@/lib/repositorios/comprovativos";
 import type { ConfiguracaoBarbearia } from "@/lib/repositorios/painel/barbearia";
 import type { ClienteBD } from "@/lib/supabase/tipos";
@@ -36,6 +36,19 @@ export async function faturarComprovativo(
   if (!config) return { estado: "desligada" };
   if (c.fatura_id) return { estado: "ja_tinha" };
   const plano = textos.admin.planos[b.plano as "basic" | "pro"] ?? b.plano;
+  const isento = lerRegimeIva(process.env.PRESTADORA_REGIME_IVA) === "isento";
+  // O primeiro pagamento leva a implementação (D-189): a fatura sai com duas linhas.
+  const nome = textos.comprovativos.implementacoes[b.implementacao];
+  const extra =
+    c.implementacao_centimos > 0 && nome
+      ? {
+          item: t.itemImplementacao(nome),
+          descricao: t.descricaoImplementacao,
+          totalCent: isento
+            ? c.implementacao_centimos
+            : Math.round(c.implementacao_centimos * (1 + TAXA_IVA)),
+        }
+      : null;
   const r = await emitirFaturaRecibo(config, {
     cliente: {
       nome: b.nome,
@@ -51,8 +64,9 @@ export async function faturarComprovativo(
     assunto: t.assunto,
     corpo: t.corpo,
     totalCent: c.valor_centimos,
+    ...(extra ? { extra } : {}),
     data: c.pago_em,
-    isento: lerRegimeIva(process.env.PRESTADORA_REGIME_IVA) === "isento",
+    isento,
   });
   if (!r.ok) return { estado: "falhou" };
   const ok = await registarFaturaDoComprovativo(bd, c.id, r.numero, hojeIso());

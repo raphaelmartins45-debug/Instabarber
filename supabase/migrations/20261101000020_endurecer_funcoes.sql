@@ -1,4 +1,4 @@
--- Endurecimento das funções (D-189), a partir dos avisos de segurança do Supabase de 01/11/2026.
+-- Endurecimento das funções (D-192), a partir dos avisos de segurança do Supabase de 01/11/2026.
 --
 -- 1 · As funções criadas depois da migração 02 receberam EXECUTE para anon pelos privilégios por
 --     omissão do Supabase, embora o esquema só as dê a authenticated. Cada uma já recusava quem

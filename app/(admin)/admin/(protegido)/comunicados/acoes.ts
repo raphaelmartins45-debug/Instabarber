@@ -2,13 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { exigirSuperAdmin } from "@/lib/admin/contexto";
+import { exigirEquipaPlataforma, exigirSuperAdmin } from "@/lib/admin/contexto";
 import { instanteLocal, somarDias } from "@/lib/formatacao/datas";
 import {
   apagarComunicado,
   criarComunicado,
   terminarComunicado,
 } from "@/lib/repositorios/admin/comunicados";
+import { marcarComunicadoLidoEquipa } from "@/lib/repositorios/painel/comunicados";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { type DadosComunicado, esquemaComunicado } from "@/lib/validacao/gestao";
 
@@ -29,6 +30,10 @@ export async function publicarComunicado(dados: DadosComunicado): Promise<Result
     destino: c.destino,
     plano: c.destino === "plano" ? c.plano : null,
     inquilinoId: c.destino === "barbearia" ? c.inquilino_id : null,
+    destinatarioId:
+      (c.destino === "comerciais" || c.destino === "gestores") && c.destinatario_id
+        ? c.destinatario_id
+        : null,
     inicio: instanteLocal(c.inicio, "00:00").toISOString(),
     fim: c.fim ? instanteLocal(somarDias(c.fim, 1), "00:00").toISOString() : null,
     autor: userId,
@@ -48,5 +53,14 @@ export async function apagar(id: string): Promise<Resultado> {
   await exigirSuperAdmin();
   const ok = await apagarComunicado(await criarClienteServidor(), uuid.parse(id));
   revalidatePath("/admin/comunicados");
+  return ok ? { ok: true } : { ok: false, erro: "generico" };
+}
+
+/** Quem é da equipa marca como lido um comunicado que lhe foi dirigido (D-191). */
+export async function lerComunicadoEquipa(id: string): Promise<Resultado> {
+  await exigirEquipaPlataforma();
+  if (!uuid.safeParse(id).success) return { ok: false, erro: "generico" };
+  const ok = await marcarComunicadoLidoEquipa(await criarClienteServidor(), id);
+  revalidatePath("/admin", "layout");
   return ok ? { ok: true } : { ok: false, erro: "generico" };
 }

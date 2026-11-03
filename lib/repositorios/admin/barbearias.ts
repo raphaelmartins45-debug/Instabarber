@@ -1,3 +1,4 @@
+import { numericParaGravar } from "@/lib/formatacao/dinheiro";
 import type { ClienteBD } from "@/lib/supabase/tipos";
 import type { Database } from "@/types/database";
 import { falhaDeLeitura } from "../erros";
@@ -28,12 +29,14 @@ export type LinhaBarbearia = Pick<
   | "profissionais_contratados"
   | "dominio_proprio"
   | "desconto_mensalidade_pct"
+  | "cortesia"
+  | "cortesia_ate"
   | "demonstracao"
   | "aprovado_em"
 > & { funcionalidades_ativas: number };
 
 const COLUNAS =
-  "id, nome, slug, plano, periodicidade, estado, estado_pagamento, proximo_vencimento, profissionais_contratados, dominio_proprio, desconto_mensalidade_pct, demonstracao, aprovado_em, inquilino_funcionalidades(count)";
+  "id, nome, slug, plano, periodicidade, estado, estado_pagamento, proximo_vencimento, profissionais_contratados, dominio_proprio, desconto_mensalidade_pct, cortesia, cortesia_ate, demonstracao, aprovado_em, inquilino_funcionalidades(count)";
 
 export async function listarBarbearias(
   bd: ClienteBD,
@@ -117,4 +120,48 @@ export async function eliminarBarbearia(
   });
   if (error) return { ok: false, motivo: error.message };
   return { ok: true, contas: (data ?? []).map((l: { user_id: string }) => l.user_id) };
+}
+
+/** Cortesia (D-189): a função SQL trata do vencimento; só o super_admin. */
+export async function definirCortesia(
+  bd: ClienteBD,
+  id: string,
+  ativa: boolean,
+  ate: string | null,
+): Promise<ResultadoAlteracao> {
+  const { error } = await bd.rpc("definir_cortesia", {
+    p_inquilino: id,
+    p_ativa: ativa,
+    ...(ate ? { p_ate: ate } : {}),
+  });
+  return error ? { ok: false, motivo: error.message } : { ok: true };
+}
+
+/** Implementação por cobrar no primeiro pagamento (D-189); não muda depois de paga. */
+export async function definirImplementacao(
+  bd: ClienteBD,
+  id: string,
+  tipo: string,
+  valorCent: number,
+): Promise<ResultadoAlteracao> {
+  const { error } = await bd.rpc("definir_implementacao", {
+    p_inquilino: id,
+    p_tipo: tipo,
+    p_valor: numericParaGravar(valorCent),
+  });
+  return error ? { ok: false, motivo: error.message } : { ok: true };
+}
+
+/** A campanha de uma barbearia antes do primeiro pagamento (D-190); fixa a periodicidade e a implementação. */
+export async function definirCampanha(
+  bd: ClienteBD,
+  id: string,
+  campanhaId: string | null,
+): Promise<ResultadoAlteracao> {
+  const { error } = await bd.rpc("definir_campanha", {
+    p_inquilino: id,
+    // Sem campanha, a função recebe nulo (tira-a).
+    p_campanha: campanhaId as string,
+  });
+  return error ? { ok: false, motivo: error.message } : { ok: true };
 }

@@ -102,7 +102,7 @@ export const gestao = {
   comunicados: {
     titulo: "Comunicados",
     ajuda:
-      "Avisos da InstaBarber aos gestores. Aparecem no Início do gestor até ele carregar em «Li». Nada é enviado automaticamente.",
+      "Avisos da InstaBarber aos gestores das barbearias ou à equipa (comerciais e gestores). Aparecem no Início, ou no Admin de quem é da equipa, até carregarem em «Li». Nada é enviado automaticamente.",
     novo: "Novo comunicado",
     campos: {
       titulo: "Título",
@@ -110,6 +110,7 @@ export const gestao = {
       destino: "Para quem",
       plano: "Plano",
       barbearia: "Barbearia",
+      pessoa: "Pessoa",
       inicio: "Mostrar a partir de",
       fim: "Mostrar até (opcional)",
     },
@@ -117,7 +118,10 @@ export const gestao = {
       todas: "Todas as barbearias",
       plano: "Um plano",
       barbearia: "Uma barbearia",
-    },
+      comerciais: "Comerciais da InstaBarber",
+      gestores: "Gestores da InstaBarber",
+    } as Record<string, string>,
+    todosDoGrupo: "Todos",
     guardar: "Publicar comunicado",
     guardado: "Comunicado publicado.",
     vazio: "Ainda não há comunicados.",
@@ -125,6 +129,8 @@ export const gestao = {
     periodo: (inicio: string, fim: string | null) =>
       fim ? `De ${inicio} a ${fim}` : `Desde ${inicio}`,
     leituras: (lidas: number, total: number) => `Lido por ${lidas} de ${total} barbearias`,
+    leiturasEquipa: (lidas: number, total: number) =>
+      `Lido por ${lidas} de ${total} ${total === 1 ? "pessoa" : "pessoas"}`,
     estados: { agendado: "Agendado", ativo: "Em vigor", terminado: "Terminado" } as Record<
       string,
       string

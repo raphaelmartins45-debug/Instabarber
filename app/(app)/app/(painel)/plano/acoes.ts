@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { avisarComprovativo } from "@/lib/admin/comprovativos";
+import { avisarComprovativo, valorEsperadoCent } from "@/lib/admin/comprovativos";
 import { origemDoPedido, origemPrincipal } from "@/lib/inquilino/endereco";
 import { centimosDeTexto } from "@/lib/formatacao/dinheiro";
 import { enviarComprovativo, obterComprovativo } from "@/lib/repositorios/comprovativos";
@@ -38,9 +38,16 @@ export async function registarComprovativo(
     listarFaturas(bd, v.data.inquilinoId),
   ]);
   if (c) {
-    const fatura = faturas.find((f) => f.id === c.fatura_id)?.numero ?? null;
+    const f = faturas.find((x) => x.id === c.fatura_id);
     const origem = (await origemPrincipal()) || (await origemDoPedido());
-    await avisarComprovativo(b, c, fatura, `${origem}/admin/pagamentos/comprovativos/${c.id}`);
+    const v = await valorEsperadoCent(bd, b, c.periodo_inicio);
+    await avisarComprovativo(
+      b,
+      c,
+      f?.numero ?? null,
+      `${origem}/admin/pagamentos/comprovativos/${c.id}`,
+      f?.valor_centimos ?? v.mensalidade + v.implementacao,
+    );
   }
   revalidatePath("/app/plano");
   revalidatePath("/app/suspensa");

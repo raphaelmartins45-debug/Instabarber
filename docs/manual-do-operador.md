@@ -43,6 +43,8 @@ que mexa num procedimento atualiza este manual no mesmo dia.
 | P-28 | Monitorizar a disponibilidade (objetivo de 99,5 %) | Uma vez, e ao fim de cada mês |
 | P-29 | Registar um contacto de apoio e publicar um comunicado | Cada contacto; cada aviso às barbearias |
 | P-30 | Gerir a equipa InstaBarber (entrada e saída de gestores e comerciais), atribuir leads e definir metas | Cada entrada ou saída; início de cada mês |
+| P-31 | Registar uma barbearia pelo painel, a implementação e a cortesia | Negócio fechado em pessoa; barbearia de oferta |
+| P-32 | Ligar uma campanha comercial (condição especial) | Início e fim de cada campanha |
 
 ---
 
@@ -568,9 +570,10 @@ Só a Performa LAB vê este registo; não entra na exportação dos dados da bar
 **Comunicado**
 
 1. `Admin → Gestão do negócio → Comunicados`.
-2. Título, texto, para quem (todas, um plano ou uma barbearia), primeiro e último dia. Publicar.
+2. Título, texto, para quem (todas, um plano ou uma barbearia; ou a equipa: os comerciais ou os gestores da InstaBarber, com «Pessoa» para escolher alguém em concreto), primeiro e último dia. Publicar.
 3. O aviso aparece no Início do gestor (só o gestor, não os barbeiros) até ele carregar em «Li». No admin vê-se quantas barbearias já leram.
-4. Para quem ainda não leu, «Avisar por WhatsApp» abre a conversa com a mensagem pronta; o envio é à mão.
+4. Para quem ainda não leu, «Avisar por WhatsApp» abre a conversa com a mensagem pronta; o envio é à mão (só nos comunicados às barbearias).
+   Os comunicados à equipa (D-191) aparecem no topo do Admin de quem os recebe (o comercial no Comercial, o gestor no painel geral) até carregar em «Li»; a lista mostra quantas pessoas já leram.
 5. «Terminar agora» tira o aviso do painel e guarda as leituras; «Apagar» tira-o de vez.
 
 **Confirmar:** o comunicado aparece «Em vigor» e a contagem de leituras sobe quando os gestores carregam em «Li».
@@ -595,14 +598,45 @@ Só a Performa LAB vê este registo; não entra na exportação dos dados da bar
 
 **Leads (D-162):** enquanto não houver comerciais ativos, ficam no geral (sem responsável). O primeiro comercial que entra recebe todos os leads em aberto do geral e os novos; com dois ou mais, os novos repartem-se ao acaso. Quem é desativado passa os seus leads em aberto a outro comercial. Para mudar um lead de mãos: abrir o lead → «Responsável → Atribuir».
 
-**Comissões (D-162):** cada contrato assinado com taxa de migração gera a comissão do comercial responsável, «pendente». Em `Comercial → Desempenho → Comissões`: quando a barbearia pagar a taxa, «Registar taxa paga» (com a data); a comissão vence 10 dias depois. Depois de pagar ao comercial, «Marcar paga». As vencidas aparecem nos alertas do painel.
+**Comissões (D-162, D-189):** cada contrato assinado com implementação gera a comissão do comercial responsável (metade do valor cobrado), «pendente». Quando aprova o primeiro pagamento da barbearia (que leva a implementação), a comissão passa sozinha a «a pagar» e vence 10 dias depois. Se a barbearia pagou a implementação por fora, em `Comercial → Desempenho → Comissões` use «Registar implementação paga» (com a data). Depois de pagar ao comercial, «Marcar paga». As vencidas aparecem nos alertas do painel.
 
 **Demonstração (D-162):** em `Comercial` (Funil), «Preparar dados de hoje» refaz a Barbearia Demonstração com agenda, clientes e serviços fictícios (telefones +999, que não existem); «Abrir o painel da demonstração» abre-a na vista de apoio (só leitura, 30 minutos); «Ver a página pública» mostra a página de marcação. Fica fora das contas, da saúde, das métricas e dos comunicados.
 
 **Metas:** `Comercial → Desempenho → Metas do mês`: escolher o comercial e as metas (leads novos, propostas, contratos assinados).
 
-**Descontos e taxa de migração:** `Comercial → Condições`. Estão **desligados**. Quando a cobrança estiver pronta: ligar o interruptor, rever os limites do comercial (20 % na mensalidade, 50 % na taxa) e o valor da taxa. A taxa de migração é a comissão do comercial e aparece no desempenho dele.
+**Descontos e implementação (D-189):** `Comercial → Condições`. A implementação está **ligada**, com dois pacotes: Essencial (50 €) e com Formação (100 €), sem IVA. O comercial escolhe o pacote no briefing ao gerar a proposta e pode dar até 50 % de desconto, que sai da comissão dele. Os descontos na mensalidade continuam desligados até os ligar.
 
 **Saída de uma pessoa:** `Equipa InstaBarber → Desativar` (corta o acesso na hora; os leads e o histórico ficam). Atribuir os leads dela a outro comercial e desativar a caixa de correio na Zoho.
 
 **Confirmar:** a pessoa entra e vê só o que o papel permite; na saída, deixa de conseguir entrar.
+
+### P-31 · Registar uma barbearia pelo painel, a implementação e a cortesia
+
+**Quando:** o negócio fechou-se em pessoa (sem o formulário de adesão), ou a barbearia fica de oferta.
+
+1. `Barbearias → Registar barbearia`. Preencher o nome, o dono, o e-mail com que ele vai entrar, o plano e os profissionais.
+2. **Implementação:** escolher Essencial ou com Formação. O valor vem das condições comerciais e pode ajustar-se. Cobra-se no primeiro pagamento, junto com a mensalidade, e sai na fatura como uma linha à parte.
+3. **Cortesia:** marcar «Em cortesia» se a barbearia não paga. Com data de fim, o primeiro pagamento é no dia seguinte; sem data, fica até a desligar.
+4. «Registar e enviar as boas-vindas». O dono recebe a ligação para definir a palavra-passe e o guia de arranque.
+
+**Mudar depois:** na ficha da barbearia, separador **Pagamentos**: «Cortesia» (ligar, desligar, data) e «Implementação» (só enquanto não estiver paga).
+
+**Com Formação:** levar o expositor em acrílico A5 com a placa impressa (Documentos → placa da barbearia) e o autocolante em vinil; registar o custo do expositor em Finanças → Custos.
+
+**Confirmar:** a barbearia aparece em Barbearias; em «O meu plano» o dono vê a mensalidade com a implementação, ou «cortesia».
+
+### P-32 · Ligar uma campanha comercial (condição especial)
+
+**Quando:** quer dar aos comerciais uma condição especial para fechar negócio (por exemplo o Anual 14), ou fazer uma campanha de época.
+
+1. `Comercial → Campanhas`. Cada cartão mostra o que a campanha oferece (fixo) e quantas barbearias já a usam.
+2. Marcar **Ligada**. Para uma campanha de época, pôr a **data de fim**; para limitar, as **vagas**.
+3. Rever o **texto**: é o que aparece na proposta, no PDF e em «O meu plano» da barbearia.
+4. «Guardar». A partir daí, ao gerar a proposta (passo «Condições» do briefing) ou ao registar uma barbearia pelo painel, a campanha aparece na lista «Condição especial» para os planos a que serve.
+
+**Na cobrança:** os meses de oferta somam-se ao primeiro período, o primeiro mês de oferta não cobra mensalidade e as condições temporárias contam desde o primeiro pagamento. Confirme o valor no comprovativo como sempre.
+
+**Desligar:** tirar «Ligada». As barbearias que já a têm continuam com ela; as propostas novas deixam de a poder escolher.
+
+**Confirmar:** numa proposta de teste, a campanha aparece na lista e o PDF tem a secção «Condição especial».
+

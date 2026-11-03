@@ -36,6 +36,7 @@ const base = {
   ivaTaxa: 23,
   condicoesLancamento: null,
   descontoPct: 0,
+  implementacao: "nenhuma",
   taxaSemIva: "0",
   dados: {
     briefing,
@@ -92,16 +93,37 @@ describe("PDF da proposta (N.5)", () => {
   });
 });
 
-describe("desconto e taxa de migração no PDF (D-161)", () => {
-  it("mostra o desconto e a taxa quando existem", () => {
+describe("condição especial no PDF (D-190)", () => {
+  it("mostra a campanha e a implementação oferecida", () => {
+    const texto =
+      gerarPdfProposta({
+        ...base,
+        condicoes: null,
+        implementacao: "essencial",
+        taxaSemIva: "0",
+        dados: {
+          ...base.dados,
+          campanha: { nome: "Anual 14", texto: "Paga o anual e usa 14 meses." },
+        },
+      }) && escrito.texto();
+    expect(texto).toContain("Condição especial");
+    expect(texto).toContain("Anual 14");
+    expect(texto).toContain("Oferta");
+  });
+});
+
+describe("desconto e implementação no PDF (D-161, D-189)", () => {
+  it("mostra o desconto e a implementação quando existem", () => {
     const texto =
       gerarPdfProposta({
         ...base,
         condicoes: null,
         descontoPct: 20,
+        implementacao: "formacao",
         taxaSemIva: "100.00",
       }) && escrito.texto();
     expect(texto).toContain("Desconto de 20");
-    expect(texto).toContain("Taxa de migra");
+    expect(texto).toContain("Implementação com Formação");
+    expect(texto).toContain("Expositor em acrílico");
   });
 });

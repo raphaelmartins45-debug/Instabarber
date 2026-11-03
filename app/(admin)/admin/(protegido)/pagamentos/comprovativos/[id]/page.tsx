@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DecisaoComprovativo } from "@/components/admin/decisao-comprovativo";
-import { mensalidadeCent, periodoDe } from "@/lib/admin/comprovativos";
+import { valorEsperadoCent, periodoDe } from "@/lib/admin/comprovativos";
 import { exigirSuperAdmin } from "@/lib/admin/contexto";
 import { dataCurta, dataHora } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
@@ -33,7 +33,9 @@ export default async function ComprovativoPagamento({
     urlDoComprovativo(bd, c.caminho),
   ]);
   const fatura = faturas.find((f) => f.id === c.fatura_id);
-  const esperado = fatura?.valor_centimos ?? mensalidadeCent(b);
+  const v = await valorEsperadoCent(bd, b, c.periodo_inicio);
+  const esperado =
+    fatura?.valor_centimos ?? v.mensalidade + (c.estado === "pendente" ? v.implementacao : 0);
   const dia = (d: string) => dataCurta(`${d}T12:00:00Z`);
   const dados: [string, string][] = [
     [c$.barbearia, b.nome],

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { valorRecuperavelCent } from "@/lib/regras/vendas";
+import { IMPLEMENTACOES } from "./condicoes";
 
 // Briefing em sete passos (N.4), guardado em briefings.dados e validado com o mesmo esquema no
 // formulário e no servidor. Pode ficar a meio: só os campos marcados com * são precisos para
@@ -60,6 +61,13 @@ export const esquemaBriefing = z.object({
   // Descontos (D-161): só valem com as condições comerciais ligadas; percentagens inteiras.
   desconto_mensalidade_pct: z.coerce.number().int().min(0).max(100).optional().default(0),
   desconto_taxa_pct: z.coerce.number().int().min(0).max(100).optional().default(0),
+  // Pacote de implementação escolhido na proposta (D-189)
+  implementacao: z.enum(IMPLEMENTACOES).optional().default("nenhuma"),
+  // Condição especial escolhida (D-190); vazio = condições normais do plano
+  campanha_id: z
+    .union([z.literal(""), z.guid()])
+    .optional()
+    .default(""),
   data_arranque: texto(10),
   // 7 · Contacto e decisor
   decisor_nome: texto(120),

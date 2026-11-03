@@ -9,7 +9,9 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/barbearias/[id]/[separador]/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/exportar/route.ts`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/page.tsx`
+- `app/(admin)/admin/(protegido)/barbearias/nova/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/campanhas/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/condicoes/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/assinado/route.ts`
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/pdf/route.ts`
@@ -218,6 +220,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `auditoria`
 - `ausencias`
 - `briefings`
+- `campanhas_comerciais`
 - `cartoes_oferta`
 - `ciclos_clube`
 - `clientes`
@@ -228,6 +231,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `comissoes_servico`
 - `comprovativos_pagamento`
 - `comunicado_leituras`
+- `comunicado_leituras_equipa`
 - `comunicados`
 - `configuracao_comercial`
 - `contas_pagar`
@@ -296,6 +300,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `avisar_fila_espera()`
 - `barbearia_suspensa()`
 - `calcular_preco()`
+- `campanha_da_barbearia()`
+- `campanha_disponivel()`
 - `campos_alterados()`
 - `cancelar_lembrete_vencimento()`
 - `cancelar_minha_marcacao()`
@@ -303,6 +309,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `cliente_por_telefone()`
 - `clientes_do_profissional()`
 - `comunicado_para()`
+- `comunicado_para_equipa()`
 - `concluir_marcacao()`
 - `confirmar_lembrete_vencimento()`
 - `confirmar_reserva()`
@@ -312,6 +319,9 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `criar_pedido_loja()`
 - `criar_proposta()`
 - `decidir_proposta()`
+- `definir_campanha()`
+- `definir_cortesia()`
+- `definir_implementacao()`
 - `distribuir_leads_comercial()`
 - `e_comercial()`
 - `e_dono_plataforma()`
@@ -348,6 +358,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `marcacoes_antes_gravar()`
 - `marcar_comissao_paga()`
 - `marcar_comunicado_lido()`
+- `marcar_comunicado_lido_equipa()`
 - `marcar_contrato_enviado()`
 - `marcar_falta()`
 - `marcar_proposta_enviada()`
@@ -356,6 +367,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `meu_historico_cortes()`
 - `meus_clientes()`
 - `meus_comunicados()`
+- `meus_comunicados_equipa()`
 - `meus_leads()`
 - `meus_profissionais()`
 - `minhas_fotos_historico()`

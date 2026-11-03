@@ -6,6 +6,16 @@ export const comprovativos = {
     `Período a pagar: ${periodo}. Valor: ${valor}. Pague por MB WAY ou transferência e envie aqui o comprovativo; a InstaBarber confere e confirma por e-mail.`,
   ajudaSemValor: (periodo: string) =>
     `Período a pagar: ${periodo}. Pague por MB WAY ou transferência e envie aqui o comprovativo; a InstaBarber confere e confirma por e-mail.`,
+  comImplementacao: (nome: string, valor: string) =>
+    `Este primeiro pagamento inclui a ${nome} (${valor}), paga uma só vez.`,
+  comCampanha: (nome: string, texto: string) => `Condição especial «${nome}»: ${texto}`,
+  cortesia: (plano: string) => `Plano ${plano} · cortesia. Não há nada a pagar.`,
+  cortesiaAte: (plano: string, data: string) =>
+    `Plano ${plano} · cortesia até ${data}. Não há nada a pagar até lá; o primeiro pagamento é no dia seguinte.`,
+  implementacoes: {
+    essencial: "Implementação Essencial",
+    formacao: "Implementação com Formação",
+  } as Record<string, string>,
   metodo: "Como pagou",
   metodos: { mbway: "MB WAY", transferencia: "Transferência" } as Record<string, string>,
   valor: "Valor pago (€)",
@@ -45,6 +55,8 @@ export const comprovativos = {
   // Fatura-recibo pelo programa certificado (D-170)
   fatura: {
     item: "Mensalidade InstaBarber",
+    itemImplementacao: (nome: string) => `${nome} InstaBarber`,
+    descricaoImplementacao: "Pagamento único: configuração do sistema pela equipa InstaBarber",
     descricao: (plano: string, periodo: string) => `Plano ${plano} · ${periodo}`,
     assunto: (numero: string) => `Fatura-recibo ${numero} · InstaBarber`,
     corpo:

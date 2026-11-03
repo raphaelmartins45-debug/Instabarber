@@ -1,3 +1,4 @@
+import { ComunicadosEquipa } from "@/components/admin/painel/comunicados-equipa";
 import { CartaoLead } from "@/components/admin/comercial/cartao-lead";
 import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { hojeIso } from "@/lib/formatacao/datas";
@@ -19,6 +20,7 @@ export default async function Funil() {
   const hoje = hojeIso();
   return (
     <div className="grid gap-5">
+      <ComunicadosEquipa />
       <div className="-mx-4 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0">
         <div className="grid gap-4 md:grid-flow-col md:auto-cols-[minmax(220px,1fr)]">
           {ESTADOS.map((estado) => {

@@ -54,7 +54,7 @@ update perfis set ativo = true where user_id = '10000000-0000-0000-0000-00000000
 
 -- Comissões --------------------------------------------------------------------
 select teste.como('10000000-0000-0000-0000-000000000001', 'aal2');
-update configuracao_comercial set taxa_migracao_ativa = true, taxa_migracao_sem_iva = 100;
+update configuracao_comercial set taxa_migracao_ativa = true, implementacao_formacao_sem_iva = 100;
 insert into modelos_documento (id, tipo, versao, titulo, corpo, estado, aprovado_por, aprovado_em) values
   ('d0000000-0000-0000-0000-0000000000c1', 'contrato', 11, 'Contrato', 'Texto', 'aprovado',
    '10000000-0000-0000-0000-000000000001', now());
@@ -65,15 +65,15 @@ update leads set responsavel_id = null where id = 'f0000000-0000-0000-0000-00000
 
 select teste.como('10000000-0000-0000-0000-0000000000c2', 'aal2');
 select criar_proposta('f0000000-0000-0000-0000-0000000000c2',
-  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"taxa_migracao_sem_iva":100}');
+  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"implementacao":"formacao","taxa_migracao_sem_iva":100}');
 select marcar_proposta_enviada((select id from propostas));
 select decidir_proposta((select id from propostas), true);
 select gerar_contrato((select id from propostas), 'd0000000-0000-0000-0000-0000000000c1',
   '{"razao_social":"Barbearia C2 Lda","nif":"501964843","morada":"Rua A","representante":"Rui"}', 'Texto');
 select assinar_contrato((select id from contratos), current_date, 'leads/x/contratos/x.pdf');
 select teste.ok((select count(*) from comissoes_comerciais) = 1
-                and (select valor = 100 and estado = 'pendente' from comissoes_comerciais),
-  'COMS: o contrato assinado gera a comissão do comercial, pendente');
+                and (select valor = 50 and estado = 'pendente' from comissoes_comerciais),
+  'COMS: o contrato assinado gera a comissão do comercial (metade da implementação), pendente');
 select teste.erro($$select registar_taxa_paga((select id from comissoes_comerciais), current_date)$$,
   'COMS: o comercial não regista o pagamento da taxa');
 
@@ -91,7 +91,7 @@ select teste.ok((select estado = 'paga' and paga_em = '2026-11-10' from comissoe
   'COMS: a comissão fica paga');
 
 select criar_proposta('f0000000-0000-0000-0000-0000000000a0',
-  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"taxa_migracao_sem_iva":100}');
+  '{"plano":"basic","profissionais":1,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59,"implementacao":"formacao","taxa_migracao_sem_iva":100}');
 select marcar_proposta_enviada((select id from propostas where lead_id = 'f0000000-0000-0000-0000-0000000000a0'));
 select decidir_proposta((select id from propostas where lead_id = 'f0000000-0000-0000-0000-0000000000a0'), true);
 select gerar_contrato((select id from propostas where lead_id = 'f0000000-0000-0000-0000-0000000000a0'),

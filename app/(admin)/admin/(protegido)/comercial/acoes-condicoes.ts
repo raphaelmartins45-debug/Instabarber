@@ -14,10 +14,10 @@ export async function guardar(
   const { userId } = await exigirSuperAdmin();
   const v = esquemaCondicoes.safeParse(dados);
   if (!v.success) return { ok: false, erro: v.error.issues[0]?.message ?? "generico" };
-  const { taxaBase, ...resto } = v.data;
+  const { precoEssencial, precoFormacao, ...resto } = v.data;
   const ok = await guardarCondicoes(
     await criarClienteServidor(),
-    { ...resto, taxaBaseCent: taxaBase },
+    { ...resto, precosCent: { essencial: precoEssencial, formacao: precoFormacao } },
     userId,
   );
   revalidatePath("/admin/comercial", "layout");

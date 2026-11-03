@@ -467,6 +467,8 @@ create policy apoio_registos_admin on apoio_registos for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 create policy comunicados_admin on comunicados for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+-- Leituras da equipa (D-191): só se escrevem por marcar_comunicado_lido_equipa(); a leitura do
+-- super_admin vem da política *_admin_ler criada no fim deste ficheiro (a migração 22 cria-a à mão).
 
 -- Comercial (D-161)
 -- Na própria linha (e não por meus_leads()), para o comercial ler o lead que acabou de criar.
@@ -494,6 +496,10 @@ create policy modelos_comercial_ler on modelos_documento for select
 create policy configuracao_comercial_admin on configuracao_comercial for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 create policy configuracao_comercial_ler on configuracao_comercial for select
+  using ((select public.e_comercial()));
+create policy campanhas_admin on campanhas_comerciais for all
+  using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+create policy campanhas_ler on campanhas_comerciais for select
   using ((select public.e_comercial()));
 create policy metas_comerciais_admin on metas_comerciais for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));

@@ -73,7 +73,11 @@ export const adesao = {
     plano: "Plano",
     planos: { basic: "Basic", pro: "Pro" },
     periodicidade: "Periodicidade",
-    periodicidades: { mensal: "Mensal", anual: "Anual (10 mensalidades)" },
+    periodicidades: {
+      mensal: "Mensal",
+      semestral: "Semestral (6 mensalidades)",
+      anual: "Anual (10 mensalidades)",
+    },
     profissionais: "Profissionais",
     menos: "Menos um profissional",
     mais: "Mais um profissional",

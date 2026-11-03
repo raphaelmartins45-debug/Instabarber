@@ -12,8 +12,11 @@ const t = textos.gestao.comunicados.painel;
 /** Avisos da InstaBarber no Início do gestor (D-160), até ele carregar em «Li». */
 export function ComunicadosInicio({
   comunicados,
+  ler = lerComunicado,
 }: {
   comunicados: { id: string; titulo: string; texto: string }[];
+  /** Marcar como lido; por omissão o do gestor da barbearia, ou o da equipa (D-191). */
+  ler?: (id: string) => Promise<unknown>;
 }) {
   const router = useRouter();
   const [aMarcar, iniciar] = useTransition();
@@ -40,7 +43,7 @@ export function ComunicadosInicio({
             disabled={aMarcar}
             onClick={() =>
               iniciar(async () => {
-                await lerComunicado(c.id);
+                await ler(c.id);
                 router.refresh();
               })
             }

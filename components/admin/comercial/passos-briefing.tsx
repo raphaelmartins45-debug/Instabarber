@@ -8,8 +8,9 @@ import type { CondicoesComerciais } from "@/lib/comercial/condicoes";
 import { profissionaisDoPlano } from "@/lib/comercial/proposta";
 import { centimosDeTexto, formatarDinheiro, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
-import { calcularPrecoCent, comDescontoCent, type RegimeIva } from "@/lib/regras/mensalidade";
+import { calcularPrecoCent, type RegimeIva } from "@/lib/regras/mensalidade";
 import { CaixaBriefing, CampoBriefing, EscolhasBriefing, SelecaoBriefing } from "./campos-briefing";
+import { ImplementacaoBriefing } from "./implementacao-briefing";
 
 const t = textos.comercial.briefing;
 type Form = UseFormReturn<DadosBriefing>;
@@ -156,18 +157,12 @@ export function PassoBriefing({
               )}
             </div>
           ) : null}
-          {condicoes.taxaAtiva ? (
-            <div className="grid gap-1">
-              <CampoBriefing form={form} nome="desconto_taxa_pct" tipo="number" />
-              <p className="text-xs text-muted-foreground">
-                {administrador ? null : `${t.limite(condicoes.descontoMaxTaxa)} `}
-                {t.taxa(
-                  formatarDinheiro(
-                    comDescontoCent(condicoes.taxaBaseCent, pct(form.watch("desconto_taxa_pct"))),
-                  ),
-                )}
-              </p>
-            </div>
+          {condicoes.taxaAtiva || condicoes.campanhas?.some((c) => c.ativa) ? (
+            <ImplementacaoBriefing
+              form={form}
+              condicoes={condicoes}
+              administrador={administrador}
+            />
           ) : null}
           {condicoes.descontosAtivos ? (
             <div className="md:col-span-2">

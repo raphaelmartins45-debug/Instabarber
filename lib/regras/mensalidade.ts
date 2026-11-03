@@ -3,7 +3,8 @@
 // O Pro inclui 3 profissionais (D-72, que prevalece sobre o exemplo de código da D.7).
 
 export type Plano = "basic" | "pro";
-export type Periodicidade = "mensal" | "anual";
+/** O semestral só existe por campanha (D-190): seis mensalidades de uma vez. */
+export type Periodicidade = "mensal" | "semestral" | "anual";
 export type RegimeIva = "normal" | "isento"; // PRESTADORA_REGIME_IVA (D-45, D-85)
 
 // Pro a 39,99 € (dono, 26/10/2026, D-173).
@@ -13,6 +14,19 @@ export const EXTRA_CENT: Record<Plano, number> = { basic: 0, pro: 1000 };
 export const DOMINIO_PROPRIO_CENT = 500;
 export const TAXA_IVA = 0.23;
 export const MESES_NO_ANUAL = 10;
+export const MESES_NO_SEMESTRAL = 6;
+/** Mensalidades que se pagam em cada periodicidade. */
+export const MENSALIDADES_POR_PERIODO: Record<Periodicidade, number> = {
+  mensal: 1,
+  semestral: MESES_NO_SEMESTRAL,
+  anual: MESES_NO_ANUAL,
+};
+/** Meses de serviço que cada periodicidade cobre (para a receita mensal). */
+export const MESES_POR_PERIODO: Record<Periodicidade, number> = {
+  mensal: 1,
+  semestral: 6,
+  anual: 12,
+};
 
 export function calcularMensalidadeCent(
   plano: Plano,
@@ -56,7 +70,7 @@ export function calcularPrecoCent(
     calcularMensalidadeCent(plano, nProfissionais, dominioProprio),
     descontoPct,
   );
-  const valor = periodicidade === "anual" ? mensal * MESES_NO_ANUAL : mensal;
+  const valor = mensal * MENSALIDADES_POR_PERIODO[periodicidade];
   // Isento (art. 53.º do CIVA): ao preço não acresce IVA (D-173, substitui a opção B da D-45).
   if (regime === "isento") return { semIva: valor, comIva: valor, ivaTaxa: 0 };
   return { semIva: valor, comIva: Math.round(valor * (1 + TAXA_IVA)), ivaTaxa: 23 };

@@ -29,3 +29,24 @@ export function alvosDoComunicado<B extends BarbeariaAlvo>(
         (c.destino === "barbearia" && b.id === c.inquilinoId)),
   );
 }
+
+export type PessoaAlvo = { userId: string; papel: string; ativo: boolean };
+const PAPEL_DO_DESTINO: Record<string, string> = {
+  comerciais: "comercial",
+  gestores: "gestor_plataforma",
+};
+
+/** É um comunicado à equipa InstaBarber (D-191)? */
+export const paraEquipa = (c: { destino: string }) => c.destino in PAPEL_DO_DESTINO;
+
+/** As pessoas ativas da equipa a que o comunicado se destina (D-191): o grupo ou uma pessoa. */
+export function pessoasDoComunicado<P extends PessoaAlvo>(
+  c: { destino: string; destinatarioId: string | null },
+  equipa: P[],
+): P[] {
+  const papel = PAPEL_DO_DESTINO[c.destino];
+  return equipa.filter(
+    (p) =>
+      p.ativo && p.papel === papel && (c.destinatarioId === null || p.userId === c.destinatarioId),
+  );
+}

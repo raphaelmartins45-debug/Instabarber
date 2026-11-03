@@ -1,5 +1,5 @@
 -- =============================================================================
--- Testes do endurecimento das funções (D-189): quem não tem sessão só executa as funções
+-- Testes do endurecimento das funções (D-192): quem não tem sessão só executa as funções
 -- security definer que a página pública e as políticas RLS precisam; as funções SQL simples
 -- têm search_path fixo.
 -- =============================================================================

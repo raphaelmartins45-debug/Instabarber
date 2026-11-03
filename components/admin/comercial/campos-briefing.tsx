@@ -89,18 +89,18 @@ export function SelecaoBriefing({
   opcoes,
 }: {
   form: Form;
-  nome: "plano" | "periodicidade" | "modelo_caixa";
+  nome: "plano" | "periodicidade" | "modelo_caixa" | "implementacao";
   opcoes: Record<string, string>;
 }) {
   return (
-    <label className="grid gap-1.5">
+    <label className="grid min-w-0 gap-1.5">
       <span className="rotulo">{c[nome]}</span>
       <select
         {...form.register(
           nome,
           nome === "modelo_caixa" ? { setValueAs: (v) => v || undefined } : {},
         )}
-        className="h-11 rounded-lg border border-input bg-card px-3 text-sm"
+        className="h-11 w-full min-w-0 rounded-lg border border-input bg-card px-3 text-sm"
       >
         {nome === "modelo_caixa" ? <option value="">{textos.comum.vazio}</option> : null}
         {Object.entries(opcoes).map(([v, r]) => (

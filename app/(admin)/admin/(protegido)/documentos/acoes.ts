@@ -54,7 +54,7 @@ export async function propostaRapida(dados: DadosPropostaRapida): Promise<Result
 
 /**
  * Envia outra vez o guia de arranque (assina o Apoio ao cliente, D-184) para o e-mail da ficha da
- * barbearia, ou o do proprietário sem ele (D-190). Devolve o endereço usado, para o ecrã o mostrar.
+ * barbearia, ou o do proprietário sem ele (D-193). Devolve o endereço usado, para o ecrã o mostrar.
  */
 export async function enviarGuia(inquilinoId: string): Promise<{ ok: boolean; para?: string }> {
   await exigirSuperAdmin();

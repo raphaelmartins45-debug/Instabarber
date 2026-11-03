@@ -21,7 +21,8 @@ export default async function Condicoes() {
           descontosAtivos: c.descontosAtivos,
           descontoMaxMensalidade: c.descontoMaxMensalidade,
           taxaAtiva: c.taxaAtiva,
-          taxaBase: textoDeCentimos(c.taxaBaseCent),
+          precoEssencial: textoDeCentimos(c.precosCent.essencial),
+          precoFormacao: textoDeCentimos(c.precosCent.formacao),
           descontoMaxTaxa: c.descontoMaxTaxa,
         }}
       />

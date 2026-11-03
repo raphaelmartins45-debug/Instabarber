@@ -95,3 +95,25 @@ on conflict (id) do nothing;
 
 -- Condições comerciais (D-161): descontos e taxa de migração desligados.
 insert into configuracao_comercial default values on conflict (id) do nothing;
+
+-- Campanhas comerciais de partida (D-190), todas desligadas: a Performa LAB liga as que quiser.
+insert into campanhas_comerciais (chave, nome, texto, ordem, planos, periodicidade, implementacao,
+  implementacao_sem_iva, meses_oferta, primeiro_mes_gratis, meses_condicao, desconto_temporario_pct,
+  profissionais_gratis, dominio_gratis) values
+  ('anual14_pro', 'Anual 14', 'Paga o anual e usa 14 meses: aos 12 meses do ano juntamos 2 meses de oferta. A Implementação Essencial é por nossa conta.',
+   10, '{pro}', 'anual', 'essencial', 0, 2, false, 0, 0, 0, false),
+  ('anual14_basic', 'Anual 14', 'Paga o anual e usa 14 meses: aos 12 meses do ano juntamos 2 meses de oferta. Implementação Essencial a 50 €.',
+   11, '{basic}', 'anual', 'essencial', 50, 2, false, 0, 0, 0, false),
+  ('semestral', 'Semestral com implementação', 'Paga seis meses de uma vez e a Implementação Essencial é por nossa conta.',
+   20, '{basic,pro}', 'semestral', 'essencial', 0, 0, false, 0, 0, 0, false),
+  ('primeiro_mes', 'Primeiro mês por nossa conta', 'Paga só a Implementação Essencial (50 €) e o primeiro mês é de oferta. Depois, a mensalidade normal.',
+   30, '{basic,pro}', 'mensal', 'essencial', 50, 0, true, 0, 0, 0, false),
+  ('muda_ja', 'Muda já', 'Vem de outro sistema? A Implementação com Formação ao preço da Essencial (50 €): importamos os seus clientes, levamos o expositor e formamos a equipa.',
+   40, '{basic,pro}', null, 'formacao', 50, 0, false, 0, 0, 0, false),
+  ('sobe_pro', 'Sobe para Pro', 'O Pro completo a metade do preço nos três primeiros meses.',
+   50, '{pro}', 'mensal', null, null, 0, false, 3, 50, 0, false),
+  ('equipa_crescer', 'Equipa a crescer', 'O quarto profissional é de oferta nos primeiros seis meses.',
+   60, '{pro}', null, null, null, 0, false, 6, 0, 1, false),
+  ('dominio_oferta', 'Domínio de oferta', 'O domínio próprio é por nossa conta no primeiro ano.',
+   70, '{basic,pro}', 'anual', null, null, 0, false, 12, 0, 0, true)
+on conflict (chave) do nothing;
