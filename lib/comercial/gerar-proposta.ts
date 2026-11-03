@@ -34,9 +34,13 @@ export async function gerarPropostaDoLead(
     lerCondicoes(bd),
     assinaturaDe(bd, quem.userId),
   ]);
-  // Descontos e taxa de migração (D-161): a base de dados confere outra vez os limites.
+  // Descontos e implementação (D-161, D-189): a base de dados confere outra vez os limites.
   const descontos = aplicarCondicoes(
-    { mensalidade: briefing.desconto_mensalidade_pct, taxa: briefing.desconto_taxa_pct },
+    {
+      mensalidade: briefing.desconto_mensalidade_pct,
+      taxa: briefing.desconto_taxa_pct,
+      implementacao: briefing.implementacao,
+    },
     condicoes,
     quem.administrador,
   );

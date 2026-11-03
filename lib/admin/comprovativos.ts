@@ -9,6 +9,7 @@ import { dataCurta } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
+import { implementacaoPorPagarCent } from "@/lib/regras/implementacao";
 import { precoDaBarbearia } from "@/lib/regras/receita";
 import type { Comprovativo } from "@/lib/repositorios/comprovativos";
 import type { ConfiguracaoBarbearia } from "@/lib/repositorios/painel/barbearia";
@@ -25,6 +26,10 @@ export const periodoDe = (c: { periodo_inicio: string; periodo_fim: string }) =>
 export const mensalidadeCent = (b: ConfiguracaoBarbearia) =>
   precoDaBarbearia(b, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA)).comIva;
 
+/** A implementação com IVA ainda por pagar (D-189): vai junto com o primeiro pagamento. */
+export const implementacaoCent = (b: ConfiguracaoBarbearia) =>
+  implementacaoPorPagarCent(b, lerRegimeIva(process.env.PRESTADORA_REGIME_IVA));
+
 export function avisarComprovativo(
   b: ConfiguracaoBarbearia,
   c: Comprovativo,
@@ -39,7 +44,7 @@ export function avisarComprovativo(
       periodicidade: textos.admin.periodicidades[b.periodicidade as "mensal" | "anual"],
       periodo: periodoDe(c),
       fatura: fatura ?? t.admin.campos.semFatura,
-      esperado: formatarDinheiro(mensalidadeCent(b)),
+      esperado: formatarDinheiro(mensalidadeCent(b) + implementacaoCent(b)),
       valor: formatarDinheiro(c.valor_centimos),
       metodo: t.metodos[c.metodo] ?? c.metodo,
       data: dia(c.pago_em),

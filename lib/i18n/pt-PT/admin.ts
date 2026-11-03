@@ -53,6 +53,7 @@ export const admin = {
   },
   barbearias: {
     titulo: "Barbearias",
+    registar: "Registar barbearia",
     pesquisa: "Pesquisar por nome ou endereço",
     estado: "Estado",
     plano: "Plano",
@@ -68,6 +69,87 @@ export const admin = {
     },
     vazio: "Nenhuma barbearia com estes filtros.",
     abrir: "Abrir ficha",
+  },
+  // Registo de uma barbearia pelo painel (D-189)
+  registo: {
+    titulo: "Registar barbearia",
+    ajuda:
+      "Para quem fecha o negócio em pessoa. Cria a barbearia e a conta do dono, e envia-lhe as boas-vindas com a ligação para definir a palavra-passe e o guia de arranque. O dono completa o resto no painel.",
+    seccoes: {
+      barbearia: "Barbearia",
+      plano: "Plano",
+      implementacao: "Implementação e cortesia",
+    },
+    campos: {
+      nome: "Nome da barbearia *",
+      responsavel: "Nome do dono *",
+      nif: "NIF",
+      email_acesso: "E-mail do dono (entrada no painel) *",
+      telefone: "Telemóvel",
+      cidade: "Cidade",
+      morada: "Morada",
+      plano: "Plano",
+      periodicidade: "Periodicidade",
+      profissionais: "Profissionais",
+      implementacao: "Implementação",
+      valor_implementacao: "Valor da implementação, sem IVA (€)",
+      cortesia: "Em cortesia (não paga)",
+      cortesia_ate: "Cortesia até (opcional)",
+    } as Record<string, string>,
+    registar: "Registar e enviar as boas-vindas",
+    aRegistar: "A registar…",
+    feito: "Barbearia registada. As boas-vindas foram enviadas ao dono.",
+    feitoSemEmail:
+      "Barbearia registada, mas o e-mail de boas-vindas falhou. Reenvie-o na ficha da barbearia.",
+    erros: {
+      obrigatorio: "Preencha os campos obrigatórios.",
+      longo: "Texto demasiado longo.",
+      nif: "O NIF tem 9 algarismos.",
+      email: "Indique um e-mail válido.",
+      telemovel: "Indique um telemóvel válido.",
+      profissionais: "O Basic tem 1 profissional; o Pro, pelo menos 3.",
+      valor: "Indique um valor válido (sem implementação, o valor é zero).",
+      data: "Indique uma data válida (ou deixe vazio).",
+      slug: "Já existe uma barbearia com este nome. Mude o nome.",
+      ja_decidido: "Não foi possível registar. Tente outra vez.",
+      pedido: "Não foi possível registar. Tente outra vez.",
+      implementacao:
+        "A barbearia foi registada, mas a implementação não ficou gravada. Defina-a na ficha (Pagamentos).",
+      cortesia:
+        "A barbearia foi registada, mas a cortesia não ficou gravada. Defina-a na ficha (Pagamentos).",
+      falhou: "Não foi possível criar a barbearia ou a conta do dono. Tente outra vez.",
+      generico: "Não foi possível registar. Tente outra vez.",
+    } as Record<string, string>,
+  },
+  // Cortesia e implementação de uma barbearia (D-189)
+  condicoesBarbearia: {
+    cortesia: "Cortesia",
+    cortesiaAjuda:
+      "Em cortesia a barbearia não paga: sai dos vencimentos, dos lembretes e da receita. Com data de fim, o primeiro vencimento é o dia seguinte; sem data, fica até desligar.",
+    cortesiaAtiva: "Em cortesia",
+    ate: "Até (opcional)",
+    guardarCortesia: "Guardar cortesia",
+    implementacao: "Implementação",
+    implementacaoAjuda:
+      "Cobra-se no primeiro pagamento da barbearia, junto com a mensalidade, e sai na fatura como uma linha à parte.",
+    tipo: "Pacote",
+    valor: "Valor sem IVA (€)",
+    paga: (data: string) => `Paga a ${data}. Já não se altera.`,
+    guardarImplementacao: "Guardar implementação",
+    guardado: "Guardado.",
+    tipos: {
+      nenhuma: "Sem implementação",
+      essencial: "Implementação Essencial",
+      formacao: "Implementação com Formação",
+    } as Record<string, string>,
+    erros: {
+      data: "Indique uma data válida (ou deixe vazio).",
+      data_passada: "A data de fim já passou.",
+      valor: "Indique um valor válido (sem implementação, o valor é zero).",
+      implementacao_paga: "A implementação já foi paga e não se altera.",
+      implementacao_invalida: "Pacote ou valor inválido.",
+      generico: "Não foi possível guardar. Tente outra vez.",
+    } as Record<string, string>,
   },
   ficha: {
     separadores: {
@@ -268,7 +350,7 @@ export const admin = {
         comprovativo_aprovado: "Comprovativo aprovado",
         comprovativo_recusado: "Comprovativo recusado",
         comissao_paga: "Comissão paga",
-        comissao_taxa_paga: "Taxa de migração paga",
+        comissao_taxa_paga: "Implementação paga (comissão)",
         fatura_emitida: "Fatura emitida",
         cliente_anonimizado: "Cliente anonimizado",
         auditoria_antiga_apagada: "Auditoria antiga apagada",

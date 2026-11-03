@@ -30,4 +30,10 @@ describe("receita recorrente mensal", () => {
     expect(r.comIva).toBe(2459 + 4099 + 3074);
     expect(r.semIva).toBe(1999 + 3333 + 2499);
   });
+
+  it("as barbearias em cortesia não contam (D-189)", () => {
+    const cortesia = { ...b("basic", "mensal", 1), cortesia: true, cortesia_ate: "2026-12-31" };
+    expect(receitaMensal([cortesia], "normal", "2026-11-03").comIva).toBe(0);
+    expect(receitaMensal([cortesia], "normal", "2027-01-01").comIva).toBe(2459);
+  });
 });

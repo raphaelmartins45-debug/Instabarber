@@ -9,6 +9,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/barbearias/[id]/[separador]/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/exportar/route.ts`
 - `app/(admin)/admin/(protegido)/barbearias/[id]/page.tsx`
+- `app/(admin)/admin/(protegido)/barbearias/nova/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/condicoes/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/assinado/route.ts`
@@ -312,6 +313,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `criar_pedido_loja()`
 - `criar_proposta()`
 - `decidir_proposta()`
+- `definir_cortesia()`
+- `definir_implementacao()`
 - `distribuir_leads_comercial()`
 - `e_comercial()`
 - `e_dono_plataforma()`

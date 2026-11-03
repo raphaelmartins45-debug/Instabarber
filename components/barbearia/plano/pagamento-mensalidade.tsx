@@ -23,7 +23,14 @@ export function PagamentoMensalidade({
   return (
     <Secao id="pagar" titulo={t.titulo}>
       <div className="grid gap-4">
-        {dados.emAnalise ? (
+        {dados.cortesia ? (
+          <p
+            className="rounded-lg border bg-card px-3 py-2 text-sm font-semibold"
+            data-testid="plano-cortesia"
+          >
+            {dados.cortesia}
+          </p>
+        ) : dados.emAnalise ? (
           <p
             className="rounded-lg border bg-card px-3 py-2 text-sm"
             data-testid="comprovativo-em-analise"

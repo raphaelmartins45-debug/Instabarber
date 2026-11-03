@@ -1,9 +1,12 @@
+import { hojeIso } from "@/lib/formatacao/datas";
+import { type ComCortesia, emCortesia } from "./cortesia";
 import { calcularPrecoCent, type Periodicidade, type Plano, type RegimeIva } from "./mensalidade";
 
 // Indicadores de receita do Admin (E.1), sempre pela fórmula única (D.7). Um plano anual conta
-// na receita recorrente mensal como o valor do ano a dividir por 12.
+// na receita recorrente mensal como o valor do ano a dividir por 12. As barbearias em cortesia
+// (D-189) não contam: não pagam.
 
-export type BarbeariaFaturavel = {
+export type BarbeariaFaturavel = ComCortesia & {
   plano: string;
   periodicidade: string;
   profissionais_contratados: number;
@@ -28,9 +31,10 @@ export function precoDaBarbearia(b: BarbeariaFaturavel, regime: RegimeIva) {
 export function receitaMensal(
   barbearias: BarbeariaFaturavel[],
   regime: RegimeIva,
+  hoje: string = hojeIso(),
 ): { comIva: number; semIva: number } {
   return barbearias
-    .filter((b) => b.estado === "ativo")
+    .filter((b) => b.estado === "ativo" && !emCortesia(b, hoje))
     .reduce(
       (soma, b) => {
         const p = precoDaBarbearia(b, regime);

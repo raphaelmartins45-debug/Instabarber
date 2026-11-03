@@ -77,3 +77,19 @@ export async function usarConviteAdesao(
   });
   return !error && data === true;
 }
+
+/**
+ * Pedido criado pela Performa LAB no painel (D-189), para seguir o mesmo caminho da aprovação.
+ * Só o super_admin (RLS adesoes_admin); os termos aceitam-se no contrato assinado.
+ */
+export async function criarPedidoDoPainel(
+  bd: ClienteBD,
+  linha: Database["public"]["Tables"]["pedidos_adesao"]["Insert"],
+): Promise<string | null> {
+  const { data, error } = await bd.from("pedidos_adesao").insert(linha).select("id").single();
+  if (error) {
+    console.error("pedido_painel_falhou", error.message);
+    return null;
+  }
+  return data.id;
+}

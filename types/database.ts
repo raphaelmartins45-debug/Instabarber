@@ -908,6 +908,7 @@ export type Database = {
           estado: string;
           fatura_id: string | null;
           id: string;
+          implementacao_sem_iva: number;
           inquilino_id: string;
           metodo: string;
           motivo: string | null;
@@ -927,6 +928,7 @@ export type Database = {
           estado?: string;
           fatura_id?: string | null;
           id?: string;
+          implementacao_sem_iva?: number;
           inquilino_id: string;
           metodo: string;
           motivo?: string | null;
@@ -945,6 +947,7 @@ export type Database = {
           estado?: string;
           fatura_id?: string | null;
           id?: string;
+          implementacao_sem_iva?: number;
           inquilino_id?: string;
           metodo?: string;
           motivo?: string | null;
@@ -1113,8 +1116,9 @@ export type Database = {
           desconto_max_taxa_pct: number;
           descontos_ativos: boolean;
           id: boolean;
+          implementacao_essencial_sem_iva: number;
+          implementacao_formacao_sem_iva: number;
           taxa_migracao_ativa: boolean;
-          taxa_migracao_sem_iva: number;
         };
         ComputedFields: never;
         Insert: {
@@ -1124,8 +1128,9 @@ export type Database = {
           desconto_max_taxa_pct?: number;
           descontos_ativos?: boolean;
           id?: boolean;
+          implementacao_essencial_sem_iva?: number;
+          implementacao_formacao_sem_iva?: number;
           taxa_migracao_ativa?: boolean;
-          taxa_migracao_sem_iva?: number;
         };
         Update: {
           atualizado_em?: string;
@@ -1134,8 +1139,9 @@ export type Database = {
           desconto_max_taxa_pct?: number;
           descontos_ativos?: boolean;
           id?: boolean;
+          implementacao_essencial_sem_iva?: number;
+          implementacao_formacao_sem_iva?: number;
           taxa_migracao_ativa?: boolean;
-          taxa_migracao_sem_iva?: number;
         };
         Relationships: [];
       };
@@ -2258,6 +2264,8 @@ export type Database = {
           capa_foto_url: string | null;
           cidade: string | null;
           codigo_postal: string | null;
+          cortesia: boolean;
+          cortesia_ate: string | null;
           criado_em: string;
           demonstracao: boolean;
           desconto_aniversario_ativo: boolean;
@@ -2281,6 +2289,9 @@ export type Database = {
           hora_fecho: string;
           id: string;
           idioma: string;
+          implementacao: string;
+          implementacao_paga_em: string | null;
+          implementacao_sem_iva: number;
           instagram: string | null;
           intervalo_almoco_fim: string | null;
           intervalo_almoco_inicio: string | null;
@@ -2322,6 +2333,8 @@ export type Database = {
           capa_foto_url?: string | null;
           cidade?: string | null;
           codigo_postal?: string | null;
+          cortesia?: boolean;
+          cortesia_ate?: string | null;
           criado_em?: string;
           demonstracao?: boolean;
           desconto_aniversario_ativo?: boolean;
@@ -2345,6 +2358,9 @@ export type Database = {
           hora_fecho?: string;
           id?: string;
           idioma?: string;
+          implementacao?: string;
+          implementacao_paga_em?: string | null;
+          implementacao_sem_iva?: number;
           instagram?: string | null;
           intervalo_almoco_fim?: string | null;
           intervalo_almoco_inicio?: string | null;
@@ -2385,6 +2401,8 @@ export type Database = {
           capa_foto_url?: string | null;
           cidade?: string | null;
           codigo_postal?: string | null;
+          cortesia?: boolean;
+          cortesia_ate?: string | null;
           criado_em?: string;
           demonstracao?: boolean;
           desconto_aniversario_ativo?: boolean;
@@ -2408,6 +2426,9 @@ export type Database = {
           hora_fecho?: string;
           id?: string;
           idioma?: string;
+          implementacao?: string;
+          implementacao_paga_em?: string | null;
+          implementacao_sem_iva?: number;
           instagram?: string | null;
           intervalo_almoco_fim?: string | null;
           intervalo_almoco_inicio?: string | null;
@@ -4257,6 +4278,7 @@ export type Database = {
           enviada_em: string | null;
           estado: string;
           id: string;
+          implementacao: string;
           iva_taxa: number;
           lead_id: string;
           mensalidade_sem_iva: number;
@@ -4287,6 +4309,7 @@ export type Database = {
           enviada_em?: string | null;
           estado?: string;
           id?: string;
+          implementacao?: string;
           iva_taxa?: number;
           lead_id: string;
           mensalidade_sem_iva: number;
@@ -4316,6 +4339,7 @@ export type Database = {
           enviada_em?: string | null;
           estado?: string;
           id?: string;
+          implementacao?: string;
           iva_taxa?: number;
           lead_id?: string;
           mensalidade_sem_iva?: number;
@@ -4804,6 +4828,7 @@ export type Database = {
           estado: string | null;
           estado_efetivo: string | null;
           id: string | null;
+          implementacao: string | null;
           iva_taxa: number | null;
           lead_id: string | null;
           mensalidade_sem_iva: number | null;
@@ -4835,6 +4860,7 @@ export type Database = {
           estado?: string | null;
           estado_efetivo?: never;
           id?: string | null;
+          implementacao?: string | null;
           iva_taxa?: number | null;
           lead_id?: string | null;
           mensalidade_sem_iva?: number | null;
@@ -4865,6 +4891,7 @@ export type Database = {
           estado?: string | null;
           estado_efetivo?: never;
           id?: string | null;
+          implementacao?: string | null;
           iva_taxa?: number | null;
           lead_id?: string | null;
           mensalidade_sem_iva?: number | null;
@@ -5495,6 +5522,14 @@ export type Database = {
       criar_proposta: { Args: { p: Json; p_lead: string }; Returns: string };
       decidir_proposta: {
         Args: { p_aceite: boolean; p_motivo?: string; p_proposta: string };
+        Returns: undefined;
+      };
+      definir_cortesia: {
+        Args: { p_ate?: string; p_ativa: boolean; p_inquilino: string };
+        Returns: undefined;
+      };
+      definir_implementacao: {
+        Args: { p_inquilino: string; p_tipo: string; p_valor: number };
         Returns: undefined;
       };
       e_comercial: { Args: Record<PropertyKey, never>; Returns: boolean };

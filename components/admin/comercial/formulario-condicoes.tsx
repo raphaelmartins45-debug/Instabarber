@@ -14,7 +14,7 @@ import type { z } from "zod";
 
 const t = textos.comercial.condicoes;
 
-/** Interruptores e limites dos descontos e da taxa de migração (D-161). */
+/** Interruptores e limites dos descontos e da implementação (D-161, D-189). */
 export function FormularioCondicoes({ inicial }: { inicial: DadosCondicoes }) {
   const router = useRouter();
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
@@ -63,14 +63,23 @@ export function FormularioCondicoes({ inicial }: { inicial: DadosCondicoes }) {
       </fieldset>
       <fieldset className="cartao grid gap-4 rounded-2xl p-4">
         {interruptor("taxaAtiva")}
-        <Campo
-          id="cond-taxa"
-          inputMode="decimal"
-          rotulo={t.taxaBase}
-          ajuda={t.taxaAjuda}
-          erro={erro("taxaBase")}
-          {...register("taxaBase")}
-        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Campo
+            id="cond-essencial"
+            inputMode="decimal"
+            rotulo={t.precoEssencial}
+            erro={erro("precoEssencial")}
+            {...register("precoEssencial")}
+          />
+          <Campo
+            id="cond-formacao"
+            inputMode="decimal"
+            rotulo={t.precoFormacao}
+            erro={erro("precoFormacao")}
+            {...register("precoFormacao")}
+          />
+        </div>
+        <p className="text-xs text-muted-foreground">{t.taxaAjuda}</p>
         <Campo
           id="cond-max-taxa"
           type="number"

@@ -55,6 +55,26 @@ describe("fatura-recibo pelo InvoiceXpress (D-170)", () => {
     expect(isenta.items[0]!.tax.name).toBe("Isento");
   });
 
+  it("com a implementação, a fatura sai com duas linhas (D-189)", () => {
+    const c = corpoFaturaRecibo(
+      {
+        ...dados,
+        isento: true,
+        totalCent: 13999,
+        extra: {
+          item: "Implementação com Formação InstaBarber",
+          descricao: "Único",
+          totalCent: 10000,
+        },
+      },
+      "IVA23",
+    ).invoice_receipt;
+    expect(c.items.map((i) => [i.name, i.unit_price])).toEqual([
+      ["Mensalidade InstaBarber", "39.99"],
+      ["Implementação com Formação InstaBarber", "100.00"],
+    ]);
+  });
+
   it("cria, finaliza e envia por e-mail; devolve o número", async () => {
     const pedir = vi
       .fn()

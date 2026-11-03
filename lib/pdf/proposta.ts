@@ -31,6 +31,8 @@ export type DadosPdfProposta = {
   condicoesLancamento: string | null;
   /** Desconto na mensalidade e taxa de migração sem IVA, já com o desconto (D-161). */
   descontoPct: number;
+  /** Pacote de implementação (D-189): «nenhuma», «essencial» ou «formacao». */
+  implementacao: string;
   taxaSemIva: string;
   dados: {
     briefing: Briefing;
@@ -131,7 +133,14 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
     );
     f.total(t.comIva, dinheiro(d.valorComIva));
   }
-  if (centimosDeNumeric(d.taxaSemIva) > 0) f.linha(t.taxaMigracao, dinheiro(d.taxaSemIva));
+  const implementacao = b.implementacoes[d.implementacao];
+  if (centimosDeNumeric(d.taxaSemIva) > 0 && implementacao) {
+    f.linha(t.taxaMigracao(implementacao), dinheiro(d.taxaSemIva));
+    f.titulo(t.implementacao);
+    f.subtituloSeccao(implementacao);
+    f.lista(t.implementacaoInclui[d.implementacao] ?? []);
+    f.legal(t.implementacaoNota);
+  }
   if (d.dados.valor_para_si_cent) {
     f.titulo(t.valorParaSi);
     f.nota(

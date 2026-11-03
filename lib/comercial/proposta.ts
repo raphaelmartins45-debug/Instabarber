@@ -7,14 +7,21 @@ import {
   TAXA_IVA,
 } from "@/lib/regras/mensalidade";
 import { type Briefing, DORES, valorParaSiCent } from "./briefing";
+import type { Implementacao } from "./condicoes";
 
-/** Os descontos e a taxa que valem nesta proposta (lib/comercial/condicoes.ts, D-161). */
+/** Os descontos e a implementação desta proposta (lib/comercial/condicoes.ts, D-161, D-189). */
 export type DescontosDaProposta = {
   descontoMensalidade: number;
+  implementacao: Implementacao;
   descontoTaxa: number;
   taxaCent: number;
 };
-const SEM_DESCONTOS: DescontosDaProposta = { descontoMensalidade: 0, descontoTaxa: 0, taxaCent: 0 };
+const SEM_DESCONTOS: DescontosDaProposta = {
+  descontoMensalidade: 0,
+  implementacao: "nenhuma",
+  descontoTaxa: 0,
+  taxaCent: 0,
+};
 
 // A proposta (N.5) a partir do briefing: preços pela fórmula única (D.7), a fotografia que fica
 // em propostas.dados e a solução ligada às dores, só com o que o plano inclui.
@@ -65,6 +72,7 @@ export function montarProposta(
     condicoes_lancamento: b.condicoes_lancamento,
     validade_dias: b.validade_dias,
     desconto_mensalidade_pct: d.descontoMensalidade,
+    implementacao: d.implementacao,
     taxa_migracao_sem_iva: cent(d.taxaCent),
     desconto_taxa_pct: d.descontoTaxa,
     dados: {

@@ -43,6 +43,7 @@ que mexa num procedimento atualiza este manual no mesmo dia.
 | P-28 | Monitorizar a disponibilidade (objetivo de 99,5 %) | Uma vez, e ao fim de cada mês |
 | P-29 | Registar um contacto de apoio e publicar um comunicado | Cada contacto; cada aviso às barbearias |
 | P-30 | Gerir a equipa InstaBarber (entrada e saída de gestores e comerciais), atribuir leads e definir metas | Cada entrada ou saída; início de cada mês |
+| P-31 | Registar uma barbearia pelo painel, a implementação e a cortesia | Negócio fechado em pessoa; barbearia de oferta |
 
 ---
 
@@ -595,14 +596,30 @@ Só a Performa LAB vê este registo; não entra na exportação dos dados da bar
 
 **Leads (D-162):** enquanto não houver comerciais ativos, ficam no geral (sem responsável). O primeiro comercial que entra recebe todos os leads em aberto do geral e os novos; com dois ou mais, os novos repartem-se ao acaso. Quem é desativado passa os seus leads em aberto a outro comercial. Para mudar um lead de mãos: abrir o lead → «Responsável → Atribuir».
 
-**Comissões (D-162):** cada contrato assinado com taxa de migração gera a comissão do comercial responsável, «pendente». Em `Comercial → Desempenho → Comissões`: quando a barbearia pagar a taxa, «Registar taxa paga» (com a data); a comissão vence 10 dias depois. Depois de pagar ao comercial, «Marcar paga». As vencidas aparecem nos alertas do painel.
+**Comissões (D-162, D-189):** cada contrato assinado com implementação gera a comissão do comercial responsável (metade do valor cobrado), «pendente». Quando aprova o primeiro pagamento da barbearia (que leva a implementação), a comissão passa sozinha a «a pagar» e vence 10 dias depois. Se a barbearia pagou a implementação por fora, em `Comercial → Desempenho → Comissões` use «Registar implementação paga» (com a data). Depois de pagar ao comercial, «Marcar paga». As vencidas aparecem nos alertas do painel.
 
 **Demonstração (D-162):** em `Comercial` (Funil), «Preparar dados de hoje» refaz a Barbearia Demonstração com agenda, clientes e serviços fictícios (telefones +999, que não existem); «Abrir o painel da demonstração» abre-a na vista de apoio (só leitura, 30 minutos); «Ver a página pública» mostra a página de marcação. Fica fora das contas, da saúde, das métricas e dos comunicados.
 
 **Metas:** `Comercial → Desempenho → Metas do mês`: escolher o comercial e as metas (leads novos, propostas, contratos assinados).
 
-**Descontos e taxa de migração:** `Comercial → Condições`. Estão **desligados**. Quando a cobrança estiver pronta: ligar o interruptor, rever os limites do comercial (20 % na mensalidade, 50 % na taxa) e o valor da taxa. A taxa de migração é a comissão do comercial e aparece no desempenho dele.
+**Descontos e implementação (D-189):** `Comercial → Condições`. A implementação está **ligada**, com dois pacotes: Essencial (50 €) e com Formação (100 €), sem IVA. O comercial escolhe o pacote no briefing ao gerar a proposta e pode dar até 50 % de desconto, que sai da comissão dele. Os descontos na mensalidade continuam desligados até os ligar.
 
 **Saída de uma pessoa:** `Equipa InstaBarber → Desativar` (corta o acesso na hora; os leads e o histórico ficam). Atribuir os leads dela a outro comercial e desativar a caixa de correio na Zoho.
 
 **Confirmar:** a pessoa entra e vê só o que o papel permite; na saída, deixa de conseguir entrar.
+
+### P-31 · Registar uma barbearia pelo painel, a implementação e a cortesia
+
+**Quando:** o negócio fechou-se em pessoa (sem o formulário de adesão), ou a barbearia fica de oferta.
+
+1. `Barbearias → Registar barbearia`. Preencher o nome, o dono, o e-mail com que ele vai entrar, o plano e os profissionais.
+2. **Implementação:** escolher Essencial ou com Formação. O valor vem das condições comerciais e pode ajustar-se. Cobra-se no primeiro pagamento, junto com a mensalidade, e sai na fatura como uma linha à parte.
+3. **Cortesia:** marcar «Em cortesia» se a barbearia não paga. Com data de fim, o primeiro pagamento é no dia seguinte; sem data, fica até a desligar.
+4. «Registar e enviar as boas-vindas». O dono recebe a ligação para definir a palavra-passe e o guia de arranque.
+
+**Mudar depois:** na ficha da barbearia, separador **Pagamentos**: «Cortesia» (ligar, desligar, data) e «Implementação» (só enquanto não estiver paga).
+
+**Com Formação:** levar o expositor em acrílico A5 com a placa impressa (Documentos → placa da barbearia) e o autocolante em vinil; registar o custo do expositor em Finanças → Custos.
+
+**Confirmar:** a barbearia aparece em Barbearias; em «O meu plano» o dono vê a mensalidade com a implementação, ou «cortesia».
+

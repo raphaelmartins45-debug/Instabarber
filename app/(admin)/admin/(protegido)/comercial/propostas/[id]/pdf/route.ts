@@ -40,6 +40,7 @@ export async function GET(_pedido: Request, { params }: { params: Promise<{ id: 
     ivaTaxa: Number(p.iva_taxa),
     condicoesLancamento: p.condicoes_lancamento,
     descontoPct: Number(p.desconto_mensalidade_pct ?? 0),
+    implementacao: p.implementacao ?? "nenhuma",
     taxaSemIva: String(p.taxa_migracao_sem_iva ?? 0),
     dados,
     condicoes: condicoes?.corpo ?? null,

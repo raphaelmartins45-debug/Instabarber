@@ -106,6 +106,14 @@ create table inquilinos (
                                 check (desconto_mensalidade_pct between 0 and 100),
   -- A barbearia de demonstração (D-162): fora das contas, da saúde, das métricas e do sitemap.
   demonstracao                  boolean not null default false,
+  -- Implementação contratada, cobrada no primeiro pagamento (D-189)
+  implementacao                 text not null default 'nenhuma'
+                                check (implementacao in ('nenhuma','essencial','formacao')),
+  implementacao_sem_iva         numeric(10,2) not null default 0 check (implementacao_sem_iva >= 0),
+  implementacao_paga_em         date,
+  -- Cortesia (D-189): sem vencimentos nem faturas até cortesia_ate (sem data, até se desligar)
+  cortesia                      boolean not null default false,
+  cortesia_ate                  date,
   aprovado_em                   timestamptz,
   criado_em                     timestamptz not null default now(),
 
@@ -115,7 +123,9 @@ create table inquilinos (
   check (dias_descanso <@ array[0,1,2,3,4,5,6]::smallint[]),
   check (plano = 'pro' or profissionais_contratados = 1),
   check (plano = 'basic' or profissionais_contratados >= 3),
-  check (not desconto_aniversario_ativo or desconto_aniversario_percent is not null)
+  check (not desconto_aniversario_ativo or desconto_aniversario_percent is not null),
+  constraint inquilinos_implementacao check (implementacao <> 'nenhuma' or implementacao_sem_iva = 0),
+  constraint inquilinos_cortesia check (cortesia or cortesia_ate is null)
 );
 
 create unique index inquilinos_uma_demonstracao on inquilinos (demonstracao) where demonstracao;
@@ -880,6 +890,8 @@ create table comprovativos_pagamento (
   decidido_por    uuid references auth.users(id) on delete set null,
   decidido_em     timestamptz,
   recebimento_id  uuid references recebimentos(id) on delete set null,
+  -- A parte do pagamento que coube à implementação (D-189), para a fatura com duas linhas
+  implementacao_sem_iva numeric(10,2) not null default 0 check (implementacao_sem_iva >= 0),
   check (periodo_fim >= periodo_inicio),
   check ((estado = 'pendente') = (decidido_em is null)),
   check (estado <> 'recusado' or motivo is not null)
@@ -1134,8 +1146,10 @@ create table propostas (
   validade_dias           integer not null default 15 check (validade_dias between 1 and 90),
   valida_ate              date,
   dados                   jsonb not null default '{}',   -- fotografia completa do que foi proposto
-  -- Desconto na mensalidade e taxa de migração já com o desconto (D-161), desligados por omissão
+  -- Desconto na mensalidade e taxa de migração já com o desconto (D-161), desligados por omissão.
+  -- A taxa de migração é hoje a implementação (D-189): o pacote escolhido e o valor com o desconto.
   desconto_mensalidade_pct numeric(5,2) not null default 0 check (desconto_mensalidade_pct between 0 and 100),
+  implementacao           text not null default 'nenhuma' check (implementacao in ('nenhuma','essencial','formacao')),
   taxa_migracao_sem_iva   numeric(10,2) not null default 0 check (taxa_migracao_sem_iva >= 0),
   desconto_taxa_pct       numeric(5,2) not null default 0 check (desconto_taxa_pct between 0 and 100),
   pdf_path                text,
@@ -1149,7 +1163,8 @@ create table propostas (
   check (plano = 'basic' or profissionais >= 2),
   check (not desafio_90 or plano = 'pro'),
   check (valor_periodo_com_iva = round(valor_periodo_sem_iva * (1 + iva_taxa / 100), 2)),
-  check (estado <> 'recusada' or motivo_recusa is not null)
+  check (estado <> 'recusada' or motivo_recusa is not null),
+  constraint propostas_implementacao check (implementacao <> 'nenhuma' or taxa_migracao_sem_iva = 0)
 );
 create index propostas_lead on propostas (lead_id, versao desc);
 
@@ -1340,8 +1355,10 @@ create table configuracao_comercial (
   descontos_ativos              boolean not null default false,
   desconto_max_mensalidade_pct  numeric(5,2) not null default 20
                                 check (desconto_max_mensalidade_pct between 0 and 100),
-  taxa_migracao_ativa           boolean not null default false,
-  taxa_migracao_sem_iva         numeric(10,2) not null default 0 check (taxa_migracao_sem_iva >= 0),
+  taxa_migracao_ativa           boolean not null default false,   -- a implementação ligada (D-189)
+  -- Preço dos dois pacotes de implementação, sem IVA (D-189); a comissão do comercial é metade.
+  implementacao_essencial_sem_iva numeric(10,2) not null default 50 check (implementacao_essencial_sem_iva >= 0),
+  implementacao_formacao_sem_iva  numeric(10,2) not null default 100 check (implementacao_formacao_sem_iva >= 0),
   desconto_max_taxa_pct         numeric(5,2) not null default 50
                                 check (desconto_max_taxa_pct between 0 and 100),
   atualizado_por                uuid references auth.users(id) on delete set null,

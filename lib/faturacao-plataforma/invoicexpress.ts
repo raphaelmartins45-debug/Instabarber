@@ -26,8 +26,10 @@ export type DadosFatura = {
   /** Assunto e texto do e-mail que o InvoiceXpress envia com o PDF. */
   assunto: (numero: string) => string;
   corpo: string;
-  /** Total pago, com IVA, em cêntimos. */
+  /** Total pago, com IVA, em cêntimos (com a linha extra, se houver). */
   totalCent: number;
+  /** Segunda linha, paga no mesmo pagamento: a implementação (D-189), com IVA, em cêntimos. */
+  extra?: { item: string; descricao: string; totalCent: number };
   /** Data do pagamento, AAAA-MM-DD. */
   data: string;
   /** Regime de IVA da Prestadora (D-45, D-85): no isento, taxa 0 e motivo M10. */
@@ -60,13 +62,20 @@ export function corpoFaturaRecibo(d: DadosFatura, iva: string) {
       },
       items: [
         {
-          name: d.item,
-          description: d.descricao,
-          unit_price: precoSemIva(d.totalCent, d.isento).toFixed(2),
-          quantity: "1",
-          tax: { name: d.isento ? "Isento" : iva },
+          nome: d.item,
+          descricao: d.descricao,
+          totalCent: d.totalCent - (d.extra?.totalCent ?? 0),
         },
-      ],
+        ...(d.extra
+          ? [{ nome: d.extra.item, descricao: d.extra.descricao, totalCent: d.extra.totalCent }]
+          : []),
+      ].map((l) => ({
+        name: l.nome,
+        description: l.descricao,
+        unit_price: precoSemIva(l.totalCent, d.isento).toFixed(2),
+        quantity: "1",
+        tax: { name: d.isento ? "Isento" : iva },
+      })),
     },
   };
 }

@@ -7,12 +7,15 @@ import { ListasPagamentos } from "@/components/admin/listas-pagamentos";
 import { SeparadorApoio } from "@/components/admin/gestao/separador-apoio";
 import { SeparadorAuditoria } from "@/components/admin/separadores/separador-auditoria";
 import { SeparadorEquipa } from "@/components/admin/separadores/separador-equipa";
+import { CortesiaBarbearia } from "@/components/admin/separadores/cortesia-barbearia";
 import { ImagensMarca } from "@/components/admin/separadores/imagens-marca";
+import { ImplementacaoBarbearia } from "@/components/admin/separadores/implementacao-barbearia";
 import { ImportadorCsv } from "@/components/admin/separadores/importador-csv";
 import { ServicosBarbearia } from "@/components/admin/separadores/servicos-barbearia";
 import { dadosDaGrelha } from "@/lib/admin/dados-grelha";
 import { camposDe, SEPARADORES, valoresDe, type Separador } from "@/lib/admin/ficha";
-import { hojeIso } from "@/lib/formatacao/datas";
+import { dataCurta, hojeIso } from "@/lib/formatacao/datas";
+import { centimosDeNumeric, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { obterBarbearia } from "@/lib/repositorios/admin/barbearias";
 import { listarFaturas, listarRecebimentos } from "@/lib/repositorios/admin/pagamentos";
@@ -90,6 +93,17 @@ export default async function SeparadorFicha({
           campos={campos}
           valores={valoresDe(b, campos)}
         />
+        <div className="grid gap-4 lg:grid-cols-2">
+          <CortesiaBarbearia inquilinoId={b.id} ativa={b.cortesia} ate={b.cortesia_ate} />
+          <ImplementacaoBarbearia
+            inquilinoId={b.id}
+            tipo={b.implementacao}
+            valor={textoDeCentimos(centimosDeNumeric(b.implementacao_sem_iva))}
+            pagaEm={
+              b.implementacao_paga_em ? dataCurta(`${b.implementacao_paga_em}T12:00:00Z`) : null
+            }
+          />
+        </div>
         <ListasPagamentos faturas={faturas} recebimentos={recebimentos} />
         <div className="grid gap-4 lg:grid-cols-2">
           <FormularioPagamento

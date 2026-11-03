@@ -49,7 +49,12 @@ export default async function Barbearias({
   );
   return (
     <section className="grid gap-4">
-      <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
+        <Button asChild>
+          <Link href="/admin/barbearias/nova">{t.registar}</Link>
+        </Button>
+      </div>
       <form className="grid gap-3 rounded-lg border bg-card p-3 sm:grid-cols-[1fr_auto_auto_auto_auto] sm:items-end">
         <label className="grid gap-1.5 text-sm">
           <span className={etiqueta}>{textos.comum.pesquisar}</span>
