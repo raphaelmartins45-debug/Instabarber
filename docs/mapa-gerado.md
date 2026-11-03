@@ -98,6 +98,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/api/acesso/route.ts`
 - `app/api/adesoes/carregamento/route.ts`
 - `app/api/adesoes/route.ts`
+- `app/api/apoio/ligar/route.ts`
+- `app/api/apoio/whatsapp/route.ts`
 - `app/api/contacto/route.ts`
 - `app/api/manifesto/[slug]/route.ts`
 - `app/api/medicao/route.ts`
@@ -298,6 +300,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `auditar_interruptor()`
 - `auditar_modulo_plataforma()`
 - `avisar_fila_espera()`
+- `barbearia_do_lead()`
 - `barbearia_suspensa()`
 - `calcular_preco()`
 - `campanha_da_barbearia()`
@@ -338,6 +341,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `exigir_gestor()`
 - `exigir_lead()`
 - `exigir_super_admin()`
+- `fechar_proposta_no_registo()`
 - `fixar_texto_contrato()`
 - `foto_do_cliente()`
 - `funcionalidade_ativa()`
@@ -380,7 +384,9 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `pasta_lead_acessivel()`
 - `pedir_codigo_acesso()`
 - `periodo_a_pagar()`
+- `pode_carregar_comprovativo()`
 - `pode_criar_acesso_direto()`
+- `pode_enviar_comprovativo()`
 - `pode_marcar_online()`
 - `posicao_fila_espera()`
 - `preparar_demonstracao()`

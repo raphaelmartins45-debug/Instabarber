@@ -102,7 +102,25 @@ export const paineis = {
     indisponivelTexto: "Para marcar, contacte a barbearia diretamente.",
     rodape: "Com InstaBarber",
   },
-  naoEncontrado: { titulo: "Página não encontrada", voltar: "Voltar ao início" },
+  // Página não encontrada e página de erro (D-197)
+  indisponivel: {
+    titulo404: "Esta página não está disponível",
+    texto404: "O endereço pode ter mudado ou já não existir. Escolha por onde quer seguir.",
+    tituloErro: "Algo correu mal ao abrir esta página",
+    textoErro: "Tente outra vez daqui a pouco. Se continuar, fale connosco: resolvemos consigo.",
+    tentarOutraVez: "Tentar outra vez",
+    novoTitulo: "Ainda não é cliente?",
+    novoTexto: "Agenda, clientes, equipa e pagamentos da sua barbearia num só sistema.",
+    novoBotao: "Quero ser cliente!",
+    clienteTitulo: "Já é cliente?",
+    clienteTexto: "Entre no seu painel e continue onde ficou.",
+    clienteBotao: "Entrar no painel",
+    ajudaTitulo: "Precisa de ajuda?",
+    whatsapp: "WhatsApp do apoio",
+    ligar: (numero?: string) => (numero ? `Ligar ${numero}` : "Ligar para o apoio"),
+    inicio: "Voltar ao início",
+    mensagemWhatsapp: "Olá! Preciso de ajuda com o InstaBarber.",
+  },
   suspensa: {
     titulo: "Acesso suspenso",
     texto:

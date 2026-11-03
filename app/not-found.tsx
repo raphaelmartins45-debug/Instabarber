@@ -1,13 +1,19 @@
-import Link from "next/link";
+import { PaginaIndisponivel } from "@/components/nucleo/pagina-indisponivel";
+import { telefoneApoio } from "@/lib/apoio/contacto";
 import { textos } from "@/lib/i18n/pt-PT";
+import { origemPrincipal } from "@/lib/inquilino/endereco";
 
-export default function NaoEncontrado() {
+const t = textos.paineis.indisponivel;
+export const metadata = { title: `${t.titulo404} · ${textos.marca.nome}` };
+
+/** Página não encontrada (D-197): por onde seguir, para quem é e quem ainda não é cliente. */
+export default async function NaoEncontrado() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center gap-3 px-4 text-center">
-      <h1 className="text-2xl font-semibold">{textos.paineis.naoEncontrado.titulo}</h1>
-      <Link href="/" className="text-sm text-ligacao underline underline-offset-4">
-        {textos.paineis.naoEncontrado.voltar}
-      </Link>
-    </main>
+    <PaginaIndisponivel
+      titulo={t.titulo404}
+      texto={t.texto404}
+      origem={await origemPrincipal()}
+      telefoneTexto={telefoneApoio()?.texto}
+    />
   );
 }
