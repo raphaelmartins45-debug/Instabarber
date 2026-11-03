@@ -1029,3 +1029,20 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Técnica:** os nomes internos `taxa_migracao_*` das propostas mantêm-se; só o que se vê muda de nome. A vista `propostas_com_estado` é recriada para mostrar a coluna `implementacao`. Migração 20 (`20261103000020_implementacao_cortesia.sql`); testes SQL em `96h_implementacao_cortesia.sql`.
 - **Faturação automática:** continua desligada em Production (decisão do dono: liga-se depois do primeiro cliente pago e da série própria registada na AT). Em Preview está ligada para o teste na série de demonstração.
 
+## D-190 · 03/11/2026 · Campanhas comerciais (condições especiais) e periodicidade semestral — dono e técnica
+- **Pedido do dono:** condições especiais que a Performa LAB liga e o comercial escolhe na proposta, numa lista «Condição especial». Sem nenhuma escolhida vale o normal: preço do plano, mensal ou anual (12 meses pelo preço de 10) e implementação à escolha.
+- **Campanhas de partida (todas desligadas, em Comercial → Campanhas):**
+  - **Anual 14** (Basic e Pro): o preço normal do anual (10 mensalidades) por 14 meses, porque aos 12 meses do ano juntam-se 2 de oferta. No Pro, a Implementação Essencial é oferta; no Basic paga-se 50 €. Confirmado pelo dono: «14 mensalidades pagando apenas 10».
+  - **Semestral com implementação:** 6 mensalidades de uma vez (sem desconto) e a Implementação Essencial de oferta.
+  - **Primeiro mês por nossa conta** (mensal): paga só a Implementação Essencial (50 €) e o primeiro mês não tem mensalidade.
+  - **Muda já:** a Implementação com Formação ao preço da Essencial (50 €), para quem vem de outro sistema.
+  - **Sobe para Pro** (mensal): o Pro a metade do preço nos 3 primeiros meses (o dono pediu «preço do Basic»; metade dá 20,00 € contra 19,99 €, por isso o texto diz «metade do preço»).
+  - **Equipa a crescer** (Pro): o 4.º profissional de oferta nos primeiros 6 meses.
+  - **Domínio de oferta** (anual): o domínio próprio de oferta no primeiro ano.
+  - «Época» não é uma campanha à parte: é qualquer uma com data de fim. «Traz um colega» fica para a Fase 2.
+- **Regras:** a campanha só serve se estiver ligada, dentro da data, com vagas, para o plano e a periodicidade da proposta (`campanha_disponivel`). Pode fixar o pacote e o preço da implementação (o comercial não lhe dá desconto). A **comissão** do comercial é metade do preço normal do pacote quando a campanha o oferece ou baixa: a InstaBarber paga-a como custo de venda (D-189 mantém-se nas propostas sem campanha). A comissão fica fixada na proposta (`comissao_sem_iva`) e passa a «a pagar» no primeiro pagamento aprovado, haja ou não implementação a cobrar.
+- **Na barbearia:** a campanha passa da proposta aceite (ou do registo pelo painel, `definir_campanha`) com a periodicidade. Os meses de oferta juntam-se ao primeiro período (`periodo_a_pagar`); o primeiro mês de oferta não cobra mensalidade; a condição temporária (desconto, profissionais, domínio) conta desde o primeiro período pago até `campanha_ate`. «O meu plano» mostra a condição e o valor certo; a barbearia lê só a sua campanha (`campanha_da_barbearia`). A fatura não leva linha a zero.
+- **Semestral:** nova periodicidade (`mensal`, `semestral`, `anual`), só por campanha ou à mão no Admin; vence de 6 em 6 meses e conta na receita mensal como o valor a dividir por 6. Na receita mensal, o Anual 14 conta como um anual normal (a dividir por 12); as condições temporárias não entram na receita mensal.
+- **O que se muda no ecrã:** ligar, data de fim, vagas, nome e texto. O que cada campanha oferece está na base de dados e muda-se por migração, com testes. Criar campanhas novas pelo ecrã fica para depois, se for preciso.
+- **Técnica:** migração 21 (`20261103000021_campanhas.sql`); testes SQL em `96i_campanhas.sql`; regras em `lib/comercial/campanhas.ts` e `precoDoPeriodo` (`lib/regras/receita.ts`).
+

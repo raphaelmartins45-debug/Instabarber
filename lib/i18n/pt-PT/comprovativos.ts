@@ -8,6 +8,7 @@ export const comprovativos = {
     `Período a pagar: ${periodo}. Pague por MB WAY ou transferência e envie aqui o comprovativo; a InstaBarber confere e confirma por e-mail.`,
   comImplementacao: (nome: string, valor: string) =>
     `Este primeiro pagamento inclui a ${nome} (${valor}), paga uma só vez.`,
+  comCampanha: (nome: string, texto: string) => `Condição especial «${nome}»: ${texto}`,
   cortesia: (plano: string) => `Plano ${plano} · cortesia. Não há nada a pagar.`,
   cortesiaAte: (plano: string, data: string) =>
     `Plano ${plano} · cortesia até ${data}. Não há nada a pagar até lá; o primeiro pagamento é no dia seguinte.`,

@@ -18,6 +18,7 @@ import { dataCurta, hojeIso } from "@/lib/formatacao/datas";
 import { centimosDeNumeric, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { obterBarbearia } from "@/lib/repositorios/admin/barbearias";
+import { listarCampanhas } from "@/lib/repositorios/comercial/campanhas";
 import { listarFaturas, listarRecebimentos } from "@/lib/repositorios/admin/pagamentos";
 import { listarServicosAdmin } from "@/lib/repositorios/admin/servicos";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
@@ -75,9 +76,12 @@ export default async function SeparadorFicha({
   }
   if (s === "pagamentos") {
     const campos = camposDe(s, rotulos);
-    const [faturas, recebimentos] = await Promise.all([
+    const [faturas, recebimentos, campanhas] = await Promise.all([
       listarFaturas(bd, b.id),
       listarRecebimentos(bd, { inquilinoId: b.id }),
+      b.campanha_id
+        ? listarCampanhas(bd)
+        : Promise.resolve([] as Awaited<ReturnType<typeof listarCampanhas>>),
     ]);
     const hoje = hojeIso();
     const opcaoFaturas = faturas.map((f) => ({
@@ -102,6 +106,7 @@ export default async function SeparadorFicha({
             pagaEm={
               b.implementacao_paga_em ? dataCurta(`${b.implementacao_paga_em}T12:00:00Z`) : null
             }
+            campanha={campanhas.find((c) => c.id === b.campanha_id)?.nome ?? null}
           />
         </div>
         <ListasPagamentos faturas={faturas} recebimentos={recebimentos} />

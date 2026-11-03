@@ -43,7 +43,7 @@ export const separadorIdentidade = z
     descricao: textoOpc(600),
     historia: textoOpc(600),
     plano: z.enum(["basic", "pro"]),
-    periodicidade: z.enum(["mensal", "anual"]),
+    periodicidade: z.enum(["mensal", "semestral", "anual"]),
     profissionais_contratados: inteiro(1, 200),
     dominio_proprio: z
       .string()

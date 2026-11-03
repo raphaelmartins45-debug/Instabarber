@@ -44,6 +44,7 @@ que mexa num procedimento atualiza este manual no mesmo dia.
 | P-29 | Registar um contacto de apoio e publicar um comunicado | Cada contacto; cada aviso às barbearias |
 | P-30 | Gerir a equipa InstaBarber (entrada e saída de gestores e comerciais), atribuir leads e definir metas | Cada entrada ou saída; início de cada mês |
 | P-31 | Registar uma barbearia pelo painel, a implementação e a cortesia | Negócio fechado em pessoa; barbearia de oferta |
+| P-32 | Ligar uma campanha comercial (condição especial) | Início e fim de cada campanha |
 
 ---
 
@@ -622,4 +623,19 @@ Só a Performa LAB vê este registo; não entra na exportação dos dados da bar
 **Com Formação:** levar o expositor em acrílico A5 com a placa impressa (Documentos → placa da barbearia) e o autocolante em vinil; registar o custo do expositor em Finanças → Custos.
 
 **Confirmar:** a barbearia aparece em Barbearias; em «O meu plano» o dono vê a mensalidade com a implementação, ou «cortesia».
+
+### P-32 · Ligar uma campanha comercial (condição especial)
+
+**Quando:** quer dar aos comerciais uma condição especial para fechar negócio (por exemplo o Anual 14), ou fazer uma campanha de época.
+
+1. `Comercial → Campanhas`. Cada cartão mostra o que a campanha oferece (fixo) e quantas barbearias já a usam.
+2. Marcar **Ligada**. Para uma campanha de época, pôr a **data de fim**; para limitar, as **vagas**.
+3. Rever o **texto**: é o que aparece na proposta, no PDF e em «O meu plano» da barbearia.
+4. «Guardar». A partir daí, ao gerar a proposta (passo «Condições» do briefing) ou ao registar uma barbearia pelo painel, a campanha aparece na lista «Condição especial» para os planos a que serve.
+
+**Na cobrança:** os meses de oferta somam-se ao primeiro período, o primeiro mês de oferta não cobra mensalidade e as condições temporárias contam desde o primeiro pagamento. Confirme o valor no comprovativo como sempre.
+
+**Desligar:** tirar «Ligada». As barbearias que já a têm continuam com ela; as propostas novas deixam de a poder escolher.
+
+**Confirmar:** numa proposta de teste, a campanha aparece na lista e o PDF tem a secção «Condição especial».
 

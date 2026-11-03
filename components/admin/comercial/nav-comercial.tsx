@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 const t = textos.comercial;
 
-// Separadores do Comercial (N.2). Modelos e Condições são só dos administradores (D-161).
+// Separadores do Comercial (N.2). Modelos, Condições e Campanhas são só dos administradores (D-161, D-190).
 const SEPARADORES = [
   { id: "funil", href: "/admin/comercial", soAdmin: false },
   { id: "leads", href: "/admin/comercial/leads", soAdmin: false },
@@ -16,6 +16,7 @@ const SEPARADORES = [
   { id: "desempenho", href: "/admin/comercial/desempenho", soAdmin: false },
   { id: "modelos", href: "/admin/comercial/modelos", soAdmin: true },
   { id: "condicoes", href: "/admin/comercial/condicoes", soAdmin: true },
+  { id: "campanhas", href: "/admin/comercial/campanhas", soAdmin: true },
 ] as const;
 
 /** Separadores do Comercial; no telemóvel deslizam na horizontal. */

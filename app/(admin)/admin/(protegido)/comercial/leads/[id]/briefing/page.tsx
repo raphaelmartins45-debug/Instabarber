@@ -7,6 +7,7 @@ import { textos } from "@/lib/i18n/pt-PT";
 import { centimosDeNumeric, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { lerRegimeIva } from "@/lib/regras/mensalidade";
 import { obterLead } from "@/lib/repositorios/comercial/leads";
+import { listarCampanhas } from "@/lib/repositorios/comercial/campanhas";
 import { lerCondicoes } from "@/lib/repositorios/comercial/condicoes";
 import { lerBriefing } from "@/lib/repositorios/comercial/propostas";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
@@ -21,7 +22,11 @@ export default async function Briefing({ params }: { params: Promise<{ id: strin
   const bd = await criarClienteServidor();
   const lead = await obterLead(bd, id);
   if (!lead) notFound();
-  const [b, condicoes] = await Promise.all([lerBriefing(bd, id), lerCondicoes(bd)]);
+  const [b, condicoes, campanhas] = await Promise.all([
+    lerBriefing(bd, id),
+    lerCondicoes(bd),
+    listarCampanhas(bd),
+  ]);
   const inicial = {
     ...b,
     nome_comercial: b.nome_comercial || lead.nome_barbearia || "",
@@ -53,7 +58,7 @@ export default async function Briefing({ params }: { params: Promise<{ id: strin
         leadId={id}
         inicial={inicial}
         regime={lerRegimeIva(process.env.PRESTADORA_REGIME_IVA)}
-        condicoes={condicoes}
+        condicoes={{ ...condicoes, campanhas }}
         administrador={eAdministrador(quem.papel)}
       />
     </div>

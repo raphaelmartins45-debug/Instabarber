@@ -1,5 +1,8 @@
 import "server-only";
+import { campanhasDisponiveis } from "@/lib/comercial/campanhas";
 import { aplicarCondicoes } from "@/lib/comercial/condicoes";
+import { hojeIso } from "@/lib/formatacao/datas";
+import { listarCampanhas } from "@/lib/repositorios/comercial/campanhas";
 import { emFaltaParaProposta } from "@/lib/comercial/briefing";
 import { assinaturaDe } from "@/lib/documentos/barbearia";
 import { montarProposta } from "@/lib/comercial/proposta";
@@ -28,12 +31,20 @@ export async function gerarPropostaDoLead(
   const briefing = await lerBriefing(bd, leadId);
   const falta = emFaltaParaProposta(briefing);
   if (falta.length) return { ok: false, erro: "em_falta", campos: falta };
-  const [catalogo, pacotes, condicoes, assinatura] = await Promise.all([
+  const [catalogo, pacotes, condicoes, assinatura, campanhas] = await Promise.all([
     listarFuncionalidades(bd),
     listarPacotes(bd),
     lerCondicoes(bd),
     assinaturaDe(bd, quem.userId),
+    listarCampanhas(bd),
   ]);
+  // A condição especial (D-190) tem de estar disponível para o plano; a base de dados confere outra vez.
+  const campanha = briefing.campanha_id
+    ? (campanhasDisponiveis(campanhas, briefing.plano, hojeIso()).find(
+        (c) => c.id === briefing.campanha_id,
+      ) ?? null)
+    : null;
+  if (briefing.campanha_id && !campanha) return { ok: false, erro: "campanha_invalida" };
   // Descontos e implementação (D-161, D-189): a base de dados confere outra vez os limites.
   const descontos = aplicarCondicoes(
     {
@@ -43,6 +54,7 @@ export async function gerarPropostaDoLead(
     },
     condicoes,
     quem.administrador,
+    campanha,
   );
   if (!descontos.ok) return { ok: false, erro: descontos.erro };
   const proposta = montarProposta(
@@ -51,6 +63,7 @@ export async function gerarPropostaDoLead(
     pacotes,
     lerRegimeIva(process.env.PRESTADORA_REGIME_IVA),
     descontos,
+    campanha,
   );
   // Quem gera a proposta assina-a; fica na fotografia, para o PDF ser sempre o mesmo (D-184).
   const r = await criarProposta(bd, leadId, {

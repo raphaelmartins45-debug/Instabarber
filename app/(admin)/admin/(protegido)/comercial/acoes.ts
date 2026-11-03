@@ -103,8 +103,7 @@ export async function apagarInativos(): Promise<
 export async function atribuir(id: string, responsavel: string): Promise<Resultado> {
   await exigirSuperAdmin();
   const v = z.union([z.literal(""), z.guid()]).safeParse(responsavel);
-  if (!z.guid().safeParse(id).success || !v.success)
-    return { ok: false, erro: "generico" };
+  if (!z.guid().safeParse(id).success || !v.success) return { ok: false, erro: "generico" };
   const ok = await atribuirResponsavel(await criarClienteServidor(), id, v.data || null);
   revalidar(id);
   return ok ? { ok: true } : { ok: false, erro: "generico" };

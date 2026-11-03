@@ -93,6 +93,25 @@ describe("PDF da proposta (N.5)", () => {
   });
 });
 
+describe("condição especial no PDF (D-190)", () => {
+  it("mostra a campanha e a implementação oferecida", () => {
+    const texto =
+      gerarPdfProposta({
+        ...base,
+        condicoes: null,
+        implementacao: "essencial",
+        taxaSemIva: "0",
+        dados: {
+          ...base.dados,
+          campanha: { nome: "Anual 14", texto: "Paga o anual e usa 14 meses." },
+        },
+      }) && escrito.texto();
+    expect(texto).toContain("Condição especial");
+    expect(texto).toContain("Anual 14");
+    expect(texto).toContain("Oferta");
+  });
+});
+
 describe("desconto e implementação no PDF (D-161, D-189)", () => {
   it("mostra o desconto e a implementação quando existem", () => {
     const texto =

@@ -335,6 +335,73 @@ export type Database = {
           },
         ];
       };
+      campanhas_comerciais: {
+        Row: {
+          ativa: boolean;
+          chave: string;
+          criado_em: string;
+          desconto_temporario_pct: number;
+          dominio_gratis: boolean;
+          id: string;
+          implementacao: string | null;
+          implementacao_sem_iva: number | null;
+          meses_condicao: number;
+          meses_oferta: number;
+          nome: string;
+          ordem: number;
+          periodicidade: string | null;
+          planos: string[];
+          primeiro_mes_gratis: boolean;
+          profissionais_gratis: number;
+          texto: string;
+          vagas: number | null;
+          valida_ate: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          ativa?: boolean;
+          chave: string;
+          criado_em?: string;
+          desconto_temporario_pct?: number;
+          dominio_gratis?: boolean;
+          id?: string;
+          implementacao?: string | null;
+          implementacao_sem_iva?: number | null;
+          meses_condicao?: number;
+          meses_oferta?: number;
+          nome: string;
+          ordem?: number;
+          periodicidade?: string | null;
+          planos?: string[];
+          primeiro_mes_gratis?: boolean;
+          profissionais_gratis?: number;
+          texto: string;
+          vagas?: number | null;
+          valida_ate?: string | null;
+        };
+        Update: {
+          ativa?: boolean;
+          chave?: string;
+          criado_em?: string;
+          desconto_temporario_pct?: number;
+          dominio_gratis?: boolean;
+          id?: string;
+          implementacao?: string | null;
+          implementacao_sem_iva?: number | null;
+          meses_condicao?: number;
+          meses_oferta?: number;
+          nome?: string;
+          ordem?: number;
+          periodicidade?: string | null;
+          planos?: string[];
+          primeiro_mes_gratis?: boolean;
+          profissionais_gratis?: number;
+          texto?: string;
+          vagas?: number | null;
+          valida_ate?: string | null;
+        };
+        Relationships: [];
+      };
       cartoes_oferta: {
         Row: {
           anulado_em: string | null;
@@ -2260,6 +2327,8 @@ export type Database = {
           antecedencia_cancelamento_min: number;
           antecedencia_minima_min: number;
           aprovado_em: string | null;
+          campanha_ate: string | null;
+          campanha_id: string | null;
           capa_cor: string;
           capa_foto_url: string | null;
           cidade: string | null;
@@ -2312,6 +2381,7 @@ export type Database = {
           plano: string;
           premio_ativo: boolean;
           premio_servico_id: string | null;
+          primeiro_pagamento_em: string | null;
           profissionais_contratados: number;
           proximo_vencimento: string | null;
           responsavel: string | null;
@@ -2329,6 +2399,8 @@ export type Database = {
           antecedencia_cancelamento_min?: number;
           antecedencia_minima_min?: number;
           aprovado_em?: string | null;
+          campanha_ate?: string | null;
+          campanha_id?: string | null;
           capa_cor?: string;
           capa_foto_url?: string | null;
           cidade?: string | null;
@@ -2381,6 +2453,7 @@ export type Database = {
           plano?: string;
           premio_ativo?: boolean;
           premio_servico_id?: string | null;
+          primeiro_pagamento_em?: string | null;
           profissionais_contratados?: number;
           proximo_vencimento?: string | null;
           responsavel?: string | null;
@@ -2397,6 +2470,8 @@ export type Database = {
           antecedencia_cancelamento_min?: number;
           antecedencia_minima_min?: number;
           aprovado_em?: string | null;
+          campanha_ate?: string | null;
+          campanha_id?: string | null;
           capa_cor?: string;
           capa_foto_url?: string | null;
           cidade?: string | null;
@@ -2449,6 +2524,7 @@ export type Database = {
           plano?: string;
           premio_ativo?: boolean;
           premio_servico_id?: string | null;
+          primeiro_pagamento_em?: string | null;
           profissionais_contratados?: number;
           proximo_vencimento?: string | null;
           responsavel?: string | null;
@@ -2460,6 +2536,13 @@ export type Database = {
           whatsapp?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "inquilinos_campanha_id_fkey";
+            columns: ["campanha_id"];
+            isOneToOne: false;
+            referencedRelation: "campanhas_comerciais";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "inquilinos_premio_fk";
             columns: ["id", "premio_servico_id"];
@@ -4266,6 +4349,8 @@ export type Database = {
       };
       propostas: {
         Row: {
+          campanha_id: string | null;
+          comissao_sem_iva: number;
           condicoes_lancamento: string | null;
           criado_em: string;
           criado_por: string | null;
@@ -4297,6 +4382,8 @@ export type Database = {
         };
         ComputedFields: never;
         Insert: {
+          campanha_id?: string | null;
+          comissao_sem_iva?: number;
           condicoes_lancamento?: string | null;
           criado_em?: string;
           criado_por?: string | null;
@@ -4327,6 +4414,8 @@ export type Database = {
           versao: number;
         };
         Update: {
+          campanha_id?: string | null;
+          comissao_sem_iva?: number;
           condicoes_lancamento?: string | null;
           criado_em?: string;
           criado_por?: string | null;
@@ -4357,6 +4446,13 @@ export type Database = {
           versao?: number;
         };
         Relationships: [
+          {
+            foreignKeyName: "propostas_campanha_id_fkey";
+            columns: ["campanha_id"];
+            isOneToOne: false;
+            referencedRelation: "campanhas_comerciais";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "propostas_lead_id_fkey";
             columns: ["lead_id"];
@@ -4815,6 +4911,8 @@ export type Database = {
       };
       propostas_com_estado: {
         Row: {
+          campanha_id: string | null;
+          comissao_sem_iva: number | null;
           condicoes_lancamento: string | null;
           criado_em: string | null;
           criado_por: string | null;
@@ -4847,6 +4945,8 @@ export type Database = {
         };
         ComputedFields: never;
         Insert: {
+          campanha_id?: string | null;
+          comissao_sem_iva?: number | null;
           condicoes_lancamento?: string | null;
           criado_em?: string | null;
           criado_por?: string | null;
@@ -4878,6 +4978,8 @@ export type Database = {
           versao?: number | null;
         };
         Update: {
+          campanha_id?: string | null;
+          comissao_sem_iva?: number | null;
           condicoes_lancamento?: string | null;
           criado_em?: string | null;
           criado_por?: string | null;
@@ -4909,6 +5011,13 @@ export type Database = {
           versao?: number | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "propostas_campanha_id_fkey";
+            columns: ["campanha_id"];
+            isOneToOne: false;
+            referencedRelation: "campanhas_comerciais";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "propostas_lead_id_fkey";
             columns: ["lead_id"];
@@ -5440,6 +5549,22 @@ export type Database = {
           valor_tabela: number;
         }[];
       };
+      campanha_da_barbearia: {
+        Args: { p_inquilino: string };
+        Returns: {
+          desconto_temporario_pct: number;
+          dominio_gratis: boolean;
+          meses_condicao: number;
+          nome: string;
+          primeiro_mes_gratis: boolean;
+          profissionais_gratis: number;
+          texto: string;
+        }[];
+      };
+      campanha_disponivel: {
+        Args: { p_campanha: string; p_periodicidade: string; p_plano: string };
+        Returns: boolean;
+      };
       campos_alterados: { Args: { p_antes: Json; p_depois: Json }; Returns: string[] };
       cancelar_lembrete_vencimento: { Args: { p_id: string }; Returns: undefined };
       cancelar_minha_marcacao: {
@@ -5524,6 +5649,7 @@ export type Database = {
         Args: { p_aceite: boolean; p_motivo?: string; p_proposta: string };
         Returns: undefined;
       };
+      definir_campanha: { Args: { p_campanha: string; p_inquilino: string }; Returns: undefined };
       definir_cortesia: {
         Args: { p_ate?: string; p_ativa: boolean; p_inquilino: string };
         Returns: undefined;

@@ -1,5 +1,5 @@
 import "server-only";
-import { implementacaoCent, mensalidadeCent, periodoDe } from "@/lib/admin/comprovativos";
+import { periodoDe, valorEsperadoCent } from "@/lib/admin/comprovativos";
 import { dataCurta, hojeIso } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
@@ -21,8 +21,9 @@ export async function dadosPagamento(bd: ClienteBD, b: ConfiguracaoBarbearia) {
     periodoAPagar(bd, b.id),
     listarComprovativos(bd, { inquilinoId: b.id }),
   ]);
-  const implementacao = implementacaoCent(b);
-  const valorCent = (periodo.valorFaturaCent ?? mensalidadeCent(b)) + implementacao;
+  const v = await valorEsperadoCent(bd, b, periodo.inicio);
+  const implementacao = v.implementacao;
+  const valorCent = (periodo.valorFaturaCent ?? v.mensalidade) + implementacao;
   const texto = periodoDe({ periodo_inicio: periodo.inicio, periodo_fim: periodo.fim });
   const pendente = comprovativos.find(
     (c) => c.estado === "pendente" && c.periodo_inicio === periodo.inicio,
@@ -41,6 +42,7 @@ export async function dadosPagamento(bd: ClienteBD, b: ConfiguracaoBarbearia) {
     ajuda: [
       t.ajuda(texto, formatarDinheiro(valorCent)),
       implementacao && nome ? t.comImplementacao(nome, formatarDinheiro(implementacao)) : null,
+      v.campanha ? t.comCampanha(v.campanha.nome, v.campanha.texto) : null,
     ]
       .filter(Boolean)
       .join(" "),

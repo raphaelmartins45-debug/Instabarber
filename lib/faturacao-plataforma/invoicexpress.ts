@@ -69,13 +69,16 @@ export function corpoFaturaRecibo(d: DadosFatura, iva: string) {
         ...(d.extra
           ? [{ nome: d.extra.item, descricao: d.extra.descricao, totalCent: d.extra.totalCent }]
           : []),
-      ].map((l) => ({
-        name: l.nome,
-        description: l.descricao,
-        unit_price: precoSemIva(l.totalCent, d.isento).toFixed(2),
-        quantity: "1",
-        tax: { name: d.isento ? "Isento" : iva },
-      })),
+      ]
+        // No primeiro mês de oferta (D-190) a mensalidade é zero: a fatura leva só a implementação.
+        .filter((l) => l.totalCent > 0)
+        .map((l) => ({
+          name: l.nome,
+          description: l.descricao,
+          unit_price: precoSemIva(l.totalCent, d.isento).toFixed(2),
+          quantity: "1",
+          tax: { name: d.isento ? "Isento" : iva },
+        })),
     },
   };
 }

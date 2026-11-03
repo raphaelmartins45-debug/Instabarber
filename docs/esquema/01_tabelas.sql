@@ -94,7 +94,7 @@ create table inquilinos (
 
   -- Campos protegidos: só o super_admin os altera (trigger no ficheiro 02)
   plano                         text not null default 'basic' check (plano in ('basic','pro')),
-  periodicidade                 text not null default 'mensal' check (periodicidade in ('mensal','anual')),
+  periodicidade                 text not null default 'mensal' check (periodicidade in ('mensal','semestral','anual')),
   profissionais_contratados     integer not null default 1 check (profissionais_contratados >= 1),
   estado                        text not null default 'pendente'
                                 check (estado in ('pendente','ativo','suspenso','cancelado')),
@@ -114,6 +114,10 @@ create table inquilinos (
   -- Cortesia (D-189): sem vencimentos nem faturas até cortesia_ate (sem data, até se desligar)
   cortesia                      boolean not null default false,
   cortesia_ate                  date,
+  -- Campanha comercial (D-190): a condição especial da proposta e até quando dura a temporária
+  campanha_id                   uuid,                                  -- FK acrescentada no fim
+  campanha_ate                  date,
+  primeiro_pagamento_em         date,
   aprovado_em                   timestamptz,
   criado_em                     timestamptz not null default now(),
 
@@ -821,7 +825,7 @@ create table pedidos_adesao (
   galeria_paths          text[] not null default '{}',
   -- contratação
   plano                  text not null default 'pro' check (plano in ('basic','pro')),
-  periodicidade          text not null default 'mensal' check (periodicidade in ('mensal','anual')),
+  periodicidade          text not null default 'mensal' check (periodicidade in ('mensal','semestral','anual')),
   profissionais          integer not null default 2 check (profissionais >= 1),
   mensalidade_calculada  numeric(10,2) not null,
   modelo_caixa           text not null default 'A' check (modelo_caixa in ('A','B','C')),
@@ -1133,7 +1137,7 @@ create table propostas (
   estado                  text not null default 'rascunho'
                           check (estado in ('rascunho','enviada','aceite','recusada','substituida')),
   plano                   text not null check (plano in ('basic','pro')),
-  periodicidade           text not null default 'mensal' check (periodicidade in ('mensal','anual')),
+  periodicidade           text not null default 'mensal' check (periodicidade in ('mensal','semestral','anual')),
   profissionais           integer not null check (profissionais >= 1),
   dominio_proprio         boolean not null default false,
   desafio_90              boolean not null default false,
@@ -1150,6 +1154,9 @@ create table propostas (
   -- A taxa de migração é hoje a implementação (D-189): o pacote escolhido e o valor com o desconto.
   desconto_mensalidade_pct numeric(5,2) not null default 0 check (desconto_mensalidade_pct between 0 and 100),
   implementacao           text not null default 'nenhuma' check (implementacao in ('nenhuma','essencial','formacao')),
+  -- Campanha escolhida (D-190) e a comissão do comercial, fixada na criação
+  campanha_id             uuid,                       -- FK acrescentada no fim
+  comissao_sem_iva        numeric(10,2) not null default 0 check (comissao_sem_iva >= 0),
   taxa_migracao_sem_iva   numeric(10,2) not null default 0 check (taxa_migracao_sem_iva >= 0),
   desconto_taxa_pct       numeric(5,2) not null default 0 check (desconto_taxa_pct between 0 and 100),
   pdf_path                text,
@@ -1365,6 +1372,38 @@ create table configuracao_comercial (
   atualizado_em                 timestamptz not null default now()
 );
 
+-- Campanhas comerciais (D-190): condições especiais que a Performa LAB liga e o comercial
+-- escolhe na proposta. Cada uma fixa o que oferece; a base de dados confere a proposta.
+create table campanhas_comerciais (
+  id                      uuid primary key default gen_random_uuid(),
+  chave                   text not null unique check (chave ~ '^[a-z0-9_]+$'),
+  nome                    text not null check (length(trim(nome)) between 3 and 80),
+  -- O texto que aparece na proposta, no contrato e em «O meu plano»
+  texto                   text not null check (length(trim(texto)) between 10 and 600),
+  ativa                   boolean not null default false,
+  valida_ate              date,
+  vagas                   integer check (vagas is null or vagas > 0),
+  ordem                   integer not null default 0,
+  planos                  text[] not null default '{basic,pro}' check (planos <@ array['basic','pro'] and cardinality(planos) > 0),
+  periodicidade           text check (periodicidade in ('mensal','semestral','anual')),
+  -- Implementação: o pacote que a campanha fixa e o preço sem IVA (nulo = preço normal; 0 = oferta)
+  implementacao           text check (implementacao in ('nenhuma','essencial','formacao')),
+  implementacao_sem_iva   numeric(10,2) check (implementacao_sem_iva >= 0),
+  -- Meses de oferta somados ao primeiro período pago (Anual 14: 12 pagos + 2)
+  meses_oferta            integer not null default 0 check (meses_oferta between 0 and 12),
+  -- O primeiro mês não paga mensalidade (paga-se só a implementação)
+  primeiro_mes_gratis     boolean not null default false,
+  -- Condição temporária, contada desde o primeiro pagamento: desconto, profissionais e domínio
+  meses_condicao          integer not null default 0 check (meses_condicao between 0 and 24),
+  desconto_temporario_pct numeric(5,2) not null default 0 check (desconto_temporario_pct between 0 and 100),
+  profissionais_gratis    integer not null default 0 check (profissionais_gratis between 0 and 10),
+  dominio_gratis          boolean not null default false,
+  criado_em               timestamptz not null default now(),
+  check (implementacao_sem_iva is null or implementacao is not null),
+  check ((meses_condicao > 0) = (desconto_temporario_pct > 0 or profissionais_gratis > 0 or dominio_gratis)),
+  check (not primeiro_mes_gratis or periodicidade = 'mensal')
+);
+
 -- Metas mensais de cada comercial (D-161): a Performa LAB define, o comercial vê as suas.
 create table metas_comerciais (
   id           uuid primary key default gen_random_uuid(),
@@ -1394,3 +1433,9 @@ create table comissoes_comerciais (
   check ((estado = 'paga') = (paga_em is not null))
 );
 create index comissoes_comercial on comissoes_comerciais (comercial_id, estado);
+
+-- Campanha da barbearia (D-190): a tabela das campanhas vem depois da dos inquilinos.
+alter table inquilinos add constraint inquilinos_campanha_fk
+  foreign key (campanha_id) references campanhas_comerciais(id) on delete restrict;
+alter table propostas add constraint propostas_campanha_fk
+  foreign key (campanha_id) references campanhas_comerciais(id) on delete restrict;

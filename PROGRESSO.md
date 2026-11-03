@@ -67,6 +67,7 @@ e o dono confirmou. Estados: Pendente · Em curso · Concluída.
 | Equipa InstaBarber: editar nome, e-mail e telefone; apagar a conta escolhendo para quem passam os leads (D-186) | Publicado | 01/11/2026 | Ensaio de ponta a ponta do dono (convidar, desativar, editar o nome, apagar com o destino dos leads), no computador e no telemóvel |
 | Segurança: cabeçalhos, CSV sem fórmulas, caminhos seguros, limites na entrada e na recuperação (D-187) | Publicado | 01/11/2026 | Vitest novos (encaminhamento e CSV); cabeçalhos verificados em instabarber.pt |
 | Zod 4, Resend 6, resolvers 5 e React Hook Form 7.91 (D-188) | Publicado | 01/11/2026 | typecheck, lint, 377 Vitest, e2e completo; `npm audit --omit=dev` sem altas |
+| Campanhas comerciais: lista «Condição especial» na proposta e no registo pelo painel, oito campanhas desligadas (Anual 14, Semestral, Primeiro mês, Muda já, Sobe para Pro, Equipa a crescer, Domínio de oferta), periodicidade semestral, efeitos na cobrança (D-190, migração 21) | Construído e testado no local; publicação à espera do token do Supabase (P-16) | 03/11/2026 | 727 testes SQL (25 novos em `96i`), 392 Vitest, e2e `campanhas` e suíte completa (102) |
 | Implementação Essencial e com Formação na proposta, comissão de 50 %, cobrança no 1.º pagamento com fatura de duas linhas, cortesia e registo de barbearias pelo painel (D-189, migração 20) | Construído e testado no local; publicação à espera do token do Supabase (P-16) | 03/11/2026 | 702 testes SQL (27 novos em `96h`), 386 Vitest, e2e `registo-painel` e suíte completa |
 
 ## Pendentes do dono

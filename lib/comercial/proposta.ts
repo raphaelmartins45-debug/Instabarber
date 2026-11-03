@@ -7,6 +7,7 @@ import {
   TAXA_IVA,
 } from "@/lib/regras/mensalidade";
 import { type Briefing, DORES, valorParaSiCent } from "./briefing";
+import type { Campanha } from "./campanhas";
 import type { Implementacao } from "./condicoes";
 
 /** Os descontos e a implementação desta proposta (lib/comercial/condicoes.ts, D-161, D-189). */
@@ -43,12 +44,15 @@ export const profissionaisDoPlano = (b: Pick<Briefing, "plano" | "profissionais"
   b.plano === "basic" ? 1 : Math.max(2, b.profissionais);
 
 export function montarProposta(
-  b: Briefing,
+  briefing: Briefing,
   catalogo: Catalogo,
   pacotes: Pacotes,
   regime: RegimeIva,
   d: DescontosDaProposta = SEM_DESCONTOS,
+  campanha: Pick<Campanha, "id" | "nome" | "texto" | "periodicidade"> | null = null,
 ) {
+  // A campanha (D-190) pode fixar a periodicidade (anual, semestral ou mensal).
+  const b = { ...briefing, periodicidade: campanha?.periodicidade ?? briefing.periodicidade };
   const profissionais = profissionaisDoPlano(b);
   const preco = (periodicidade: typeof b.periodicidade, desconto: number) =>
     calcularPrecoCent(b.plano, profissionais, periodicidade, b.dominio_proprio, regime, desconto);
@@ -73,10 +77,12 @@ export function montarProposta(
     validade_dias: b.validade_dias,
     desconto_mensalidade_pct: d.descontoMensalidade,
     implementacao: d.implementacao,
+    campanha_id: campanha?.id ?? null,
     taxa_migracao_sem_iva: cent(d.taxaCent),
     desconto_taxa_pct: d.descontoTaxa,
     dados: {
       briefing: b,
+      campanha: campanha ? { nome: campanha.nome, texto: campanha.texto } : null,
       decomposicao: b.dominio_proprio
         ? [...linhas, { rotulo: "dominio", valorCent: DOMINIO_PROPRIO_CENT * multiplicador }]
         : linhas,
@@ -89,7 +95,7 @@ export function montarProposta(
           .filter((c) => doPlano.has(c))
           .map((c) => nomes.get(c) ?? c),
       })),
-      valor_para_si_cent: valorParaSiCent(b),
+      valor_para_si_cent: valorParaSiCent(briefing),
       mensal_com_iva_cent: mensal.comIva,
       // Para mostrar o preço riscado quando há desconto (D-161).
       mensal_sem_desconto_com_iva_cent: preco("mensal", 0).comIva,

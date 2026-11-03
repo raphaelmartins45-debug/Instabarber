@@ -11,6 +11,7 @@ export const comercial = {
     modelos: "Modelos",
     desempenho: "Desempenho",
     condicoes: "Condições",
+    campanhas: "Campanhas",
   } as Record<string, string>,
   estados: {
     novo: "Novo",
@@ -152,6 +153,7 @@ export const comercial = {
       desconto_mensalidade_pct: "Desconto na mensalidade (%)",
       desconto_taxa_pct: "Desconto na implementação (%)",
       implementacao: "Implementação",
+      campanha_id: "Condição especial",
       data_arranque: "Data de arranque pretendida",
       decisor_nome: "Nome de quem decide *",
       decisor_cargo: "Cargo",
@@ -174,11 +176,16 @@ export const comercial = {
       presenca_online: "Presença online",
     } as Record<string, string>,
     planos: { basic: "Basic", pro: "Pro" } as Record<string, string>,
-    periodicidades: { mensal: "Mensal", anual: "Anual" } as Record<string, string>,
+    periodicidades: { mensal: "Mensal", semestral: "Semestral", anual: "Anual" } as Record<
+      string,
+      string
+    >,
     preco: (comIva: string, semIva: string) => `${comIva} com IVA · ${semIva} sem IVA`,
     limite: (max: number) => `Até ${max} % sem autorização da Performa LAB.`,
     taxa: (valor: string) =>
       `Implementação: ${valor} sem IVA, já com o desconto. Metade é a comissão do comercial.`,
+    semCampanha: "Nenhuma (condições normais do plano)",
+    campanhaPeriodicidade: (p: string) => `Pagamento: ${p.toLowerCase()}.`,
     implementacoes: {
       nenhuma: "Sem implementação",
       essencial: "Implementação Essencial",
@@ -224,6 +231,8 @@ export const comercial = {
       descontos_desligados: "Os descontos estão desligados.",
       taxa_migracao_desligada: "A implementação está desligada nas condições comerciais.",
       taxa_migracao_invalida: "O preço da implementação mudou entretanto. Gere outra vez.",
+      campanha_invalida:
+        "Esta condição especial já não está disponível para este plano (desligada, fora da data ou sem vagas).",
       sem_permissao: "Este lead não está atribuído a si.",
       generico: "Não foi possível concluir. Tente outra vez.",
     } as Record<string, string>,
@@ -255,6 +264,8 @@ export const comercial = {
     desconto: (pct: number) => `Desconto de ${pct} % na mensalidade`,
     taxaMigracao: (nome: string) => `${nome} (pagamento único, sem IVA)`,
     implementacao: "A implementação",
+    campanha: "Condição especial",
+    oferta: "Oferta",
     implementacaoNota:
       "Paga-se uma só vez, junto com o primeiro pagamento. Quem lhe apresentou esta proposta é quem faz a implementação.",
     implementacaoInclui: {
@@ -515,6 +526,40 @@ export const comercial = {
     propostasAExpirar: (n: number) =>
       n === 1 ? "1 proposta a expirar em 3 dias" : `${n} propostas a expirar em 3 dias`,
     abrir: "Abrir o funil",
+  },
+  // Campanhas comerciais (D-190)
+  campanhas: {
+    titulo: "Campanhas",
+    ajuda:
+      "Condições especiais que o comercial escolhe na proposta. Só aparecem as ligadas, dentro da data e com vagas, para o plano da proposta. Para uma campanha de época, dê-lhe uma data de fim.",
+    ativa: "Ligada",
+    nome: "Nome",
+    texto: "Texto na proposta",
+    validaAte: "Válida até (opcional)",
+    vagas: "Vagas (opcional)",
+    usadas: (n: number, vagas: number | null) =>
+      vagas === null ? `${n} barbearias com esta campanha` : `${n} de ${vagas} vagas usadas`,
+    guardar: "Guardar",
+    guardado: "Guardado.",
+    planos: (p: string) => `Planos: ${p}`,
+    periodicidade: (p: string) => `Pagamento: ${p}`,
+    resumo: {
+      implementacaoOferta: (nome: string) => `${nome} de oferta`,
+      implementacaoPreco: (nome: string, valor: string) => `${nome} a ${valor}`,
+      mesesOferta: (n: number) => `+${n} meses de oferta no primeiro período`,
+      primeiroMes: "Primeiro mês sem mensalidade",
+      desconto: (pct: number, meses: number) => `${pct} % na mensalidade durante ${meses} meses`,
+      profissionais: (n: number, meses: number) =>
+        `${n} profissional extra de oferta durante ${meses} meses`,
+      dominio: (meses: number) => `Domínio próprio de oferta durante ${meses} meses`,
+    },
+    erros: {
+      nome: "O nome tem de 3 a 80 carateres.",
+      texto: "O texto tem de 10 a 600 carateres.",
+      data: "Indique uma data válida (ou deixe vazio).",
+      vagas: "As vagas são um número inteiro (ou deixe vazio).",
+      generico: "Não foi possível guardar. Tente outra vez.",
+    } as Record<string, string>,
   },
   condicoes: {
     titulo: "Condições comerciais",

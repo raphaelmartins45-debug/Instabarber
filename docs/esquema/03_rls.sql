@@ -495,6 +495,10 @@ create policy configuracao_comercial_admin on configuracao_comercial for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 create policy configuracao_comercial_ler on configuracao_comercial for select
   using ((select public.e_comercial()));
+create policy campanhas_admin on campanhas_comerciais for all
+  using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
+create policy campanhas_ler on campanhas_comerciais for select
+  using ((select public.e_comercial()));
 create policy metas_comerciais_admin on metas_comerciais for all
   using ((select public.e_super_admin())) with check ((select public.e_super_admin()));
 create policy metas_comerciais_ler on metas_comerciais for select

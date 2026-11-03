@@ -63,6 +63,8 @@ export const esquemaBriefing = z.object({
   desconto_taxa_pct: z.coerce.number().int().min(0).max(100).optional().default(0),
   // Pacote de implementação escolhido na proposta (D-189)
   implementacao: z.enum(IMPLEMENTACOES).optional().default("nenhuma"),
+  // Condição especial escolhida (D-190); vazio = condições normais do plano
+  campanha_id: z.union([z.literal(""), z.guid()]).optional().default(""),
   data_arranque: texto(10),
   // 7 · Contacto e decisor
   decisor_nome: texto(120),

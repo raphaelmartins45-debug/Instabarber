@@ -21,7 +21,7 @@ export const admin = {
   estados: { pendente: "Pendente", ativo: "Ativa", suspenso: "Suspensa", cancelado: "Cancelada" },
   estadosPagamento: { em_dia: "Em dia", em_atraso: "Em atraso" },
   planos: { basic: "Basic", pro: "Pro" },
-  periodicidades: { mensal: "Mensal", anual: "Anual" },
+  periodicidades: { mensal: "Mensal", semestral: "Semestral", anual: "Anual" },
   painel: {
     titulo: "Painel geral",
     ativas: "Barbearias ativas",
@@ -93,9 +93,11 @@ export const admin = {
       profissionais: "Profissionais",
       implementacao: "Implementação",
       valor_implementacao: "Valor da implementação, sem IVA (€)",
+      campanha_id: "Condição especial",
       cortesia: "Em cortesia (não paga)",
       cortesia_ate: "Cortesia até (opcional)",
     } as Record<string, string>,
+    semCampanha: "Nenhuma (condições normais)",
     registar: "Registar e enviar as boas-vindas",
     aRegistar: "A registar…",
     feito: "Barbearia registada. As boas-vindas foram enviadas ao dono.",
@@ -117,6 +119,7 @@ export const admin = {
         "A barbearia foi registada, mas a implementação não ficou gravada. Defina-a na ficha (Pagamentos).",
       cortesia:
         "A barbearia foi registada, mas a cortesia não ficou gravada. Defina-a na ficha (Pagamentos).",
+      campanha: "A barbearia foi registada, mas a condição especial não serve para este plano.",
       falhou: "Não foi possível criar a barbearia ou a conta do dono. Tente outra vez.",
       generico: "Não foi possível registar. Tente outra vez.",
     } as Record<string, string>,
@@ -135,6 +138,7 @@ export const admin = {
     tipo: "Pacote",
     valor: "Valor sem IVA (€)",
     paga: (data: string) => `Paga a ${data}. Já não se altera.`,
+    campanha: (nome: string) => `Condição especial: ${nome}`,
     guardarImplementacao: "Guardar implementação",
     guardado: "Guardado.",
     tipos: {

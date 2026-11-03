@@ -1,4 +1,5 @@
 import { comDescontoCent } from "@/lib/regras/mensalidade";
+import type { Campanha } from "./campanhas";
 
 // Condições comerciais (D-161, D-189): descontos na mensalidade e a implementação (Essencial ou
 // com Formação), desligados até a Performa LAB os ligar. O comercial fica dentro dos limites; a
@@ -14,6 +15,8 @@ export type CondicoesComerciais = {
   /** Preço de cada pacote de implementação, sem IVA, em cêntimos. */
   precosCent: Record<Exclude<Implementacao, "nenhuma">, number>;
   descontoMaxTaxa: number;
+  /** Campanhas que se podem escolher na proposta (D-190); só no ecrã do briefing. */
+  campanhas?: Campanha[];
 };
 
 export const CONDICOES_DESLIGADAS: CondicoesComerciais = {
@@ -48,8 +51,23 @@ export function aplicarCondicoes(
   pedido: DescontosPedidos,
   c: CondicoesComerciais,
   administrador: boolean,
+  campanha: Pick<Campanha, "implementacao" | "implementacaoCent"> | null = null,
 ): CondicoesAplicadas {
   const descontoMensalidade = c.descontosAtivos ? pedido.mensalidade : 0;
+  // A campanha (D-190) fixa o pacote e, se o disser, o preço (sem desconto do comercial).
+  if (campanha?.implementacao) {
+    if (!administrador && descontoMensalidade > c.descontoMaxMensalidade)
+      return { ok: false, erro: "desconto_acima_do_limite" };
+    const preco = campanha.implementacaoCent;
+    return {
+      ok: true,
+      descontoMensalidade,
+      implementacao: campanha.implementacao,
+      descontoTaxa: preco === null ? pedido.taxa : 0,
+      taxaCent:
+        preco ?? precoImplementacaoCent(c, campanha.implementacao, pedido.taxa),
+    };
+  }
   const implementacao = c.taxaAtiva ? pedido.implementacao : "nenhuma";
   const descontoTaxa = implementacao === "nenhuma" ? 0 : pedido.taxa;
   if (

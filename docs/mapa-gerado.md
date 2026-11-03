@@ -11,6 +11,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/barbearias/[id]/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/nova/page.tsx`
 - `app/(admin)/admin/(protegido)/barbearias/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/campanhas/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/condicoes/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/assinado/route.ts`
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/pdf/route.ts`
@@ -219,6 +220,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `auditoria`
 - `ausencias`
 - `briefings`
+- `campanhas_comerciais`
 - `cartoes_oferta`
 - `ciclos_clube`
 - `clientes`
@@ -297,6 +299,8 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `avisar_fila_espera()`
 - `barbearia_suspensa()`
 - `calcular_preco()`
+- `campanha_da_barbearia()`
+- `campanha_disponivel()`
 - `campos_alterados()`
 - `cancelar_lembrete_vencimento()`
 - `cancelar_minha_marcacao()`
@@ -313,6 +317,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `criar_pedido_loja()`
 - `criar_proposta()`
 - `decidir_proposta()`
+- `definir_campanha()`
 - `definir_cortesia()`
 - `definir_implementacao()`
 - `distribuir_leads_comercial()`

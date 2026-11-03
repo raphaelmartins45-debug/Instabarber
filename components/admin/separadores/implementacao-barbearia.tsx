@@ -23,6 +23,8 @@ export function ImplementacaoBarbearia(p: {
   tipo: string;
   valor: string;
   pagaEm: string | null;
+  /** A condição especial da barbearia (D-190), se houver. */
+  campanha?: string | null;
 }) {
   const router = useRouter();
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
@@ -52,6 +54,11 @@ export function ImplementacaoBarbearia(p: {
       data-testid="implementacao"
     >
       <h3 className="text-sm font-bold">{t.implementacao}</h3>
+      {p.campanha ? (
+        <p className="text-xs font-semibold" data-testid="campanha-barbearia">
+          {t.campanha(p.campanha)}
+        </p>
+      ) : null}
       <p className="text-xs text-muted-foreground">
         {p.pagaEm ? t.paga(p.pagaEm) : t.implementacaoAjuda}
       </p>

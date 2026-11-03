@@ -1,7 +1,11 @@
 import "server-only";
 import { numericParaGravar } from "@/lib/formatacao/dinheiro";
 import { calcularMensalidadeCent } from "@/lib/regras/mensalidade";
-import { definirCortesia, definirImplementacao } from "@/lib/repositorios/admin/barbearias";
+import {
+  definirCampanha,
+  definirCortesia,
+  definirImplementacao,
+} from "@/lib/repositorios/admin/barbearias";
 import { criarPedidoDoPainel } from "@/lib/repositorios/pedidos-adesao";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import type { RegistoBarbearia } from "@/lib/validacao/registo-barbearia";
@@ -14,7 +18,7 @@ import { exigirSuperAdmin } from "./contexto";
 
 export type ResultadoRegisto =
   | ResultadoAprovacao
-  | { ok: false; erro: "pedido" | "implementacao" | "cortesia" };
+  | { ok: false; erro: "pedido" | "implementacao" | "cortesia" | "campanha" };
 
 export async function registarBarbeariaNoPainel(d: RegistoBarbearia): Promise<ResultadoRegisto> {
   const admin = await exigirSuperAdmin();
@@ -42,6 +46,11 @@ export async function registarBarbeariaNoPainel(d: RegistoBarbearia): Promise<Re
   if (d.implementacao !== "nenhuma") {
     const i = await definirImplementacao(bd, r.inquilinoId, d.implementacao, d.valor_implementacao);
     if (!i.ok) return { ok: false, erro: "implementacao" };
+  }
+  // A campanha (D-190) vem depois: fixa a periodicidade e, se o disser, a implementação.
+  if (d.campanha_id) {
+    const k = await definirCampanha(bd, r.inquilinoId, d.campanha_id);
+    if (!k.ok) return { ok: false, erro: "campanha" };
   }
   if (d.cortesia) {
     const c = await definirCortesia(bd, r.inquilinoId, true, d.cortesia_ate || null);

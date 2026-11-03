@@ -9,7 +9,7 @@ import { aprovarPedido, rejeitarPedido, type ResultadoAprovacao } from "@/lib/ad
 const esquemaAjustes = z.object({
   slug: z.string().trim().toLowerCase().max(40).optional(),
   plano: z.enum(["basic", "pro"]).optional(),
-  periodicidade: z.enum(["mensal", "anual"]).optional(),
+  periodicidade: z.enum(["mensal", "semestral", "anual"]).optional(),
   profissionais: z.number().int().min(1).max(200).optional(),
 });
 

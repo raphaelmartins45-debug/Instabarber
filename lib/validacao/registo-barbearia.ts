@@ -46,10 +46,11 @@ export const esquemaRegistoBarbearia = z
     cidade: opcional(80),
     morada: opcional(240),
     plano: z.enum(["basic", "pro"]),
-    periodicidade: z.enum(["mensal", "anual"]),
+    periodicidade: z.enum(["mensal", "semestral", "anual"]),
     profissionais: z.coerce.number().int("profissionais").min(1, "profissionais").max(200),
     implementacao: z.enum(IMPLEMENTACOES),
     valor_implementacao: dinheiro,
+    campanha_id: z.union([z.literal(""), z.guid()]).default(""),
     cortesia: z.boolean().default(false),
     cortesia_ate: z
       .union([z.literal(""), z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "data")])

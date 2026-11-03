@@ -151,3 +151,17 @@ export async function definirImplementacao(
   });
   return error ? { ok: false, motivo: error.message } : { ok: true };
 }
+
+/** A campanha de uma barbearia antes do primeiro pagamento (D-190); fixa a periodicidade e a implementação. */
+export async function definirCampanha(
+  bd: ClienteBD,
+  id: string,
+  campanhaId: string | null,
+): Promise<ResultadoAlteracao> {
+  const { error } = await bd.rpc("definir_campanha", {
+    p_inquilino: id,
+    // Sem campanha, a função recebe nulo (tira-a).
+    p_campanha: campanhaId as string,
+  });
+  return error ? { ok: false, motivo: error.message } : { ok: true };
+}

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { registar } from "@/app/(admin)/admin/(protegido)/barbearias/nova/acoes";
 import { Aviso } from "@/components/nucleo/aviso";
 import { Button } from "@/components/ui/button";
+import type { Campanha } from "@/lib/comercial/campanhas";
 import { textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import {
@@ -21,7 +22,13 @@ const t = textos.admin.registo;
  * Registar uma barbearia pelo painel (D-189): o essencial da barbearia, o plano, a implementação
  * (com o preço das condições comerciais) e a cortesia. Fica tudo no mesmo ecrã, em secções.
  */
-export function RegistoBarbearia({ precosCent }: { precosCent: Record<string, number> }) {
+export function RegistoBarbearia({
+  precosCent,
+  campanhas,
+}: {
+  precosCent: Record<string, number>;
+  campanhas: Campanha[];
+}) {
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string; id?: string }>();
   const [aRegistar, iniciar] = useTransition();
   const form = useForm<DadosRegistoBarbearia>({
@@ -39,6 +46,7 @@ export function RegistoBarbearia({ precosCent }: { precosCent: Record<string, nu
       profissionais: 3,
       implementacao: "essencial",
       valor_implementacao: textoDeCentimos(precosCent.essencial ?? 0),
+      campanha_id: "",
       cortesia: false,
       cortesia_ate: "",
     },
@@ -104,7 +112,7 @@ export function RegistoBarbearia({ precosCent }: { precosCent: Record<string, nu
       </fieldset>
       <fieldset className={seccao}>
         <legend className="text-sm font-bold">{t.seccoes.implementacao}</legend>
-        <ImplementacaoRegisto form={form} />
+        <ImplementacaoRegisto form={form} campanhas={campanhas} />
       </fieldset>
       <Button type="submit" disabled={aRegistar} className="justify-self-start">
         {aRegistar ? t.aRegistar : t.registar}

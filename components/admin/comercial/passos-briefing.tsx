@@ -157,7 +157,7 @@ export function PassoBriefing({
               )}
             </div>
           ) : null}
-          {condicoes.taxaAtiva ? (
+          {condicoes.taxaAtiva || condicoes.campanhas?.some((c) => c.ativa) ? (
             <ImplementacaoBriefing
               form={form}
               condicoes={condicoes}

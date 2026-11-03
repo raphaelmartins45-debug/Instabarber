@@ -102,7 +102,10 @@ export const financeiro = {
 export const plano = {
   titulo: "O meu plano",
   planos: { basic: "Basic", pro: "Pro" } as Record<string, string>,
-  periodicidades: { mensal: "Mensal", anual: "Anual" } as Record<string, string>,
+  periodicidades: { mensal: "Mensal", semestral: "Semestral", anual: "Anual" } as Record<
+    string,
+    string
+  >,
   plano: "Plano",
   periodicidade: "Periodicidade",
   profissionais: "Profissionais contratados",

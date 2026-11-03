@@ -41,6 +41,8 @@ export type DadosPdfProposta = {
     solucao: { dor: string; funcionalidades: string[] }[];
     valor_para_si_cent: number | null;
     mensal_com_iva_cent: number;
+    /** A condição especial escolhida (D-190), com o texto da campanha. */
+    campanha?: { nome: string; texto: string } | null;
     /** Quem gerou a proposta, fixado na geração (D-184); as antigas não o têm. */
     assinatura?: Assinatura;
   };
@@ -134,8 +136,16 @@ export function gerarPdfProposta(d: DadosPdfProposta) {
     f.total(t.comIva, dinheiro(d.valorComIva));
   }
   const implementacao = b.implementacoes[d.implementacao];
-  if (centimosDeNumeric(d.taxaSemIva) > 0 && implementacao) {
-    f.linha(t.taxaMigracao(implementacao), dinheiro(d.taxaSemIva));
+  if (d.dados.campanha) {
+    f.titulo(t.campanha);
+    f.subtituloSeccao(d.dados.campanha.nome);
+    f.paragrafo(d.dados.campanha.texto);
+  }
+  if (d.implementacao !== "nenhuma" && implementacao) {
+    f.linha(
+      t.taxaMigracao(implementacao),
+      centimosDeNumeric(d.taxaSemIva) > 0 ? dinheiro(d.taxaSemIva) : t.oferta,
+    );
     f.titulo(t.implementacao);
     f.subtituloSeccao(implementacao);
     f.lista(t.implementacaoInclui[d.implementacao] ?? []);
