@@ -60,6 +60,7 @@ export function estiloDe(valor: string | null | undefined): Estilo {
 }
 
 // vw ocupados pelo nome (as margens ficam de fora), tamanho máximo e mínimo numa linha.
+const MAXIMO_VARIAS_LINHAS = 12;
 const ECRAS = {
   largo: { util: 92, maximo: 22, minimoUmaLinha: 11, maxLinhas: 2 },
   estreito: { util: 86, maximo: 32, minimoUmaLinha: 99, maxLinhas: 3 },
@@ -107,5 +108,8 @@ export function nomeMonumento(
   if (tamanho(uma) >= e.minimoUmaLinha || palavras.length === 1)
     return { linhas: uma, vw: Math.min(tamanho(uma), e.maximo) };
   const linhas = partir(palavras, e.maxLinhas);
-  return { linhas, vw: Math.min(tamanho(linhas), e.maximo) };
+  // Em várias linhas no ecrã largo, um teto de altura, para o nome caber no primeiro ecrã.
+  const teto =
+    ecra === "largo" && linhas.length > 1 ? Math.min(e.maximo, MAXIMO_VARIAS_LINHAS) : e.maximo;
+  return { linhas, vw: Math.min(tamanho(linhas), teto) };
 }

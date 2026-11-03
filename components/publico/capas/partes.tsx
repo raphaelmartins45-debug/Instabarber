@@ -58,7 +58,10 @@ export function AcaoPrincipal({
           href={d.marcar}
           data-testid="acao-marcar"
           className="flex h-16 items-center justify-between gap-4 px-6 text-lg font-semibold transition-[filter] hover:brightness-110 active:translate-y-px"
-          style={{ backgroundColor: c.destaque, color: c.tintaDestaque }}
+          style={{
+            backgroundColor: `var(--capa-destaque, ${c.destaque})`,
+            color: `var(--capa-tinta-destaque, ${c.tintaDestaque})`,
+          }}
         >
           {t.capa.marcarAgora}
           <ArrowRight aria-hidden className="size-5" />
@@ -132,7 +135,16 @@ export function Topo({ d, t, className }: Omit<PropsCapa, "c"> & { className?: s
  * A imagem da capa: a fotografia da fachada, se existir; senão o logótipo sobre a cor do fundo
  * dele (sem moldura); senão nada. `cobrir` faz a fotografia ocupar a caixa toda.
  */
-export function ImagemCapa({ d, className }: { d: DadosCapa; className?: string }) {
+export function ImagemCapa({
+  d,
+  className,
+  pintaFundo = true,
+}: {
+  d: DadosCapa;
+  className?: string;
+  /** Falso quando é a capa inteira (e não esta caixa) que toma a cor do fundo do logótipo. */
+  pintaFundo?: boolean;
+}) {
   if (d.foto)
     return (
       // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
@@ -146,11 +158,11 @@ export function ImagemCapa({ d, className }: { d: DadosCapa; className?: string 
   if (!d.logo) return null;
   return (
     <div
-      data-fundo-logo
+      data-fundo-logo={pintaFundo || undefined}
       className={cn("flex size-full items-center justify-center p-[8%]", className)}
       style={{ backgroundColor: d.logoFundo ?? d.cor }}
     >
-      <LogoCapa nome={d.nome} logo={d.logo} fundoGuardado={!!d.logoFundo} />
+      <LogoCapa nome={d.nome} logo={d.logo} fundoGuardado={!!d.logoFundo} cor={d.cor} />
     </div>
   );
 }

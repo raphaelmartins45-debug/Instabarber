@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { fundoDaImagem } from "@/lib/navegador/fundo-imagem";
-import { corDoTexto } from "@/lib/regras/contraste";
+import { coresDaCapa } from "@/lib/publico/cores-capa";
 import { cn } from "@/lib/utils";
 
 /**
@@ -14,11 +14,14 @@ export function LogoCapa({
   nome,
   logo,
   fundoGuardado,
+  cor,
   className,
 }: {
   nome: string;
   logo: string;
   fundoGuardado: boolean;
+  /** A cor da barbearia, para recalcular o botão sobre o fundo lido. */
+  cor: string;
   className?: string;
 }) {
   const ref = useRef<HTMLImageElement>(null);
@@ -27,12 +30,14 @@ export function LogoCapa({
     void fundoDaImagem(logo).then((f) => {
       const caixa = ref.current?.closest<HTMLElement>("[data-fundo-logo]");
       if (!f || !caixa) return;
-      caixa.style.setProperty("--capa-fundo", f);
-      caixa.style.setProperty("--capa-tinta", corDoTexto(f));
-      caixa.style.backgroundColor = f;
-      caixa.style.color = corDoTexto(f);
+      // As mesmas regras do servidor (coresDaCapa), agora com o fundo lido.
+      const k = coresDaCapa(cor, f);
+      caixa.style.backgroundColor = k.fundo;
+      caixa.style.color = k.tinta;
+      caixa.style.setProperty("--capa-destaque", k.destaque);
+      caixa.style.setProperty("--capa-tinta-destaque", k.tintaDestaque);
     });
-  }, [logo, fundoGuardado]);
+  }, [logo, fundoGuardado, cor]);
   return (
     // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage, sem otimizador
     <img

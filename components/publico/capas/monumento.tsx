@@ -16,7 +16,9 @@ export function CapaMonumento({ d, t, c }: PropsCapa) {
     >
       <Topo d={d} t={t} className="[grid-area:topo]" />
       <div className="h-36 self-center [grid-area:logo] md:h-[44svh]">
-        {d.logo ? <ImagemCapa d={{ ...d, foto: null }} className="justify-start p-0" /> : null}
+        {d.logo ? (
+          <ImagemCapa d={{ ...d, foto: null }} className="justify-start p-0" pintaFundo={false} />
+        ) : null}
       </div>
       <div className="grid content-end gap-4 self-end [grid-area:acoes]">
         <AcaoPrincipal d={d} t={t} c={c} />

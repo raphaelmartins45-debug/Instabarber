@@ -50,3 +50,11 @@ describe("estiloDe", () => {
     expect(ESTILOS).toHaveLength(8);
   });
 });
+
+describe("nome comprido no ecrã largo", () => {
+  it("em duas linhas tem um teto de altura, para caber no primeiro ecrã", () => {
+    const r = nomeMonumento("Barbearia Ensaio InstaBarber", "monumento");
+    expect(r.linhas).toHaveLength(2);
+    expect(r.vw).toBeLessThanOrEqual(12);
+  });
+});
