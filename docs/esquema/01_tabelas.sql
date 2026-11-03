@@ -63,6 +63,11 @@ create table inquilinos (
   logo_url                      text,
   capa_cor                      text not null default '#F5A623' check (capa_cor ~ '^#[0-9A-Fa-f]{6}$'),
   capa_foto_url                 text,
+  -- O estilo da página pública (D-198): a letra e o acabamento do nome e dos títulos
+  estilo_pagina                 text not null default 'classico'
+                                check (estilo_pagina in ('classico','urbano','luxo','vintage')),
+  -- A cor de fundo do logótipo, lida ao carregá-lo (D-198): a capa usa-a para o logótipo encaixar
+  logo_fundo                    text check (logo_fundo ~ '^#[0-9A-F]{6}$'),
   galeria_urls                  text[] not null default '{}' check (cardinality(galeria_urls) <= 6),
   mostrar_mapa                  boolean not null default true,
   mostrar_historia              boolean not null default true,

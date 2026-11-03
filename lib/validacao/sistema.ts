@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ESTILOS } from "@/lib/publico/estilos";
 import { valorEuros as valorEurosSistema } from "./agenda";
 import { separadorHorario } from "./ficha-barbearia";
 
@@ -21,6 +22,8 @@ export const seccaoEstado = z.object({ aberto: z.boolean() });
 
 export const seccaoMarca = z.object({
   capa_cor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "cor"),
+  // O estilo da página pública (D-198)
+  estilo_pagina: z.enum(ESTILOS),
   historia: z.string().max(600, "longo").transform(vazioParaNulo),
   mostrar_mapa: z.boolean(),
   mostrar_historia: z.boolean(),

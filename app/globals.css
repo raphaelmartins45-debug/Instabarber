@@ -203,6 +203,21 @@
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
   }
+  /* Títulos da página pública na letra do estilo da barbearia (D-198), com o seu acabamento. */
+  .titulo-estilo {
+    font-family: var(--letra-estilo), Georgia, serif;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  [data-estilo="urbano"] .titulo-estilo,
+  [data-estilo="luxo"] .titulo-estilo,
+  [data-estilo="vintage"] .titulo-estilo {
+    text-transform: uppercase;
+  }
+  [data-estilo="luxo"] .titulo-estilo {
+    letter-spacing: 0.02em;
+  }
   .rotulo {
     font-size: 11px;
     font-weight: 600;

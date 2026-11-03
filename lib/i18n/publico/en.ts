@@ -18,6 +18,11 @@ export const en = {
     fechado: "Closed now",
     entrar: "Sign in",
     marcarCurto: "Book",
+    marcarAgora: "Book now",
+    proximaVaga: "Next free slot",
+    hoje: (hora: string) => `Today, ${hora}`,
+    amanha: (hora: string) => `Tomorrow, ${hora}`,
+    noDia: (dia: string, hora: string) => `${dia}, ${hora}`,
   },
   entrar: {
     cliente: "Client area",

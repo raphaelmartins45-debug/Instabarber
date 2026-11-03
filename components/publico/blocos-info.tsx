@@ -9,7 +9,9 @@ export function BlocoHistoria({ t, historia }: { t: TextosPublicos; historia: st
   if (!historia) return null;
   return (
     <Bloco id="historia" titulo={t.blocos.historia}>
-      <p className="max-w-2xl whitespace-pre-line text-secao leading-relaxed">{historia}</p>
+      <p className="max-w-4xl text-2xl leading-snug whitespace-pre-line text-pretty md:text-4xl md:leading-tight">
+        {historia}
+      </p>
     </Bloco>
   );
 }
@@ -26,13 +28,13 @@ export function BlocoMapa({
   if (!morada && !mapa) return null;
   return (
     <Bloco id="onde" titulo={t.blocos.ondeEstamos}>
-      {morada ? <p>{morada}</p> : null}
+      {morada ? <p className="max-w-3xl text-3xl leading-tight md:text-5xl">{morada}</p> : null}
       {mapa ? (
         <a
           href={mapa}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-semibold text-ligacao underline-offset-4 hover:underline"
+          className="justify-self-start bg-foreground px-6 py-4 font-semibold text-background transition-opacity hover:opacity-85"
         >
           {t.blocos.abrirMapa}
         </a>
@@ -60,10 +62,10 @@ export function BlocoHorario({
   const ordem = [1, 2, 3, 4, 5, 6, 0];
   return (
     <Bloco id="horario" titulo={t.blocos.horario}>
-      <p className="font-semibold">{estado}</p>
-      <dl className="grid max-w-md gap-1 text-sm">
+      <p className="text-xl font-semibold">{estado}</p>
+      <dl className="grid max-w-xl gap-1.5">
         {ordem.map((d) => (
-          <div key={d} className="flex justify-between gap-4 border-b py-1.5 last:border-0">
+          <div key={d} className="flex justify-between gap-4 bg-muted px-5 py-3">
             <dt>{t.dias[d]}</dt>
             <dd className="tabular-nums">
               {descanso.includes(d) ? t.blocos.descanso : `${abertura}–${fecho}`}
@@ -90,7 +92,7 @@ export function BlocoContactos({
   redes: { rotulo: string; url: string }[];
 }) {
   if (!whatsapp && !telefone && redes.length === 0) return null;
-  const ligacao = "font-semibold text-ligacao underline-offset-4 hover:underline";
+  const ligacao = "text-2xl font-semibold underline-offset-4 hover:underline md:text-3xl";
   return (
     <Bloco id="contactos" titulo={t.blocos.contactos}>
       <ul className="grid gap-2">

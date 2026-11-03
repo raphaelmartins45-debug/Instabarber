@@ -35,6 +35,16 @@ export const sistema = {
     cor: "Cor da capa",
     paleta: "Cores propostas a partir do logótipo",
     preVisualizacao: "Pré-visualização",
+    // O estilo da página pública (D-198)
+    estilo: "Estilo da página",
+    estiloAjuda:
+      "A letra do nome e dos títulos na página da barbearia. Escolha a que tem mais a ver com a casa.",
+    estilos: {
+      classico: "Clássico",
+      urbano: "Urbano",
+      luxo: "Luxo",
+      vintage: "Vintage",
+    } as Record<string, string>,
     logo: "Logótipo",
     fachada: "Fotografia da fachada",
     galeria: "Galeria",

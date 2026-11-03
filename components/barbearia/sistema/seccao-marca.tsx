@@ -1,3 +1,4 @@
+import { estiloDe } from "@/lib/publico/estilos";
 import { obterConfiguracao } from "@/lib/repositorios/painel/barbearia";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { FormularioMarca } from "./formulario-marca";
@@ -13,6 +14,7 @@ export async function SeccaoMarca({ inquilinoId }: { inquilinoId: string }) {
         logo={b.logo_url}
         inicial={{
           capa_cor: b.capa_cor,
+          estilo_pagina: estiloDe(b.estilo_pagina),
           historia: b.historia ?? "",
           mostrar_mapa: b.mostrar_mapa,
           mostrar_historia: b.mostrar_historia,

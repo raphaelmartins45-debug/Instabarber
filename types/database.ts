@@ -2402,6 +2402,8 @@ export type Database = {
           dominio_proprio: string | null;
           email: string | null;
           estado: string;
+          estilo_pagina: string;
+          logo_fundo: string | null;
           estado_pagamento: string;
           facebook: string | null;
           fecha_feriados: boolean;
@@ -2474,6 +2476,8 @@ export type Database = {
           dominio_proprio?: string | null;
           email?: string | null;
           estado?: string;
+          estilo_pagina?: string;
+          logo_fundo?: string | null;
           estado_pagamento?: string;
           facebook?: string | null;
           fecha_feriados?: boolean;
@@ -2545,6 +2549,8 @@ export type Database = {
           dominio_proprio?: string | null;
           email?: string | null;
           estado?: string;
+          estilo_pagina?: string;
+          logo_fundo?: string | null;
           estado_pagamento?: string;
           facebook?: string | null;
           fecha_feriados?: boolean;
@@ -5129,6 +5135,8 @@ export type Database = {
           descricao: string | null;
           dias_descanso: number[] | null;
           dominio_proprio: string | null;
+          estilo_pagina: string | null;
+          logo_fundo: string | null;
           facebook: string | null;
           galeria_urls: string[] | null;
           google_avaliacao_url: string | null;

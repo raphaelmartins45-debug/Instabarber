@@ -5,13 +5,16 @@ import { guardarSeccao } from "@/app/(app)/app/(painel)/sistema/acoes-configurac
 import { Aviso } from "@/components/nucleo/aviso";
 import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
+import type { Estilo } from "@/lib/publico/estilos";
 import { paletaDePixeis } from "@/lib/regras/paleta";
+import { EscolhaEstilo } from "./escolha-estilo";
 
 const t = textos.sistema.marca;
 const etiqueta = "text-mini font-semibold tracking-wide text-muted-foreground uppercase";
 
 type Valores = {
   capa_cor: string;
+  estilo_pagina: Estilo;
   historia: string;
   mostrar_mapa: boolean;
   mostrar_historia: boolean;
@@ -98,18 +101,12 @@ export function FormularioMarca({
           ))}
         </div>
       </div>
-      <div className="grid gap-1.5">
-        <span className={etiqueta}>{t.preVisualizacao}</span>
-        <div
-          className="flex h-28 items-end rounded-xl p-4"
-          style={{ backgroundColor: v.capa_cor }}
-          data-testid="pre-visualizacao"
-        >
-          <span className="rounded-md bg-white/90 px-3 py-1.5 text-sm font-bold text-black">
-            {nome}
-          </span>
-        </div>
-      </div>
+      <EscolhaEstilo
+        nome={nome}
+        cor={v.capa_cor}
+        valor={v.estilo_pagina}
+        aoMudar={(estilo_pagina) => setV({ ...v, estilo_pagina })}
+      />
       <label className="grid gap-1.5">
         <span className={etiqueta}>{t.historia}</span>
         <textarea

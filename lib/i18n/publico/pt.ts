@@ -17,6 +17,12 @@ export const pt = {
     fechado: "Fechado agora",
     entrar: "Entrar",
     marcarCurto: "Marcar",
+    // A capa nova (D-198): a próxima vaga real e o botão principal
+    marcarAgora: "Marcar agora",
+    proximaVaga: "Próxima vaga",
+    hoje: (hora: string) => `Hoje, ${hora}`,
+    amanha: (hora: string) => `Amanhã, ${hora}`,
+    noDia: (dia: string, hora: string) => `${dia}, ${hora}`,
   },
   entrar: {
     cliente: "Área de cliente",

@@ -1,45 +1,39 @@
-/** O logótipo em círculo, com o nome e a localidade, sobre dois anéis e um halo da cor da marca (E.6). */
+"use client";
+
+import { useEffect } from "react";
+import { fundoDaImagem } from "@/lib/navegador/fundo-imagem";
+import { corDoTexto } from "@/lib/regras/contraste";
+
+/**
+ * O logótipo na capa (D-198), solto, sem moldura: a capa tem a cor do fundo dele, por isso
+ * encaixa na página. Para os logótipos carregados antes de a cor ser guardada, lê-a aqui uma vez
+ * e pinta a capa (até o gestor voltar a carregar o logótipo).
+ */
 export function LogoCapa({
   nome,
-  cidade,
   logo,
-  cor,
-  texto,
+  fundoGuardado,
 }: {
   nome: string;
-  cidade: string | null;
-  logo: string | null;
-  cor: string;
-  texto: string;
+  logo: string;
+  fundoGuardado: boolean;
 }) {
-  const iniciais = nome
-    .split(/\s+/)
-    .filter((p) => p.length > 2)
-    .slice(0, 2)
-    .map((p) => p[0]!.toUpperCase())
-    .join("");
+  useEffect(() => {
+    if (fundoGuardado) return;
+    void fundoDaImagem(logo).then((f) => {
+      const capa = document.getElementById("capa");
+      if (!f || !capa) return;
+      capa.style.setProperty("--capa-fundo", f);
+      capa.style.setProperty("--capa-tinta", corDoTexto(f));
+    });
+  }, [logo, fundoGuardado]);
   return (
-    <div className="relative grid size-56 place-items-center md:size-72">
-      <div
-        aria-hidden
-        className="absolute inset-0 rounded-full opacity-60 blur-2xl"
-        style={{ backgroundColor: texto, opacity: 0.15 }}
-      />
-      <div aria-hidden className="absolute inset-0 rounded-full border border-current/20" />
-      <div aria-hidden className="absolute inset-4 rounded-full border border-current/30" />
-      <div className="relative grid size-40 place-items-center overflow-hidden rounded-full bg-white shadow-xl md:size-52">
-        {logo ? (
-          // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage, tamanho fixo
-          <img src={logo} alt={nome} className="size-full object-contain p-5" />
-        ) : (
-          <div className="grid place-items-center text-center" style={{ color: cor }}>
-            <span className="text-4xl font-black">{iniciais}</span>
-            {cidade ? (
-              <span className="text-[10px] font-bold tracking-widest uppercase">{cidade}</span>
-            ) : null}
-          </div>
-        )}
-      </div>
-    </div>
+    // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage, sem otimizador
+    <img
+      src={logo}
+      alt={nome}
+      className="h-32 w-auto max-w-full object-contain md:h-auto md:max-h-[46svh] md:w-full"
+      fetchPriority="high"
+    />
   );
 }

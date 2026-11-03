@@ -15,6 +15,10 @@ import { numericDeCentimos } from "@/lib/formatacao/dinheiro";
 import { lerEndereco, origemDoPedido, origemPrincipal } from "@/lib/inquilino/endereco";
 import { enderecoIcone } from "@/lib/inquilino/icones";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
+import { coresDaCapa } from "@/lib/publico/cores-capa";
+import { estiloDe } from "@/lib/publico/estilos";
+import { variavelDoEstilo } from "@/components/publico/fontes";
+import { proximaVaga } from "@/lib/publico/proxima-vaga";
 import { dadosHairSalon } from "@/lib/publico/dados-estruturados";
 import { textosDaPagina } from "@/lib/publico/lingua";
 import { redesSociais } from "@/lib/publico/redes";
@@ -83,6 +87,9 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
   const marcar = b.aberto ? `${base}/marcar` : null;
   const whatsapp = b.whatsapp ? ligacaoWhatsApp(b.whatsapp, "") : null;
   const entrar = `${base}/cliente`;
+  const estilo = estiloDe(b.estilo_pagina);
+  // A próxima vaga do serviço principal (D-198): só com a marcação online aberta.
+  const vaga = marcar && servicos[0]?.id ? await proximaVaga(bd, b.id, servicos[0].id, t) : null;
   const nomeServico = (s: (typeof servicos)[number]) =>
     (lingua === "en" ? s.nome_en : lingua === "fr" ? s.nome_fr : null) || s.nome || "";
   const descricaoServico = (s: (typeof servicos)[number]) =>
@@ -107,7 +114,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
   });
 
   return (
-    <div lang={lingua}>
+    <div lang={lingua} data-estilo={estilo} className={variavelDoEstilo(estilo)}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(json).replace(/</g, "\\u003c") }}
@@ -120,6 +127,9 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
           morada: b.morada,
           cor,
           logo: b.logo_url,
+          logoFundo: b.logo_fundo,
+          estilo,
+          vaga,
           aberta: !!b.aberto,
           marcar: marcar ?? "",
           whatsapp,
@@ -139,7 +149,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
         telefone={b.telefone}
         entrar={entrar}
       />
-      <main className="mx-auto max-w-5xl divide-y px-4">
+      <main className="mx-auto max-w-6xl px-4 md:px-8">
         <BlocoServicos
           t={t}
           marcar={marcar}
@@ -154,23 +164,26 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
         <BlocoPromocoes t={t} promocoes={promocoes} />
         <BlocoEquipa t={t} equipa={equipa} />
         <BlocoHistoria t={t} historia={b.historia} />
-        <BlocoMapa
-          t={t}
-          morada={[b.morada, b.codigo_postal, b.cidade].filter(Boolean).join(", ") || null}
-          mapa={b.google_maps_url}
-        />
-        <BlocoHorario
-          t={t}
-          abertura={hm(b.hora_abertura)}
-          fecho={hm(b.hora_fecho)}
-          descanso={b.dias_descanso ?? []}
-          almoco={
-            b.intervalo_almoco_inicio && b.intervalo_almoco_fim
-              ? [hm(b.intervalo_almoco_inicio), hm(b.intervalo_almoco_fim)]
-              : null
-          }
-          estado={estado}
-        />
+        {/* Onde e quando, lado a lado no computador (D-198). */}
+        <div className="grid md:grid-cols-2 md:gap-x-16">
+          <BlocoMapa
+            t={t}
+            morada={[b.morada, b.codigo_postal, b.cidade].filter(Boolean).join(", ") || null}
+            mapa={b.google_maps_url}
+          />
+          <BlocoHorario
+            t={t}
+            abertura={hm(b.hora_abertura)}
+            fecho={hm(b.hora_fecho)}
+            descanso={b.dias_descanso ?? []}
+            almoco={
+              b.intervalo_almoco_inicio && b.intervalo_almoco_fim
+                ? [hm(b.intervalo_almoco_inicio), hm(b.intervalo_almoco_fim)]
+                : null
+            }
+            estado={estado}
+          />
+        </div>
         <BlocosReceita t={t} inquilinoId={b.id} encomendar={`${base}/loja`} />
         <BlocoContactos t={t} whatsapp={whatsapp} telefone={b.telefone} redes={redes} />
       </main>
@@ -182,6 +195,9 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
         reclamacoes={b.livro_reclamacoes_url}
         avaliacao={b.google_avaliacao_url}
         entrar={entrar}
+        nome={b.nome}
+        estilo={estilo}
+        cores={coresDaCapa(cor, b.logo_fundo)}
       />
     </div>
   );

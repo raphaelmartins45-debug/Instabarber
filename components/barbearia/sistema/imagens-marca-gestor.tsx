@@ -9,6 +9,7 @@ import {
 import { Aviso } from "@/components/nucleo/aviso";
 import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
+import { fundoDaImagem } from "@/lib/navegador/fundo-imagem";
 import { REGRAS_IMAGEM, verificarImagem, type TipoImagem } from "@/lib/regras/imagens";
 
 const t = textos.sistema.marca;
@@ -53,6 +54,8 @@ export function ImagensMarcaGestor({
       const dados = new FormData();
       dados.set("tipo", tipo);
       dados.set("imagem", ficheiro);
+      // A cor de fundo do logótipo vai com ele, para a página pública abrir já com ela (D-198).
+      if (tipo === "logo") dados.set("fundo", (await fundoDaImagem(ficheiro)) ?? "");
       const r = await carregarImagemMarca(dados);
       setErro(r.ok ? undefined : textos.sistema.erros.imagem);
     });

@@ -42,9 +42,9 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 | `docs/mapa-do-sistema.md` | **Pedidos de manutenção:** classifica o pedido e diz onde mexer e como verificar |
 | `docs/mapa-gerado.md` | Lista gerada das rotas e ficheiros (`scripts/gerar-mapa.sh`; não se edita) |
 | `PROGRESSO.md` | Estado real: fases, trabalhos paralelos, pendentes do dono, módulos por ativar |
-| `DECISOES.md` | As decisões (D-01 a D-197), com data. **Prevalece** quando duas regras se contradizem |
+| `DECISOES.md` | As decisões (D-01 a D-198), com data. **Prevalece** quando duas regras se contradizem |
 | `docs/esquema/` | Fonte única da base de dados (tabelas, funções, RLS, dados iniciais) e os testes SQL |
-| `supabase/migrations/` | As migrações aplicadas (01 a 23; há duas «20»: `20261101000020_endurecer_funcoes` e `20261103000020_implementacao_cortesia`), copiadas do esquema |
+| `supabase/migrations/` | As migrações aplicadas (01 a 24; há duas «20»: `20261101000020_endurecer_funcoes` e `20261103000020_implementacao_cortesia`), copiadas do esquema |
 | `fases/` | O plano de cada fase e os critérios (J.1, verificados em `fases/verificacao-j1.md`) |
 | `docs/parte-*.md` | A especificação, uma Parte por ficheiro (índice em `docs/00-indice.md`) |
 | `docs/manual-do-operador.md` | Os procedimentos manuais P-00 a P-30 |

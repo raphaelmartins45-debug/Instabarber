@@ -151,6 +151,10 @@ export async function guardarServico(
 
 const CAMPO_IMAGEM = z.enum(["logo", "capa", "galeria"]);
 
+/** A cor de fundo do logótipo lida no navegador (D-198); qualquer outra coisa fica nula. */
+const corDeFundo = (v: FormDataEntryValue | null) =>
+  typeof v === "string" && /^#[0-9A-F]{6}$/.test(v) ? v : null;
+
 /** Logótipo, fachada ou fotografia da galeria (D.8.1), no bucket público da barbearia. */
 export async function carregarImagemMarca(formulario: FormData): Promise<Resultado> {
   const contexto = await exigirGestorParaEscrever();
@@ -175,7 +179,7 @@ export async function carregarImagemMarca(formulario: FormData): Promise<Resulta
     bd,
     contexto.barbearia.id,
     tipo.data === "logo"
-      ? { logo_url: url }
+      ? { logo_url: url, logo_fundo: corDeFundo(formulario.get("fundo")) }
       : tipo.data === "capa"
         ? { capa_foto_url: url }
         : { galeria_urls: [...b.galeria_urls, url] },
@@ -199,7 +203,7 @@ export async function removerImagemMarca(tipo: string, url: string): Promise<Res
     bd,
     contexto.barbearia.id,
     t.data === "logo"
-      ? { logo_url: null }
+      ? { logo_url: null, logo_fundo: null }
       : t.data === "capa"
         ? { capa_foto_url: null }
         : { galeria_urls: b.galeria_urls.filter((u) => u !== url) },

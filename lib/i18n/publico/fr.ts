@@ -18,6 +18,11 @@ export const fr = {
     fechado: "Fermé en ce moment",
     entrar: "Se connecter",
     marcarCurto: "Réserver",
+    marcarAgora: "Réserver maintenant",
+    proximaVaga: "Prochain créneau",
+    hoje: (hora: string) => `Aujourd’hui, ${hora}`,
+    amanha: (hora: string) => `Demain, ${hora}`,
+    noDia: (dia: string, hora: string) => `${dia}, ${hora}`,
   },
   entrar: {
     cliente: "Espace client",

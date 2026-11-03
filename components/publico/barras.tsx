@@ -48,7 +48,7 @@ export function Barras({
         <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2">
           {logo ? (
             // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
-            <img src={logo} alt="" className="size-8 rounded-full border object-contain" />
+            <img src={logo} alt="" className="h-8 w-auto object-contain" />
           ) : null}
           <span className="flex-1 truncate text-sm font-bold">{nome}</span>
           <Link

@@ -21,12 +21,12 @@ test.beforeAll(async () => {
 });
 
 for (const [locale, titulo, lang] of [
-  ["pt-PT", "Faça a sua marcação", "pt"],
-  ["pt-BR", "Faça a sua marcação", "pt"],
-  ["fr-FR", "Prendre rendez-vous", "fr"],
-  ["fr-CA", "Prendre rendez-vous", "fr"],
-  ["de-DE", "Book an appointment", "en"],
-  ["en-US", "Book an appointment", "en"],
+  ["pt-PT", "Marcar agora", "pt"],
+  ["pt-BR", "Marcar agora", "pt"],
+  ["fr-FR", "Réserver maintenant", "fr"],
+  ["fr-CA", "Réserver maintenant", "fr"],
+  ["de-DE", "Book now", "en"],
+  ["en-US", "Book now", "en"],
 ] as const)
   test(`página pública num telemóvel em ${locale}`, async ({ browser }, info) => {
     test.skip(info.project.name !== "telemovel");

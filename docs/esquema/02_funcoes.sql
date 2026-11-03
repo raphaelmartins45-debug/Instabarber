@@ -1141,7 +1141,9 @@ create view publico_inquilinos as
          aberto, public.funcionalidade_ativa(id, 'multilinguagem') as multilinguagem_ativa,
          dominio_proprio, selos_necessarios,
          -- A marcação pública mostra a regra de cancelamento (H.2) e só os dias da janela (D-125).
-         antecedencia_cancelamento_min, janela_marcacao_dias
+         antecedencia_cancelamento_min, janela_marcacao_dias,
+         -- O estilo da página pública e a cor de fundo do logótipo (D-198)
+         estilo_pagina, logo_fundo
     from inquilinos where estado = 'ativo';
 
 create view publico_servicos as

@@ -24,3 +24,28 @@ export function paletaDePixeis(pixeis: ArrayLike<number>, maximo = 5): string[] 
       `#${hex(Math.round(c.r / c.n))}${hex(Math.round(c.g / c.n))}${hex(Math.round(c.b / c.n))}`.toUpperCase(),
     );
 }
+
+/**
+ * A cor de fundo de um logótipo (D-198): a média da orla da imagem, se a orla for quase toda de
+ * uma só cor; nulo se for transparente ou variada (então fica a cor da barbearia à volta).
+ * Pixéis RGBA de uma imagem `largura`×`altura`, como os de um canvas.
+ */
+export function fundoDoLogo(
+  pixeis: ArrayLike<number>,
+  largura: number,
+  altura: number,
+): string | null {
+  const orla: [number, number, number][] = [];
+  for (let y = 0; y < altura; y++)
+    for (let x = 0; x < largura; x++) {
+      if (x !== 0 && y !== 0 && x !== largura - 1 && y !== altura - 1) continue;
+      const i = (y * largura + x) * 4;
+      if (pixeis[i + 3]! < 200) return null;
+      orla.push([pixeis[i]!, pixeis[i + 1]!, pixeis[i + 2]!]);
+    }
+  if (orla.length === 0) return null;
+  const media = [0, 1, 2].map((c) => orla.reduce((s, p) => s + p[c]!, 0) / orla.length);
+  const perto = orla.filter((p) => p.every((v, c) => Math.abs(v - media[c]!) <= 24)).length;
+  if (perto / orla.length < 0.9) return null;
+  return `#${media.map((v) => hex(Math.round(v))).join("")}`.toUpperCase();
+}
