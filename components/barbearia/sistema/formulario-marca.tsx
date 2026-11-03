@@ -68,7 +68,7 @@ export function FormularioMarca({
       );
     });
   return (
-    <form className="grid max-w-2xl gap-4" onSubmit={(e) => (e.preventDefault(), enviar())}>
+    <form className="grid max-w-6xl gap-4" onSubmit={(e) => (e.preventDefault(), enviar())}>
       <div className="grid gap-2">
         <label htmlFor="capa-cor" className={etiqueta}>
           {t.cor}
@@ -107,7 +107,7 @@ export function FormularioMarca({
         valor={v.estilo_pagina}
         aoMudar={(estilo_pagina) => setV({ ...v, estilo_pagina })}
       />
-      <label className="grid gap-1.5">
+      <label className="grid max-w-2xl gap-1.5">
         <span className={etiqueta}>{t.historia}</span>
         <textarea
           rows={4}

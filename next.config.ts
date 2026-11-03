@@ -33,6 +33,18 @@ const config: NextConfig = {
           },
         ],
       },
+      {
+        // A pré-visualização da página pública na Gestão do sistema (D-199) abre-se num iframe do
+        // próprio site; só ela, e só dentro do próprio site.
+        source: "/app/pre-visualizacao",
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self'; base-uri 'self'; object-src 'none'",
+          },
+        ],
+      },
     ];
   },
 };

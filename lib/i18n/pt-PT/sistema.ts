@@ -37,6 +37,9 @@ export const sistema = {
     preVisualizacao: "Pré-visualização",
     // O modelo da página pública (D-198)
     estilo: "Modelo da página",
+    aCarregar: "a carregar",
+    preVisualizacaoAjuda:
+      "A sua página com os seus dados, como a vê um cliente num computador. Percorra-a com o rato. Só fica assim depois de guardar.",
     estiloAjuda:
       "A composição e a letra da página da barbearia. Cada modelo usa a cor e o logótipo da casa; escolha o que tem mais a ver com ela.",
     estilos: {
