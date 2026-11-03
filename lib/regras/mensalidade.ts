@@ -22,7 +22,11 @@ export const MENSALIDADES_POR_PERIODO: Record<Periodicidade, number> = {
   anual: MESES_NO_ANUAL,
 };
 /** Meses de serviço que cada periodicidade cobre (para a receita mensal). */
-export const MESES_POR_PERIODO: Record<Periodicidade, number> = { mensal: 1, semestral: 6, anual: 12 };
+export const MESES_POR_PERIODO: Record<Periodicidade, number> = {
+  mensal: 1,
+  semestral: 6,
+  anual: 12,
+};
 
 export function calcularMensalidadeCent(
   plano: Plano,

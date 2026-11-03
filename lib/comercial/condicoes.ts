@@ -64,8 +64,7 @@ export function aplicarCondicoes(
       descontoMensalidade,
       implementacao: campanha.implementacao,
       descontoTaxa: preco === null ? pedido.taxa : 0,
-      taxaCent:
-        preco ?? precoImplementacaoCent(c, campanha.implementacao, pedido.taxa),
+      taxaCent: preco ?? precoImplementacaoCent(c, campanha.implementacao, pedido.taxa),
     };
   }
   const implementacao = c.taxaAtiva ? pedido.implementacao : "nenhuma";
