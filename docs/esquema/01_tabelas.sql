@@ -1431,7 +1431,7 @@ create table metas_comerciais (
 -- «pendente» até a barbearia pagar a taxa; depois «a_pagar», com prazo de 10 dias; «paga».
 create table comissoes_comerciais (
   id             uuid primary key default gen_random_uuid(),
-  -- Do contrato assinado ou, no registo pelo painel a partir de uma proposta (D-195), da proposta
+  -- Do contrato assinado ou, no registo pelo painel a partir de uma proposta (D-196), da proposta
   contrato_id    uuid unique references contratos(id) on delete cascade,
   proposta_id    uuid unique references propostas(id) on delete cascade,
   inquilino_id   uuid references inquilinos(id) on delete set null,

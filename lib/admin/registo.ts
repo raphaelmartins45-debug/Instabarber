@@ -53,7 +53,7 @@ export async function registarBarbeariaNoPainel(d: RegistoBarbearia): Promise<Re
     const k = await definirCampanha(bd, r.inquilinoId, d.campanha_id);
     if (!k.ok) return { ok: false, erro: "campanha" };
   }
-  // A partir de uma proposta (D-195): proposta aceite, lead ganho e ligado, comissão pendente.
+  // A partir de uma proposta (D-196): proposta aceite, lead ganho e ligado, comissão pendente.
   if (d.proposta_id && !(await fecharPropostaNoRegisto(bd, d.proposta_id, r.inquilinoId)))
     return { ok: false, erro: "proposta" };
   if (d.cortesia) {

@@ -77,7 +77,7 @@ export const comercial = {
     ganhoFinal: "Ganho: o lead fechou contrato e não volta atrás.",
     ganhoSoContrato:
       "«Ganho» só chega ao assinar o contrato ou ao registar a barbearia a partir da proposta.",
-    // A barbearia do lead ganho (D-195)
+    // A barbearia do lead ganho (D-196)
     barbearia: "Barbearia",
     abrirBarbearia: "Abrir a ficha da barbearia",
     pago: "Pago",

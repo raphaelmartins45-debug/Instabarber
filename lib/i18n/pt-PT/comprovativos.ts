@@ -24,7 +24,7 @@ export const comprovativos = {
   enviar: "Enviar comprovativo",
   aEnviar: "A enviar…",
   enviado: "Comprovativo enviado. Recebe um e-mail quando for confirmado.",
-  // Na ficha do lead (D-195): quem envia é a equipa; a barbearia recebe a confirmação.
+  // Na ficha do lead (D-196): quem envia é a equipa; a barbearia recebe a confirmação.
   enviadoPelaEquipa:
     "Comprovativo enviado. Fica em análise até um administrador o aprovar; a barbearia recebe a confirmação por e-mail.",
   emAnalise: (periodo: string) =>

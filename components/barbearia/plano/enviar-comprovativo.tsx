@@ -19,7 +19,7 @@ const t = textos.comprovativos;
 /**
  * Enviar o comprovativo da mensalidade (D-168): o ficheiro vai direto para o bucket privado, na
  * pasta da barbearia (o RLS do Storage só deixa o dono, os administradores e o comercial do lead,
- * D-195), e depois a base de dados regista-o.
+ * D-196), e depois a base de dados regista-o.
  */
 export function EnviarComprovativo({
   inquilinoId,

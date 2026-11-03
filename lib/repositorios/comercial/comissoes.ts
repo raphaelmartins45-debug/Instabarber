@@ -32,7 +32,7 @@ export async function listarComissoes(bd: ClienteBD): Promise<ComissaoLinha[]> {
     taxa_paga_em: c.taxa_paga_em,
     vence_em: c.vence_em,
     paga_em: c.paga_em,
-    // Do contrato ou, no registo pelo painel a partir de uma proposta (D-195), da proposta.
+    // Do contrato ou, no registo pelo painel a partir de uma proposta (D-196), da proposta.
     contrato: c.contratos?.numero ?? c.propostas?.numero ?? "",
     barbearia:
       (c.contratos ?? c.propostas)?.leads?.nome_barbearia ||

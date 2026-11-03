@@ -159,7 +159,7 @@ export async function propostasParaRegisto(
     .map((p) => ({ ...p, lead: porId.get(p.lead_id!) ?? null }));
 }
 
-/** Fecha a proposta no registo pelo painel (D-195): aceite, lead ganho e ligado, comissão. */
+/** Fecha a proposta no registo pelo painel (D-196): aceite, lead ganho e ligado, comissão. */
 export async function fecharPropostaNoRegisto(
   bd: ClienteBD,
   propostaId: string,

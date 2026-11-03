@@ -7,7 +7,7 @@ import type { BarbeariaDoLead } from "@/lib/repositorios/comercial/leads";
 const t = textos.comercial.ficha;
 
 /**
- * A barbearia de um lead ganho (D-195): se já está paga (plano ativo e primeiro comprovativo
+ * A barbearia de um lead ganho (D-196): se já está paga (plano ativo e primeiro comprovativo
  * aprovado) e o envio do comprovativo pela equipa. Só os administradores abrem a ficha dela.
  */
 export function BarbeariaLead({

@@ -56,7 +56,7 @@ export const TABELAS_DA_PLATAFORMA = [
   "apoio_registos",
   "comunicados",
   "comunicado_leituras",
-  // A comissão do comercial ligada à barbearia registada a partir de uma proposta (D-195)
+  // A comissão do comercial ligada à barbearia registada a partir de uma proposta (D-196)
   "comissoes_comerciais",
 ] as const;
 

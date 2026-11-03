@@ -231,7 +231,7 @@ export type BarbeariaDoLead = {
   comprovativo_pendente: boolean;
 };
 
-/** A barbearia de um lead ganho e se já está paga (D-195); nulo se o lead não tem barbearia. */
+/** A barbearia de um lead ganho e se já está paga (D-196); nulo se o lead não tem barbearia. */
 export async function barbeariaDoLead(
   bd: ClienteBD,
   leadId: string,

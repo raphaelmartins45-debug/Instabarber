@@ -1,5 +1,5 @@
 -- =============================================================================
--- Testes do registo a partir de uma proposta e dos comprovativos pela equipa (D-195): só o
+-- Testes do registo a partir de uma proposta e dos comprovativos pela equipa (D-196): só o
 -- super_admin fecha a proposta no registo (aceite, lead ganho e ligado, desconto e comissão
 -- pendente do comercial); o comercial do lead envia o comprovativo dessa barbearia e de nenhuma
 -- outra; com o primeiro comprovativo aprovado, a barbearia fica paga e a comissão a pagar.

@@ -1,4 +1,4 @@
--- Registo a partir de uma proposta e comprovativos pela equipa (D-195).
+-- Registo a partir de uma proposta e comprovativos pela equipa (D-196).
 -- 1 · Registar uma barbearia pelo painel a partir de uma proposta fecha o negócio sem contrato:
 --     proposta aceite, lead ganho e ligado, desconto da mensalidade e comissão pendente do
 --     comercial, que passa a «a pagar» com o primeiro comprovativo aprovado.
@@ -13,7 +13,7 @@ alter table public.comissoes_comerciais
   add constraint comissoes_comerciais_origem
     check (contrato_id is not null or proposta_id is not null);
 
--- Quem pode enviar o comprovativo de uma barbearia (D-195): o dono, os administradores e o
+-- Quem pode enviar o comprovativo de uma barbearia (D-196): o dono, os administradores e o
 -- comercial responsável pelo lead que deu origem à barbearia. Quem aprova é só o super_admin.
 create or replace function public.pode_enviar_comprovativo(p_inquilino uuid) returns boolean
 language sql stable security definer set search_path = '' as $$
@@ -32,7 +32,7 @@ language sql stable security definer set search_path = '' as $$
               else false end;
 $$;
 
--- Registo pelo painel a partir de uma proposta (D-195): fecha o negócio sem contrato. A proposta
+-- Registo pelo painel a partir de uma proposta (D-196): fecha o negócio sem contrato. A proposta
 -- fica aceite, o lead ganho e ligado à barbearia, o desconto da mensalidade passa para ela e a
 -- comissão do comercial responsável fica pendente até ao primeiro comprovativo aprovado.
 create or replace function public.fechar_proposta_no_registo(p_proposta uuid, p_inquilino uuid)
@@ -68,7 +68,7 @@ begin
     jsonb_build_object('numero', p.numero, 'lead', l.id));
 end $$;
 
--- A barbearia de um lead ganho (D-195), para a ficha do lead: paga quando está ativa e já tem o
+-- A barbearia de um lead ganho (D-196), para a ficha do lead: paga quando está ativa e já tem o
 -- primeiro pagamento aprovado. Só quem acede ao lead (administradores e o comercial dele).
 create or replace function public.barbearia_do_lead(p_lead uuid)
 returns table (inquilino_id uuid, nome text, estado text, pago boolean, comprovativo_pendente boolean)
@@ -114,7 +114,7 @@ begin
 end $$;
 
 -- O dono envia o comprovativo (também com a barbearia suspensa, para regularizar, M.4); os
--- administradores e o comercial do lead também podem (D-195). O ficheiro tem de já estar no
+-- administradores e o comercial do lead também podem (D-196). O ficheiro tem de já estar no
 -- bucket, na pasta da barbearia.
 create or replace function public.enviar_comprovativo(
   p_inquilino uuid, p_metodo text, p_valor numeric, p_pago_em date, p_caminho text)
@@ -184,7 +184,7 @@ begin
                              else i.campanha_ate end
    where id = c.inquilino_id;
   if v_primeiro then
-    -- A comissão do contrato ou, no registo pelo painel (D-195), da proposta.
+    -- A comissão do contrato ou, no registo pelo painel (D-196), da proposta.
     update public.comissoes_comerciais k
        set estado = 'a_pagar', taxa_paga_em = c.pago_em, vence_em = c.pago_em + 10
      where k.estado = 'pendente'
@@ -200,7 +200,7 @@ begin
   return v_rec;
 end $$;
 
--- Carregam o dono, os administradores e o comercial do lead da barbearia (D-195).
+-- Carregam o dono, os administradores e o comercial do lead da barbearia (D-196).
 drop policy storage_comprovativos_carregar on storage.objects;
 create policy storage_comprovativos_carregar on storage.objects for insert
   with check (bucket_id = 'comprovativos' and public.pode_carregar_comprovativo(name));
