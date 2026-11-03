@@ -1,10 +1,11 @@
--- O estilo da página pública de cada barbearia (D-198): Clássico, Urbano, Luxo ou Vintage, a
--- letra e o acabamento do nome e dos títulos. O gestor escolhe na Gestão do sistema (Marca).
+-- O modelo da página pública de cada barbearia (D-198): oito composições, cada uma com as suas
+-- letras, tiradas das direções da taste skill (Monumento, Sala escura, Cartaz, Cartão, Palco,
+-- Bairro, Anuário, Vitrine). O gestor escolhe na Gestão do sistema (Marca).
 -- Com ele, a cor de fundo do logótipo, para a capa ter a mesma cor e o logótipo encaixar.
 
 alter table public.inquilinos
-  add column estilo_pagina text not null default 'classico'
-    check (estilo_pagina in ('classico','urbano','luxo','vintage')),
+  add column estilo_pagina text not null default 'monumento'
+    check (estilo_pagina in ('monumento','sala_escura','cartaz','cartao','palco','bairro','anuario','vitrine')),
   -- A cor de fundo do logótipo, lida ao carregá-lo: a capa usa-a para o logótipo encaixar
   add column logo_fundo text check (logo_fundo ~ '^#[0-9A-F]{6}$');
 

@@ -35,15 +35,19 @@ export const sistema = {
     cor: "Cor da capa",
     paleta: "Cores propostas a partir do logótipo",
     preVisualizacao: "Pré-visualização",
-    // O estilo da página pública (D-198)
-    estilo: "Estilo da página",
+    // O modelo da página pública (D-198)
+    estilo: "Modelo da página",
     estiloAjuda:
-      "A letra do nome e dos títulos na página da barbearia. Escolha a que tem mais a ver com a casa.",
+      "A composição e a letra da página da barbearia. Cada modelo usa a cor e o logótipo da casa; escolha o que tem mais a ver com ela.",
     estilos: {
-      classico: "Clássico",
-      urbano: "Urbano",
-      luxo: "Luxo",
-      vintage: "Vintage",
+      monumento: "Monumento",
+      sala_escura: "Sala escura",
+      cartaz: "Cartaz",
+      cartao: "Cartão",
+      palco: "Palco",
+      bairro: "Bairro",
+      anuario: "Anuário",
+      vitrine: "Vitrine",
     } as Record<string, string>,
     logo: "Logótipo",
     fachada: "Fotografia da fachada",

@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 const t = textos.sistema.marca;
 
 /**
- * O estilo da página pública (D-198): cada opção mostra o nome da barbearia na sua letra, sobre a
- * cor da capa, como vai aparecer. Serve também de pré-visualização da cor.
+ * O modelo da página pública (D-198): cada opção mostra o nome da barbearia na letra do título
+ * do modelo, sobre a cor da capa. Serve também de pré-visualização da cor.
  */
 export function EscolhaEstilo({
   nome,
@@ -30,7 +30,7 @@ export function EscolhaEstilo({
         {t.estilo}
       </legend>
       <p className="text-sm text-muted-foreground">{t.estiloAjuda}</p>
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {ESTILOS.map((e) => (
           <label
             key={e}
@@ -52,9 +52,14 @@ export function EscolhaEstilo({
               style={{ backgroundColor: cor, color: texto }}
             >
               <span
-                className={cn(LETRA_DO_ESTILO[e], "truncate text-3xl leading-none")}
+                className={cn(LETRA_DO_ESTILO[e], "truncate text-2xl leading-none")}
                 style={{
-                  textTransform: ACABAMENTO[e].maiusculas ? "uppercase" : "none",
+                  textTransform: ACABAMENTO[e].maiusculas
+                    ? "uppercase"
+                    : ACABAMENTO[e].minusculas
+                      ? "lowercase"
+                      : "none",
+                  fontWeight: ACABAMENTO[e].peso,
                   letterSpacing: `${ACABAMENTO[e].espacamento}em`,
                 }}
                 translate="no"

@@ -9,15 +9,15 @@ import {
   BlocoHorario,
   BlocoMapa,
 } from "@/components/publico/blocos-info";
-import { Capa } from "@/components/publico/capa";
+import { CapaDoModelo } from "@/components/publico/capas";
+import { PaginaModelo } from "@/components/publico/pagina-modelo";
 import { Rodape } from "@/components/publico/rodape";
-import { numericDeCentimos } from "@/lib/formatacao/dinheiro";
+import { formatarDinheiro, numericDeCentimos } from "@/lib/formatacao/dinheiro";
 import { lerEndereco, origemDoPedido, origemPrincipal } from "@/lib/inquilino/endereco";
 import { enderecoIcone } from "@/lib/inquilino/icones";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
 import { coresDaCapa } from "@/lib/publico/cores-capa";
 import { estiloDe } from "@/lib/publico/estilos";
-import { variavelDoEstilo } from "@/components/publico/fontes";
 import { proximaVaga } from "@/lib/publico/proxima-vaga";
 import { dadosHairSalon } from "@/lib/publico/dados-estruturados";
 import { textosDaPagina } from "@/lib/publico/lingua";
@@ -114,12 +114,12 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
   });
 
   return (
-    <div lang={lingua} data-estilo={estilo} className={variavelDoEstilo(estilo)}>
+    <PaginaModelo lingua={lingua} estilo={estilo} cor={cor}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(json).replace(/</g, "\\u003c") }}
       />
-      <Capa
+      <CapaDoModelo
         t={t}
         d={{
           nome: b.nome,
@@ -128,6 +128,7 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
           cor,
           logo: b.logo_url,
           logoFundo: b.logo_fundo,
+          foto: b.capa_foto_url,
           estilo,
           vaga,
           aberta: !!b.aberto,
@@ -136,6 +137,12 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
           telefone: b.telefone,
           estado,
           entrar,
+          servicos: servicos.map((s) => ({
+            id: s.id ?? "",
+            nome: nomeServico(s),
+            preco: formatarDinheiro(s.preco_centimos),
+            duracao: t.blocos.minutos(s.duracao_min ?? 0),
+          })),
         }}
       />
       <Barras
@@ -199,6 +206,6 @@ export default async function PaginaBarbearia({ params }: { params: Promise<{ sl
         estilo={estilo}
         cores={coresDaCapa(cor, b.logo_fundo)}
       />
-    </div>
+    </PaginaModelo>
   );
 }

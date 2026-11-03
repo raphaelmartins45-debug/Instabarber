@@ -1,5 +1,5 @@
 -- =============================================================================
--- Testes do estilo da página pública (D-198): começa em «classico»; só os quatro estilos; o dono
+-- Testes do estilo da página pública (D-198): começa em «classico»; só os oito modelos; o dono
 -- muda o da sua barbearia e não o de outra; a página pública (anon) lê-o pela vista.
 -- =============================================================================
 \set QUIET on
@@ -8,14 +8,14 @@ set client_min_messages = notice;
 
 begin;
 reset role;
-select teste.ok((select bool_and(estilo_pagina = 'classico') from inquilinos),
-  'ESTILO: as barbearias começam no estilo clássico');
+select teste.ok((select bool_and(estilo_pagina = 'monumento') from inquilinos),
+  'ESTILO: as barbearias começam no modelo Monumento');
 select teste.erro($$update inquilinos set estilo_pagina = 'neon' where id = 'aaaaaaaa-0000-0000-0000-000000000000'$$,
-  'ESTILO: só os quatro estilos');
+  'ESTILO: só os oito modelos');
 
 select teste.como('10000000-0000-0000-0000-000000000002');
-update inquilinos set estilo_pagina = 'luxo' where id = 'aaaaaaaa-0000-0000-0000-000000000000';
-select teste.zero($$update inquilinos set estilo_pagina = 'urbano' where id = 'bbbbbbbb-0000-0000-0000-000000000000'$$,
+update inquilinos set estilo_pagina = 'vitrine' where id = 'aaaaaaaa-0000-0000-0000-000000000000';
+select teste.zero($$update inquilinos set estilo_pagina = 'cartaz' where id = 'bbbbbbbb-0000-0000-0000-000000000000'$$,
   'ESTILO: o dono não muda o estilo de outra barbearia');
 
 update inquilinos set logo_fundo = '#0A0A0A' where id = 'aaaaaaaa-0000-0000-0000-000000000000';
@@ -26,7 +26,7 @@ select teste.anonimo();
 select teste.ok((select logo_fundo = '#0A0A0A' from publico_inquilinos
                   where id = 'aaaaaaaa-0000-0000-0000-000000000000'),
   'ESTILO: a página pública lê a cor de fundo do logótipo');
-select teste.ok((select estilo_pagina = 'luxo' from publico_inquilinos
+select teste.ok((select estilo_pagina = 'vitrine' from publico_inquilinos
                   where id = 'aaaaaaaa-0000-0000-0000-000000000000'),
   'ESTILO: o dono muda o estilo e a página pública lê-o');
 rollback;

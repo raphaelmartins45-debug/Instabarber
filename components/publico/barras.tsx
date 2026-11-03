@@ -43,7 +43,7 @@ export function Barras({
     <>
       <div
         aria-hidden={!rolou}
-        className={`fixed inset-x-0 top-0 z-30 border-b bg-white/95 backdrop-blur transition-transform ${rolou ? "translate-y-0" : "-translate-y-full"}`}
+        className={`fixed inset-x-0 top-0 z-30 bg-background text-foreground transition-transform ${rolou ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2">
           {logo ? (
@@ -72,7 +72,7 @@ export function Barras({
       </div>
       <nav
         aria-label={t.capa.marcar}
-        className="fixed inset-x-0 bottom-0 z-30 border-t bg-white/95 px-3 py-2 backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 bg-background px-3 py-2 text-foreground md:hidden"
       >
         <div className="mx-auto flex max-w-5xl gap-2">
           {marcar ? (
