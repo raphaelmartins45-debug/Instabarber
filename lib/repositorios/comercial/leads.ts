@@ -222,3 +222,21 @@ export async function atribuirResponsavel(
     .select("id");
   return !error && data.length === 1;
 }
+
+export type BarbeariaDoLead = {
+  inquilino_id: string;
+  nome: string;
+  estado: string;
+  pago: boolean;
+  comprovativo_pendente: boolean;
+};
+
+/** A barbearia de um lead ganho e se já está paga (D-195); nulo se o lead não tem barbearia. */
+export async function barbeariaDoLead(
+  bd: ClienteBD,
+  leadId: string,
+): Promise<BarbeariaDoLead | null> {
+  const { data, error } = await bd.rpc("barbearia_do_lead", { p_lead: leadId });
+  if (error) falhaDeLeitura("barbearia_do_lead", error);
+  return data[0] ?? null;
+}

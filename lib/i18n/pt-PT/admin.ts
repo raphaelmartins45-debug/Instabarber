@@ -104,7 +104,7 @@ export const admin = {
     opcaoProposta: (numero: string, barbearia: string, estado: string) =>
       `${numero} · ${barbearia} (${estado.toLowerCase()})`,
     propostaCarregada: (numero: string) =>
-      `Dados da proposta ${numero} carregados. Confirme e complete antes de registar.`,
+      `Dados da proposta ${numero} carregados. Confirme e complete antes de registar. Ao registar, a proposta fica aceite e o lead ganho.`,
     registar: "Registar e enviar as boas-vindas",
     aRegistar: "A registar…",
     feito: "Barbearia registada. As boas-vindas foram enviadas ao dono.",
@@ -127,6 +127,8 @@ export const admin = {
       cortesia:
         "A barbearia foi registada, mas a cortesia não ficou gravada. Defina-a na ficha (Pagamentos).",
       campanha: "A barbearia foi registada, mas a condição especial não serve para este plano.",
+      proposta:
+        "A barbearia foi registada, mas a proposta não ficou fechada (lead ganho e comissão). Avise a equipa técnica.",
       falhou: "Não foi possível criar a barbearia ou a conta do dono. Tente outra vez.",
       generico: "Não foi possível registar. Tente outra vez.",
     } as Record<string, string>,

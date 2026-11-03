@@ -845,11 +845,13 @@ export type Database = {
       comissoes_comerciais: {
         Row: {
           comercial_id: string | null;
-          contrato_id: string;
+          contrato_id: string | null;
           criado_em: string;
           estado: string;
           id: string;
+          inquilino_id: string | null;
           paga_em: string | null;
+          proposta_id: string | null;
           taxa_paga_em: string | null;
           valor: number;
           vence_em: string | null;
@@ -857,22 +859,26 @@ export type Database = {
         ComputedFields: never;
         Insert: {
           comercial_id?: string | null;
-          contrato_id: string;
+          contrato_id?: string | null;
           criado_em?: string;
           estado?: string;
           id?: string;
+          inquilino_id?: string | null;
           paga_em?: string | null;
+          proposta_id?: string | null;
           taxa_paga_em?: string | null;
           valor: number;
           vence_em?: string | null;
         };
         Update: {
           comercial_id?: string | null;
-          contrato_id?: string;
+          contrato_id?: string | null;
           criado_em?: string;
           estado?: string;
           id?: string;
+          inquilino_id?: string | null;
           paga_em?: string | null;
+          proposta_id?: string | null;
           taxa_paga_em?: string | null;
           valor?: number;
           vence_em?: string | null;
@@ -883,6 +889,27 @@ export type Database = {
             columns: ["contrato_id"];
             isOneToOne: true;
             referencedRelation: "contratos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comissoes_comerciais_inquilino_id_fkey";
+            columns: ["inquilino_id"];
+            isOneToOne: false;
+            referencedRelation: "inquilinos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comissoes_comerciais_proposta_id_fkey";
+            columns: ["proposta_id"];
+            isOneToOne: true;
+            referencedRelation: "propostas";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comissoes_comerciais_proposta_id_fkey";
+            columns: ["proposta_id"];
+            isOneToOne: true;
+            referencedRelation: "propostas_com_estado";
             referencedColumns: ["id"];
           },
         ];
@@ -5570,6 +5597,16 @@ export type Database = {
         Returns: undefined;
       };
       avisar_fila_espera: { Args: { p_entrada: string }; Returns: string };
+      barbearia_do_lead: {
+        Args: { p_lead: string };
+        Returns: {
+          comprovativo_pendente: boolean;
+          estado: string;
+          inquilino_id: string;
+          nome: string;
+          pago: boolean;
+        }[];
+      };
       barbearia_suspensa: { Args: { p_slug: string }; Returns: boolean };
       calcular_preco: {
         Args: { p_inicio: string; p_inquilino: string; p_servico: string };
@@ -5752,6 +5789,10 @@ export type Database = {
       exigir_gestor: { Args: { p_inquilino: string }; Returns: undefined };
       exigir_lead: { Args: { p_lead: string }; Returns: undefined };
       exigir_super_admin: { Args: Record<PropertyKey, never>; Returns: undefined };
+      fechar_proposta_no_registo: {
+        Args: { p_inquilino: string; p_proposta: string };
+        Returns: undefined;
+      };
       fixar_texto_contrato: { Args: { p_contrato: string; p_texto: string }; Returns: undefined };
       foto_do_cliente: { Args: { p_nome: string; p_so_visiveis: boolean }; Returns: boolean };
       funcionalidade_ativa: { Args: { p_chave: string; p_inquilino: string }; Returns: boolean };
@@ -5860,7 +5901,9 @@ export type Database = {
           valor_fatura: number;
         }[];
       };
+      pode_carregar_comprovativo: { Args: { p_nome: string }; Returns: boolean };
       pode_criar_acesso_direto: { Args: { p_cliente: string }; Returns: boolean };
+      pode_enviar_comprovativo: { Args: { p_inquilino: string }; Returns: boolean };
       pode_marcar_online: { Args: { p_cliente: string }; Returns: boolean };
       posicao_fila_espera: { Args: { p_entrada: string }; Returns: number };
       preparar_demonstracao: { Args: Record<PropertyKey, never>; Returns: string };

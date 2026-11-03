@@ -158,3 +158,16 @@ export async function propostasParaRegisto(
     .filter((p) => p.lead_id && porId.has(p.lead_id))
     .map((p) => ({ ...p, lead: porId.get(p.lead_id!) ?? null }));
 }
+
+/** Fecha a proposta no registo pelo painel (D-195): aceite, lead ganho e ligado, comissão. */
+export async function fecharPropostaNoRegisto(
+  bd: ClienteBD,
+  propostaId: string,
+  inquilinoId: string,
+): Promise<boolean> {
+  const { error } = await bd.rpc("fechar_proposta_no_registo", {
+    p_proposta: uuid.parse(propostaId),
+    p_inquilino: uuid.parse(inquilinoId),
+  });
+  return !error;
+}

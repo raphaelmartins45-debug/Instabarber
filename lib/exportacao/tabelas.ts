@@ -56,6 +56,8 @@ export const TABELAS_DA_PLATAFORMA = [
   "apoio_registos",
   "comunicados",
   "comunicado_leituras",
+  // A comissão do comercial ligada à barbearia registada a partir de uma proposta (D-195)
+  "comissoes_comerciais",
 ] as const;
 
 /** As tabelas da barbearia com coluna cliente_id: a exportação de um só cliente. */

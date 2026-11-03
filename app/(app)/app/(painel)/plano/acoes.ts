@@ -11,7 +11,8 @@ import { obterConfiguracao } from "@/lib/repositorios/painel/barbearia";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 // O dono envia o comprovativo da mensalidade (D-168), também com a barbearia suspensa (M.4): por
-// isso não passa por exigirGestor. A função SQL verifica o proprietário, o ficheiro e o período.
+// isso não passa por exigirGestor. Os administradores e o comercial do lead também (D-195), na
+// ficha do lead. A função SQL verifica quem envia, o ficheiro e o período.
 
 const esquema = z.object({
   inquilinoId: z.guid(),
@@ -32,21 +33,30 @@ export async function registarComprovativo(
   const bd = await criarClienteServidor();
   const r = await enviarComprovativo(bd, { ...v.data, valorCent: v.data.valor });
   if (!r.ok) return { ok: false, erro: r.erro };
-  const [b, c, faturas] = await Promise.all([
-    obterConfiguracao(bd, v.data.inquilinoId),
-    obterComprovativo(bd, r.id),
-    listarFaturas(bd, v.data.inquilinoId),
-  ]);
-  if (c) {
-    const f = faturas.find((x) => x.id === c.fatura_id);
-    const origem = (await origemPrincipal()) || (await origemDoPedido());
-    const v = await valorEsperadoCent(bd, b, c.periodo_inicio);
-    await avisarComprovativo(
-      b,
-      c,
-      f?.numero ?? null,
-      `${origem}/admin/pagamentos/comprovativos/${c.id}`,
-      f?.valor_centimos ?? v.mensalidade + v.implementacao,
+  // O aviso à InstaBarber lê dados que o comercial do lead não vê (D-195): sem eles, não há e-mail,
+  // mas o comprovativo fica registado e aparece no painel do Admin, nos pendentes.
+  try {
+    const [b, c, faturas] = await Promise.all([
+      obterConfiguracao(bd, v.data.inquilinoId),
+      obterComprovativo(bd, r.id),
+      listarFaturas(bd, v.data.inquilinoId),
+    ]);
+    if (c) {
+      const f = faturas.find((x) => x.id === c.fatura_id);
+      const origem = (await origemPrincipal()) || (await origemDoPedido());
+      const v = await valorEsperadoCent(bd, b, c.periodo_inicio);
+      await avisarComprovativo(
+        b,
+        c,
+        f?.numero ?? null,
+        `${origem}/admin/pagamentos/comprovativos/${c.id}`,
+        f?.valor_centimos ?? v.mensalidade + v.implementacao,
+      );
+    }
+  } catch (erro) {
+    console.error(
+      "aviso_comprovativo_falhou",
+      erro instanceof Error ? erro.message : "desconhecido",
     );
   }
   revalidatePath("/app/plano");

@@ -528,9 +528,9 @@ create policy storage_comprovativos_ler on storage.objects for select
   using (bucket_id = 'comprovativos' and (
          (storage.foldername(name))[1] in (select x::text from public.inquilinos_onde(array['proprietario'], false) x)
          or (select public.e_super_admin())));
+-- Carregam o dono, os administradores e o comercial do lead da barbearia (D-195).
 create policy storage_comprovativos_carregar on storage.objects for insert
-  with check (bucket_id = 'comprovativos' and
-         (storage.foldername(name))[1] in (select x::text from public.inquilinos_onde(array['proprietario'], false) x));
+  with check (bucket_id = 'comprovativos' and public.pode_carregar_comprovativo(name));
 
 -- -----------------------------------------------------------------------------
 -- Leitura total pelo super_admin (com dois fatores): vista de apoio e

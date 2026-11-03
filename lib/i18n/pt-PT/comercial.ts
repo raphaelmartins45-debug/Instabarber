@@ -75,7 +75,20 @@ export const comercial = {
     motivo: "Motivo da perda",
     motivoAjuda: "Obrigatório para marcar como perdido.",
     ganhoFinal: "Ganho: o lead fechou contrato e não volta atrás.",
-    ganhoSoContrato: "«Ganho» só chega ao assinar o contrato.",
+    ganhoSoContrato:
+      "«Ganho» só chega ao assinar o contrato ou ao registar a barbearia a partir da proposta.",
+    // A barbearia do lead ganho (D-195)
+    barbearia: "Barbearia",
+    abrirBarbearia: "Abrir a ficha da barbearia",
+    pago: "Pago",
+    emAnalise: "Comprovativo em análise",
+    porPagar: "À espera do primeiro pagamento",
+    barbeariaAjuda:
+      "Paga quando tem o plano ativo e o primeiro comprovativo aprovado; é aí que a comissão passa a «a pagar».",
+    enviarComprovativo: "Enviar o comprovativo de pagamento",
+    enviarOutro: "Enviar outro comprovativo",
+    comprovativoAjuda:
+      "Se a barbearia lhe deu o comprovativo (MB WAY ou transferência), envie-o aqui. Um administrador confere e aprova.",
     registar: "Registar contacto",
     tipoEvento: "Tipo",
     tipos: { nota: "Nota", chamada: "Chamada", mensagem: "Mensagem" } as Record<string, string>,

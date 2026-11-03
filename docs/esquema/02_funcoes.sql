@@ -2380,6 +2380,78 @@ $$;
 -- Comprovativos de pagamento da mensalidade (D-168)
 -- -----------------------------------------------------------------------------
 
+-- Quem pode enviar o comprovativo de uma barbearia (D-195): o dono, os administradores e o
+-- comercial responsável pelo lead que deu origem à barbearia. Quem aprova é só o super_admin.
+create or replace function public.pode_enviar_comprovativo(p_inquilino uuid) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select p_inquilino in (select public.inquilinos_onde(array['proprietario'], false))
+      or public.e_super_admin()
+      or (public.e_comercial() and exists (select 1 from public.leads l
+                                            where l.inquilino_id = p_inquilino
+                                              and l.responsavel_id = auth.uid()));
+$$;
+
+-- Para a política do Storage: a pasta <inquilino>/ de uma barbearia a que se pode enviar.
+create or replace function public.pode_carregar_comprovativo(p_nome text) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select case when (storage.foldername(p_nome))[1] ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+              then public.pode_enviar_comprovativo(((storage.foldername(p_nome))[1])::uuid)
+              else false end;
+$$;
+
+-- Registo pelo painel a partir de uma proposta (D-195): fecha o negócio sem contrato. A proposta
+-- fica aceite, o lead ganho e ligado à barbearia, o desconto da mensalidade passa para ela e a
+-- comissão do comercial responsável fica pendente até ao primeiro comprovativo aprovado.
+create or replace function public.fechar_proposta_no_registo(p_proposta uuid, p_inquilino uuid)
+returns void language plpgsql security definer set search_path = '' as $$
+declare p public.propostas%rowtype; l public.leads%rowtype;
+begin
+  perform public.exigir_super_admin();
+  select * into p from public.propostas where id = p_proposta for update;
+  if not found or p.estado not in ('rascunho','enviada','aceite') then
+    raise exception 'proposta_invalida' using errcode = 'P0001';
+  end if;
+  select * into l from public.leads where id = p.lead_id for update;
+  if l.inquilino_id is not null then raise exception 'lead_com_barbearia' using errcode = 'P0001'; end if;
+  if not exists (select 1 from public.inquilinos where id = p_inquilino) then
+    raise exception 'inquilino_inexistente' using errcode = 'P0001';
+  end if;
+  update public.propostas set estado = 'aceite', decidida_em = coalesce(decidida_em, now())
+   where id = p_proposta;
+  update public.leads set estado = 'ganho', motivo_perda = null, inquilino_id = p_inquilino,
+         atualizado_em = now()
+   where id = l.id;
+  update public.inquilinos set desconto_mensalidade_pct = p.desconto_mensalidade_pct where id = p_inquilino;
+  insert into public.comissoes_comerciais (proposta_id, inquilino_id, comercial_id, valor)
+  select p.id, p_inquilino, l.responsavel_id, p.comissao_sem_iva
+   where p.comissao_sem_iva > 0
+     and exists (select 1 from public.perfis pf
+                  where pf.user_id = l.responsavel_id and pf.papel = 'comercial' and pf.ativo
+                    and pf.inquilino_id is null)
+  on conflict (proposta_id) do nothing;
+  perform public.evento_lead(l.id, 'proposta', 'Barbearia registada pelo painel a partir da proposta '
+    || p.numero || '.', jsonb_build_object('proposta', p.id, 'inquilino', p_inquilino));
+  perform public.registar_auditoria(p_inquilino, 'proposta_fechada_no_registo', 'propostas', p.id,
+    jsonb_build_object('numero', p.numero, 'lead', l.id));
+end $$;
+
+-- A barbearia de um lead ganho (D-195), para a ficha do lead: paga quando está ativa e já tem o
+-- primeiro pagamento aprovado. Só quem acede ao lead (administradores e o comercial dele).
+create or replace function public.barbearia_do_lead(p_lead uuid)
+returns table (inquilino_id uuid, nome text, estado text, pago boolean, comprovativo_pendente boolean)
+language plpgsql stable security definer set search_path = '' as $$
+begin
+  if p_lead is null or not public.lead_acessivel(p_lead) then
+    raise exception 'sem_permissao' using errcode = '42501';
+  end if;
+  return query
+    select i.id, i.nome, i.estado, (i.estado = 'ativo' and i.primeiro_pagamento_em is not null),
+           exists (select 1 from public.comprovativos_pagamento c
+                    where c.inquilino_id = i.id and c.estado = 'pendente')
+      from public.leads l join public.inquilinos i on i.id = l.inquilino_id
+     where l.id = p_lead;
+end $$;
+
 -- O período que a barbearia está a pagar: a fatura mais antiga por pagar ou, sem ela, o período
 -- que começa no próximo vencimento (ou hoje, se ainda não houver), de um mês, de seis meses ou de
 -- um ano. No primeiro pagamento, os meses de oferta da campanha (D-190) juntam-se ao período.
@@ -2388,8 +2460,7 @@ returns table (inicio date, fim date, fatura_id uuid, valor_fatura numeric)
 language plpgsql stable security definer set search_path = '' as $$
 declare v_inicio date; v_per text; v_oferta integer;
 begin
-  if not (p_inquilino in (select public.inquilinos_onde(array['proprietario'], false))
-          or public.e_super_admin()) then
+  if not public.pode_enviar_comprovativo(p_inquilino) then
     raise exception 'sem_permissao' using errcode = '42501';
   end if;
   return query
@@ -2409,14 +2480,15 @@ begin
     null::uuid, null::numeric;
 end $$;
 
--- O dono envia o comprovativo (também com a barbearia suspensa, para regularizar, M.4). O ficheiro
--- tem de já estar no bucket, na pasta da barbearia.
+-- O dono envia o comprovativo (também com a barbearia suspensa, para regularizar, M.4); os
+-- administradores e o comercial do lead também podem (D-195). O ficheiro tem de já estar no
+-- bucket, na pasta da barbearia.
 create or replace function public.enviar_comprovativo(
   p_inquilino uuid, p_metodo text, p_valor numeric, p_pago_em date, p_caminho text)
 returns uuid language plpgsql security definer set search_path = '' as $$
 declare v_id uuid; p record;
 begin
-  if not (p_inquilino in (select public.inquilinos_onde(array['proprietario'], false))) then
+  if not public.pode_enviar_comprovativo(p_inquilino) then
     raise exception 'sem_permissao' using errcode = '42501';
   end if;
   if p_metodo not in ('mbway','transferencia') then raise exception 'metodo' using errcode = 'P0001'; end if;
@@ -2479,10 +2551,12 @@ begin
                              else i.campanha_ate end
    where id = c.inquilino_id;
   if v_primeiro then
+    -- A comissão do contrato ou, no registo pelo painel (D-195), da proposta.
     update public.comissoes_comerciais k
        set estado = 'a_pagar', taxa_paga_em = c.pago_em, vence_em = c.pago_em + 10
-      from public.contratos ct
-     where k.contrato_id = ct.id and ct.inquilino_id = c.inquilino_id and k.estado = 'pendente';
+     where k.estado = 'pendente'
+       and (k.inquilino_id = c.inquilino_id
+            or k.contrato_id in (select ct.id from public.contratos ct where ct.inquilino_id = c.inquilino_id));
   end if;
   update public.comprovativos_pagamento
      set estado = 'aprovado', decidido_por = auth.uid(), decidido_em = now(), recebimento_id = v_rec,
@@ -2851,6 +2925,11 @@ grant execute on function public.periodo_a_pagar(uuid),
   public.enviar_comprovativo(uuid, text, numeric, date, text),
   public.aprovar_comprovativo(uuid), public.recusar_comprovativo(uuid, text) to authenticated;
 grant execute on function public.registar_fatura_do_comprovativo(uuid, text, date) to authenticated;
+-- Registo a partir de uma proposta e comprovativos pela equipa (D-195).
+grant execute on function public.pode_enviar_comprovativo(uuid), public.barbearia_do_lead(uuid),
+  public.fechar_proposta_no_registo(uuid, uuid) to authenticated;
+-- Usada na política do Storage, que vale para todos os papéis; sem sessão devolve falso.
+grant execute on function public.pode_carregar_comprovativo(text) to anon, authenticated;
 grant execute on function public.definir_cortesia(uuid, boolean, date),
   public.definir_implementacao(uuid, text, numeric) to authenticated;
 grant execute on function public.campanha_disponivel(uuid, text, text),

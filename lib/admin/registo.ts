@@ -6,6 +6,7 @@ import {
   definirCortesia,
   definirImplementacao,
 } from "@/lib/repositorios/admin/barbearias";
+import { fecharPropostaNoRegisto } from "@/lib/repositorios/comercial/propostas";
 import { criarPedidoDoPainel } from "@/lib/repositorios/pedidos-adesao";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import type { RegistoBarbearia } from "@/lib/validacao/registo-barbearia";
@@ -18,7 +19,7 @@ import { exigirSuperAdmin } from "./contexto";
 
 export type ResultadoRegisto =
   | ResultadoAprovacao
-  | { ok: false; erro: "pedido" | "implementacao" | "cortesia" | "campanha" };
+  | { ok: false; erro: "pedido" | "implementacao" | "cortesia" | "campanha" | "proposta" };
 
 export async function registarBarbeariaNoPainel(d: RegistoBarbearia): Promise<ResultadoRegisto> {
   const admin = await exigirSuperAdmin();
@@ -52,6 +53,9 @@ export async function registarBarbeariaNoPainel(d: RegistoBarbearia): Promise<Re
     const k = await definirCampanha(bd, r.inquilinoId, d.campanha_id);
     if (!k.ok) return { ok: false, erro: "campanha" };
   }
+  // A partir de uma proposta (D-195): proposta aceite, lead ganho e ligado, comissão pendente.
+  if (d.proposta_id && !(await fecharPropostaNoRegisto(bd, d.proposta_id, r.inquilinoId)))
+    return { ok: false, erro: "proposta" };
   if (d.cortesia) {
     const c = await definirCortesia(bd, r.inquilinoId, true, d.cortesia_ate || null);
     if (!c.ok) return { ok: false, erro: "cortesia" };

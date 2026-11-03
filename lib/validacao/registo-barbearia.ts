@@ -51,6 +51,8 @@ export const esquemaRegistoBarbearia = z
     implementacao: z.enum(IMPLEMENTACOES),
     valor_implementacao: dinheiro,
     campanha_id: z.union([z.literal(""), z.guid()]).default(""),
+    // A proposta de onde vieram os dados (D-195): o registo fecha-a (aceite, lead ganho, comissão).
+    proposta_id: z.union([z.literal(""), z.guid()]).default(""),
     cortesia: z.boolean().default(false),
     cortesia_ate: z
       .union([z.literal(""), z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "data")])

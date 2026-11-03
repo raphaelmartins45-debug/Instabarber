@@ -20,7 +20,7 @@ export async function listarComissoes(bd: ClienteBD): Promise<ComissaoLinha[]> {
   const { data, error } = await bd
     .from("comissoes_comerciais")
     .select(
-      "id, comercial_id, valor, estado, taxa_paga_em, vence_em, paga_em, contratos(numero, leads(nome_barbearia, nome_contacto))",
+      "id, comercial_id, valor, estado, taxa_paga_em, vence_em, paga_em, contratos(numero, leads(nome_barbearia, nome_contacto)), propostas(numero, leads(nome_barbearia, nome_contacto))",
     )
     .order("criado_em", { ascending: false });
   if (error) falhaDeLeitura("comissoes_comerciais", error);
@@ -32,8 +32,12 @@ export async function listarComissoes(bd: ClienteBD): Promise<ComissaoLinha[]> {
     taxa_paga_em: c.taxa_paga_em,
     vence_em: c.vence_em,
     paga_em: c.paga_em,
-    contrato: c.contratos?.numero ?? "",
-    barbearia: c.contratos?.leads?.nome_barbearia || c.contratos?.leads?.nome_contacto || "",
+    // Do contrato ou, no registo pelo painel a partir de uma proposta (D-195), da proposta.
+    contrato: c.contratos?.numero ?? c.propostas?.numero ?? "",
+    barbearia:
+      (c.contratos ?? c.propostas)?.leads?.nome_barbearia ||
+      (c.contratos ?? c.propostas)?.leads?.nome_contacto ||
+      "",
   }));
 }
 

@@ -18,7 +18,7 @@ select teste.ok(not exists (
     'contrato_do_cliente', 'criar_pedido_loja', 'e_comercial', 'e_dono_plataforma', 'e_super_admin',
     'entrar_fila_espera', 'entrar_fila_presencial', 'estado_fila_presencial', 'funcionalidade_ativa',
     'inquilinos_onde', 'ler_convite_adesao', 'meus_clientes', 'meus_leads', 'meus_profissionais',
-    'modulo_ativo', 'pasta_lead_acessivel', 'pedir_codigo_acesso', 'posicao_fila_espera',
+    'modulo_ativo', 'pasta_lead_acessivel', 'pode_carregar_comprovativo', 'pedir_codigo_acesso', 'posicao_fila_espera',
     'reclamar_email_confirmacao', 'registar_carregamento_contrato', 'registar_email_confirmacao',
     'reservar_vaga', 'submeter_lead', 'submeter_pedido_adesao', 'usar_convite_adesao', 'vagas_livres')),
   'END: o anon só executa as funções security definer da lista');

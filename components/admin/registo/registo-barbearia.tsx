@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { registar } from "@/app/(admin)/admin/(protegido)/barbearias/nova/acoes";
@@ -40,6 +41,9 @@ export function RegistoBarbearia({
 }) {
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string; id?: string }>();
   const [aRegistar, iniciar] = useTransition();
+  const router = useRouter();
+  // Muda depois de cada registo, para a lista das propostas voltar ao início.
+  const [registos, setRegistos] = useState(0);
   const form = useForm<DadosRegistoBarbearia>({
     resolver: zodResolver(esquemaRegistoBarbearia, undefined, { raw: true }),
     defaultValues: {
@@ -56,6 +60,7 @@ export function RegistoBarbearia({
       implementacao: "essencial",
       valor_implementacao: textoDeCentimos(precosCent.essencial ?? 0),
       campanha_id: "",
+      proposta_id: "",
       cortesia: false,
       cortesia_ate: "",
     },
@@ -83,9 +88,14 @@ export function RegistoBarbearia({
   }, [form]);
   const carregar = (id: string) => {
     const p = propostas.find((x) => x.id === id);
-    if (!p) return;
+    if (!p) {
+      // «Preencher à mão»: os dados ficam, mas o registo já não fecha a proposta.
+      form.setValue("proposta_id", "");
+      setAviso(undefined);
+      return;
+    }
     daProposta.current = true;
-    form.reset({ ...form.getValues(), ...p.dados });
+    form.reset({ ...form.getValues(), ...p.dados, proposta_id: p.id });
     setAviso({ tipo: "sucesso", texto: t.propostaCarregada(p.numero) });
   };
   const enviar = form.handleSubmit(
@@ -99,6 +109,8 @@ export function RegistoBarbearia({
             id: r.inquilinoId,
           });
           form.reset();
+          setRegistos((n) => n + 1);
+          router.refresh();
         } else setAviso({ tipo: "erro", texto: t.erros[r.erro] ?? t.erros.generico! });
       }),
     () => setAviso({ tipo: "erro", texto: t.erros.obrigatorio! }),
@@ -106,7 +118,7 @@ export function RegistoBarbearia({
   const seccao = "cartao grid gap-4 rounded-2xl p-4";
   return (
     <form onSubmit={enviar} className="grid gap-5" noValidate data-testid="registo-barbearia">
-      <CarregarProposta propostas={propostas} aoEscolher={carregar} />
+      <CarregarProposta key={registos} propostas={propostas} aoEscolher={carregar} />
       {aviso ? (
         <Aviso tipo={aviso.tipo}>
           {aviso.texto}{" "}

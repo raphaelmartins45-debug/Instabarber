@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AtribuirResponsavel } from "@/components/admin/comercial/atribuir-responsavel";
+import { BarbeariaLead } from "@/components/admin/comercial/barbearia-lead";
 import { ContratosLead } from "@/components/admin/comercial/contratos-lead";
 import { FormularioLead } from "@/components/admin/comercial/formulario-lead";
 import { HistoricoLead } from "@/components/admin/comercial/historico-lead";
@@ -13,11 +14,11 @@ import { Button } from "@/components/ui/button";
 import { Secao } from "@/components/nucleo/secao";
 import { eAdministrador } from "@/lib/admin/acesso";
 import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
-import { dataCurta } from "@/lib/formatacao/datas";
+import { dataCurta, hojeIso } from "@/lib/formatacao/datas";
 import { centimosDeNumeric, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { listarComerciais } from "@/lib/repositorios/admin/equipa";
-import { eventosDoLead, obterLead } from "@/lib/repositorios/comercial/leads";
+import { barbeariaDoLead, eventosDoLead, obterLead } from "@/lib/repositorios/comercial/leads";
 import { contratosDoLead } from "@/lib/repositorios/comercial/contratos";
 import {
   lerBriefing,
@@ -37,14 +38,16 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
   const bd = await criarClienteServidor();
   const lead = await obterLead(bd, id);
   if (!lead) notFound();
-  const [eventos, propostas, contratos, briefing, modelo, comerciais] = await Promise.all([
-    eventosDoLead(bd, id),
-    propostasDoLead(bd, id),
-    contratosDoLead(bd, id),
-    lerBriefing(bd, id),
-    modeloAprovado(bd, "contrato"),
-    admin ? listarComerciais(bd) : [],
-  ]);
+  const [eventos, propostas, contratos, briefing, modelo, comerciais, barbearia] =
+    await Promise.all([
+      eventosDoLead(bd, id),
+      propostasDoLead(bd, id),
+      contratosDoLead(bd, id),
+      lerBriefing(bd, id),
+      modeloAprovado(bd, "contrato"),
+      admin ? listarComerciais(bd) : [],
+      lead.inquilino_id ? barbeariaDoLead(bd, id) : null,
+    ]);
   const inicial: DadosLead = {
     nome_contacto: lead.nome_contacto,
     nome_barbearia: lead.nome_barbearia ?? "",
@@ -86,6 +89,7 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
           >
             {t.estados[lead.estado]}
           </Etiqueta>
+          {barbearia?.pago ? <Etiqueta tom="sucesso">{t.ficha.pago}</Etiqueta> : null}
           {lead.temperatura ? (
             <Etiqueta
               tom={
@@ -104,6 +108,11 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
       </div>
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="grid content-start gap-5">
+          {barbearia ? (
+            <Secao id="lead-barbearia" titulo={t.ficha.barbearia}>
+              <BarbeariaLead barbearia={barbearia} admin={admin} hoje={hojeIso()} />
+            </Secao>
+          ) : null}
           <Secao id="lead-dados" titulo={t.ficha.dados}>
             <FormularioLead id={lead.id} inicial={inicial} />
           </Secao>

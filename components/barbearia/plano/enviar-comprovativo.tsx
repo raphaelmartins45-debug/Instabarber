@@ -18,18 +18,22 @@ const t = textos.comprovativos;
 
 /**
  * Enviar o comprovativo da mensalidade (D-168): o ficheiro vai direto para o bucket privado, na
- * pasta da barbearia (o RLS do Storage só deixa o dono), e depois a base de dados regista-o.
+ * pasta da barbearia (o RLS do Storage só deixa o dono, os administradores e o comercial do lead,
+ * D-195), e depois a base de dados regista-o.
  */
 export function EnviarComprovativo({
   inquilinoId,
   ajuda,
   valorInicial,
   hoje,
+  textoEnviado = t.enviado,
 }: {
   inquilinoId: string;
   ajuda: string;
   valorInicial: string;
   hoje: string;
+  /** A mensagem depois de enviar (a equipa, na ficha do lead, vê outra). */
+  textoEnviado?: string;
 }) {
   const router = useRouter();
   const [metodo, setMetodo] = useState("mbway");
@@ -56,7 +60,7 @@ export function EnviarComprovativo({
         caminho,
       });
       if (!r.ok) return erro(r.erro);
-      setAviso({ tipo: "sucesso", texto: t.enviado });
+      setAviso({ tipo: "sucesso", texto: textoEnviado });
       router.refresh();
     });
 

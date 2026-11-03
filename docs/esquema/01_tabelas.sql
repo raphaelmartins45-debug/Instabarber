@@ -1431,7 +1431,10 @@ create table metas_comerciais (
 -- «pendente» até a barbearia pagar a taxa; depois «a_pagar», com prazo de 10 dias; «paga».
 create table comissoes_comerciais (
   id             uuid primary key default gen_random_uuid(),
-  contrato_id    uuid not null unique references contratos(id) on delete cascade,
+  -- Do contrato assinado ou, no registo pelo painel a partir de uma proposta (D-195), da proposta
+  contrato_id    uuid unique references contratos(id) on delete cascade,
+  proposta_id    uuid unique references propostas(id) on delete cascade,
+  inquilino_id   uuid references inquilinos(id) on delete set null,
   comercial_id   uuid references auth.users(id) on delete set null,
   valor          numeric(10,2) not null check (valor > 0),
   estado         text not null default 'pendente' check (estado in ('pendente','a_pagar','paga')),
@@ -1441,7 +1444,8 @@ create table comissoes_comerciais (
   criado_em      timestamptz not null default now(),
   check ((estado = 'pendente') = (taxa_paga_em is null)),
   check ((taxa_paga_em is null) = (vence_em is null)),
-  check ((estado = 'paga') = (paga_em is not null))
+  check ((estado = 'paga') = (paga_em is not null)),
+  constraint comissoes_comerciais_origem check (contrato_id is not null or proposta_id is not null)
 );
 create index comissoes_comercial on comissoes_comerciais (comercial_id, estado);
 

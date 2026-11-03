@@ -42,9 +42,9 @@ algo que aqui está (uma fase, um ambiente, um script, uma armadilha nova).
 | `docs/mapa-do-sistema.md` | **Pedidos de manutenção:** classifica o pedido e diz onde mexer e como verificar |
 | `docs/mapa-gerado.md` | Lista gerada das rotas e ficheiros (`scripts/gerar-mapa.sh`; não se edita) |
 | `PROGRESSO.md` | Estado real: fases, trabalhos paralelos, pendentes do dono, módulos por ativar |
-| `DECISOES.md` | As decisões (D-01 a D-195), com data. **Prevalece** quando duas regras se contradizem |
+| `DECISOES.md` | As decisões (D-01 a D-196), com data. **Prevalece** quando duas regras se contradizem |
 | `docs/esquema/` | Fonte única da base de dados (tabelas, funções, RLS, dados iniciais) e os testes SQL |
-| `supabase/migrations/` | As migrações aplicadas (01 a 22; há duas «20»: `20261101000020_endurecer_funcoes` e `20261103000020_implementacao_cortesia`), copiadas do esquema |
+| `supabase/migrations/` | As migrações aplicadas (01 a 23; há duas «20»: `20261101000020_endurecer_funcoes` e `20261103000020_implementacao_cortesia`), copiadas do esquema |
 | `fases/` | O plano de cada fase e os critérios (J.1, verificados em `fases/verificacao-j1.md`) |
 | `docs/parte-*.md` | A especificação, uma Parte por ficheiro (índice em `docs/00-indice.md`) |
 | `docs/manual-do-operador.md` | Os procedimentos manuais P-00 a P-30 |
@@ -105,6 +105,7 @@ decisão no `DECISOES.md`.
 | Comunicados à equipa | 03/11/2026 | Comunicados também aos comerciais e aos gestores da InstaBarber, ao grupo ou a uma pessoa | 22 | D-191 |
 | Campanhas comerciais | 03/11/2026 | Condições especiais escolhidas na proposta (Anual 14, Semestral, Primeiro mês, Muda já…), ligadas em Comercial → Campanhas; periodicidade semestral | 21 | D-190 |
 | Implementação, cortesia e registo pelo painel | 03/11/2026 | Pacotes Essencial (50 €) e com Formação (100 €) na proposta, metade para o comercial, cobrados no 1.º pagamento; cortesia sem vencimentos; «Registar barbearia» no Admin | 20 | D-189 |
+| Registo a partir da proposta | 03/11/2026 | Carregar os dados de uma proposta no registo; o registo fecha a proposta (lead ganho, comissão pendente); comprovativos também pela equipa e pelo comercial do lead; «pago» na ficha do lead | 23 | D-195, D-196 |
 
 **Em aberto:** ver `PROGRESSO.md` («Pendentes do dono», «Módulo pendente de ativação») e a lista
 da Fase 9 em `fases/fase-9-manuais.md`.
