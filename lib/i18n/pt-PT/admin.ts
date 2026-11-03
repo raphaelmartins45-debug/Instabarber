@@ -98,6 +98,13 @@ export const admin = {
       cortesia_ate: "Cortesia até (opcional)",
     } as Record<string, string>,
     semCampanha: "Nenhuma (condições normais)",
+    // Carregar de uma proposta (D-195)
+    carregarProposta: "Carregar de uma proposta",
+    semProposta: "Não, preencher à mão",
+    opcaoProposta: (numero: string, barbearia: string, estado: string) =>
+      `${numero} · ${barbearia} (${estado.toLowerCase()})`,
+    propostaCarregada: (numero: string) =>
+      `Dados da proposta ${numero} carregados. Confirme e complete antes de registar.`,
     registar: "Registar e enviar as boas-vindas",
     aRegistar: "A registar…",
     feito: "Barbearia registada. As boas-vindas foram enviadas ao dono.",

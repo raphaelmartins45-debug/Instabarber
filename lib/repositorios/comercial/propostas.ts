@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { LeadParaRegisto } from "@/lib/admin/registo-proposta";
 import { type Briefing, esquemaBriefing } from "@/lib/comercial/briefing";
 import type { PropostaMontada } from "@/lib/comercial/proposta";
 import type { Assinatura } from "@/lib/documentos/assinatura";
@@ -130,4 +131,30 @@ export async function modeloAprovado(
     .maybeSingle();
   if (error) falhaDeLeitura("modelos_documento", error);
   return data;
+}
+
+/**
+ * As propostas que podem dar origem a um registo pelo painel (D-195): a última versão em
+ * rascunho, enviada ou aceite de cada lead que ainda não tem barbearia, com os dados do lead.
+ */
+export async function propostasParaRegisto(
+  bd: ClienteBD,
+): Promise<(Proposta & { lead: LeadParaRegisto | null })[]> {
+  const [{ data, error }, { data: leads, error: e2 }] = await Promise.all([
+    bd
+      .from("propostas_com_estado")
+      .select("*")
+      .in("estado", ["rascunho", "enviada", "aceite"])
+      .order("criado_em", { ascending: false }),
+    bd
+      .from("leads")
+      .select("id, nome_contacto, nome_barbearia, email, telefone, cidade, morada")
+      .is("inquilino_id", null),
+  ]);
+  if (error) falhaDeLeitura("propostas", error);
+  if (e2) falhaDeLeitura("leads", e2);
+  const porId = new Map(leads.map((l) => [l.id, l]));
+  return data
+    .filter((p) => p.lead_id && porId.has(p.lead_id))
+    .map((p) => ({ ...p, lead: porId.get(p.lead_id!) ?? null }));
 }

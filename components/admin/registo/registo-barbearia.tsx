@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { registar } from "@/app/(admin)/admin/(protegido)/barbearias/nova/acoes";
 import { Aviso } from "@/components/nucleo/aviso";
@@ -15,19 +15,28 @@ import {
   esquemaRegistoBarbearia,
 } from "@/lib/validacao/registo-barbearia";
 import { CampoRegisto, ImplementacaoRegisto, SelecaoRegisto } from "./campos-registo";
+import { CarregarProposta } from "./carregar-proposta";
 
 const t = textos.admin.registo;
 
 /**
  * Registar uma barbearia pelo painel (D-189): o essencial da barbearia, o plano, a implementação
  * (com o preço das condições comerciais) e a cortesia. Fica tudo no mesmo ecrã, em secções.
+ * Pode começar preenchido com os dados de uma proposta (D-195).
  */
 export function RegistoBarbearia({
   precosCent,
   campanhas,
+  propostas,
 }: {
   precosCent: Record<string, number>;
   campanhas: Campanha[];
+  propostas: {
+    id: string;
+    numero: string;
+    rotulo: string;
+    dados: Partial<DadosRegistoBarbearia>;
+  }[];
 }) {
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string; id?: string }>();
   const [aRegistar, iniciar] = useTransition();
@@ -53,13 +62,32 @@ export function RegistoBarbearia({
   });
   const implementacao = form.watch("implementacao");
   const plano = form.watch("plano");
+  // Depois de carregar uma proposta, o valor e os profissionais são os dela, não os sugeridos.
+  const daProposta = useRef(false);
   // O valor acompanha o pacote escolhido (pode ajustar-se à mão) e o Basic tem 1 profissional.
   useEffect(() => {
+    if (daProposta.current) return;
     form.setValue("valor_implementacao", textoDeCentimos(precosCent[implementacao] ?? 0));
   }, [implementacao, precosCent, form]);
   useEffect(() => {
+    if (daProposta.current) return;
     form.setValue("profissionais", plano === "basic" ? 1 : 3);
   }, [plano, form]);
+  // Ao mudar à mão o pacote ou o plano, voltam as sugestões.
+  useEffect(() => {
+    const sub = form.watch((_v, { name, type }) => {
+      if (type === "change" && (name === "implementacao" || name === "plano"))
+        daProposta.current = false;
+    });
+    return () => sub.unsubscribe();
+  }, [form]);
+  const carregar = (id: string) => {
+    const p = propostas.find((x) => x.id === id);
+    if (!p) return;
+    daProposta.current = true;
+    form.reset({ ...form.getValues(), ...p.dados });
+    setAviso({ tipo: "sucesso", texto: t.propostaCarregada(p.numero) });
+  };
   const enviar = form.handleSubmit(
     () =>
       iniciar(async () => {
@@ -78,6 +106,7 @@ export function RegistoBarbearia({
   const seccao = "cartao grid gap-4 rounded-2xl p-4";
   return (
     <form onSubmit={enviar} className="grid gap-5" noValidate data-testid="registo-barbearia">
+      <CarregarProposta propostas={propostas} aoEscolher={carregar} />
       {aviso ? (
         <Aviso tipo={aviso.tipo}>
           {aviso.texto}{" "}
