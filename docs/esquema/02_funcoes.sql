@@ -2177,17 +2177,6 @@ begin
       (v_id, 'Tiago Demonstração', 'Tiago', 45, 2), (v_id, 'Marta Demonstração', 'Marta', 50, 3);
   end if;
   select array_agg(id order by ordem) into v_prof from public.profissionais where inquilino_id = v_id;
-  -- A apresentação e as especialidades da equipa (D-210): o cartão e o perfil na página pública.
-  update public.profissionais set
-    apresentacao = case ordem
-      when 1 then 'Especialista em degradês e barba à navalha. Gosto de conversa boa e de cortes que duram.'
-      when 2 then 'Cortes à tesoura e estilos clássicos, com tempo para cada detalhe.'
-      else 'Cortes de criança e estilos modernos, com paciência e boa disposição.' end,
-    especialidades = case ordem
-      when 1 then array['Degradês', 'Barba clássica']
-      when 2 then array['Cortes à tesoura', 'Clássicos']
-      else array['Cortes de criança', 'Estilos modernos'] end
-   where inquilino_id = v_id;
   insert into public.horarios_profissional (inquilino_id, profissional_id, dia_semana, inicio, fim)
   select v_id, p, d, '09:00', '19:30' from unnest(v_prof) p, generate_series(2, 6) d;
 
@@ -2274,6 +2263,28 @@ begin
   perform public.registar_auditoria(null, 'demonstracao_preparada', 'inquilinos', v_id, null);
   return v_id;
 end $$;
+
+-- A equipa da demonstração apresenta-se (D-210): ao criar os barbeiros da barbearia de
+-- demonstração, a apresentação e as especialidades do cartão e do perfil na página pública.
+create or replace function public.apresentar_equipa_demonstracao() returns trigger
+language plpgsql set search_path = '' as $$
+begin
+  if exists (select 1 from public.inquilinos where id = new.inquilino_id and demonstracao) then
+    new.apresentacao := coalesce(new.apresentacao, case new.ordem
+      when 1 then 'Especialista em degradês e barba à navalha. Gosto de conversa boa e de cortes que duram.'
+      when 2 then 'Cortes à tesoura e estilos clássicos, com tempo para cada detalhe.'
+      else 'Cortes de criança e estilos modernos, com paciência e boa disposição.' end);
+    if cardinality(new.especialidades) = 0 then
+      new.especialidades := case new.ordem
+        when 1 then array['Degradês', 'Barba clássica']
+        when 2 then array['Cortes à tesoura', 'Clássicos']
+        else array['Cortes de criança', 'Estilos modernos'] end;
+    end if;
+  end if;
+  return new;
+end $$;
+create trigger profissionais_demonstracao before insert on profissionais
+  for each row execute function public.apresentar_equipa_demonstracao();
 
 -- Um código novo para a demonstração atual (substitui o anterior). Só a equipa da InstaBarber.
 create or replace function public.novo_codigo_demonstracao()

@@ -132,7 +132,7 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 
 46. **Uma demonstração por perfil de comercial** (D-207): hoje há uma só barbearia de demonstração partilhada pela equipa; futuramente cada comercial terá a sua, para várias reuniões em paralelo.
 
-47. **Avaliações por estrelas dos barbeiros** (D-213, aprovado): fazer na próxima sessão, junto da média no cartão e no perfil público (D-210). Aplicar também a função da demonstração da migração 30 (pede aprovação no Supabase por ter «delete»).
+47. **Avaliações por estrelas dos barbeiros** (D-213, aprovado): fazer na próxima sessão, junto da média no cartão e no perfil público (D-210).
 
 ## Módulo pendente de ativação: fatura-recibo automática (D-170)
 
