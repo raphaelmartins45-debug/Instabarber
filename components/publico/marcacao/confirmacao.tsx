@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { dataLongaNaLingua, horaCurta } from "@/lib/formatacao/datas";
@@ -56,7 +57,10 @@ export function Confirmacao({
   };
   return (
     <div className="grid gap-4" data-testid="marcacao-confirmada">
-      <h2 className="text-xl font-extrabold">{m.feita}</h2>
+      <span className="grid size-16 place-items-center rounded-full bg-accent text-primary animate-in zoom-in-50 duration-300">
+        <Check aria-hidden className="size-8" />
+      </span>
+      <h2 className="titulo-estilo text-2xl">{m.feita}</h2>
       <p className="text-secao font-semibold first-letter:uppercase">
         {m.resumo(servico, barbeiro, dataLongaNaLingua(inicio, lingua), horaCurta(inicio))}
       </p>

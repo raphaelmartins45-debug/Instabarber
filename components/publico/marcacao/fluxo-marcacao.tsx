@@ -9,9 +9,10 @@ import { Confirmacao } from "./confirmacao";
 import { Contagem } from "./contagem";
 import { PassoDados, type DadosCliente } from "./passo-dados";
 import { PassoHora } from "./passo-hora";
-import { ResumoMarcacao } from "./resumo-marcacao";
+import { Resumos } from "./resumo-marcacao";
 import { useRepetir } from "./usar-repetir";
 import { PassoBarbeiro, PassoServico } from "./passos-escolha";
+import { BotaoVoltar, progressoDe, ProgressoMarcacao } from "./progresso-marcacao";
 import type { BarbeariaMarcacao, BarbeiroMarcacao, ServicoMarcacao } from "./tipos";
 
 type Passo = "servico" | "barbeiro" | "hora" | "dados" | "feita";
@@ -96,18 +97,23 @@ export function FluxoMarcacao({
     }
   };
   const nomeBarbeiro = (id: string) => equipa.find((b) => b.id === id)?.nome ?? "";
+  const { nomes: nomesPassos, indice: indicePasso } = progressoDe(passo, !!umSo, m.passos);
+  // O barbeiro da reserva; antes dela, o escolhido ou «Sem preferência».
+  const idEscolhido = reserva?.profissionalId ?? barbeiro;
+  const escolhido = idEscolhido
+    ? nomeBarbeiro(idEscolhido)
+    : barbeiro === null
+      ? m.semPreferencia
+      : undefined;
 
   return (
     <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_300px] md:items-start">
       <div className="grid gap-4">
         {passo !== "servico" && passo !== "feita" ? (
-          <button
-            type="button"
-            onClick={voltar}
-            className="h-11 justify-self-start text-sm font-semibold underline-offset-4 hover:underline"
-          >
-            ← {m.voltar}
-          </button>
+          <BotaoVoltar rotulo={m.voltar} aoVoltar={voltar} />
+        ) : null}
+        {passo !== "feita" ? (
+          <ProgressoMarcacao t={t} passos={nomesPassos} atual={indicePasso} />
         ) : null}
         {erro && passo !== "dados" ? <Aviso tipo="erro">{erro}</Aviso> : null}
         {passo === "servico" ? (
@@ -126,7 +132,7 @@ export function FluxoMarcacao({
         ) : null}
         {passo === "hora" && servico ? (
           <>
-            <h2 className="text-lg font-extrabold">{m.dia}</h2>
+            <h2 className="titulo-estilo text-2xl">{m.dia}</h2>
             <PassoHora
               t={t}
               lingua={lingua}
@@ -143,7 +149,7 @@ export function FluxoMarcacao({
         ) : null}
         {passo === "dados" && reserva ? (
           <>
-            <h2 className="text-lg font-extrabold">{m.dados}</h2>
+            <h2 className="titulo-estilo text-2xl">{m.dados}</h2>
             <Contagem
               ate={reserva.reservadaAte}
               texto={m.reservada}
@@ -182,21 +188,14 @@ export function FluxoMarcacao({
         ) : null}
       </div>
       {passo !== "feita" ? (
-        <ResumoMarcacao
+        <Resumos
           t={t}
           lingua={lingua}
-          barbearia={barbearia.nome}
-          morada={barbearia.morada}
+          barbearia={barbearia}
           servico={servico}
-          barbeiro={
-            reserva
-              ? nomeBarbeiro(reserva.profissionalId)
-              : barbeiro === null
-                ? m.semPreferencia
-                : barbeiro && nomeBarbeiro(barbeiro)
-          }
-          inicio={reserva?.inicio}
-          valorCent={reserva?.valorCobradoCent}
+          barbeiro={escolhido}
+          reserva={reserva}
+          movel={passo === "barbeiro" || passo === "hora"}
         />
       ) : null}
     </div>

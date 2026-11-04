@@ -1,6 +1,7 @@
 import { dataLongaNaLingua, horaCurta } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import type { TextosPublicos } from "@/lib/i18n/publico";
+import { ResumoMovel } from "./progresso-marcacao";
 
 /**
  * O resumo ao lado dos passos, só no computador (D-129): a barbearia e o que já foi escolhido.
@@ -38,7 +39,7 @@ export function ResumoMarcacao({
   );
   return (
     <aside
-      className="hidden rounded-2xl border bg-card p-5 md:sticky md:top-6 md:grid md:gap-4"
+      className="cartao-modelo hidden rounded-[var(--raio)] border bg-card p-5 text-card-foreground md:sticky md:top-6 md:grid md:gap-4"
       data-testid="resumo-marcacao"
     >
       <div>
@@ -65,5 +66,47 @@ export function ResumoMarcacao({
         </p>
       ) : null}
     </aside>
+  );
+}
+
+/** Os resumos da marcação (D-205): o painel ao lado no computador e a barra no telemóvel. */
+export function Resumos({
+  t,
+  lingua,
+  barbearia,
+  servico,
+  barbeiro,
+  reserva,
+  movel,
+}: {
+  t: TextosPublicos;
+  lingua: string;
+  barbearia: { nome: string; morada: string };
+  servico?: { nome: string; duracao: number; precoCent: number };
+  barbeiro?: string;
+  reserva: { inicio: string; valorCobradoCent: number } | null;
+  /** Mostrar a barra do telemóvel (nos passos do barbeiro e da hora). */
+  movel: boolean;
+}) {
+  return (
+    <>
+      {movel && servico ? (
+        <>
+          {/* Espaço para a barra fixa não tapar as últimas horas. */}
+          <div aria-hidden className="h-20 md:hidden" />
+          <ResumoMovel servico={servico.nome} barbeiro={barbeiro} />
+        </>
+      ) : null}
+      <ResumoMarcacao
+        t={t}
+        lingua={lingua}
+        barbearia={barbearia.nome}
+        morada={barbearia.morada}
+        servico={servico}
+        barbeiro={barbeiro}
+        inicio={reserva?.inicio}
+        valorCent={reserva?.valorCobradoCent}
+      />
+    </>
   );
 }

@@ -15,7 +15,7 @@ export function PassoServico({
 }) {
   return (
     <>
-      <h2 className="text-lg font-extrabold">{t.marcacao.servico}</h2>
+      <h2 className="titulo-estilo text-2xl">{t.marcacao.servico}</h2>
       <div className="grid gap-3 md:grid-cols-2">
         {servicos.map((s) => (
           <Escolha
@@ -44,7 +44,7 @@ export function PassoBarbeiro({
 }) {
   return (
     <>
-      <h2 className="text-lg font-extrabold">{t.marcacao.barbeiro}</h2>
+      <h2 className="titulo-estilo text-2xl">{t.marcacao.barbeiro}</h2>
       <div className="grid gap-3 md:grid-cols-2">
         <Escolha
           titulo={t.marcacao.semPreferencia}
@@ -57,6 +57,7 @@ export function PassoBarbeiro({
             key={b.id}
             titulo={b.nome}
             imagem={b.fotoUrl}
+            inicial={b.nome.charAt(0)}
             testId="escolher-barbeiro"
             aoEscolher={() => aoEscolher(b.id)}
           />

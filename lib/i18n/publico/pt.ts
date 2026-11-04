@@ -74,6 +74,16 @@ export const pt = {
     precos: "Preços finais, com IVA incluído quando aplicável.",
   },
   marcacao: {
+    passos: {
+      servico: "Serviço",
+      barbeiro: "Barbeiro",
+      hora: "Dia e hora",
+      dados: "Os seus dados",
+    },
+    manha: "Manhã",
+    tarde: "Tarde",
+    noite: "Noite",
+    passoDe: (n: number, total: number, nome: string) => `Passo ${n} de ${total} · ${nome}`,
     diaHoje: "Hoje",
     diaAmanha: "Amanhã",
     titulo: "Marcação",

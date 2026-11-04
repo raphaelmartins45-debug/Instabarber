@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FluxoMarcacao } from "@/components/publico/marcacao/fluxo-marcacao";
 import { MolduraCliente } from "@/components/publico/moldura-cliente";
+import { PaginaModelo } from "@/components/publico/pagina-modelo";
 import { horaCurta, hojeIso } from "@/lib/formatacao/datas";
 import { formatarTelefone } from "@/lib/formatacao/telefone";
 import { lerEndereco, origemPrincipal } from "@/lib/inquilino/endereco";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
+import { estiloDe } from "@/lib/publico/estilos";
 import { textosDaPagina } from "@/lib/publico/lingua";
 import { corDoTexto } from "@/lib/regras/contraste";
 import { primeiroDiaMarcavel } from "@/lib/regras/primeiro-dia";
@@ -48,7 +50,7 @@ export default async function Marcar({
   const local = (pt: string | null, en: string | null, fr: string | null) =>
     (lingua === "en" ? en : lingua === "fr" ? fr : null) || pt;
   return (
-    <div lang={lingua}>
+    <PaginaModelo estilo={estiloDe(b.estilo_pagina)} lingua={lingua}>
       <MolduraCliente
         larga
         titulo={`${t.marcacao.titulo} · ${b.nome}`}
@@ -106,6 +108,6 @@ export default async function Marcar({
           <p className="font-semibold">{t.capa.indisponivel}</p>
         )}
       </MolduraCliente>
-    </div>
+    </PaginaModelo>
   );
 }

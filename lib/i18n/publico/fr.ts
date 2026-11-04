@@ -66,6 +66,16 @@ export const fr = {
     precos: "Prix finaux, TVA incluse le cas échéant.",
   },
   marcacao: {
+    passos: {
+      servico: "Prestation",
+      barbeiro: "Barbier",
+      hora: "Jour et heure",
+      dados: "Vos coordonnées",
+    },
+    manha: "Matin",
+    tarde: "Après-midi",
+    noite: "Soir",
+    passoDe: (n: number, total: number, nome: string) => `Étape ${n} sur ${total} · ${nome}`,
     diaHoje: "Aujourd'hui",
     diaAmanha: "Demain",
     titulo: "Réservation",
