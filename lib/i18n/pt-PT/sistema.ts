@@ -292,5 +292,9 @@ export const sistema = {
     titulo: "Escreva o título.",
     longo: "Texto demasiado longo.",
     erro: "Não foi possível guardar. Tente outra vez.",
+    marcacoes_no_periodo:
+      "Há marcações nesse período. Mude-as ou cancele-as primeiro (e avise os clientes).",
+    fora_do_horario_barbearia:
+      "O horário do barbeiro tem de caber no horário de funcionamento da barbearia.",
   } as Record<string, string>,
 } as const;

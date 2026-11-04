@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FluxoMarcacao } from "@/components/publico/marcacao/fluxo-marcacao";
 import { MolduraCliente } from "@/components/publico/moldura-cliente";
-import { hojeIso } from "@/lib/formatacao/datas";
+import { horaCurta, hojeIso } from "@/lib/formatacao/datas";
 import { formatarTelefone } from "@/lib/formatacao/telefone";
 import { lerEndereco, origemPrincipal } from "@/lib/inquilino/endereco";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
 import { textosDaPagina } from "@/lib/publico/lingua";
 import { corDoTexto } from "@/lib/regras/contraste";
+import { primeiroDiaMarcavel } from "@/lib/regras/primeiro-dia";
 import {
   funcionalidadesLigadas,
   listarEquipaPublica,
@@ -60,6 +61,12 @@ export default async function Marcar({
           <FluxoMarcacao
             lingua={lingua}
             hoje={hojeIso()}
+            primeiroDia={primeiroDiaMarcavel({
+              hoje: hojeIso(),
+              horaAgora: horaCurta(new Date()),
+              fecho: b.hora_fecho ?? "23:59",
+              diasDescanso: b.dias_descanso ?? [],
+            })}
             barbearia={{
               slug: b.slug,
               nome: b.nome,

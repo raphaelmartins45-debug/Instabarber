@@ -65,6 +65,8 @@ export const en = {
     precos: "Final prices, VAT included where applicable.",
   },
   marcacao: {
+    diaHoje: "Today",
+    diaAmanha: "Tomorrow",
     titulo: "Booking",
     voltar: "Back",
     passo: (n: number, total: number) => `Step ${n} of ${total}`,
@@ -113,6 +115,7 @@ export const en = {
       `${servico} with ${barbeiro}, at the first free time`,
     erros: {
       ocupado: "This time has just been taken. Please choose another.",
+      passado: "That time has already passed. Please choose another.",
       reserva_expirada: "Your hold has expired. Please choose the time again.",
       bloqueado_por_faltas: "To book, please contact the barbershop.",
       limite_marcacoes:

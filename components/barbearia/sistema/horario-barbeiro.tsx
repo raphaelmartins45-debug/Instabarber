@@ -12,7 +12,19 @@ const dias = textos.sistema.diasSemana;
 export type FaixaHorario = { diaSemana: string; inicio: string; fim: string };
 
 /** Horário próprio do barbeiro: faixas por dia (várias no mesmo dia permitem pausas). */
-export function HorarioBarbeiro({ id, inicial }: { id: string; inicial: FaixaHorario[] }) {
+export function HorarioBarbeiro({
+  id,
+  inicial,
+  guardar = guardarHorarioBarbeiro,
+}: {
+  id: string;
+  inicial: FaixaHorario[];
+  /** O gestor grava na ficha; o barbeiro, na sua Disponibilidade (D-202). */
+  guardar?: (
+    id: string,
+    faixas: FaixaHorario[],
+  ) => Promise<{ ok: true } | { ok: false; erro: string }>;
+}) {
   const [faixas, setFaixas] = useState(inicial);
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aGuardar, iniciar] = useTransition();
@@ -81,7 +93,7 @@ export function HorarioBarbeiro({ id, inicial }: { id: string; inicial: FaixaHor
           disabled={aGuardar}
           onClick={() =>
             iniciar(async () => {
-              const r = await guardarHorarioBarbeiro(id, faixas);
+              const r = await guardar(id, faixas);
               setAviso(
                 r.ok
                   ? { tipo: "sucesso", texto: textos.comum.guardado }

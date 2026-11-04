@@ -19,6 +19,7 @@ export function PassoHora({
   servicoId,
   profissionalId,
   hoje,
+  primeiroDia,
   janelaDias,
   diaInicial,
   filaEspera,
@@ -30,6 +31,8 @@ export function PassoHora({
   servicoId: string;
   profissionalId: string | null;
   hoje: string;
+  /** O primeiro dia com marcações possíveis: hoje, ou o próximo dia aberto (D-202). */
+  primeiroDia: string;
   janelaDias: number;
   diaInicial?: string;
   /** Com a fila de espera ligada, um dia sem vagas oferece a fila (F.4.1). */
@@ -37,9 +40,10 @@ export function PassoHora({
   aoEscolher: (v: VagaPublica) => void;
 }) {
   const dias = Array.from({ length: Math.min(DIAS_VISIVEIS, janelaDias + 1) }, (_, i) =>
-    somarDias(hoje, i),
+    somarDias(primeiroDia, i),
   );
-  const [dia, setDia] = useState(diaInicial ?? hoje);
+  const [dia, setDia] = useState(diaInicial ?? primeiroDia);
+  const amanha = somarDias(hoje, 1);
   const [vagas, setVagas] = useState<VagaPublica[] | null>(null);
   useEffect(() => {
     let ativo = true;
@@ -64,7 +68,16 @@ export function PassoHora({
               d === dia ? "bg-foreground text-background" : "bg-card",
             )}
           >
-            {diaCurtoNaLingua(d, lingua)}
+            {d === hoje || d === amanha ? (
+              <span className="grid leading-tight">
+                <span className="font-bold normal-case">
+                  {d === hoje ? t.marcacao.diaHoje : t.marcacao.diaAmanha}
+                </span>
+                <span className="text-xs opacity-75">{diaCurtoNaLingua(d, lingua)}</span>
+              </span>
+            ) : (
+              diaCurtoNaLingua(d, lingua)
+            )}
           </button>
         ))}
       </div>

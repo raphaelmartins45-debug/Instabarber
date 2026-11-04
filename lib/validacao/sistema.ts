@@ -92,12 +92,22 @@ const dataHoraLocal = z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "data"
 export const esquemaAusencia = z
   .object({
     profissionalId: z.union([z.guid(), z.literal("")]).transform((v) => v || null),
-    tipo: z.enum(["ferias", "folga", "formacao", "doenca", "outro"]),
+    tipo: z.enum(["ferias", "folga", "formacao", "doenca", "outro", "bloqueio"]),
     inicio: dataHoraLocal,
     fim: dataHoraLocal,
     motivo: z.string().max(200).transform(vazioParaNulo),
   })
   .refine((v) => v.fim > v.inicio, { message: "periodo", path: ["fim"] });
+
+/** Horas bloqueadas pelo barbeiro num dia (D-202): das «de» às «ate», horas de Lisboa. */
+export const esquemaBloqueio = z
+  .object({
+    dia: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "data"),
+    de: hora,
+    ate: hora,
+    motivo: z.string().max(200).transform(vazioParaNulo),
+  })
+  .refine((v) => v.ate > v.de, { message: "periodo", path: ["ate"] });
 
 export const esquemaFeriado = z.object({
   data: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "data"),

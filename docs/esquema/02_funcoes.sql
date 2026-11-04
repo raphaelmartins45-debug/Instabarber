@@ -266,6 +266,11 @@ create trigger acertos_proteger before update or delete on acertos
 --     mudanças de hora (último domingo de março e de outubro) corretas.
 -- -----------------------------------------------------------------------------
 
+-- O relógio da agenda (D-202): o instante atual. Os testes SQL fixam-no numa data, para não
+-- dependerem do dia em que correm.
+create or replace function public.agora() returns timestamptz
+language sql stable set search_path = '' as $$ select now() $$;
+
 create or replace function public.hora_local(p timestamptz) returns timestamp
 language sql immutable set search_path = '' as $$ select p at time zone 'Europe/Lisbon' $$;
 
@@ -300,6 +305,9 @@ begin
     return 'profissional_invalido';
   end if;
 
+  -- Nunca numa hora que já passou, venha de onde vier: página pública, gestor ou barbeiro (D-202).
+  if p_inicio < public.agora() then return 'passado'; end if;
+
   v_fim   := p_inicio + make_interval(mins => v_duracao);
   v_ini_l := public.hora_local(p_inicio);
   v_fim_l := public.hora_local(v_fim);
@@ -307,8 +315,8 @@ begin
   v_dow   := extract(dow from v_ini_l)::integer;
 
   if p_publico then
-    if p_inicio < now() + make_interval(mins => t.antecedencia_minima_min) then return 'antecedencia'; end if;
-    if v_dia > (public.hora_local(now())::date + t.janela_marcacao_dias) then return 'fora_da_janela'; end if;
+    if p_inicio < public.agora() + make_interval(mins => t.antecedencia_minima_min) then return 'antecedencia'; end if;
+    if v_dia > (public.hora_local(public.agora())::date + t.janela_marcacao_dias) then return 'fora_da_janela'; end if;
   end if;
 
   if v_fim_l::date <> v_dia and v_fim_l::time <> '00:00' then return 'fora_do_horario'; end if;
@@ -322,6 +330,10 @@ begin
   select exists (select 1 from public.horarios_profissional where profissional_id = p_profissional)
     into v_tem_horario;
 
+  -- O horário da barbearia vale sempre; o do profissional só o pode estreitar (D-202).
+  if v_dow = any (t.dias_descanso) then return 'dia_de_descanso'; end if;
+  if v_ini_l::time < t.hora_abertura or v_fim_l > v_dia + t.hora_fecho then return 'fora_do_horario'; end if;
+
   if v_tem_horario then
     -- Horário próprio: o serviço cabe inteiro numa das linhas desse dia.
     if not exists (select 1 from public.horarios_profissional h
@@ -330,8 +342,6 @@ begin
       return 'fora_do_horario';
     end if;
   else
-    if v_dow = any (t.dias_descanso) then return 'dia_de_descanso'; end if;
-    if v_ini_l::time < t.hora_abertura or v_fim_l > v_dia + t.hora_fecho then return 'fora_do_horario'; end if;
     if t.intervalo_almoco_inicio is not null
        and v_ini_l < v_dia + t.intervalo_almoco_fim and v_fim_l > v_dia + t.intervalo_almoco_inicio then
       return 'intervalo_almoco';
@@ -449,6 +459,37 @@ begin
 end $$;
 create trigger marcacoes_validar before insert or update on marcacoes
   for each row execute function public.marcacoes_antes_gravar();
+
+-- Um bloqueio ou ausência nunca fica por cima de marcações: quem bloqueia vê-as e trata
+-- delas primeiro (D-202). Com profissional nulo, conta a barbearia inteira.
+create or replace function public.ausencias_antes_gravar() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  if exists (select 1 from public.marcacoes m
+              where m.inquilino_id = new.inquilino_id
+                and (new.profissional_id is null or m.profissional_id = new.profissional_id)
+                and (m.estado = 'agendada' or (m.estado = 'reservada' and m.reservada_ate > now()))
+                and m.periodo && tstzrange(new.inicio, new.fim, '[)')) then
+    raise exception 'marcacoes_no_periodo' using errcode = 'P0001';
+  end if;
+  return new;
+end $$;
+create trigger ausencias_validar before insert or update of inicio, fim, profissional_id on ausencias
+  for each row execute function public.ausencias_antes_gravar();
+
+-- O horário de um profissional cabe no horário de funcionamento da barbearia (D-202).
+create or replace function public.horarios_antes_gravar() returns trigger
+language plpgsql security definer set search_path = '' as $$
+declare t public.inquilinos%rowtype;
+begin
+  select * into t from public.inquilinos where id = new.inquilino_id;
+  if new.dia_semana = any (t.dias_descanso) or new.inicio < t.hora_abertura or new.fim > t.hora_fecho then
+    raise exception 'fora_do_horario_barbearia' using errcode = 'P0001';
+  end if;
+  return new;
+end $$;
+create trigger horarios_validar before insert or update on horarios_profissional
+  for each row execute function public.horarios_antes_gravar();
 
 -- Encontra ou cria o cliente pelo telefone, sem nunca reescrever dados já existentes.
 create or replace function public.cliente_por_telefone(

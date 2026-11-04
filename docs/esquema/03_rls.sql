@@ -80,12 +80,20 @@ create policy horarios_ler on horarios_profissional for select using (
 create policy horarios_escrever on horarios_profissional for all
   using (inquilino_id in (select public.inquilinos_onde(array['proprietario'])))
   with check (inquilino_id in (select public.inquilinos_onde(array['proprietario'])));
+-- O barbeiro gere o seu próprio horário (D-202).
+create policy horarios_proprio on horarios_profissional for all
+  using (profissional_id in (select public.meus_profissionais()))
+  with check (profissional_id in (select public.meus_profissionais()));
 
 create policy ausencias_ler on ausencias for select using (
   inquilino_id in (select public.inquilinos_onde(array['proprietario','profissional'])));
 create policy ausencias_escrever on ausencias for all
   using (inquilino_id in (select public.inquilinos_onde(array['proprietario'])))
   with check (inquilino_id in (select public.inquilinos_onde(array['proprietario'])));
+-- O barbeiro bloqueia as suas horas e apaga só o que ele próprio criou (D-202).
+create policy ausencias_proprio on ausencias for all
+  using (profissional_id in (select public.meus_profissionais()) and criado_por = auth.uid())
+  with check (profissional_id in (select public.meus_profissionais()) and criado_por = auth.uid());
 
 create policy feriados_ler on feriados for select using (
   inquilino_id is null

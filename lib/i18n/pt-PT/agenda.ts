@@ -24,6 +24,7 @@ export const agenda = {
     formacao: "Formação",
     doenca: "Doença",
     outro: "Ausência",
+    bloqueio: "Horas bloqueadas",
   } as Record<string, string>,
   estados: {
     reservada: "Reservada",
@@ -88,6 +89,9 @@ export const agenda = {
     servico: "Serviço",
     profissional: "Profissional",
     dia: "Dia",
+    hoje: "Hoje",
+    amanha: "Amanhã",
+    fechadaHoje: "A barbearia já fechou hoje: mostramos o próximo dia aberto.",
     hora: "Hora",
     semVagas: "Sem vagas neste dia para este serviço.",
     escolherHora: "Escolha a hora",
@@ -105,6 +109,7 @@ export const agenda = {
   },
   erros: {
     ocupado: "Esse horário já está ocupado.",
+    passado: "Essa hora já passou. Escolha uma hora a partir de agora.",
     fora_do_horario: "Fora do horário de trabalho.",
     dia_de_descanso: "É dia de descanso.",
     intervalo_almoco: "Coincide com o intervalo de almoço.",

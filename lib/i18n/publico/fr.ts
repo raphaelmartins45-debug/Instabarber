@@ -65,6 +65,8 @@ export const fr = {
     precos: "Prix finaux, TVA incluse le cas échéant.",
   },
   marcacao: {
+    diaHoje: "Aujourd'hui",
+    diaAmanha: "Demain",
     titulo: "Réservation",
     voltar: "Retour",
     passo: (n: number, total: number) => `Étape ${n} sur ${total}`,
@@ -114,6 +116,7 @@ export const fr = {
       `${servico} avec ${barbeiro}, au premier créneau libre`,
     erros: {
       ocupado: "Ce créneau vient d'être pris. Choisissez-en un autre.",
+      passado: "Cet horaire est déjà passé. Choisissez-en un autre.",
       reserva_expirada: "La réservation a expiré. Choisissez l'heure à nouveau.",
       bloqueado_por_faltas: "Pour réserver, contactez le salon.",
       limite_marcacoes:

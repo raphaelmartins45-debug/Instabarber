@@ -62,7 +62,7 @@ export async function novaAusencia(dados: z.input<typeof esquemaAusencia>): Prom
   const v = esquemaAusencia.safeParse(dados);
   if (!v.success) return { ok: false, erro: v.error.issues[0]?.message ?? "erro" };
   const instante = (s: string) => instanteLocal(s.slice(0, 10), s.slice(11, 16)).toISOString();
-  const ok = await criarAusencia(await criarClienteServidor(), {
+  const erro = await criarAusencia(await criarClienteServidor(), {
     inquilinoId: contexto.barbearia.id,
     profissionalId: v.data.profissionalId,
     inicio: instante(v.data.inicio),
@@ -72,7 +72,7 @@ export async function novaAusencia(dados: z.input<typeof esquemaAusencia>): Prom
     criadoPor: contexto.userId,
   });
   revalidar();
-  return ok ? { ok: true } : { ok: false, erro: "erro" };
+  return erro ? { ok: false, erro } : { ok: true };
 }
 
 export async function apagarAusencia(id: string): Promise<Resultado> {

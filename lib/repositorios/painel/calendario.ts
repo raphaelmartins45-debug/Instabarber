@@ -1,8 +1,14 @@
 import type { ClienteBD } from "@/lib/supabase/tipos";
 import { falhaDeLeitura } from "../erros";
 
-// Ausências, feriados próprios e períodos de desconto (E.2, F.4.7). Só o gestor escreve (RLS).
+// Ausências, feriados próprios e períodos de desconto (E.2, F.4.7). O gestor escreve; o barbeiro
+// só as suas horas bloqueadas (RLS, D-202).
 
+/** Código do erro da base de dados (as regras de D-202), ou «erro». */
+const codigo = (mensagem: string) =>
+  ["marcacoes_no_periodo", "fora_do_horario_barbearia"].find((c) => mensagem.includes(c)) ?? "erro";
+
+/** Grava a ausência; devolve nulo, ou o código do erro (p. ex. marcações no período). */
 export async function criarAusencia(
   bd: ClienteBD,
   d: {
@@ -14,7 +20,7 @@ export async function criarAusencia(
     motivo: string | null;
     criadoPor: string;
   },
-): Promise<boolean> {
+): Promise<string | null> {
   const { error } = await bd.from("ausencias").insert({
     inquilino_id: d.inquilinoId,
     profissional_id: d.profissionalId,
@@ -24,7 +30,34 @@ export async function criarAusencia(
     motivo: d.motivo,
     criado_por: d.criadoPor,
   });
-  return !error;
+  return error ? codigo(error.message) : null;
+}
+
+export type MarcacaoNoPeriodo = { inicio: string; cliente: string | null; servico: string | null };
+
+/** As marcações por fazer que tocam um período (para mostrar porque um bloqueio foi recusado). */
+export async function marcacoesNoPeriodo(
+  bd: ClienteBD,
+  inquilinoId: string,
+  profissionalId: string | null,
+  periodo: { inicio: string; fim: string },
+): Promise<MarcacaoNoPeriodo[]> {
+  let q = bd
+    .from("marcacoes")
+    .select("inicio, clientes(nome), servicos(nome)")
+    .eq("inquilino_id", inquilinoId)
+    .in("estado", ["agendada", "reservada"])
+    .lt("inicio", periodo.fim)
+    .gt("fim", periodo.inicio)
+    .order("inicio");
+  if (profissionalId) q = q.eq("profissional_id", profissionalId);
+  const { data, error } = await q;
+  if (error) falhaDeLeitura("marcacoes", error);
+  return data.map((m) => ({
+    inicio: m.inicio,
+    cliente: m.clientes?.nome ?? null,
+    servico: m.servicos?.nome ?? null,
+  }));
 }
 
 export async function removerAusencia(

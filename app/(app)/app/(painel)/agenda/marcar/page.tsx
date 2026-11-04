@@ -5,7 +5,9 @@ import { obterContextoEquipa } from "@/lib/equipa/contexto";
 import { hojeIso, horaCurta } from "@/lib/formatacao/datas";
 import { exigirFuncionalidade } from "@/lib/funcionalidades/servidor";
 import { textos } from "@/lib/i18n/pt-PT";
+import { obterConfiguracao } from "@/lib/repositorios/painel/barbearia";
 import { listarServicos } from "@/lib/repositorios/painel/servicos";
+import { primeiroDiaMarcavel } from "@/lib/regras/primeiro-dia";
 import { listarEquipa } from "@/lib/repositorios/profissionais";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { vertical } from "@/lib/vertical/barbearia";
@@ -29,10 +31,20 @@ export default async function MarcarBalcao({
   const q = await searchParams;
   const modo = q.modo === "registar" ? "registar" : "marcar";
   const bd = await criarClienteServidor();
-  const [servicos, equipa] = await Promise.all([
+  const [servicos, equipa, config] = await Promise.all([
     listarServicos(bd, contexto.barbearia.id),
     listarEquipa(bd, contexto.barbearia.id),
+    obterConfiguracao(bd, contexto.barbearia.id),
   ]);
+  const hoje = hojeIso();
+  const horaAgora = horaCurta(new Date());
+  // Depois do fecho (ou num dia de descanso), a marcação abre no próximo dia aberto (D-202).
+  const primeiroDia = primeiroDiaMarcavel({
+    hoje,
+    horaAgora,
+    fecho: config.hora_fecho,
+    diasDescanso: config.dias_descanso ?? [],
+  });
   const profissionais = equipa
     .filter((p) => p.ativo && (contexto.eGestor || p.id === contexto.profissionalId))
     .map((p) => ({ id: p.id, rotulo: p.nome_apresentado }));
@@ -44,8 +56,8 @@ export default async function MarcarBalcao({
       ? q.dia
       : undefined;
   const depois = contexto.eGestor
-    ? `/app/agenda?dia=${dia ?? hojeIso()}`
-    : `/app/equipa/${contexto.profissionalId}/agenda?dia=${dia ?? hojeIso()}`;
+    ? `/app/agenda?dia=${dia ?? primeiroDia}`
+    : `/app/equipa/${contexto.profissionalId}/agenda?dia=${dia ?? primeiroDia}`;
   return (
     <PainelEquipa atual="agenda">
       <h1 className="text-titulo font-extrabold">
@@ -62,8 +74,9 @@ export default async function MarcarBalcao({
           dia,
           inicio,
         }}
-        hoje={hojeIso()}
-        horaAgora={horaCurta(new Date())}
+        hoje={hoje}
+        primeiroDia={primeiroDia}
+        horaAgora={horaAgora}
         depois={depois}
       />
     </PainelEquipa>

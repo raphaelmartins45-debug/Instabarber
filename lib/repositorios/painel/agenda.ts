@@ -127,6 +127,7 @@ export type Ausencia = {
   fim: string;
   tipo: string;
   motivo: string | null;
+  criadoPor: string | null;
 };
 
 /** Ausências que tocam o intervalo (da barbearia inteira ou de um profissional). */
@@ -137,7 +138,7 @@ export async function listarAusencias(
 ): Promise<Ausencia[]> {
   const { data, error } = await bd
     .from("ausencias")
-    .select("id, profissional_id, inicio, fim, tipo, motivo")
+    .select("id, profissional_id, inicio, fim, tipo, motivo, criado_por")
     .eq("inquilino_id", inquilinoId)
     .lt("inicio", intervalo.ate.toISOString())
     .gt("fim", intervalo.de.toISOString())
@@ -150,6 +151,7 @@ export async function listarAusencias(
     fim: a.fim,
     tipo: a.tipo,
     motivo: a.motivo,
+    criadoPor: a.criado_por,
   }));
 }
 

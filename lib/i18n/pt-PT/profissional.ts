@@ -42,6 +42,27 @@ export const profissional = {
     semRegistos: "Sem acertos registados.",
     nota: "Os acertos são controlo interno. Não substituem faturas nem recibos verdes.",
   },
+  disponibilidade: {
+    titulo: "Disponibilidade",
+    horario: "Dias e horas de trabalho",
+    horarioAjuda: (abertura: string, fecho: string) =>
+      `Só aparecem para marcação as horas em que trabalha, dentro do horário da barbearia (${abertura}–${fecho}). Várias faixas no mesmo dia fazem pausas.`,
+    bloqueios: "Horas bloqueadas",
+    bloqueiosAjuda:
+      "Bloqueie uma hora ou um dia em que não pode atender: sai das vagas e ninguém marca. Não se bloqueia por cima de marcações.",
+    dia: "Dia",
+    de: "Das",
+    ate: "Às",
+    diaTodo: "O dia todo",
+    motivo: "Motivo (opcional, só a equipa vê)",
+    bloquear: "Bloquear",
+    vazio: "Sem horas bloqueadas nos próximos 90 dias.",
+    remover: "Desbloquear",
+    doGestor: "Marcado pelo gestor",
+    conflitos:
+      "Estas marcações estão no período. Mude-as ou cancele-as primeiro e avise os clientes:",
+    bloqueado: "Horas bloqueadas.",
+  },
   perfil: {
     titulo: "O meu perfil",
     nomeApresentado: "Nome apresentado",

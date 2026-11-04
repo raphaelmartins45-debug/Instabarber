@@ -207,16 +207,16 @@ create table horarios_profissional (
   foreign key (inquilino_id, profissional_id) references profissionais (inquilino_id, id) on delete cascade
 );
 
--- Férias, folgas e ausências. profissional_id nulo = a barbearia inteira fecha.
+-- Férias, folgas, ausências e bloqueios de horas. profissional_id nulo = a barbearia inteira fecha.
 create table ausencias (
   id               uuid primary key default gen_random_uuid(),
   inquilino_id     uuid not null references inquilinos(id) on delete cascade,
   profissional_id  uuid,
   inicio           timestamptz not null,
   fim              timestamptz not null,
-  tipo             text not null default 'folga' check (tipo in ('ferias','folga','formacao','doenca','outro')),
+  tipo             text not null default 'folga' check (tipo in ('ferias','folga','formacao','doenca','outro','bloqueio')),
   motivo           text,
-  criado_por       uuid references auth.users(id) on delete set null,
+  criado_por       uuid default auth.uid() references auth.users(id) on delete set null,
   criado_em        timestamptz not null default now(),
   check (fim > inicio),
   foreign key (inquilino_id, profissional_id) references profissionais (inquilino_id, id) on delete cascade

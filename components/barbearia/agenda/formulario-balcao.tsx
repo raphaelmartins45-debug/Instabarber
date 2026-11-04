@@ -5,7 +5,7 @@ import { marcarAoBalcao, vagasLivres } from "@/app/(app)/app/(painel)/agenda/aco
 import { Aviso } from "@/components/nucleo/aviso";
 import { Campo } from "@/components/nucleo/campo";
 import { Button } from "@/components/ui/button";
-import { horaCurta, instanteLocal } from "@/lib/formatacao/datas";
+import { horaCurta, instanteLocal, somarDias } from "@/lib/formatacao/datas";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { Selecao } from "@/components/nucleo/selecao";
@@ -26,6 +26,7 @@ export function FormularioBalcao({
   profissionais,
   inicial,
   hoje,
+  primeiroDia,
   horaAgora,
   depois,
 }: {
@@ -34,6 +35,8 @@ export function FormularioBalcao({
   profissionais: Opcao[];
   inicial: { profissionalId?: string; dia?: string; inicio?: string };
   hoje: string;
+  /** Hoje, ou o próximo dia aberto se a barbearia já fechou (D-202). */
+  primeiroDia: string;
   horaAgora: string;
   /** Para onde ir depois de gravar. */
   depois: string;
@@ -44,7 +47,7 @@ export function FormularioBalcao({
     consentimento: false,
     servicoId: servicos[0]?.id ?? "",
     profissionalId: inicial.profissionalId ?? profissionais[0]?.id ?? "",
-    dia: inicial.dia ?? hoje,
+    dia: inicial.dia ?? primeiroDia,
     inicio: inicial.inicio ?? "",
     hora: horaAgora,
     valor: "",
@@ -118,13 +121,39 @@ export function FormularioBalcao({
       ) : null}
       {modo === "marcar" ? (
         <>
-          <Campo
-            id="dia"
-            rotulo={t.dia}
-            type="date"
-            value={v.dia}
-            onChange={(e) => muda("dia", e.target.value)}
-          />
+          <div className="grid gap-2">
+            <div className="flex items-end gap-2">
+              <div className="min-w-0 flex-1">
+                <Campo
+                  id="dia"
+                  rotulo={t.dia}
+                  type="date"
+                  min={primeiroDia}
+                  value={v.dia}
+                  onChange={(e) => muda("dia", e.target.value)}
+                />
+              </div>
+              {[
+                { rotulo: t.hoje, dia: hoje, pode: primeiroDia === hoje },
+                { rotulo: t.amanha, dia: somarDias(hoje, 1), pode: true },
+              ].map((b) => (
+                <Button
+                  key={b.rotulo}
+                  type="button"
+                  variant={v.dia === b.dia ? "default" : "outline"}
+                  className="h-11"
+                  disabled={!b.pode}
+                  aria-pressed={v.dia === b.dia}
+                  onClick={() => muda("dia", b.dia)}
+                >
+                  {b.rotulo}
+                </Button>
+              ))}
+            </div>
+            {primeiroDia !== hoje ? (
+              <p className="text-xs text-muted-foreground">{t.fechadaHoje}</p>
+            ) : null}
+          </div>
           {vagas.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t.semVagas}</p>
           ) : (

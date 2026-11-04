@@ -4,6 +4,11 @@
 -- 4 de novembro de 2026). Só para testes; nunca em produção.
 -- =============================================================================
 
+-- O relógio da agenda fica parado na terça-feira, 20 de outubro de 2026, às 08:00 (D-202): as
+-- marcações dos testes (a partir de 25 de outubro) estão sempre no futuro, corra o teste quando correr.
+create or replace function public.agora() returns timestamptz
+language sql stable set search_path = '' as $$ select timestamptz '2026-10-20 08:00+00' $$;
+
 create schema teste;
 
 create function teste.ok(c boolean, n text) returns void language plpgsql as $$

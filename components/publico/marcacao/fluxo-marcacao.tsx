@@ -23,6 +23,7 @@ export function FluxoMarcacao({
   servicos,
   equipa,
   hoje,
+  primeiroDia,
   inicial,
   cliente,
 }: {
@@ -31,6 +32,8 @@ export function FluxoMarcacao({
   servicos: ServicoMarcacao[];
   equipa: BarbeiroMarcacao[];
   hoje: string;
+  /** Hoje, ou o próximo dia aberto se a barbearia já fechou (D-202). */
+  primeiroDia: string;
   inicial: { servicoId?: string; profissionalId?: string; repetir?: boolean };
   cliente: { nome: string; telefone: string; email: string } | null;
 }) {
@@ -131,6 +134,7 @@ export function FluxoMarcacao({
               servicoId={servico.id}
               profissionalId={barbeiro ?? null}
               hoje={hoje}
+              primeiroDia={primeiroDia}
               janelaDias={barbearia.janelaDias}
               filaEspera={barbearia.filaEspera ? { cliente } : undefined}
               aoEscolher={escolherVaga}

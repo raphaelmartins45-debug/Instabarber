@@ -150,9 +150,9 @@ export async function guardarHorarioBarbeiro(
   const { barbearia } = await exigirGestorParaEscrever();
   const v = esquemaHorarioBarbeiro.safeParse(linhas);
   if (!idProfissional.safeParse(id).success || !v.success) return { ok: false, erro: "horario" };
-  const ok = await gravarHorario(await criarClienteServidor(), barbearia.id, id, v.data);
+  const erro = await gravarHorario(await criarClienteServidor(), barbearia.id, id, v.data);
   revalidatePath("/app", "layout");
-  return ok ? { ok: true } : { ok: false, erro: "erro" };
+  return erro ? { ok: false, erro } : { ok: true };
 }
 
 /** Cancelar ou repor o acesso: as marcações futuras ficam órfãs (gatilho); o histórico fica. */

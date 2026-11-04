@@ -54,6 +54,12 @@ export function menuEquipa(profissionalId: string): ItemMenu[] {
   return [
     { id: "inicio", rotulo: m.inicio, href: base, chave: null },
     { id: "agenda", rotulo: m.agenda, href: `${base}/agenda`, chave: "agenda_basica" },
+    {
+      id: "disponibilidade",
+      rotulo: m.disponibilidade,
+      href: `${base}/disponibilidade`,
+      chave: "agenda_basica",
+    },
     { id: "clientes", rotulo: m.clientes, href: `${base}/clientes`, chave: "gestao_clientes" },
     { id: "metas", rotulo: m.metas, href: `${base}/metas`, chave: "metas_profissional" },
     { id: "comissoes", rotulo: m.comissoes, href: `${base}/acertos`, chave: "comissoes_acertos" },

@@ -73,6 +73,8 @@ export const pt = {
     precos: "Preços finais, com IVA incluído quando aplicável.",
   },
   marcacao: {
+    diaHoje: "Hoje",
+    diaAmanha: "Amanhã",
     titulo: "Marcação",
     voltar: "Voltar",
     passo: (n: number, total: number) => `Passo ${n} de ${total}`,
@@ -121,6 +123,7 @@ export const pt = {
       `${servico} com ${barbeiro}, no primeiro horário livre`,
     erros: {
       ocupado: "Esta hora acabou de ser ocupada. Escolha outra.",
+      passado: "Essa hora já passou. Escolha outra.",
       reserva_expirada: "A reserva expirou. Escolha a hora outra vez.",
       bloqueado_por_faltas: "Para marcar, fale com a barbearia.",
       limite_marcacoes: "Já tem três marcações por fazer. Para marcar mais, fale com a barbearia.",

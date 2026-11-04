@@ -27,6 +27,7 @@ describe("montarMenu", () => {
     expect(menu.map((i) => [i.id, i.estado])).toEqual([
       ["inicio", "ativo"],
       ["agenda", "ativo"],
+      ["disponibilidade", "ativo"],
       ["metas", "upgrade"],
       ["perfil", "ativo"],
     ]);
