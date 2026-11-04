@@ -70,3 +70,16 @@ export async function obterDemonstracao(bd: ClienteBD): Promise<Demonstracao | n
     estilo_pagina: data.estilo_pagina ?? "anuario",
   };
 }
+
+/** Um código de acesso novo para a demonstração atual (D-208); só a equipa. */
+export async function novoCodigoDemonstracao(bd: ClienteBD): Promise<string | null> {
+  const { data, error } = await bd.rpc("novo_codigo_demonstracao");
+  return error ? null : data;
+}
+
+/** Verdadeiro se o código abre a demonstração atual (D-208). */
+export async function codigoDemonstracaoValido(bd: ClienteBD, codigo: string): Promise<boolean> {
+  const { data, error } = await bd.rpc("codigo_demonstracao_valido", { p_codigo: codigo });
+  if (error) falhaDeLeitura("demonstracao.codigo", error);
+  return data === true;
+}

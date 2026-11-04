@@ -560,3 +560,6 @@ begin
                    r.tablename || '_admin_ler', r.tablename);
   end loop;
 end $$;
+
+-- O código de acesso da demonstração (D-208): sem políticas; só as funções o leem e escrevem.
+revoke all on public.demonstracao_codigos from anon, authenticated;

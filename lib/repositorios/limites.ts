@@ -21,6 +21,8 @@ export const LIMITES = {
   recuperarIp: { maximo: 5, janelaSegundos: 3600 },
   // Tradução automática dos serviços (D-176): por barbearia, para não gastar a quota do DeepL.
   traduzirBarbearia: { maximo: 40, janelaSegundos: 3600 },
+  // Código da demonstração (D-208): 6 algarismos, poucas tentativas por IP.
+  codigoDemoIp: { maximo: 10, janelaSegundos: 900 },
 } as const;
 
 /** Verdadeiro se o pedido pode seguir. */

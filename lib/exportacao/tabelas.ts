@@ -40,6 +40,7 @@ export const TABELAS_DA_BARBEARIA = [
 
 export const TABELAS_DA_PLATAFORMA = [
   "codigos_acesso",
+  "demonstracao_codigos",
   "inquilino_funcionalidades",
   "pedidos_adesao",
   "faturas_plataforma",

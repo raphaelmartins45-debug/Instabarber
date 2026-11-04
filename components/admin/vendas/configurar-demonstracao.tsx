@@ -4,8 +4,11 @@ import { ExternalLink } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import {
   gerarDemonstracao,
+  novoCodigo,
   reporDemonstracao,
+  type Resultado,
 } from "@/app/(admin)/admin/(protegido)/comercial/demo/acoes";
+import { CodigoDemonstracao } from "@/components/admin/vendas/codigo-demonstracao";
 import { Aviso } from "@/components/nucleo/aviso";
 import { Campo } from "@/components/nucleo/campo";
 import { Button } from "@/components/ui/button";
@@ -24,11 +27,13 @@ const rotuloModelo = textos.sistema.marca.estilos;
 export function ConfigurarDemonstracao({ demo }: { demo: Demonstracao | null }) {
   const formulario = useRef<HTMLFormElement>(null);
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
+  const [codigo, setCodigo] = useState<string | null>(null);
   const [aCorrer, iniciar] = useTransition();
   const personalizada = demo && demo.nome !== "Barbearia Demonstração";
-  const correr = (acao: () => Promise<{ ok: true } | { ok: false; erro: string }>, ok: string) =>
+  const correr = (acao: () => Promise<Resultado>, ok: string) =>
     iniciar(async () => {
       const r = await acao();
+      if (r.ok) setCodigo(r.codigo ?? null);
       setAviso(
         r.ok ? { tipo: "sucesso", texto: ok } : { tipo: "erro", texto: t.erros[r.erro] ?? t.erro },
       );
@@ -72,6 +77,13 @@ export function ConfigurarDemonstracao({ demo }: { demo: Demonstracao | null }) 
           </Button>
         </div>
         {aviso ? <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso> : null}
+        {demo ? (
+          <CodigoDemonstracao
+            codigo={codigo}
+            aCorrer={aCorrer}
+            onNovo={() => correr(novoCodigo, t.codigoNovo)}
+          />
+        ) : null}
         <div className="grid gap-4 md:grid-cols-2">
           <Campo
             id="demo-nome"

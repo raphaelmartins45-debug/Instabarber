@@ -148,4 +148,18 @@ select teste.ok((select count(*) from marcacoes m join inquilinos i on i.id = m.
   'DEMO: marcações agendadas para os próximos dias');
 select teste.ok((select bool_and(c.telefone like '+999%') from clientes c join inquilinos i on i.id = c.inquilino_id
                   where i.demonstracao), 'DEMO: telefones que não existem');
+-- Código de acesso (D-208): criado pela equipa, válido só para a demonstração atual.
+select teste.ok((select length(novo_codigo_demonstracao()) = 6), 'DEMO: a equipa cria um código de 6 algarismos');
+create temp table cod as select novo_codigo_demonstracao() c;
+grant select on cod to anon, authenticated;
+select teste.anonimo();
+select teste.ok((select codigo_demonstracao_valido((select c from cod))), 'DEMO: o código certo abre a demonstração');
+select teste.ok(not codigo_demonstracao_valido('000000x'), 'DEMO: um código errado não abre');
+select teste.erro($$select novo_codigo_demonstracao()$$, 'RISCO: sem sessão não se cria código');
+select teste.erro($$select * from demonstracao_codigos$$, 'RISCO: ninguém lê os códigos');
+select teste.como('10000000-0000-0000-0000-000000000002');
+select teste.erro($$select novo_codigo_demonstracao()$$, 'RISCO: o dono de uma barbearia não cria código');
+select teste.como('10000000-0000-0000-0000-000000000001', 'aal2');
+select preparar_demonstracao();
+select teste.ok(not codigo_demonstracao_valido((select c from cod)), 'DEMO: o Reset invalida o código');
 rollback;

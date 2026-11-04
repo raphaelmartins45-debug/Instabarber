@@ -6,14 +6,19 @@ import { contasDemonstracao } from "@/lib/admin/contas-demonstracao";
 import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { telefoneE164 } from "@/lib/formatacao/telefone";
 import { ESTILOS } from "@/lib/publico/estilos";
-import { obterDemonstracao, prepararDemonstracao } from "@/lib/repositorios/admin/demonstracao";
+import {
+  novoCodigoDemonstracao,
+  obterDemonstracao,
+  prepararDemonstracao,
+} from "@/lib/repositorios/admin/demonstracao";
 import { carregarImagemPublica } from "@/lib/repositorios/painel/imagens";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 // A demonstração para os comerciais (D-207): «Gerar» refaz a barbearia de demonstração com os
-// dados desta reunião; «Reset» repõe a de origem. Toda a equipa da InstaBarber pode usar.
+// dados desta reunião e cria o código de acesso (D-208); «Reset» repõe a de origem e anula o
+// código. Toda a equipa da InstaBarber pode usar.
 
-export type Resultado = { ok: true } | { ok: false; erro: string };
+export type Resultado = { ok: true; codigo?: string } | { ok: false; erro: string };
 
 const esquema = z.object({
   nome: z.string().trim().min(2, "nome").max(60, "nome"),
@@ -55,7 +60,17 @@ export async function gerarDemonstracao(formulario: FormData): Promise<Resultado
     estilo: v.data.estilo,
   });
   revalidar();
-  return id ? { ok: true } : { ok: false, erro: "erro" };
+  if (!id) return { ok: false, erro: "erro" };
+  const codigo = await novoCodigoDemonstracao(bd);
+  return codigo ? { ok: true, codigo } : { ok: false, erro: "codigo" };
+}
+
+/** Um código novo para a demonstração atual; o anterior deixa de valer. */
+export async function novoCodigo(): Promise<Resultado> {
+  await exigirEquipaPlataforma();
+  const codigo = await novoCodigoDemonstracao(await criarClienteServidor());
+  revalidar();
+  return codigo ? { ok: true, codigo } : { ok: false, erro: "sem_demonstracao" };
 }
 
 export async function reporDemonstracao(): Promise<Resultado> {

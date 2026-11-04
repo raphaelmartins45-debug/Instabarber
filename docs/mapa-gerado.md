@@ -248,6 +248,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `creditos_clube`
 - `custos_fixos`
 - `custos_plataforma`
+- `demonstracao_codigos`
 - `despesas`
 - `documentos_fiscais`
 - `faturas_plataforma`
@@ -319,6 +320,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `carteira_comercial()`
 - `cliente_por_telefone()`
 - `clientes_do_profissional()`
+- `codigo_demonstracao_valido()`
 - `comunicado_para()`
 - `comunicado_para_equipa()`
 - `concluir_marcacao()`
@@ -389,6 +391,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `mudar_estado_lead()`
 - `mudar_meu_telefone()`
 - `nif_valido()`
+- `novo_codigo_demonstracao()`
 - `orfas_ao_desativar()`
 - `pasta_lead_acessivel()`
 - `pedir_codigo_acesso()`

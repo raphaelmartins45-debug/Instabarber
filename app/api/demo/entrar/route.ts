@@ -13,7 +13,7 @@ export async function GET(pedido: NextRequest) {
   if (tokenHash) {
     const bd = await criarClienteServidor();
     await bd.auth.signOut();
-    const { error } = await bd.auth.verifyOtp({ token_hash: tokenHash, type: "magiclink" });
+    const { error } = await bd.auth.verifyOtp({ token_hash: tokenHash, type: "email" });
     if (!error) return NextResponse.redirect(new URL("/app", pedido.url));
   }
   return NextResponse.redirect(new URL("/", pedido.url));

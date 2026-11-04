@@ -763,12 +763,28 @@ export const comercial = {
     descPublica: "O que os clientes veem: marcação online, loja e contactos.",
     semDemo: "A demonstração ainda não foi preparada. Peça ao seu comercial.",
     erroEntrada: "Não foi possível abrir esse painel. Tente outra vez.",
+    // O código de acesso (D-208)
+    codigo: "Código de acesso",
+    codigoAjuda:
+      "Dê este código à barbearia: sem ele, instabarber.pt/demo não mostra as vistas. O «Reset» anula-o.",
+    codigoEscondido:
+      "Por segurança, o código só aparece quando é criado. Se o perdeu, crie um novo (o anterior deixa de valer).",
+    novoCodigo: "Novo código",
+    copiar: "Copiar",
+    copiado: "Copiado",
+    codigoNovo: "Código novo criado. O anterior já não vale.",
+    pedirCodigo: "Escreva o código de acesso que recebeu para abrir a demonstração.",
+    entrarCodigo: "Abrir a demonstração",
+    codigoErrado: "Código errado ou já sem validade. Confirme com o seu comercial.",
+    codigoLimite: "Demasiadas tentativas. Espere uns minutos e tente outra vez.",
     erros: {
       nome: "Escreva o nome da barbearia.",
       cor: "Escolha uma cor válida.",
       logo: "Logótipo em PNG, JPG, SVG ou WEBP, até 3 MB.",
       whatsapp: "Escreva um telemóvel válido (9 dígitos, ou com o indicativo do país).",
       erro: "Não foi possível preparar a demonstração. Tente outra vez.",
+      codigo: "A demonstração foi preparada, mas o código falhou. Carregue em «Novo código».",
+      sem_demonstracao: "Ainda não há demonstração: carregue em «Gerar».",
     } as Record<string, string>,
   },
 } as const;

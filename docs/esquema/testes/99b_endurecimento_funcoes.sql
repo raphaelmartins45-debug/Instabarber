@@ -14,7 +14,7 @@ select teste.ok(not exists (
    where n.nspname = 'public' and p.prosecdef
      and has_function_privilege('anon', p.oid, 'execute')
      and p.proname not in (
-    'barbearia_suspensa', 'calcular_preco', 'clientes_do_profissional', 'confirmar_reserva',
+    'barbearia_suspensa', 'calcular_preco', 'clientes_do_profissional', 'codigo_demonstracao_valido', 'confirmar_reserva',
     'contrato_do_cliente', 'criar_pedido_loja', 'e_comercial', 'e_dono_plataforma', 'e_super_admin',
     'entrar_fila_espera', 'entrar_fila_presencial', 'estado_fila_presencial', 'funcionalidade_ativa',
     'inquilinos_onde', 'ler_convite_adesao', 'meus_clientes', 'meus_leads', 'meus_profissionais',

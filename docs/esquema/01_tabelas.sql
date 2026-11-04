@@ -1460,3 +1460,10 @@ alter table inquilinos add constraint inquilinos_campanha_id_fkey
   foreign key (campanha_id) references campanhas_comerciais(id) on delete restrict;
 alter table propostas add constraint propostas_campanha_id_fkey
   foreign key (campanha_id) references campanhas_comerciais(id) on delete restrict;
+
+-- O código de acesso da demonstração (D-208): só o hash; sai com a barbearia de demonstração.
+create table demonstracao_codigos (
+  inquilino_id uuid primary key references inquilinos(id) on delete cascade,
+  codigo_hash  text not null,
+  criado_em    timestamptz not null default now()
+);

@@ -5734,6 +5734,7 @@ export type Database = {
         Args: { p_inquilino: string; p_tipo: string; p_valor: number };
         Returns: undefined;
       };
+      codigo_demonstracao_valido: { Args: { p_codigo: string }; Returns: boolean };
       e_comercial: { Args: Record<PropertyKey, never>; Returns: boolean };
       e_dono_plataforma: { Args: Record<PropertyKey, never>; Returns: boolean };
       e_sistema: { Args: Record<PropertyKey, never>; Returns: boolean };
@@ -5914,6 +5915,7 @@ export type Database = {
       pode_enviar_comprovativo: { Args: { p_inquilino: string }; Returns: boolean };
       pode_marcar_online: { Args: { p_cliente: string }; Returns: boolean };
       posicao_fila_espera: { Args: { p_entrada: string }; Returns: number };
+      novo_codigo_demonstracao: { Args: Record<PropertyKey, never>; Returns: string };
       preparar_demonstracao: {
         Args: {
           p_barbeiro?: string;
