@@ -12,6 +12,13 @@ const MAXIMO = 5;
  * Clientes a contactar (E.2): em risco e perdidos, os que estão há mais tempo sem vir primeiro.
  * Botão de mensagem no Pro; no Basic, a chamada de upgrade.
  */
+/** Os clientes que o Início manda contactar: em risco ou perdidos, com contacto (D-203). */
+export function aContactar(linhas: LinhaRadar[]): LinhaRadar[] {
+  return linhas.filter(
+    (l) => ["em_risco", "perdido"].includes(l.classificacao.estado) && l.contactavel,
+  );
+}
+
 export function ClientesContactar({
   linhas,
   mensagens,
@@ -27,8 +34,7 @@ export function ClientesContactar({
   /** Endereço da ficha do cliente (`${base}/${id}`). */
   base: string;
 }) {
-  const lista = linhas
-    .filter((l) => ["em_risco", "perdido"].includes(l.classificacao.estado) && l.contactavel)
+  const lista = aContactar(linhas)
     .sort((a, b) => (b.classificacao.diasSemVir ?? 0) - (a.classificacao.diasSemVir ?? 0))
     .slice(0, MAXIMO);
   if (lista.length === 0)

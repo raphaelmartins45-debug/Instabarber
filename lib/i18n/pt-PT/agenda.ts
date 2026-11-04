@@ -154,6 +154,43 @@ export const inicio = {
     percentagemObjetivo: (p: number) => `${p} % do objetivo`,
   },
   hojeTitulo: "Marcações de hoje",
+  // O Início redesenhado (D-203)
+  cabecalho: {
+    aberta: (fecho: string) => `Aberta agora · fecha às ${fecho}`,
+    fechada: "Fechada agora",
+    aTrabalhar: (n: number) => (n === 1 ? "1 barbeiro a trabalhar" : `${n} barbeiros a trabalhar`),
+  },
+  kpi: {
+    hoje: "Faturado hoje",
+    dePrevistos: (previsto: string, n: number) =>
+      `de ${previsto} esperados · ${n === 1 ? "1 serviço" : `${n} serviços`}`,
+    mes: "Faturado no mês",
+    objetivo: (v: string) => `objetivo ${v}`,
+    semObjetivo: "Sem objetivo definido",
+    progressoMes: (p: number, esperado: number) =>
+      `${p} % do objetivo; hoje o esperado era ${esperado} %`,
+    progressoHoje: (p: number) => `${p} % do dia já faturado`,
+    marcacoes: "Marcações hoje",
+    porFazer: (n: number) => (n === 1 ? "1 por fazer" : `${n} por fazer`),
+    ticket: "Ticket médio do mês",
+    visitas: (n: number) => (n === 1 ? "1 visita" : `${n} visitas`),
+  },
+  linha: {
+    titulo: "Hoje na cadeira",
+    legenda: "Concluídas a verde, por fazer a dourado; tracejado: indisponível.",
+    vazio: "Sem marcações hoje.",
+    verAgenda: "Abrir a agenda",
+  },
+  atencao: "Precisa de atenção",
+  tudoEmDia: "Tudo em dia: sem pedidos, contas por pagar nem clientes a contactar.",
+  aSeguir: "A seguir",
+  grafico: {
+    titulo: "Faturação · últimos 30 dias",
+    media: (v: string) => `média ${v} por dia aberto`,
+    rotulo: (total: string) => `Faturação dos últimos 30 dias: ${total} no total`,
+  },
+  porBarbeiro: "Por barbeiro · este mês",
+  porServico: "Serviços que mais rendem · este mês",
   contasTitulo: "Contas a pagar pendentes",
   contasVazio: "Sem contas por pagar.",
   paguei: "Paguei",

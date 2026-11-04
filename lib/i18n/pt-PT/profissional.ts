@@ -5,6 +5,21 @@ export const profissional = {
   semEquipa: "Ainda não há profissionais. Registe-os na Gestão do sistema.",
   verArea: "Abrir a área do barbeiro",
   agendaHoje: "Agenda de hoje",
+  // O início do barbeiro redesenhado (D-203)
+  inicio: {
+    ola: (nome: string) => `Olá, ${nome}`,
+    resumo: (n: number, proxima: string | null) =>
+      `${n === 1 ? "1 marcação hoje" : `${n} marcações hoje`}${proxima ? ` · a próxima às ${proxima}` : ""}`,
+    aSeguir: "A seguir",
+    semProxima: "Sem mais marcações hoje.",
+    objetivo: "Objetivo do mês",
+    deObjetivo: (v: string) => `de ${v}`,
+    porDia: (v: string) => `Faltam ${v} por dia`,
+    anel: (p: number) => `${p} % do objetivo do mês`,
+    semana: "Últimos 7 dias",
+    meuDia: "O meu dia",
+    bloquear: "Bloquear horas",
+  },
   progresso: "Progresso para o objetivo",
   indicadores: {
     faturadoHoje: "Faturado hoje",

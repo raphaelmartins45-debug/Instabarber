@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 // Tabela no computador; abaixo de 768 px, um cartão por registo (I.3.1): a primeira coluna é o
-// título do cartão e as outras ficam em pares rótulo-valor compactos (D-183).
+// título do cartão e as outras ficam em pares rótulo-valor compactos, três por linha (D-183, D-203).
 
 export type Coluna<T> = { id: string; rotulo: string; valor: (linha: T) => ReactNode };
 
@@ -57,11 +57,11 @@ export function TabelaCartoes<T>({
               <div className="numero font-medium [overflow-wrap:anywhere]">{primeira.valor(l)}</div>
             ) : null}
             {resto.length ? (
-              <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 text-sm">
+              <dl className="grid grid-cols-3 gap-x-3 gap-y-2 text-sm">
                 {resto.map((c) => (
-                  <div key={c.id} className="contents">
+                  <div key={c.id} className="grid min-w-0 content-start gap-0.5">
                     <dt className="text-xs text-muted-foreground">{c.rotulo}</dt>
-                    <dd className="numero text-right [overflow-wrap:anywhere]">{c.valor(l)}</dd>
+                    <dd className="numero [overflow-wrap:anywhere]">{c.valor(l)}</dd>
                   </div>
                 ))}
               </dl>

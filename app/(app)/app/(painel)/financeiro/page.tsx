@@ -35,6 +35,9 @@ export default async function Financeiro({
         <h1 className="text-titulo font-extrabold">{t.titulo}</h1>
         <SeletorMes mes={mes} base="/app/financeiro" />
       </div>
+      <Secao id="resumo" titulo={t.resumo.titulo}>
+        <ResumoMes r={f.resumo} />
+      </Secao>
       <Secao id="objetivo" titulo={t.objetivo.titulo}>
         <ObjetivosMes
           key={mes}
@@ -44,9 +47,6 @@ export default async function Financeiro({
           porProfissional={grelha.ativas.has("metas_profissional")}
           editavel={editavel}
         />
-      </Secao>
-      <Secao id="resumo" titulo={t.resumo.titulo}>
-        <ResumoMes r={f.resumo} />
       </Secao>
       {grelha.ativas.has("contas_a_pagar") ? (
         <Secao id="contas" titulo={t.contas.titulo}>

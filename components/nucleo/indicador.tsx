@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -10,11 +11,14 @@ export function Indicador({
   valor,
   detalhe,
   alerta,
+  children,
 }: {
   rotulo: string;
   valor: string;
-  detalhe?: string;
+  detalhe?: ReactNode;
   alerta?: boolean;
+  /** Um gráfico pequeno por baixo (barra de objetivo), D-203. */
+  children?: ReactNode;
 }) {
   return (
     <div className="cartao grid content-start gap-1 rounded-xl px-4 py-3.5">
@@ -28,6 +32,7 @@ export function Indicador({
         {valor}
       </span>
       {detalhe ? <span className="text-xs text-muted-foreground">{detalhe}</span> : null}
+      {children}
     </div>
   );
 }
