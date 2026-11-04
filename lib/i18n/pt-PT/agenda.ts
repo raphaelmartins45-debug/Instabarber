@@ -94,6 +94,7 @@ export const agenda = {
     fechadaHoje: "A barbearia já fechou hoje: mostramos o próximo dia aberto.",
     hora: "Hora",
     semVagas: "Sem vagas neste dia para este serviço.",
+    aCarregar: "A procurar as horas livres…",
     escolherHora: "Escolha a hora",
     marcar_botao: "Marcar",
     registar_botao: "Registar e concluir",

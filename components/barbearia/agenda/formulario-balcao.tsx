@@ -53,7 +53,8 @@ export function FormularioBalcao({
     valor: "",
   });
   const [cliente, setCliente] = useState<ClienteEncontrado>();
-  const [vagas, setVagas] = useState<string[]>([]);
+  // Nulo enquanto as vagas carregam, para não dizer «sem vagas» antes de as ter.
+  const [vagas, setVagas] = useState<string[] | null>(null);
   const [erro, setErro] = useState<string>();
   const [aGuardar, iniciar] = useTransition();
   const muda = (campo: keyof typeof v, valor: string | boolean) =>
@@ -62,6 +63,7 @@ export function FormularioBalcao({
   useEffect(() => {
     if (modo !== "marcar" || !v.servicoId || !v.profissionalId || !v.dia) return;
     let ativo = true;
+    setVagas(null);
     void vagasLivres(v.servicoId, v.dia, v.profissionalId).then((lista) => {
       if (!ativo) return;
       setVagas(lista);
@@ -154,7 +156,9 @@ export function FormularioBalcao({
               <p className="text-xs text-muted-foreground">{t.fechadaHoje}</p>
             ) : null}
           </div>
-          {vagas.length === 0 ? (
+          {vagas === null ? (
+            <p className="text-sm text-muted-foreground">{t.aCarregar}</p>
+          ) : vagas.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t.semVagas}</p>
           ) : (
             <Selecao
