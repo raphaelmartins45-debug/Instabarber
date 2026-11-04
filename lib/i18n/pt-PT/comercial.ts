@@ -763,6 +763,31 @@ export const comercial = {
     descPublica: "O que os clientes veem: marcação online, loja e contactos.",
     semDemo: "A demonstração ainda não foi preparada. Peça ao seu comercial.",
     erroEntrada: "Não foi possível abrir esse painel. Tente outra vez.",
+    // O lead da apresentação e o convite (D-209)
+    lead: "Lead desta apresentação",
+    leadNenhum: "Sem lead (só para treinar)",
+    leadAjuda:
+      "Escolha a barbearia da reunião: o nome e a cidade vêm do lead e, ao gerar, o convite segue para o e-mail dele.",
+    conviteEnviado: (email: string) => `Convite enviado para ${email}, com a ligação e o código.`,
+    conviteFalhou: "O e-mail do convite não seguiu. Tente «Reenviar convite».",
+    conviteSemEmail: "O lead não tem e-mail: envie o convite pelo WhatsApp.",
+    reenviarConvite: "Reenviar convite por e-mail",
+    whatsappLead: "Enviar convite pelo WhatsApp",
+    mensagemWhatsapp: (nome: string, ligacao: string, codigo: string) =>
+      `Olá ${nome}! Preparámos a demonstração da sua barbearia na InstaBarber. Abra ${ligacao} e escreva o código ${codigo}. Comercial InstaBarber`,
+    eventoConvite: (email: string) => `Convite da demonstração enviado por e-mail para ${email}.`,
+    convite: {
+      assunto: (barbearia: string) => `A demonstração da ${barbearia} está pronta`,
+      ola: (nome: string) => `Olá ${nome},`,
+      corpo: (barbearia: string) => [
+        `Preparámos a demonstração da ${barbearia} na InstaBarber: o painel do gestor, o do barbeiro e a página que os seus clientes vão ver, com o seu nome e o seu logótipo.`,
+        "Abra a ligação e escreva o código de acesso. Pode experimentar à vontade: são dados de exemplo.",
+      ],
+      codigoNota: "Código de acesso",
+      botao: "Abrir a demonstração",
+      nota: "O código vale até ao fim da apresentação.",
+      despedida: "Com os melhores cumprimentos,",
+    },
     // O código de acesso (D-208)
     codigo: "Código de acesso",
     codigoAjuda:
@@ -785,6 +810,7 @@ export const comercial = {
       erro: "Não foi possível preparar a demonstração. Tente outra vez.",
       codigo: "A demonstração foi preparada, mas o código falhou. Carregue em «Novo código».",
       sem_demonstracao: "Ainda não há demonstração: carregue em «Gerar».",
+      lead: "Esse lead já não está disponível.",
     } as Record<string, string>,
   },
 } as const;

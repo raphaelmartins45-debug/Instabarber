@@ -1188,3 +1188,9 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Fica para o «Agendar demo» dos leads:** enviar o código por e-mail e WhatsApp ao lead no dia da reunião.
 - **Base de dados:** migração `20261104000029_codigo_demonstracao.sql`, aplicada no ensaio e na produção.
 - **Verificado:** testes SQL (96c com o código: certo, errado, sem sessão, dono de barbearia e Reset; 99b com a nova função pública); typecheck, lint, Vitest e build; no ensaio, `/demo` sem código mostra só o formulário, com código os três botões, código errado volta ao formulário, `/demo/publica` e `/demo/gestor` sem código voltam a `/demo`; sem transbordo no telemóvel.
+
+## D-209 · 04/11/2026 · O lead da apresentação e o convite da demonstração — dono
+- **Pedido do dono:** no gerador da demo escolhe-se o lead daquela apresentação; ao «Gerar», o convite segue para os contactos do lead com a ligação e o código.
+- **Feito:** no separador Demo, «Lead desta apresentação» (leads em aberto que a pessoa vê pelo RLS; o comercial só os seus). Ao escolher, o nome e a cidade da barbearia passam para o formulário. Ao «Gerar», com lead: o e-mail do convite segue de comercial@ (`lib/email/convite-demonstracao.ts`, assinatura «Comercial InstaBarber», D-101) com `instabarber.pt/demo` e o código; fica no histórico do lead («mensagem», sem o código) e o lead passa a «Demonstração» se estava em «Novo» ou «Contactado». O WhatsApp do lead fica pronto num botão (`wa.me`, regra 7: o envio confirma-se à mão). «Reenviar convite por e-mail» volta a mandar o código que está à vista.
+- **Verificado:** typecheck, lint, Vitest (o e-mail leva a ligação e o código, no texto e no HTML) e build.
+- **A seguir:** «Agendar demo» nos leads (data e hora, e-mail de confirmação, convite no dia, lembrete por WhatsApp e agenda das reuniões nos painéis).

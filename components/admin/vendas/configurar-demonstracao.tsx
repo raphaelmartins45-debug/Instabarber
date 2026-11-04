@@ -1,14 +1,20 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import {
   gerarDemonstracao,
   novoCodigo,
+  reenviarConvite,
   reporDemonstracao,
+  type Convite,
   type Resultado,
 } from "@/app/(admin)/admin/(protegido)/comercial/demo/acoes";
 import { CodigoDemonstracao } from "@/components/admin/vendas/codigo-demonstracao";
+import { LeadDemonstracao, type LeadOpcao } from "@/components/admin/vendas/lead-demonstracao";
+import {
+  LigacoesDemonstracao,
+  VersaoDemonstracao,
+} from "@/components/admin/vendas/partes-demonstracao";
 import { Aviso } from "@/components/nucleo/aviso";
 import { Campo } from "@/components/nucleo/campo";
 import { Button } from "@/components/ui/button";
@@ -24,32 +30,49 @@ const rotuloModelo = textos.sistema.marca.estilos;
  * versão, a cidade, o WhatsApp de teste e o modelo; «Reset» para a deixar livre. Por baixo, as
  * ligações para abrir cada vista numa janela nova.
  */
-export function ConfigurarDemonstracao({ demo }: { demo: Demonstracao | null }) {
+export function ConfigurarDemonstracao({
+  demo,
+  leads,
+}: {
+  demo: Demonstracao | null;
+  leads: LeadOpcao[];
+}) {
   const formulario = useRef<HTMLFormElement>(null);
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [codigo, setCodigo] = useState<string | null>(null);
+  const [convite, setConvite] = useState<{ lead: string; dados: Convite } | null>(null);
+  const preencher = (lead: LeadOpcao | null) => {
+    const campos = formulario.current?.elements;
+    const definir = (nome: string, valor: string) => {
+      const campo = campos?.namedItem(nome);
+      if (campo instanceof HTMLInputElement) campo.value = valor;
+    };
+    if (lead) {
+      definir("nome", lead.barbearia);
+      definir("cidade", lead.cidade ?? "");
+    }
+  };
   const [aCorrer, iniciar] = useTransition();
   const personalizada = demo && demo.nome !== "Barbearia Demonstração";
   const correr = (acao: () => Promise<Resultado>, ok: string) =>
     iniciar(async () => {
       const r = await acao();
-      if (r.ok) setCodigo(r.codigo ?? null);
+      if (r.ok) {
+        setCodigo(r.codigo ?? null);
+        if (r.convite !== undefined) {
+          const lead = formulario.current?.elements.namedItem("lead");
+          const id = lead instanceof HTMLSelectElement ? lead.value : "";
+          setConvite(r.convite && id ? { lead: id, dados: r.convite } : null);
+        }
+      }
       setAviso(
         r.ok ? { tipo: "sucesso", texto: ok } : { tipo: "erro", texto: t.erros[r.erro] ?? t.erro },
       );
-      if (r.ok && acao === reporDemonstracao) formulario.current?.reset();
+      if (r.ok && acao === reporDemonstracao) {
+        formulario.current?.reset();
+        setConvite(null);
+      }
     });
-  const ligacao = (href: string, rotulo: string) => (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener"
-      className="flex h-11 items-center justify-between gap-2 rounded-lg border bg-card px-4 text-sm font-semibold hover:bg-campo"
-    >
-      {rotulo}
-      <ExternalLink aria-hidden className="size-4 text-muted-foreground" />
-    </a>
-  );
   return (
     <div className="grid gap-6" data-testid="demonstracao">
       <p className="text-sm text-muted-foreground">{t.ajuda}</p>
@@ -82,9 +105,16 @@ export function ConfigurarDemonstracao({ demo }: { demo: Demonstracao | null }) 
             codigo={codigo}
             aCorrer={aCorrer}
             onNovo={() => correr(novoCodigo, t.codigoNovo)}
+            convite={convite?.dados ?? null}
+            onReenviar={
+              convite && codigo
+                ? () => correr(() => reenviarConvite(convite.lead, codigo), t.gerada)
+                : undefined
+            }
           />
         ) : null}
         <div className="grid gap-4 md:grid-cols-2">
+          <LeadDemonstracao leads={leads} onEscolher={preencher} />
           <Campo
             id="demo-nome"
             name="nome"
@@ -147,40 +177,9 @@ export function ConfigurarDemonstracao({ demo }: { demo: Demonstracao | null }) 
             </select>
           </label>
         </div>
-        <fieldset className="grid gap-2">
-          <legend className="rotulo mb-1.5">{t.versao}</legend>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {(["basic", "pro"] as const).map((p) => (
-              <label
-                key={p}
-                className="flex cursor-pointer items-start gap-3 rounded-lg border bg-card p-3 has-[:checked]:border-primary"
-              >
-                <input
-                  type="radio"
-                  name="plano"
-                  value={p}
-                  defaultChecked={p === "pro"}
-                  className="mt-1"
-                />
-                <span className="grid">
-                  <span className="font-semibold">{t[p]}</span>
-                  <span className="text-xs text-muted-foreground">{t[`${p}Ajuda`]}</span>
-                </span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        <VersaoDemonstracao />
       </form>
-      <section className="grid gap-2">
-        <h2 className="text-sm font-bold">{t.ligacoes}</h2>
-        <p className="text-xs text-muted-foreground">{t.ligacoesAjuda}</p>
-        <div className="grid gap-2 sm:grid-cols-2">
-          {ligacao("/demo", t.inicioDemo)}
-          {ligacao("/demo/gestor", t.vistaGestor)}
-          {ligacao("/demo/barbeiro", t.vistaBarbeiro)}
-          {ligacao("/demo/publica", t.vistaPublica)}
-        </div>
-      </section>
+      <LigacoesDemonstracao />
     </div>
   );
 }

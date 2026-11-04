@@ -1,6 +1,7 @@
 "use client";
 
-import { Check, Copy, KeyRound } from "lucide-react";
+import { Check, Copy, KeyRound, Mail, MessageCircle } from "lucide-react";
+import type { Convite } from "@/app/(admin)/admin/(protegido)/comercial/demo/acoes";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { textos } from "@/lib/i18n/pt-PT";
@@ -15,10 +16,14 @@ export function CodigoDemonstracao({
   codigo,
   aCorrer,
   onNovo,
+  convite,
+  onReenviar,
 }: {
   codigo: string | null;
   aCorrer: boolean;
   onNovo: () => void;
+  convite: Convite | null;
+  onReenviar?: () => void;
 }) {
   const [copiado, setCopiado] = useState(false);
   return (
@@ -65,6 +70,39 @@ export function CodigoDemonstracao({
         </div>
       ) : null}
       <p className="text-xs text-muted-foreground">{codigo ? t.codigoAjuda : t.codigoEscondido}</p>
+      {codigo && convite ? (
+        <div className="grid gap-2 border-t pt-3" data-testid="demo-convite">
+          <p className="flex items-start gap-2 text-sm">
+            <Mail aria-hidden className="mt-0.5 size-4 shrink-0 text-destaque" />
+            {convite.email === "enviado" && convite.para
+              ? t.conviteEnviado(convite.para)
+              : convite.email === "falhou"
+                ? t.conviteFalhou
+                : t.conviteSemEmail}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {convite.whatsapp ? (
+              <Button asChild className="h-10">
+                <a href={convite.whatsapp} target="_blank" rel="noopener">
+                  <MessageCircle aria-hidden className="size-4" />
+                  {t.whatsappLead}
+                </a>
+              </Button>
+            ) : null}
+            {convite.para && onReenviar ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="h-10"
+                disabled={aCorrer}
+                onClick={onReenviar}
+              >
+                {t.reenviarConvite}
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

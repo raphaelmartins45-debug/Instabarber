@@ -3,6 +3,7 @@ import { ModuloVendas } from "@/components/admin/vendas/modulo-vendas";
 import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { textos } from "@/lib/i18n/pt-PT";
 import { obterDemonstracao } from "@/lib/repositorios/admin/demonstracao";
+import { listarLeads } from "@/lib/repositorios/comercial/leads";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 export const metadata = {
@@ -15,10 +16,20 @@ export const metadata = {
  */
 export default async function Demonstracao() {
   await exigirEquipaPlataforma();
-  const demo = await obterDemonstracao(await criarClienteServidor());
+  const bd = await criarClienteServidor();
+  const [demo, todos] = await Promise.all([obterDemonstracao(bd), listarLeads(bd)]);
+  // Os leads ainda em aberto, para escolher o da apresentação (D-209).
+  const leads = todos
+    .filter((l) => l.estado !== "ganho" && l.estado !== "perdido")
+    .map((l) => ({
+      id: l.id,
+      barbearia: l.nome_barbearia ?? l.nome_contacto,
+      contacto: l.nome_contacto,
+      cidade: l.cidade,
+    }));
   return (
     <ModuloVendas id="demonstracao">
-      <ConfigurarDemonstracao demo={demo} />
+      <ConfigurarDemonstracao demo={demo} leads={leads} />
     </ModuloVendas>
   );
 }
