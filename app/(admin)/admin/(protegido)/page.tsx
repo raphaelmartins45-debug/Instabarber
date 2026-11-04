@@ -1,7 +1,13 @@
 import { DemosMarcadas } from "@/components/admin/comercial/demos-marcadas";
+import { ResumoComercial } from "@/components/admin/painel/resumo-comercial";
+import { ResumoFinanceiro } from "@/components/admin/painel/resumo-financeiro";
+import { conversaoLeads } from "@/lib/admin/metricas";
+import { pontoDeEquilibrio, resumoDoMes, valorMedio } from "@/lib/financas/indicadores";
+import { colunaDoFunil } from "@/lib/regras/comercial";
+import { ganhosPorLead } from "@/lib/repositorios/comercial/contratos";
+import { ESTADOS_FUNIL } from "@/lib/validacao/comercial";
 import { ComunicadosEquipa } from "@/components/admin/painel/comunicados-equipa";
 import { ListaAlertas } from "@/components/admin/painel/lista-alertas";
-import { Indicador } from "@/components/nucleo/indicador";
 import { ApagarAuditoria } from "@/components/admin/apagar-auditoria";
 import { ComprovativosPendentes } from "@/components/admin/painel/comprovativos-pendentes";
 import { PedidosPendentes } from "@/components/admin/painel/pedidos-pendentes";
@@ -9,7 +15,7 @@ import { SeparadorAuditoria } from "@/components/admin/separadores/separador-aud
 import { periodoDe } from "@/lib/admin/comprovativos";
 import { saude } from "@/lib/admin/saude";
 import { alertasContas } from "@/lib/financas/custos";
-import { dataCurta, hojeIso, somarDias } from "@/lib/formatacao/datas";
+import { dataCurta, hojeIso, mesAnterior, mesAtual, somarDias } from "@/lib/formatacao/datas";
 import { centimosDeNumeric, formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { resumoComissoes } from "@/lib/comercial/comissoes";
@@ -24,7 +30,12 @@ import { listarComprovativos } from "@/lib/repositorios/comprovativos";
 import { listarComissoes } from "@/lib/repositorios/comercial/comissoes";
 import { listarLeads, validadesEnviadas } from "@/lib/repositorios/comercial/leads";
 import { contarFeriadosNacionais, datasFeriadosNacionais } from "@/lib/repositorios/feriados";
-import { listarContas } from "@/lib/repositorios/financas";
+import {
+  barbeariasParaFinancas,
+  listarContas,
+  listarCustos,
+  recebimentosDesde,
+} from "@/lib/repositorios/financas";
 import { listarPedidos } from "@/lib/repositorios/pedidos-adesao";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
@@ -32,8 +43,8 @@ const t = textos.admin.painel;
 export const metadata = { title: `${t.titulo} · ${textos.marca.nome}` };
 
 /**
- * Painel geral (E.1): quatro indicadores, pedidos pendentes, comprovativos por confirmar (D-168),
- * alertas e atividade recente.
+ * Painel geral (E.1, D-212): as demonstrações marcadas, o resumo financeiro e o comercial, pedidos
+ * pendentes, comprovativos por confirmar (D-168), alertas e atividade recente.
  */
 export default async function PainelGeral() {
   const bd = await criarClienteServidor();
@@ -51,6 +62,10 @@ export default async function PainelGeral() {
     comissoes,
     dadosSaude,
     comprovativos,
+    barbeariasFin,
+    custos,
+    recebimentos,
+    ganhos,
   ] = await Promise.all([
     listarBarbearias(bd),
     listarPedidos(bd),
@@ -63,6 +78,10 @@ export default async function PainelGeral() {
     listarComissoes(bd),
     dadosDeSaude(bd),
     listarComprovativos(bd, { estado: "pendente" }),
+    barbeariasParaFinancas(bd),
+    listarCustos(bd),
+    recebimentosDesde(bd, `${mesAtual()}-01`),
+    ganhosPorLead(bd),
   ]);
   // A barbearia de demonstração não conta nas contas nem nos alertas (D-162).
   const barbearias = todas.filter((b) => !b.demonstracao);
@@ -83,6 +102,42 @@ export default async function PainelGeral() {
   const a = contarAlertas(barbearias, hoje);
   // Sinais de abandono (M.2): as barbearias que a página Saúde dá em risco.
   const abandono = dadosSaude.filter((d) => saude(d, hoje).nivel === "risco").length;
+  // O resumo de tudo (D-212): as mesmas fórmulas das Finanças (O.5, O.6) e das Métricas.
+  const regime = lerRegimeIva(process.env.PRESTADORA_REGIME_IVA);
+  const mes = mesAtual();
+  const fin = resumoDoMes({
+    barbearias: barbeariasFin,
+    recebimentos,
+    custos,
+    contas,
+    mes,
+    mesAnterior: mesAnterior(mes),
+    regime,
+  });
+  const equilibrio = pontoDeEquilibrio(
+    fin.custos.fixos,
+    valorMedio(fin.arpu, 50, regime),
+    fin.ativas ? Math.round(fin.custos.variaveis / fin.ativas) : 0,
+  );
+  const contratosMes = [...ganhos.values()].filter(
+    (g) => hojeIso(new Date(g.assinadoEm)).slice(0, 7) === mes,
+  ).length;
+  const conversao = conversaoLeads(
+    leads.map((l) => ({ estado: l.estado, origem: l.origem, inquilinoId: l.inquilino_id })),
+  );
+  const etapas = ESTADOS_FUNIL.map((e) => ({
+    id: e,
+    rotulo: textos.comercial.estados[e] ?? e,
+    n: leads.filter((l) => colunaDoFunil(l.estado, ganhos.get(l.id), hoje) === e).length,
+  }));
+  const demos = leads.filter(
+    (l) =>
+      l.estado === "demo_marcada" &&
+      l.demo_em &&
+      hojeIso(new Date(l.demo_em)) >= hoje &&
+      hojeIso(new Date(l.demo_em)) <= somarDias(hoje, 7),
+  );
+  const demosHoje = demos.filter((l) => hojeIso(new Date(l.demo_em!)) === hoje).length;
   const alertas = [
     a.atraso ? { texto: t.atraso(a.atraso), href: "/admin/pagamentos" } : null,
     a.suspensas
@@ -133,23 +188,24 @@ export default async function PainelGeral() {
       <h1 className="text-titulo font-extrabold tracking-tight">{t.titulo}</h1>
       <ComunicadosEquipa />
       <DemosMarcadas leads={leads} />
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Indicador
-          rotulo={t.ativas}
-          valor={String(barbearias.filter((b) => b.estado === "ativo").length)}
-        />
-        <Indicador
-          rotulo={t.receita}
-          valor={formatarDinheiro(mrr.comIva)}
-          detalhe={t.semIva(formatarDinheiro(mrr.semIva))}
-        />
-        <Indicador rotulo={t.adesoesMes} valor={String(adesoesMes)} />
-        <Indicador
-          rotulo={t.pendentes}
-          valor={String(pendentes.length)}
-          alerta={pendentes.length > 0}
-        />
-      </div>
+      <ResumoFinanceiro
+        mrr={mrr}
+        fin={fin}
+        ativas={barbearias.filter((b) => b.estado === "ativo").length}
+        adesoesMes={adesoesMes}
+        contratosMes={contratosMes}
+        equilibrio={equilibrio}
+      />
+      <ResumoComercial
+        conversao={conversao}
+        parados={parados}
+        demos={demos.length}
+        demosHoje={demosHoje}
+        risco={abandono}
+        aExpirar={aExpirar}
+        pendentes={pendentes.length}
+        etapas={etapas}
+      />
       <PedidosPendentes
         pedidos={pendentes.map((p) => ({
           id: p.id,

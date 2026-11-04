@@ -1210,3 +1210,10 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Compromissos:** «Demonstrações marcadas» (hoje e próximos 7 dias, as de hoje realçadas) no Funil do comercial e no painel geral do admin; a próxima ação «Demonstração» entra na agenda do dia.
 - **A seguir (pedido do dono):** o painel geral do admin com o resumo de tudo — financeiro (faturado, contratos do mês, clientes ativos, ponto de equilíbrio, custos) e comercial (agenda, taxa de conversão, barbearias em risco) —, com esboço para aprovação.
 - **Base de dados:** migração `20261104000031_funil_demo_marcada.sql`, no ensaio e na produção.
+
+## D-212 · 04/11/2026 · Painel geral do admin com o resumo de tudo — dono
+- **Pedido do dono:** o painel geral mostrava quase nada; passa a ter o resumo financeiro e o comercial. Feito sem esboço nem teste visual, por pedido do dono (fim da sessão).
+- **Topo:** as demonstrações marcadas (D-211).
+- **Financeiro** (`components/admin/painel/resumo-financeiro.tsx`): receita recorrente (com e sem IVA), recebido no mês, custos do mês (fixos e variáveis), lucro estimado e margem, barbearias ativas e adesões do mês, contratos assinados no mês, ponto de equilíbrio (quantas barbearias e quantas faltam) e mensalidades em atraso. As fórmulas são as das Finanças (`resumoDoMes`, `pontoDeEquilibrio`, O.5 e O.6), sem duplicar.
+- **Comercial** (`components/admin/painel/resumo-comercial.tsx`): leads em aberto e parados, demos nos próximos 7 dias (e hoje), taxa de conversão (`conversaoLeads`, só com 10 decididos), barbearias em risco, propostas a expirar, pedidos pendentes e o funil em barras pelas etapas novas (com o pós-venda calculado).
+- **Por verificar no ecrã:** o dono vê no próximo acesso; ajustes visuais depois.
