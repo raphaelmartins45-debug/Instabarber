@@ -1,125 +1,129 @@
 import {
-  Albert_Sans,
-  Besley,
-  Chivo,
-  Hanken_Grotesk,
-  Imbue,
-  Libre_Franklin,
-  Literata,
-  Newsreader,
-  Schibsted_Grotesk,
-  Work_Sans,
-  Zilla_Slab,
+  DM_Sans,
+  Jost,
+  Manrope,
+  Montserrat,
+  Outfit,
+  Poppins,
+  Raleway,
+  Urbanist,
 } from "next/font/google";
 import type { Estilo } from "@/lib/publico/estilos";
 
-// As letras dos modelos da página pública (D-198), os sistemas tipográficos da taste skill,
-// servidos pelo próprio site (next/font). Cada modelo define --letra-titulo e --letra-texto; os
-// ficheiros só são descarregados pela página que os usa.
+// As letras dos modelos da página pública (D-201): sem serifa, geométricas e sóbrias (Montserrat,
+// Raleway, Urbanist, DM Sans, Jost, Manrope, Outfit e Poppins), servidas pelo próprio site
+// (next/font). Cada modelo define --letra-titulo e --letra-texto; os ficheiros só são
+// descarregados pela página que os usa.
 
-const imbue = Imbue({
-  weight: "400",
+const montserratTitulo = Montserrat({
+  weight: ["500"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-titulo",
 });
-const albertTexto = Albert_Sans({
+const montserratTexto = Montserrat({
   weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-texto",
 });
-const workTitulo = Work_Sans({
-  weight: "300",
+const ralewayTitulo = Raleway({
+  weight: ["700"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-titulo",
 });
-const workTexto = Work_Sans({
+const ralewayTexto = Raleway({
+  weight: ["400", "500", "600"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-texto",
+});
+const urbanistTitulo = Urbanist({
+  weight: ["800"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-titulo",
+});
+const urbanistTexto = Urbanist({
+  weight: ["400", "500", "600"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-texto",
+});
+const dmSansTitulo = DM_Sans({
+  weight: ["600"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-titulo",
+});
+const dmSansTexto = DM_Sans({
+  weight: ["400", "500", "600"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-texto",
+});
+const jostTitulo = Jost({
+  weight: ["500"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-titulo",
+});
+const jostTexto = Jost({
   weight: ["400", "500"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-texto",
 });
-const chivoTitulo = Chivo({
-  weight: "900",
+const manropeTitulo = Manrope({
+  weight: ["700"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-titulo",
 });
-const chivoTexto = Chivo({
-  weight: ["400", "700"],
+const manropeTexto = Manrope({
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-texto",
 });
-const zillaTitulo = Zilla_Slab({
-  weight: "600",
+const outfitTitulo = Outfit({
+  weight: ["600"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-titulo",
 });
-const zillaTexto = Zilla_Slab({
+const outfitTexto = Outfit({
   weight: ["400", "500"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-texto",
 });
-const besley = Besley({
-  weight: "400",
+const poppinsTitulo = Poppins({
+  weight: ["600"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-titulo",
 });
-const franklin = Libre_Franklin({
-  weight: ["400", "600"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-texto",
-});
-const newsreader = Newsreader({
-  weight: "300",
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-titulo",
-});
-const hanken = Hanken_Grotesk({
+const poppinsTexto = Poppins({
   weight: ["400", "500"],
   subsets: ["latin"],
   display: "swap",
   variable: "--letra-texto",
-});
-const schibstedTitulo = Schibsted_Grotesk({
-  weight: "500",
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-titulo",
-});
-const schibstedTexto = Schibsted_Grotesk({
-  weight: ["400", "600"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-texto",
-});
-const literata = Literata({
-  weight: "600",
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-titulo",
 });
 
 const PARES: Record<Estilo, [{ variable: string; className: string }, { variable: string }]> = {
-  monumento: [imbue, albertTexto],
-  sala_escura: [workTitulo, workTexto],
-  cartaz: [chivoTitulo, chivoTexto],
-  cartao: [zillaTitulo, zillaTexto],
-  palco: [besley, franklin],
-  bairro: [newsreader, hanken],
-  anuario: [schibstedTitulo, schibstedTexto],
-  vitrine: [literata, albertTexto],
+  monumento: [montserratTitulo, montserratTexto],
+  sala_escura: [ralewayTitulo, ralewayTexto],
+  cartaz: [urbanistTitulo, urbanistTexto],
+  cartao: [dmSansTitulo, dmSansTexto],
+  palco: [jostTitulo, jostTexto],
+  bairro: [manropeTitulo, manropeTexto],
+  anuario: [outfitTitulo, outfitTexto],
+  vitrine: [poppinsTitulo, poppinsTexto],
 };
 
-/** A classe que aplica a letra do título ao próprio elemento (pré-visualização no painel). */
+/** A classe que aplica a letra do título ao próprio elemento (miniaturas no painel). */
 export const LETRA_DO_ESTILO: Record<Estilo, string> = Object.fromEntries(
   Object.entries(PARES).map(([e, [titulo]]) => [e, titulo.className]),
 ) as Record<Estilo, string>;

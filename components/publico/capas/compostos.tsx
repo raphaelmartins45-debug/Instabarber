@@ -15,13 +15,13 @@ import {
 // cabeçalho. Cartão de visita, painel e montra.
 
 const caixa = "mx-auto w-full max-w-6xl px-4 md:px-8";
-const cartao = "rounded-[var(--raio)] border bg-card text-card-foreground";
+const cartao = "cartao-modelo rounded-[var(--raio)] border bg-card text-card-foreground";
 
 /** Uma faixa da marca com o logótipo e, a sobrepor-se a ela, um cartão de visita branco. */
 export function CabecalhoCartao({ d, t, c }: PropsCapa) {
   return (
     <header id="capa">
-      <div data-fundo-logo style={corDoCabecalho(c)}>
+      <div style={corDoCabecalho(c)}>
         <div className={`${caixa} grid justify-items-center gap-4 pt-3 pb-20 md:pb-24`}>
           <Entrar d={d} t={t} className="justify-self-end" />
           <Logo d={d} className="max-h-32 md:max-h-40" />
@@ -49,7 +49,7 @@ export function CabecalhoCartao({ d, t, c }: PropsCapa) {
 export function CabecalhoPainel({ d, t, c }: PropsCapa) {
   return (
     <header id="capa" className="grid md:min-h-[34rem] md:grid-cols-2">
-      <div data-fundo-logo style={corDoCabecalho(c)} className="h-56 overflow-hidden md:h-auto">
+      <div style={corDoCabecalho(c)} className="h-56 overflow-hidden md:h-auto">
         <ImagemCapa d={d} />
       </div>
       <div className="grid content-between gap-8 px-4 pt-3 pb-10 md:px-12 md:pb-12">
@@ -70,7 +70,7 @@ export function CabecalhoPainel({ d, t, c }: PropsCapa) {
 export function CabecalhoMontra({ d, t, c }: PropsCapa) {
   const lista = d.servicos.slice(0, 5);
   return (
-    <header id="capa" data-fundo-logo style={corDoCabecalho(c)}>
+    <header id="capa" style={corDoCabecalho(c)}>
       <div className={`${caixa} grid gap-6 pt-3 pb-10 md:pb-14`}>
         <Entrar d={d} t={t} className="justify-self-end" />
         <div className="grid items-start gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] md:gap-14">

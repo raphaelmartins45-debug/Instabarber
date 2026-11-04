@@ -1,10 +1,9 @@
 import Link from "next/link";
 import type { Lingua, TextosPublicos } from "@/lib/i18n/publico";
-import type { CoresCapa } from "@/lib/publico/cores-capa";
 import { SeletorLingua } from "./seletor-lingua";
 
 /**
- * Rodapé da página pública (E.6, H.2, D-200), nas cores do cabeçalho: o logótipo e o nome da
+ * Rodapé da página pública (E.6, H.2, D-201), nas cores do modelo: o logótipo e o nome da
  * barbearia, a área de cliente, Privacidade, Termos, Livro de Reclamações eletrónico, avaliar no
  * Google e, com `multilinguagem`, o seletor PT · EN · FR.
  */
@@ -22,7 +21,7 @@ export function Rodape({
 }: {
   nome: string;
   logo: string | null;
-  cores: CoresCapa;
+  cores: { fundo: string; tinta: string };
   t: TextosPublicos;
   lingua: Lingua;
   multilinguagem: boolean;

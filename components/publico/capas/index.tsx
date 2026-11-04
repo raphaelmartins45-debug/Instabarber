@@ -7,8 +7,8 @@ import { CabecalhoCentrado, CabecalhoDividido, CabecalhoFaixa } from "./simples"
 
 export type { DadosCapa } from "./partes";
 
-// O cabeçalho de cada modelo (D-200): a cor é a do fundo do logótipo (ou a da barbearia), e o
-// modelo só decide a arrumação.
+// O cabeçalho de cada modelo (D-200, D-201): o fundo é a cor escolhida pela barbearia, onde o
+// logótipo casa melhor; o botão tem o destaque do modelo; o modelo decide a arrumação.
 
 const CABECALHOS: Record<Modelo["cabecalho"], (p: PropsCapa) => React.ReactNode> = {
   centrado: CabecalhoCentrado,
@@ -21,5 +21,5 @@ const CABECALHOS: Record<Modelo["cabecalho"], (p: PropsCapa) => React.ReactNode>
 
 export function CapaDoModelo({ d, t }: { d: DadosCapa; t: TextosPublicos }) {
   const Cabecalho = CABECALHOS[MODELOS[d.estilo].cabecalho];
-  return <Cabecalho d={d} t={t} c={coresDaCapa(d.cor, d.logoFundo)} />;
+  return <Cabecalho d={d} t={t} c={coresDaCapa(MODELOS[d.estilo].paleta.destaque, d.cor)} />;
 }

@@ -6,19 +6,17 @@ import type { TextosPublicos } from "@/lib/i18n/publico";
 import type { CoresCapa } from "@/lib/publico/cores-capa";
 import type { Estilo } from "@/lib/publico/estilos";
 import { cn } from "@/lib/utils";
-import { LogoCapa } from "../logo-capa";
 
-// Peças comuns aos cabeçalhos dos modelos (D-198, D-200): os dados, o logótipo, o nome, as
+// Peças comuns aos cabeçalhos dos modelos (D-198, D-200, D-201): os dados, o logótipo, o nome, as
 // informações e as ações. Tamanhos contidos: o nome é um título, não um cartaz.
 
 export type DadosCapa = {
   nome: string;
   cidade: string | null;
   morada: string | null;
+  /** A cor do cabeçalho, escolhida pela barbearia. */
   cor: string;
   logo: string | null;
-  /** A cor de fundo do logótipo, guardada ao carregá-lo. */
-  logoFundo: string | null;
   /** A fotografia da fachada, se a barbearia a tiver. */
   foto: string | null;
   estilo: Estilo;
@@ -48,16 +46,16 @@ export const corDoCabecalho = (c: CoresCapa): CSSProperties =>
 /** A morada numa linha: «Rua…, 20 · Viseu». */
 export const linhaMorada = (d: DadosCapa) => [d.morada, d.cidade].filter(Boolean).join(" · ");
 
-/** O logótipo tal como é, sem moldura, sobre o fundo do cabeçalho (que é o dele). */
+/** O logótipo tal como é, sem moldura, sobre a cor do cabeçalho escolhida pela barbearia. */
 export function Logo({ d, className }: { d: DadosCapa; className?: string }) {
   if (!d.logo) return null;
   return (
-    <LogoCapa
-      nome={d.nome}
-      logo={d.logo}
-      fundoGuardado={!!d.logoFundo}
-      cor={d.cor}
-      className={className}
+    // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage, sem otimizador
+    <img
+      src={d.logo}
+      alt={d.nome}
+      className={cn("max-h-full max-w-full object-contain", className)}
+      fetchPriority="high"
     />
   );
 }
@@ -118,6 +116,7 @@ export function Acoes({
     "inline-flex h-12 items-center justify-center gap-2 rounded-[var(--raio)] px-5 text-sm font-semibold transition-[filter,opacity] active:translate-y-px";
   const secundario = cn(
     botao,
+    "px-3 whitespace-nowrap sm:px-5",
     "border hover:opacity-80",
     tom === "capa" ? "border-current/30" : "border-borda-forte bg-card",
   );

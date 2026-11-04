@@ -7,7 +7,7 @@ const caixa = "mx-auto w-full max-w-6xl px-4 md:px-8";
 /** Logótipo ao centro, o nome por baixo e as ações em linha. */
 export function CabecalhoCentrado({ d, t, c }: PropsCapa) {
   return (
-    <header id="capa" data-fundo-logo style={corDoCabecalho(c)}>
+    <header id="capa" style={corDoCabecalho(c)}>
       <div className={`${caixa} grid justify-items-center gap-6 pt-3 pb-12 text-center md:pb-16`}>
         <Entrar d={d} t={t} className="justify-self-end" />
         <Logo d={d} className="max-h-36 md:max-h-44" />
@@ -24,7 +24,7 @@ export function CabecalhoCentrado({ d, t, c }: PropsCapa) {
 /** O logótipo à esquerda; o nome, as informações e as ações à direita. */
 export function CabecalhoDividido({ d, t, c }: PropsCapa) {
   return (
-    <header id="capa" data-fundo-logo style={corDoCabecalho(c)}>
+    <header id="capa" style={corDoCabecalho(c)}>
       <div className={`${caixa} grid gap-6 pt-3 pb-10 md:pb-14`}>
         <Entrar d={d} t={t} className="justify-self-end" />
         <div className="grid items-center gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-14">
@@ -49,7 +49,7 @@ export function CabecalhoDividido({ d, t, c }: PropsCapa) {
 /** O nome em maior, à esquerda, como num cartaz; o logótipo à direita. */
 export function CabecalhoFaixa({ d, t, c }: PropsCapa) {
   return (
-    <header id="capa" data-fundo-logo style={corDoCabecalho(c)}>
+    <header id="capa" style={corDoCabecalho(c)}>
       <div className={`${caixa} grid gap-6 pt-3 pb-10 md:pb-14`}>
         <Entrar d={d} t={t} className="justify-self-end" />
         <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:gap-14">

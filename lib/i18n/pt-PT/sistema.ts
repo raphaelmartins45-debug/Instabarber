@@ -32,7 +32,7 @@ export const sistema = {
     ajuda: "Fechada, a página pública não aceita marcações. O balcão continua a funcionar.",
   },
   marca: {
-    cor: "Cor da capa",
+    cor: "Cor do cabeçalho",
     paleta: "Cores propostas a partir do logótipo",
     preVisualizacao: "Pré-visualização",
     // O modelo da página pública (D-198)
@@ -41,16 +41,16 @@ export const sistema = {
     preVisualizacaoAjuda:
       "A sua página com os seus dados, como a vê um cliente num computador. Percorra-a com o rato. Só fica assim depois de guardar.",
     estiloAjuda:
-      "Cada modelo muda a letra e a arrumação da página. A cor do logótipo fica no cabeçalho, nos botões e no rodapé; o resto da página é claro, para se ler bem.",
+      "Cada modelo tem o seu estilo: letras, cores e arrumação. A cor do cabeçalho é a que escolher acima; escolha a que fica melhor com o logótipo.",
     estilos: {
-      monumento: "Clássico",
-      sala_escura: "Minimal",
-      cartaz: "Cartaz",
-      cartao: "Cartão de visita",
-      palco: "Elegante",
-      bairro: "Acolhedor",
-      anuario: "Índice",
-      vitrine: "Montra",
+      monumento: "Luxo",
+      sala_escura: "Vintage",
+      cartaz: "Urbano",
+      cartao: "Minimal",
+      palco: "Editorial",
+      bairro: "Natural",
+      anuario: "Moderno",
+      vitrine: "Colorido",
     } as Record<string, string>,
     logo: "Logótipo",
     fachada: "Fotografia da fachada",

@@ -14,7 +14,7 @@ import { Rodape } from "@/components/publico/rodape";
 import { formatarDinheiro, numericDeCentimos } from "@/lib/formatacao/dinheiro";
 import { lerEndereco, origemDoPedido, origemPrincipal } from "@/lib/inquilino/endereco";
 import { obterBarbeariaDoEndereco } from "@/lib/publico/barbearia";
-import { botaoDoCorpo, coresDaCapa } from "@/lib/publico/cores-capa";
+import { coresDaCapa } from "@/lib/publico/cores-capa";
 import { estiloDe, MODELOS, type Estilo } from "@/lib/publico/estilos";
 import { proximaVaga } from "@/lib/publico/proxima-vaga";
 import { dadosHairSalon } from "@/lib/publico/dados-estruturados";
@@ -68,7 +68,7 @@ export async function PaginaPublica({
   const entrar = `${base}/cliente`;
   const estilo = sobrepor?.estilo ?? estiloDe(b.estilo_pagina);
   const modelo = MODELOS[estilo];
-  const cores = coresDaCapa(cor, b.logo_fundo);
+  const cores = coresDaCapa(modelo.paleta.destaque, cor);
   // A próxima vaga do serviço principal (D-198): só com a marcação online aberta.
   const vaga = marcar && servicos[0]?.id ? await proximaVaga(bd, b.id, servicos[0].id, t) : null;
   const nomeServico = (s: (typeof servicos)[number]) =>
@@ -95,7 +95,7 @@ export async function PaginaPublica({
   });
 
   return (
-    <PaginaModelo lingua={lingua} estilo={estilo} cor={cor}>
+    <PaginaModelo lingua={lingua} estilo={estilo}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(json).replace(/</g, "\\u003c") }}
@@ -108,7 +108,6 @@ export async function PaginaPublica({
           morada: b.morada,
           cor,
           logo: b.logo_url,
-          logoFundo: b.logo_fundo,
           foto: b.capa_foto_url,
           estilo,
           vaga,
@@ -131,7 +130,7 @@ export async function PaginaPublica({
         nome={b.nome}
         logo={b.logo_url}
         cores={cores}
-        botao={botaoDoCorpo(cor)}
+        botao={{ fundo: modelo.paleta.destaque, tinta: modelo.paleta.sobreDestaque }}
         marcar={marcar}
         whatsapp={whatsapp}
         telefone={b.telefone}
@@ -192,7 +191,7 @@ export async function PaginaPublica({
         entrar={entrar}
         nome={b.nome}
         logo={b.logo_url}
-        cores={cores}
+        cores={{ fundo: modelo.paleta.rodape, tinta: modelo.paleta.sobreRodape }}
       />
     </PaginaModelo>
   );

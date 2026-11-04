@@ -12,7 +12,7 @@ import type { ProfissionalPublico, PromocaoPublica } from "@/lib/repositorios/ba
 // os blocos ficam compactos.
 
 /** O cartão branco dos blocos, com o raio do modelo. */
-export const CARTAO = "rounded-[var(--raio)] border bg-card text-card-foreground";
+export const CARTAO = "cartao-modelo rounded-[var(--raio)] border bg-card text-card-foreground";
 
 export function Bloco({
   id,

@@ -203,9 +203,11 @@
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
   }
-  /* Página pública (D-198, D-200): o texto e os títulos nas letras do modelo da barbearia. */
+  /* Página pública (D-198, D-201): o texto e os títulos nas letras do modelo da barbearia. */
   .pagina-publica {
     font-family: var(--letra-texto), system-ui, sans-serif;
+    /* Algarismos alinhados (a Raleway traz os antigos por omissão): preços e horas legíveis. */
+    font-variant-numeric: lining-nums;
   }
   .titulo-estilo {
     font-family: var(--letra-titulo), Georgia, serif;
@@ -214,13 +216,19 @@
     letter-spacing: -0.01em;
     text-wrap: balance;
   }
-  /* A Imbue é estreita e de olho pequeno: igualada às outras letras no mesmo tamanho. */
+  /* Luxo (D-201): maiúsculas espaçadas, à maneira das marcas de luxo. */
   [data-estilo="monumento"] .titulo-estilo {
-    font-size-adjust: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
   [data-estilo="cartaz"] .titulo-estilo {
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
+  }
+  /* Urbano (neobrutalista, D-201): molduras grossas e sombra dura, sem desfoque. */
+  [data-estilo="cartaz"] .cartao-modelo {
+    border-width: 2px;
+    box-shadow: 4px 4px 0 var(--texto);
   }
   .rotulo {
     font-size: 11px;
