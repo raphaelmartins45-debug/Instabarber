@@ -1154,3 +1154,12 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Base de dados (migração 26, `20261104000026_modelos_novos.sql`):** os quatro valores novos de `estilo_pagina`; e três regras da agenda que dependiam da hora real (`orfas_ao_desativar`, o limite de três marcações em `confirmar_reserva` e `marcar_falta`) passam a usar o relógio da agenda `agora()` (D-202): em produção é igual; os testes deixaram de falhar conforme a hora do dia.
 - **Publicado (04/11/2026):** migração 26 no ensaio e na produção; os objetos mudados comparados com a base local por impressão digital: iguais.
 - **Verificado:** 790 testes SQL, Vitest, typecheck, lint e build; os quatro modelos e as doze miniaturas vistos no computador e no telemóvel.
+
+## D-205 · 04/11/2026 · Loja da página pública como uma pequena aplicação — dono e técnica
+- **Pedido do dono:** tornar os módulos da página pública «gostosos de ver e usar», como uma aplicação dentro da página, a começar pela loja; com a UI/UX Pro Max; esboços aprovados.
+- **Antes:** uma lista de linhas com «− 0 +», fotografia de 56 px e o formulário ao lado.
+- **Agora** (`components/publico/loja/`): montra em grelha (`cartao-produto.tsx`: fotografia quadrada, nome, preço, «Adicionar» que passa a «− 1 +», «Esgotado» em selo e «Indisponível»); detalhe em folha que sobe do fundo no telemóvel e janela no computador (`folha-produto.tsx`, fecha com «×», tocando fora ou Escape); saco (`saco.tsx`) fixo ao lado no computador e, no telemóvel, uma barra no fundo («2 artigos · 39,90 € · Ver saco») que abre o passo dos dados com o progresso; confirmação com o resumo, «Marcar um corte também» e «Voltar à página» (`encomenda-feita.tsx`). Animações curtas do tw-animate-css, que respeitam os movimentos reduzidos. Textos em PT, EN e FR.
+- **Tema:** a página da loja passa a estar dentro de `PaginaModelo`: cores, letras e cantos do modelo da barbearia; a barra de cima continua na cor do cabeçalho.
+- **Não muda:** paga-se ao balcão, no levantamento; o preço e o stock contam os da base de dados (`encomendar`).
+- **Saiu:** `components/publico/loja/carrinho.tsx`.
+- **Verificado:** typecheck, lint, Vitest e build; a loja percorrida no ensaio (Barbearia Demonstração com cinco produtos de exemplo) no computador e no telemóvel: adicionar, mudar quantidades, detalhe, saco e total. O ensaio Playwright `e2e/fase6.spec.ts` foi atualizado para o fluxo novo, mas não correu (o contentor não tem o Supabase local).

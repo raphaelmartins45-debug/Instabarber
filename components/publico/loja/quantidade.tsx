@@ -9,16 +9,27 @@ export function Quantidade({
   mais,
   nome,
   mudar,
+  cheio = false,
 }: {
   valor: number;
   menos: string;
   mais: string;
   nome: string;
   mudar: (q: number) => void;
+  /** Ocupa a largura toda, em cápsula (montra da loja, D-205). */
+  cheio?: boolean;
 }) {
-  const botao = "grid size-11 place-items-center rounded-full border disabled:opacity-40";
+  const botao = cheio
+    ? "grid size-11 place-items-center rounded-full disabled:opacity-40"
+    : "grid size-11 place-items-center rounded-full border disabled:opacity-40";
   return (
-    <span className="flex items-center gap-2">
+    <span
+      className={
+        cheio
+          ? "flex items-center justify-between rounded-[var(--raio-botao)] bg-muted"
+          : "flex items-center gap-2"
+      }
+    >
       <button
         type="button"
         className={botao}

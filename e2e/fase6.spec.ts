@@ -126,9 +126,16 @@ test("loja na página pública: encomenda com pagamento ao balcão", async ({ pa
   });
   await page.goto(`/${BARBEARIA_A.slug}`);
   await page.getByTestId("encomendar").click();
-  await page.getByRole("button", { name: `Juntar um: ${produto}` }).click();
-  await page.getByRole("button", { name: `Juntar um: ${produto}` }).click();
-  await expect(page.getByTestId("total-encomenda")).toContainText("24,00 €");
+  // A montra (D-205): «Adicionar» põe um no saco e passa a «− 1 +»; no telemóvel, a barra do saco
+  // abre o passo dos dados.
+  const cartao = page.getByTestId("produto-loja").filter({ hasText: produto });
+  await cartao.getByRole("button", { name: "Adicionar" }).click();
+  await cartao.getByRole("button", { name: `Juntar um: ${produto}` }).click();
+  const barra = page.getByTestId("barra-saco");
+  if (await barra.isVisible()) await barra.click();
+  await expect(page.getByTestId("total-encomenda").filter({ visible: true })).toContainText(
+    "24,00 €",
+  );
   const telefone = `93${sufixo(info.project.name)}000999`;
   await page.locator("#lj-nome").fill(`Cliente Loja ${info.project.name}`);
   await page.locator("#lj-telefone").fill(telefone);
