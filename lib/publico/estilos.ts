@@ -11,6 +11,10 @@ export const ESTILOS = [
   "bairro",
   "anuario",
   "vitrine",
+  "produto",
+  "pedido",
+  "noite",
+  "bento",
 ] as const;
 export type Estilo = (typeof ESTILOS)[number];
 
@@ -31,13 +35,23 @@ export type Paleta = {
 
 export type Modelo = {
   /** Como se arruma o cabeçalho: logótipo, nome e ações. */
-  cabecalho: "centrado" | "dividido" | "faixa" | "cartao" | "painel" | "montra";
+  cabecalho:
+    | "centrado"
+    | "dividido"
+    | "faixa"
+    | "cartao"
+    | "painel"
+    | "montra"
+    | "destaque"
+    | "loja";
   /** Como se arruma o corpo: uma coluna, coluna com lateral fixa, ou títulos à esquerda. */
-  corpo: "coluna" | "lateral" | "editorial";
+  corpo: "coluna" | "lateral" | "editorial" | "bento";
   /** Os serviços numa lista dentro de um cartão, ou em cartões lado a lado. */
   servicos: "lista" | "grelha";
   /** O raio dos cartões e dos botões, em px. */
   raio: number;
+  /** O raio dos botões, quando é diferente do dos cartões (cápsulas: 999). */
+  raioBotao?: number;
   /** Títulos em maiúsculas. */
   maiusculas: boolean;
   /** Peso da letra dos títulos. */
@@ -214,6 +228,95 @@ export const MODELOS: Record<Estilo, Modelo> = {
       sobreDestaque: "#FFFFFF",
       rodape: "#2B1B12",
       sobreRodape: "#FFE6C7",
+    },
+  },
+  // Produto (D-204): muito espaço, o nome enorme ao centro, cinzento claro e botões em cápsula
+  // azuis, à maneira das páginas de produto das grandes marcas de tecnologia (Inter).
+  produto: {
+    cabecalho: "destaque",
+    corpo: "coluna",
+    servicos: "grelha",
+    raio: 22,
+    raioBotao: 999,
+    maiusculas: false,
+    peso: 700,
+    paleta: {
+      fundo: "#F5F5F7",
+      cartao: "#FFFFFF",
+      camada: "#E8E8ED",
+      texto: "#1D1D1F",
+      texto2: "#56565B",
+      borda: "rgba(29, 29, 31, 0.08)",
+      destaque: "#0A66D6",
+      sobreDestaque: "#FFFFFF",
+      rodape: "#F5F5F7",
+      sobreRodape: "#1D1D1F",
+    },
+  },
+  // Pedido (D-204): cabeçalho de loja com separadores, vermelho vivo e cartões com o preço em
+  // destaque, à maneira das aplicações de entregas (Rubik).
+  pedido: {
+    cabecalho: "loja",
+    corpo: "coluna",
+    servicos: "lista",
+    raio: 12,
+    raioBotao: 999,
+    maiusculas: false,
+    peso: 700,
+    paleta: {
+      fundo: "#F7F7F7",
+      cartao: "#FFFFFF",
+      camada: "#EFEFEF",
+      texto: "#3E3E3E",
+      texto2: "#5F5F5F",
+      borda: "rgba(62, 62, 62, 0.10)",
+      destaque: "#D61F3A",
+      sobreDestaque: "#FFFFFF",
+      rodape: "#3E3E3E",
+      sobreRodape: "#FFFFFF",
+    },
+  },
+  // Noite (D-204): escuro profundo com verde-lima elétrico (Dark Mode OLED, Space Grotesk).
+  noite: {
+    cabecalho: "dividido",
+    corpo: "lateral",
+    servicos: "lista",
+    raio: 14,
+    maiusculas: false,
+    peso: 600,
+    paleta: {
+      fundo: "#0A0A0E",
+      cartao: "#15151C",
+      camada: "#20202A",
+      texto: "#F2F2F5",
+      texto2: "#A3A3B2",
+      borda: "rgba(255, 255, 255, 0.09)",
+      destaque: "#C6F432",
+      sobreDestaque: "#0A0A0E",
+      rodape: "#000000",
+      sobreRodape: "#C6F432",
+      escuro: true,
+    },
+  },
+  // Bento (D-204): o corpo em mosaico de blocos de tamanhos diferentes, violeta (Bento Grid, Sora).
+  bento: {
+    cabecalho: "centrado",
+    corpo: "bento",
+    servicos: "lista",
+    raio: 24,
+    maiusculas: false,
+    peso: 700,
+    paleta: {
+      fundo: "#EFEFF3",
+      cartao: "#FFFFFF",
+      camada: "#E4E4EC",
+      texto: "#16141F",
+      texto2: "#56536A",
+      borda: "rgba(22, 20, 31, 0.08)",
+      destaque: "#6440F0",
+      sobreDestaque: "#FFFFFF",
+      rodape: "#16141F",
+      sobreRodape: "#EFEFF3",
     },
   },
 };

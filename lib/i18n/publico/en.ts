@@ -7,6 +7,7 @@ export const en = {
   nomeLingua: "English",
   linguas: "Language",
   capa: {
+    secoes: "Page sections",
     barbeariaEm: (cidade: string) => `Barbershop in ${cidade}`,
     marcar: "Book an appointment",
     marcarAjuda: "Choose the service and the time",

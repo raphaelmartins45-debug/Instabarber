@@ -2,6 +2,7 @@ import type { TextosPublicos } from "@/lib/i18n/publico";
 import { coresDaCapa } from "@/lib/publico/cores-capa";
 import { MODELOS, type Modelo } from "@/lib/publico/estilos";
 import { CabecalhoCartao, CabecalhoMontra, CabecalhoPainel } from "./compostos";
+import { CabecalhoDestaque, CabecalhoLoja } from "./especiais";
 import type { DadosCapa, PropsCapa } from "./partes";
 import { CabecalhoCentrado, CabecalhoDividido, CabecalhoFaixa } from "./simples";
 
@@ -17,6 +18,8 @@ const CABECALHOS: Record<Modelo["cabecalho"], (p: PropsCapa) => React.ReactNode>
   cartao: CabecalhoCartao,
   painel: CabecalhoPainel,
   montra: CabecalhoMontra,
+  destaque: CabecalhoDestaque,
+  loja: CabecalhoLoja,
 };
 
 export function CapaDoModelo({ d, t }: { d: DadosCapa; t: TextosPublicos }) {

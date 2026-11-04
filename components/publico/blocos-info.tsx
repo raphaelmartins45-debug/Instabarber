@@ -44,7 +44,7 @@ export function BlocoMapa({
             href={mapa}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-11 items-center justify-center rounded-[var(--raio)] border border-borda-forte px-4 text-sm font-semibold transition-colors hover:bg-campo sm:justify-self-start"
+            className="inline-flex h-11 items-center justify-center rounded-[var(--raio-botao)] border border-borda-forte px-4 text-sm font-semibold transition-colors hover:bg-campo sm:justify-self-start"
           >
             {t.blocos.abrirMapa}
           </a>

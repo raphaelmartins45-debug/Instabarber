@@ -6,7 +6,8 @@ import type { Modelo } from "@/lib/publico/estilos";
  * história e a loja; `visita` são onde estamos, o horário e os contactos.
  * - coluna: tudo numa coluna, com a visita em três cartões lado a lado no computador;
  * - lateral: a visita numa coluna à direita, que acompanha a página;
- * - editorial: os títulos à esquerda e o conteúdo à direita, como num índice.
+ * - editorial: os títulos à esquerda e o conteúdo à direita, como num índice;
+ * - bento: cada bloco num mosaico de tamanhos diferentes (D-204).
  */
 export function Corpo({
   corpo,
@@ -30,6 +31,17 @@ export function Corpo({
         >
           {visita}
         </aside>
+      </main>
+    );
+  // Bento (D-204): cada bloco é um mosaico; os tamanhos vêm do globals.css, por secção.
+  if (corpo === "bento")
+    return (
+      <main
+        data-corpo={corpo}
+        className="mx-auto grid max-w-6xl gap-4 px-4 pt-8 md:grid-cols-6 md:px-8 md:[grid-auto-flow:dense]"
+      >
+        {principal}
+        {visita}
       </main>
     );
   return (

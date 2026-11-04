@@ -1,4 +1,4 @@
-import { ArrowRight, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, MessageCircle, Phone, UserRound } from "lucide-react";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { formatarTelefone } from "@/lib/formatacao/telefone";
@@ -82,16 +82,17 @@ export function Info({ d, className }: { d: DadosCapa; className?: string }) {
   );
 }
 
-/** «Entrar», no canto do cabeçalho. */
+/** «Entrar», no canto do cabeçalho: um botão com o contorno na cor do texto do cabeçalho. */
 export function Entrar({ d, t, className }: Omit<PropsCapa, "c"> & { className?: string }) {
   return (
     <Link
       href={d.entrar}
       className={cn(
-        "inline-flex h-10 items-center text-sm font-semibold underline-offset-4 hover:underline",
+        "inline-flex h-10 items-center gap-2 rounded-[var(--raio-botao)] border border-current/35 px-4 text-sm font-semibold transition-colors hover:bg-current/10",
         className,
       )}
     >
+      <UserRound aria-hidden className="size-4" />
       {t.capa.entrar}
     </Link>
   );
@@ -113,7 +114,7 @@ export function Acoes({
       ? { backgroundColor: "var(--capa-destaque)", color: "var(--capa-tinta-destaque)" }
       : { backgroundColor: "var(--ac)", color: "var(--ac-sobre)" };
   const botao =
-    "inline-flex h-12 items-center justify-center gap-2 rounded-[var(--raio)] px-5 text-sm font-semibold transition-[filter,opacity] active:translate-y-px";
+    "inline-flex h-12 items-center justify-center gap-2 rounded-[var(--raio-botao)] px-5 text-sm font-semibold transition-[filter,opacity] active:translate-y-px";
   const secundario = cn(
     botao,
     "px-3 whitespace-nowrap sm:px-5",

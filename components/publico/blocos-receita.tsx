@@ -74,7 +74,7 @@ export async function BlocosReceita({
           {produtos.some((p) => !p.esgotado) ? (
             <Link
               href={encomendar}
-              className="inline-flex h-12 items-center justify-center rounded-[var(--raio)] bg-primary px-5 font-bold text-primary-foreground sm:justify-self-start"
+              className="inline-flex h-12 items-center justify-center rounded-[var(--raio-botao)] bg-primary px-5 font-bold text-primary-foreground sm:justify-self-start"
               data-testid="encomendar"
             >
               {b.encomendar}

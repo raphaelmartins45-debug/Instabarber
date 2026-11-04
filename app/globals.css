@@ -225,11 +225,6 @@
     text-transform: uppercase;
     letter-spacing: 0;
   }
-  /* Urbano (neobrutalista, D-201): molduras grossas e sombra dura, sem desfoque. */
-  [data-estilo="cartaz"] .cartao-modelo {
-    border-width: 2px;
-    box-shadow: 4px 4px 0 var(--texto);
-  }
   .rotulo {
     font-size: 11px;
     font-weight: 600;
@@ -248,4 +243,42 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Fora das camadas, para valer sobre os utilitários dos blocos (D-204). */
+/* Bento (D-204): cada secção é um mosaico; os cartões de dentro ficam lisos. */
+[data-corpo="bento"] > section {
+  background: var(--sup-cartao);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 1.5rem;
+}
+[data-corpo="bento"] .cartao-modelo {
+  background: var(--sup-fundo);
+  border-color: transparent;
+}
+@media (min-width: 768px) {
+  [data-corpo="bento"] > section {
+    grid-column: span 3;
+  }
+  [data-corpo="bento"] > #servicos {
+    grid-column: span 4;
+    grid-row: span 2;
+  }
+  [data-corpo="bento"] > #horario {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  [data-corpo="bento"] > #onde,
+  [data-corpo="bento"] > #contactos {
+    grid-column: span 2;
+  }
+  [data-corpo="bento"] > #historia {
+    grid-column: span 4;
+  }
+}
+/* Urbano (neobrutalista, D-201): molduras grossas e sombra dura, sem desfoque. */
+[data-estilo="cartaz"] .cartao-modelo {
+  border-width: 2px;
+  box-shadow: 4px 4px 0 var(--texto);
 }

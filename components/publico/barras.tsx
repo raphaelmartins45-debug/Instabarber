@@ -43,7 +43,7 @@ export function Barras({
     return () => obs.disconnect();
   }, []);
   const classeBotao =
-    "flex h-11 flex-1 items-center justify-center rounded-[var(--raio)] px-3 text-sm font-bold";
+    "flex h-11 flex-1 items-center justify-center rounded-[var(--raio-botao)] px-3 text-sm font-bold";
   return (
     <>
       <div
@@ -59,7 +59,7 @@ export function Barras({
           <span className="flex-1 truncate text-sm font-bold">{nome}</span>
           <Link
             href={entrar}
-            className="flex h-10 items-center rounded-[var(--raio)] border border-current/30 px-3 text-sm"
+            className="flex h-10 items-center rounded-[var(--raio-botao)] border border-current/30 px-3 text-sm"
             tabIndex={rolou ? 0 : -1}
           >
             {t.capa.entrar}
@@ -67,7 +67,7 @@ export function Barras({
           {marcar ? (
             <Link
               href={marcar}
-              className="flex h-10 items-center rounded-[var(--raio)] px-4 text-sm font-bold"
+              className="flex h-10 items-center rounded-[var(--raio-botao)] px-4 text-sm font-bold"
               style={{ backgroundColor: cores.destaque, color: cores.tintaDestaque }}
               tabIndex={rolou ? 0 : -1}
             >

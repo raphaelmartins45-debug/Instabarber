@@ -65,7 +65,8 @@ create table inquilinos (
   capa_foto_url                 text,
   -- O modelo da página pública (D-198): a composição e as letras (oito, da taste skill)
   estilo_pagina                 text not null default 'monumento'
-                                check (estilo_pagina in ('monumento','sala_escura','cartaz','cartao','palco','bairro','anuario','vitrine')),
+                                check (estilo_pagina in ('monumento','sala_escura','cartaz','cartao','palco','bairro','anuario','vitrine',
+                                                         'produto','pedido','noite','bento')),
   -- A cor de fundo do logótipo, lida ao carregá-lo (D-198): a capa usa-a para o logótipo encaixar
   logo_fundo                    text check (logo_fundo ~ '^#[0-9A-F]{6}$'),
   galeria_urls                  text[] not null default '{}' check (cardinality(galeria_urls) <= 6),

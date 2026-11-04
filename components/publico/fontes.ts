@@ -1,17 +1,22 @@
 import {
   DM_Sans,
+  Inter,
   Jost,
   Manrope,
   Montserrat,
   Outfit,
   Poppins,
   Raleway,
+  Rubik,
+  Sora,
+  Space_Grotesk,
   Urbanist,
 } from "next/font/google";
 import type { Estilo } from "@/lib/publico/estilos";
 
 // As letras dos modelos da página pública (D-201): sem serifa, geométricas e sóbrias (Montserrat,
-// Raleway, Urbanist, DM Sans, Jost, Manrope, Outfit e Poppins), servidas pelo próprio site
+// Raleway, Urbanist, DM Sans, Jost, Manrope, Outfit, Poppins, Inter, Rubik, Space Grotesk e
+// Sora; D-204), servidas pelo próprio site
 // (next/font). Cada modelo usa uma só família, nos títulos e no texto, em --letra-familia; os
 // ficheiros só são descarregados pela página que os usa.
 
@@ -64,6 +69,31 @@ const poppins = Poppins({
   variable: "--letra-familia",
 });
 
+const inter = Inter({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-familia",
+});
+const rubik = Rubik({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-familia",
+});
+const spaceGrotesk = Space_Grotesk({
+  weight: ["400", "500", "600"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-familia",
+});
+const sora = Sora({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-familia",
+});
+
 const FAMILIAS: Record<Estilo, { variable: string; className: string }> = {
   monumento: montserrat,
   sala_escura: raleway,
@@ -73,6 +103,10 @@ const FAMILIAS: Record<Estilo, { variable: string; className: string }> = {
   bairro: manrope,
   anuario: outfit,
   vitrine: poppins,
+  produto: inter,
+  pedido: rubik,
+  noite: spaceGrotesk,
+  bento: sora,
 };
 
 /** A classe que aplica a letra do modelo ao próprio elemento (miniaturas no painel). */

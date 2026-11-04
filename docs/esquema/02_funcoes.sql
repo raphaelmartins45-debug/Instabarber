@@ -215,7 +215,7 @@ language plpgsql security definer set search_path = '' as $$
 begin
   if old.ativo and not new.ativo then
     update public.marcacoes set profissional_id = null
-     where profissional_id = new.id and estado in ('reservada','agendada') and inicio > now();
+     where profissional_id = new.id and estado in ('reservada','agendada') and inicio > public.agora();
   end if;
   return new;
 end $$;
@@ -591,7 +591,7 @@ begin
     raise exception 'bloqueado_por_faltas' using errcode = 'P0001';
   end if;
   if (select count(*) from public.marcacoes x
-       where x.cliente_id = v_cliente and x.estado = 'agendada' and x.inicio > now()) >= 3 then
+       where x.cliente_id = v_cliente and x.estado = 'agendada' and x.inicio > public.agora()) >= 3 then
     raise exception 'limite_marcacoes' using errcode = 'P0001';
   end if;
 
@@ -714,7 +714,7 @@ begin
           or m.profissional_id in (select public.meus_profissionais())) then
     raise exception 'sem_permissao' using errcode = '42501';
   end if;
-  if m.inicio > now() then raise exception 'ainda_nao_comecou' using errcode = 'P0001'; end if;
+  if m.inicio > public.agora() then raise exception 'ainda_nao_comecou' using errcode = 'P0001'; end if;
   update public.marcacoes set estado = 'falta' where id = m.id;
 end $$;
 

@@ -6,6 +6,7 @@ export const pt = {
   nomeLingua: "Português",
   linguas: "Idioma",
   capa: {
+    secoes: "Partes da página",
     barbeariaEm: (cidade: string) => `Barbearia em ${cidade}`,
     marcar: "Faça a sua marcação",
     marcarAjuda: "Escolha o serviço e a hora",

@@ -29,6 +29,7 @@ export function PaginaModelo({
           colorScheme: p.escuro ? "dark" : "light",
           "--peso-titulo": m.peso,
           "--raio": `${m.raio}px`,
+          "--raio-botao": `${m.raioBotao ?? m.raio}px`,
           "--sup-fundo": p.fundo,
           "--sup-cartao": p.cartao,
           "--sup-elevado": p.cartao,

@@ -3,11 +3,11 @@ import { razaoContraste } from "@/lib/regras/contraste";
 import { ESTILOS, MODELOS, estiloDe } from "./estilos";
 
 describe("estiloDe", () => {
-  it("valores desconhecidos ficam no primeiro modelo; há oito modelos", () => {
+  it("valores desconhecidos ficam no primeiro modelo; há doze modelos (D-204)", () => {
     expect(estiloDe("neon")).toBe("monumento");
     expect(estiloDe(null)).toBe("monumento");
     expect(estiloDe("vitrine")).toBe("vitrine");
-    expect(ESTILOS).toHaveLength(8);
+    expect(ESTILOS).toHaveLength(12);
   });
 });
 
@@ -31,7 +31,7 @@ describe("paletas dos modelos (D-201)", () => {
       expect(razaoContraste(p.sobreRodape, p.rodape), e).toBeGreaterThanOrEqual(4.5);
     }
   });
-  it("as oito paletas são diferentes", () => {
-    expect(new Set(ESTILOS.map((e) => MODELOS[e].paleta.destaque)).size).toBe(8);
+  it("as paletas são todas diferentes", () => {
+    expect(new Set(ESTILOS.map((e) => MODELOS[e].paleta.destaque)).size).toBe(ESTILOS.length);
   });
 });
