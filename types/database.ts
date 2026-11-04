@@ -5914,7 +5914,20 @@ export type Database = {
       pode_enviar_comprovativo: { Args: { p_inquilino: string }; Returns: boolean };
       pode_marcar_online: { Args: { p_cliente: string }; Returns: boolean };
       posicao_fila_espera: { Args: { p_entrada: string }; Returns: number };
-      preparar_demonstracao: { Args: Record<PropertyKey, never>; Returns: string };
+      preparar_demonstracao: {
+        Args: {
+          p_barbeiro?: string;
+          p_cidade?: string;
+          p_cor?: string;
+          p_estilo?: string;
+          p_gestor?: string;
+          p_logo?: string;
+          p_nome?: string;
+          p_plano?: string;
+          p_whatsapp?: string;
+        };
+        Returns: string;
+      };
       preparar_envio_contrato: {
         Args: { p_contrato: string; p_dias?: number; p_token: string };
         Returns: undefined;

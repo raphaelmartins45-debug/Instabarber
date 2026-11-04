@@ -130,6 +130,8 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 
 45. **Cartão oferta comprado na página pública («Compre aqui»)** — ideia do dono, só documentada (D-206): escolher valor (mínimo o serviço mais barato), para quem e a cor; pedido por pagar com mensagem pronta para a barbearia no WhatsApp; o gestor aprova com «Pago» e envia a imagem do cartão (Para/De, código, logótipo, instruções). Também como produto na loja. Detalhe e sugestões em `docs/futuro/cartao-oferta-online.md`. Entra no lugar do «Fale connosco» do bloco do cartão oferta.
 
+46. **Uma demonstração por perfil de comercial** (D-207): hoje há uma só barbearia de demonstração partilhada pela equipa; futuramente cada comercial terá a sua, para várias reuniões em paralelo.
+
 ## Módulo pendente de ativação: fatura-recibo automática (D-170)
 
 **Estado:** construído, testado e publicado **desligado**. Enquanto estiver desligado, tudo funciona

@@ -33,7 +33,7 @@ create table inquilinos (
                                        and slug not in ('admin','app','api','b','www','apoio','ajuda',
                                                         'entrar','login','registo','adesao','termos',
                                                         'privacidade','static','_next','instabarber',
-                                                        'performa','performalab','conta','minha-area')),
+                                                        'performa','performalab','conta','minha-area','demo')),
   nome                          text not null,
   vertical                      text not null default 'barbearia' check (vertical in ('barbearia')),
 

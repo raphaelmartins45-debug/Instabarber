@@ -116,13 +116,27 @@ select teste.erro($$select * from saude_carteira('10000000-0000-0000-0000-000000
 select teste.ok((select count(*) from saude_carteira()) = 0, 'RISCO: a sua carteira está vazia');
 
 -- Demonstração -----------------------------------------------------------------
-select teste.erro($$select preparar_demonstracao()$$, 'DEMO: o comercial não prepara a demonstração');
+-- O comercial prepara e personaliza a demonstração (D-207): versão Basic, um só barbeiro.
+select preparar_demonstracao('basic', null, null, 'Barbearia do Zé', '/marca/x.png', '#123456', 'Porto', '+351912345678');
+reset role;  -- o comercial não lê a barbearia de demonstração; confere-se sem RLS
+select teste.ok((select nome = 'Barbearia do Zé' and plano = 'basic' and cidade = 'Porto' and capa_cor = '#123456'
+                        and estilo_pagina = 'anuario' and whatsapp = '+351912345678'
+                   from inquilinos where demonstracao), 'DEMO: o comercial gera a demonstração personalizada (Moderno)');
+select teste.ok((select count(*) from profissionais p join inquilinos i on i.id = p.inquilino_id where i.demonstracao) = 1,
+  'DEMO: na versão Basic, um só barbeiro');
+select teste.ok((select count(*) from produtos p join inquilinos i on i.id = p.inquilino_id where i.demonstracao) = 4,
+  'DEMO: a loja tem três produtos com fotografia e o cartão oferta');
+select teste.ok((select count(*) from clientes c join inquilinos i on i.id = c.inquilino_id
+                  where i.demonstracao and c.telefone = '+351912345678') = 1,
+  'DEMO: o WhatsApp de teste fica também num cliente de teste, para receber os lembretes');
 select teste.como('10000000-0000-0000-0000-000000000002');
 select teste.erro($$select preparar_demonstracao()$$, 'DEMO: o dono de uma barbearia não a prepara');
 select teste.como('10000000-0000-0000-0000-000000000001', 'aal2');
 select preparar_demonstracao();
 select preparar_demonstracao();
 select teste.ok((select count(*) from inquilinos where demonstracao) = 1, 'DEMO: refazer não duplica');
+select teste.ok((select nome = 'Barbearia Demonstração' and plano = 'pro' from inquilinos where demonstracao),
+  'DEMO: o Reset volta ao nome e à versão de origem');
 select teste.ok((select count(*) from servicos s join inquilinos i on i.id = s.inquilino_id where i.demonstracao) = 4
                 and (select count(*) from profissionais p join inquilinos i on i.id = p.inquilino_id where i.demonstracao) = 3
                 and (select count(*) from clientes c join inquilinos i on i.id = c.inquilino_id where i.demonstracao) = 40,

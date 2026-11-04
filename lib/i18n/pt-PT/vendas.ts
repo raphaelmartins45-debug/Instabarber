@@ -7,8 +7,6 @@ export const vendas = {
   titulo: "Apoio às vendas",
   ajuda:
     "Tudo o que ajuda a vender: a demonstração, as contas com os números da barbearia, as respostas às objeções, o guião da visita e as mensagens prontas.",
-  demonstracaoSoAdmin:
-    "A barbearia de demonstração abre-se na vista de apoio, que é só do dono e do gestor da plataforma. Peça-lhes uma demonstração conjunta.",
   copiar: "Copiar",
   copiado: "Copiado",
   whatsapp: "Abrir no WhatsApp",

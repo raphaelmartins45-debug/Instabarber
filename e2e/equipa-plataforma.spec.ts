@@ -93,8 +93,8 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   );
 
   await comercial.getByRole("link", { name: "Demonstração" }).click();
-  await expect(comercial.getByTestId("modulo-demonstracao")).toContainText("vista de apoio");
-  await expect(comercial.getByRole("button", { name: "Preparar dados de hoje" })).toHaveCount(0);
+  // O comercial também prepara a demonstração (D-207).
+  await expect(comercial.getByRole("button", { name: "Gerar" })).toBeVisible();
 
   // Num telemóvel estreito, com um nome longo, nenhum módulo sai da largura do ecrã.
   await comercial.setViewportSize({ width: 320, height: 720 });
@@ -220,14 +220,11 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
   await quadro.getByRole("button", { name: "Apagar a conta" }).click();
   await expect(dono.getByTestId("membro").filter({ visible: true, hasText: novo })).toHaveCount(0);
 
-  // Barbearia de demonstração (D-162): uma só para todos, por isso só num dos projetos.
+  // Barbearia de demonstração (D-162, D-207): uma só para todos, por isso só num dos projetos.
   if (projeto === "computador") {
     await dono.goto("/admin/vendas/demonstracao");
-    await dono.getByRole("button", { name: "Preparar dados de hoje" }).click();
-    await expect(dono.getByText("Demonstração pronta.")).toBeVisible();
-    await dono.getByRole("button", { name: "Abrir o painel da demonstração" }).click();
-    await expect(dono).toHaveURL(/\/app/);
-    await expect(dono.getByText(/Barbearia Demonstração/).first()).toBeVisible();
+    await dono.getByRole("button", { name: "Reset" }).click();
+    await expect(dono.getByText("Demonstração reposta: livre para a próxima reunião.")).toBeVisible();
     await dono.goto("/admin/equipa");
   }
 

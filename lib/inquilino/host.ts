@@ -22,6 +22,8 @@ export const CAMINHOS_RESERVADOS = [
   "performalab",
   "conta",
   "minha-area",
+  // A demonstração para os comerciais (D-207)
+  "demo",
 ] as const;
 
 export const FORMATO_SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;

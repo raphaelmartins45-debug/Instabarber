@@ -428,6 +428,13 @@ create policy storage_publico_admin on storage.objects for all
   using (bucket_id = 'publico' and (select public.e_super_admin()))
   with check (bucket_id = 'publico' and (select public.e_super_admin()));
 
+-- A equipa da InstaBarber (comerciais incluídos) carrega o logótipo da demonstração (D-207).
+create policy storage_publico_demonstracao on storage.objects for all
+  using (bucket_id = 'publico' and (storage.foldername(name))[1] = 'demonstracao'
+         and ((select public.e_super_admin()) or (select public.e_comercial())))
+  with check (bucket_id = 'publico' and (storage.foldername(name))[1] = 'demonstracao'
+              and ((select public.e_super_admin()) or (select public.e_comercial())));
+
 create policy storage_fichas on storage.objects for all
   using (bucket_id = 'fichas' and (
          (storage.foldername(name))[1] in (select x::text from public.inquilinos_onde(array['proprietario']) x)

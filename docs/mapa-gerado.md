@@ -103,12 +103,15 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/api/apoio/ligar/route.ts`
 - `app/api/apoio/whatsapp/route.ts`
 - `app/api/contacto/route.ts`
+- `app/api/demo/entrar/route.ts`
 - `app/api/manifesto/[slug]/route.ts`
 - `app/api/medicao/route.ts`
 - `app/api/placa/route.ts`
 - `app/api/relatorios/route.ts`
 - `app/api/saude/route.ts`
 - `app/api/webhooks/pagamentos/route.ts`
+- `app/demo/[vista]/route.ts`
+- `app/demo/page.tsx`
 
 ## Variáveis CSS (app/globals.css)
 
