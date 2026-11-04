@@ -12,124 +12,75 @@ import type { Estilo } from "@/lib/publico/estilos";
 
 // As letras dos modelos da página pública (D-201): sem serifa, geométricas e sóbrias (Montserrat,
 // Raleway, Urbanist, DM Sans, Jost, Manrope, Outfit e Poppins), servidas pelo próprio site
-// (next/font). Cada modelo define --letra-titulo e --letra-texto; os ficheiros só são
-// descarregados pela página que os usa.
+// (next/font). Cada modelo usa uma só família, nos títulos e no texto, em --letra-familia; os
+// ficheiros só são descarregados pela página que os usa.
 
-const montserratTitulo = Montserrat({
-  weight: ["500"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-titulo",
-});
-const montserratTexto = Montserrat({
+const montserrat = Montserrat({
   weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--letra-texto",
+  variable: "--letra-familia",
 });
-const ralewayTitulo = Raleway({
-  weight: ["700"],
+const raleway = Raleway({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--letra-titulo",
+  variable: "--letra-familia",
 });
-const ralewayTexto = Raleway({
+const urbanist = Urbanist({
+  weight: ["400", "500", "600", "800"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--letra-familia",
+});
+const dmSans = DM_Sans({
   weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--letra-texto",
+  variable: "--letra-familia",
 });
-const urbanistTitulo = Urbanist({
-  weight: ["800"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-titulo",
-});
-const urbanistTexto = Urbanist({
-  weight: ["400", "500", "600"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-texto",
-});
-const dmSansTitulo = DM_Sans({
-  weight: ["600"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-titulo",
-});
-const dmSansTexto = DM_Sans({
-  weight: ["400", "500", "600"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-texto",
-});
-const jostTitulo = Jost({
-  weight: ["500"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-titulo",
-});
-const jostTexto = Jost({
+const jost = Jost({
   weight: ["400", "500"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--letra-texto",
+  variable: "--letra-familia",
 });
-const manropeTitulo = Manrope({
-  weight: ["700"],
+const manrope = Manrope({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--letra-titulo",
+  variable: "--letra-familia",
 });
-const manropeTexto = Manrope({
+const outfit = Outfit({
   weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--letra-texto",
+  variable: "--letra-familia",
 });
-const outfitTitulo = Outfit({
-  weight: ["600"],
+const poppins = Poppins({
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--letra-titulo",
-});
-const outfitTexto = Outfit({
-  weight: ["400", "500"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-texto",
-});
-const poppinsTitulo = Poppins({
-  weight: ["600"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-titulo",
-});
-const poppinsTexto = Poppins({
-  weight: ["400", "500"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--letra-texto",
+  variable: "--letra-familia",
 });
 
-const PARES: Record<Estilo, [{ variable: string; className: string }, { variable: string }]> = {
-  monumento: [montserratTitulo, montserratTexto],
-  sala_escura: [ralewayTitulo, ralewayTexto],
-  cartaz: [urbanistTitulo, urbanistTexto],
-  cartao: [dmSansTitulo, dmSansTexto],
-  palco: [jostTitulo, jostTexto],
-  bairro: [manropeTitulo, manropeTexto],
-  anuario: [outfitTitulo, outfitTexto],
-  vitrine: [poppinsTitulo, poppinsTexto],
+const FAMILIAS: Record<Estilo, { variable: string; className: string }> = {
+  monumento: montserrat,
+  sala_escura: raleway,
+  cartaz: urbanist,
+  cartao: dmSans,
+  palco: jost,
+  bairro: manrope,
+  anuario: outfit,
+  vitrine: poppins,
 };
 
-/** A classe que aplica a letra do título ao próprio elemento (miniaturas no painel). */
+/** A classe que aplica a letra do modelo ao próprio elemento (miniaturas no painel). */
 export const LETRA_DO_ESTILO: Record<Estilo, string> = Object.fromEntries(
-  Object.entries(PARES).map(([e, [titulo]]) => [e, titulo.className]),
+  Object.entries(FAMILIAS).map(([e, f]) => [e, f.className]),
 ) as Record<Estilo, string>;
 
-/** As classes que definem --letra-titulo e --letra-texto para a página do modelo. */
+/** A classe que define --letra-familia para a página do modelo. */
 export function variavelDoEstilo(estilo: Estilo): string {
-  const [titulo, texto] = PARES[estilo];
-  return `${titulo.variable} ${texto.variable}`;
+  return FAMILIAS[estilo].variable;
 }
