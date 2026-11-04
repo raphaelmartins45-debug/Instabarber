@@ -3,6 +3,7 @@ import { ModuloVendas } from "@/components/admin/vendas/modulo-vendas";
 import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
 import { textos } from "@/lib/i18n/pt-PT";
 import { obterDemonstracao } from "@/lib/repositorios/admin/demonstracao";
+import { quandoPorExtenso } from "@/lib/formatacao/datas";
 import { listarLeads } from "@/lib/repositorios/comercial/leads";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
@@ -18,14 +19,16 @@ export default async function Demonstracao() {
   await exigirEquipaPlataforma();
   const bd = await criarClienteServidor();
   const [demo, todos] = await Promise.all([obterDemonstracao(bd), listarLeads(bd)]);
-  // Os leads ainda em aberto, para escolher o da apresentação (D-209).
+  // Só os leads com a demonstração marcada, pela hora (D-211).
   const leads = todos
-    .filter((l) => l.estado !== "ganho" && l.estado !== "perdido")
+    .filter((l) => l.estado === "demo_marcada" && l.demo_em)
+    .sort((a, b) => a.demo_em!.localeCompare(b.demo_em!))
     .map((l) => ({
       id: l.id,
       barbearia: l.nome_barbearia ?? l.nome_contacto,
       contacto: l.nome_contacto,
       cidade: l.cidade,
+      quando: quandoPorExtenso(l.demo_em!),
     }));
   return (
     <ModuloVendas id="demonstracao">

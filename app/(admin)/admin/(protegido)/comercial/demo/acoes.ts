@@ -15,7 +15,8 @@ import {
   obterDemonstracao,
   prepararDemonstracao,
 } from "@/lib/repositorios/admin/demonstracao";
-import { mudarEstadoLead, obterLead, registarEventoLead } from "@/lib/repositorios/comercial/leads";
+import { obterLead, registarEventoLead } from "@/lib/repositorios/comercial/leads";
+import { quandoPorExtenso } from "@/lib/formatacao/datas";
 import { carregarImagemPublica } from "@/lib/repositorios/painel/imagens";
 import { ligacaoParaTelefone } from "@/lib/regras/whatsapp";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
@@ -23,7 +24,7 @@ import type { ClienteBD } from "@/lib/supabase/tipos";
 
 // A demonstração para os comerciais (D-207): «Gerar» refaz a barbearia de demonstração com os
 // dados desta reunião e cria o código de acesso (D-208); com um lead escolhido, o convite segue
-// para o e-mail dele e fica pronto o do WhatsApp (D-209). «Reset» repõe a de origem e anula o
+// para o e-mail dele com a hora marcada e fica pronto o do WhatsApp (D-209, D-211). «Reset» repõe a de origem e anula o
 // código. Toda a equipa da InstaBarber pode usar.
 
 const t = textos.comercial.demonstracao;
@@ -62,16 +63,19 @@ async function convidar(bd: ClienteBD, leadId: string, codigo: string): Promise<
   const ligacao = `${await origemDoPedido()}/demo`;
   const nome = lead.nome_contacto.split(/\s+/)[0] ?? lead.nome_contacto;
   const barbearia = lead.nome_barbearia ?? lead.nome_contacto;
-  const whatsapp = ligacaoParaTelefone(lead.telefone, t.mensagemWhatsapp(nome, ligacao, codigo));
+  // A hora marcada no lead (D-211); sem marcação, «hoje».
+  const quando = lead.demo_em ? quandoPorExtenso(lead.demo_em) : "hoje";
+  const whatsapp = ligacaoParaTelefone(
+    lead.telefone,
+    t.mensagemWhatsapp(nome, quando, ligacao, codigo),
+  );
   if (!lead.email) return { email: "sem_email", para: null, whatsapp };
   const para = lead.email;
   const enviado = await enviarEmail(() =>
-    conviteDemonstracao({ para, nome, barbearia, ligacao, codigo }),
+    conviteDemonstracao({ para, nome, barbearia, quando, ligacao, codigo }),
   );
   if (enviado) {
     await registarEventoLead(bd, lead.id, { tipo: "mensagem", texto: t.eventoConvite(para) });
-    if (lead.estado === "novo" || lead.estado === "contactado")
-      await mudarEstadoLead(bd, lead.id, { estado: "demonstracao" });
     revalidatePath(`/admin/comercial/leads/${lead.id}`);
   }
   return { email: enviado ? "enviado" : "falhou", para, whatsapp };

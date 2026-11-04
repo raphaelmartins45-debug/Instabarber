@@ -274,3 +274,23 @@ export async function recusarCarregamento(
   });
   return error?.message ?? null;
 }
+
+/** Os contratos assinados por lead, com a periodicidade da proposta (pós-venda, D-211). */
+export async function ganhosPorLead(
+  bd: ClienteBD,
+): Promise<Map<string, { assinadoEm: string; periodicidade: string }>> {
+  const { data, error } = await bd
+    .from("contratos")
+    .select("lead_id, assinado_em, propostas(periodicidade)")
+    .eq("estado", "assinado");
+  if (error) falhaDeLeitura("contratos", error);
+  const mapa = new Map<string, { assinadoEm: string; periodicidade: string }>();
+  for (const c of data) {
+    if (!c.assinado_em) continue;
+    mapa.set(c.lead_id, {
+      assinadoEm: c.assinado_em,
+      periodicidade: c.propostas?.periodicidade ?? "mensal",
+    });
+  }
+  return mapa;
+}

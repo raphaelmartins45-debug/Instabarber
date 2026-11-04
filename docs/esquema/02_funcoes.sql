@@ -1342,13 +1342,14 @@ begin
   if not found then raise exception 'lead_inexistente' using errcode = 'P0001'; end if;
 end $$;
 
--- «ganho» só chega por assinar_contrato(); um lead ganho não volta atrás.
+-- «ganho» só chega por assinar_contrato(); um lead ganho não volta atrás. «Demo marcada» só chega
+-- por marcar_demo_lead(), com a data e a hora (D-211).
 create or replace function public.mudar_estado_lead(p_lead uuid, p_estado text, p_motivo text default null)
 returns void language plpgsql security definer set search_path = '' as $$
 declare v_atual text;
 begin
   perform public.exigir_lead(p_lead);
-  if p_estado not in ('novo','contactado','demonstracao','proposta','perdido') then
+  if p_estado not in ('novo','contactado','demo_feita','proposta','perdido') then
     raise exception 'estado_invalido' using errcode = 'P0001';
   end if;
   select estado into v_atual from public.leads where id = p_lead for update;
@@ -1363,6 +1364,31 @@ begin
          atualizado_em = now()
    where id = p_lead;
   perform public.evento_lead(p_lead, 'estado', null, jsonb_build_object('de', v_atual, 'para', p_estado, 'motivo', p_motivo));
+end $$;
+
+-- Marca (ou remarca) a demonstração de um lead (D-211): a data e a hora, o estado «Demo marcada»
+-- e a próxima ação nesse dia. O e-mail de confirmação segue do servidor.
+create or replace function public.marcar_demo_lead(p_lead uuid, p_em timestamptz)
+returns void language plpgsql security definer set search_path = '' as $$
+declare v_atual text;
+begin
+  perform public.exigir_lead(p_lead);
+  if p_em is null or p_em <= public.agora() then
+    raise exception 'demo_no_passado' using errcode = 'P0001';
+  end if;
+  select estado into v_atual from public.leads where id = p_lead for update;
+  if v_atual is null then raise exception 'lead_inexistente' using errcode = 'P0001'; end if;
+  if v_atual in ('ganho','perdido') then raise exception 'lead_fechado' using errcode = 'P0001'; end if;
+  update public.leads
+     set estado = 'demo_marcada', demo_em = p_em,
+         proxima_acao = 'Demonstração', proxima_acao_em = (p_em at time zone 'Europe/Lisbon')::date,
+         atualizado_em = now()
+   where id = p_lead;
+  if v_atual <> 'demo_marcada' then
+    perform public.evento_lead(p_lead, 'estado', null, jsonb_build_object('de', v_atual, 'para', 'demo_marcada'));
+  end if;
+  perform public.evento_lead(p_lead, 'sistema',
+    'Demonstração marcada para ' || to_char(p_em at time zone 'Europe/Lisbon', 'DD/MM/YYYY "às" HH24:MI') || '.');
 end $$;
 
 -- Cria uma versão nova da proposta. As versões anteriores ainda abertas ficam «substituída».
@@ -1439,7 +1465,7 @@ begin
     nullif(p ->> 'condicoes_lancamento', ''), coalesce((p ->> 'validade_dias')::integer, 15),
     coalesce(p -> 'dados', '{}'), v_desc, v_impl, v_taxa, v_desc_taxa, v_campanha, v_comissao, auth.uid())
   returning id into v_id;
-  if v_estado in ('novo','contactado','demonstracao') then
+  if v_estado in ('novo','contactado','demo_marcada','demo_feita') then
     update public.leads set estado = 'proposta', atualizado_em = now() where id = p_lead;
   end if;
   perform public.evento_lead(p_lead, 'proposta', 'Proposta criada (versão ' || v_versao || ').', jsonb_build_object('proposta', v_id));
@@ -3037,6 +3063,7 @@ grant execute on function public.meus_comunicados(uuid), public.marcar_comunicad
 -- Equipa InstaBarber (D-161): cada função verifica o papel.
 revoke all on function public.preparar_lead(), public.exigir_lead(uuid),
   public.exigir_comercial_ou_admin() from public, anon, authenticated;
+grant execute on function public.marcar_demo_lead(uuid, timestamptz) to authenticated;
 grant execute on function public.fixar_texto_contrato(uuid, text), public.e_dono_plataforma(),
   public.e_comercial(), public.meus_leads(),
   public.lead_acessivel(uuid), public.pasta_lead_acessivel(text), public.carteira_comercial(uuid)

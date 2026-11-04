@@ -68,16 +68,16 @@ test("pedido do site no CRM, lead à mão, contacto, estado e funil", async ({ p
   await expect(page.getByText("Contacto registado.")).toBeVisible();
   await expect(page.getByTestId("historico-lead")).toContainText("Ligou a pedir demonstração.");
 
-  await page.getByRole("combobox", { name: "Estado", exact: true }).selectOption("demonstracao");
+  await page.getByRole("combobox", { name: "Estado", exact: true }).selectOption("demo_feita");
   await page.getByRole("button", { name: "Mudar estado" }).click();
-  await expect(page.getByTestId("historico-lead")).toContainText("De «Novo» para «Demonstração».");
+  await expect(page.getByTestId("historico-lead")).toContainText("De «Novo» para «Demo feita».");
 
   await page.goto("/admin/comercial");
-  await expect(page.getByTestId("coluna-demonstracao")).toContainText(`Navalha ${sufixo}`);
+  await expect(page.getByTestId("coluna-demo_feita")).toContainText(`Navalha ${sufixo}`);
   await expect(page.getByTestId("coluna-novo")).toContainText(`Corte Ensaio ${sufixo}`);
 
   // Camada 2: briefing em passos, proposta em PDF, enviada e aceite.
-  await page.getByTestId("coluna-demonstracao").getByText(`Navalha ${sufixo}`).click();
+  await page.getByTestId("coluna-demo_feita").getByText(`Navalha ${sufixo}`).click();
   await page.getByRole("link", { name: "Abrir o briefing" }).click();
   await page.getByRole("button", { name: "Seguinte" }).click();
   await page.getByLabel("N.º de barbeiros *").fill("3");

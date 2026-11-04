@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   acaoVencida,
+  colunaDoFunil,
   diasUteisEntre,
   leadIncompleto,
   leadParado,
@@ -47,5 +48,20 @@ describe("leadIncompleto", () => {
     expect(leadIncompleto({ origem: "landing", temPasso2: false })).toBe(true);
     expect(leadIncompleto({ origem: "landing", temPasso2: true })).toBe(false);
     expect(leadIncompleto({ origem: "whatsapp", temPasso2: false })).toBe(false);
+  });
+});
+
+describe("coluna do funil (D-211)", () => {
+  it("um lead que não está ganho fica no seu estado", () => {
+    expect(colunaDoFunil("demo_marcada", undefined, "2026-11-04")).toBe("demo_marcada");
+  });
+  it("um contrato mensal fica sempre em pós-venda", () => {
+    const g = { assinadoEm: "2025-01-10T10:00:00Z", periodicidade: "mensal" };
+    expect(colunaDoFunil("ganho", g, "2026-11-04")).toBe("pos_venda");
+  });
+  it("um contrato anual fica 90 dias em pós-venda e depois volta a ganho", () => {
+    const g = { assinadoEm: "2026-09-01T10:00:00Z", periodicidade: "anual" };
+    expect(colunaDoFunil("ganho", g, "2026-11-04")).toBe("pos_venda");
+    expect(colunaDoFunil("ganho", g, "2026-11-30")).toBe("ganho");
   });
 });

@@ -10,15 +10,24 @@ import {
   criarLead,
   type LeadSemelhante,
   leadsSemelhantes,
+  marcarDemoLead,
   mudarEstadoLead,
+  obterLead,
   registarEventoLead,
 } from "@/lib/repositorios/comercial/leads";
+import { confirmacaoDemonstracao } from "@/lib/email/convite-demonstracao";
+import { enviarEmail } from "@/lib/email/enviar";
+import { instanteLocal, quandoPorExtenso } from "@/lib/formatacao/datas";
+import { textos } from "@/lib/i18n/pt-PT";
+import { ligacaoParaTelefone } from "@/lib/regras/whatsapp";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import {
+  esquemaDemo,
   esquemaEstado,
   esquemaEvento,
   esquemaLead,
   esquemaNovoLead,
+  type DadosDemo,
   type DadosEstado,
   type DadosEvento,
   type DadosLead,
@@ -78,6 +87,41 @@ export async function mudarEstado(id: string, dados: DadosEstado): Promise<Resul
     return { ok: false, erro: "generico" };
   revalidar(id);
   return { ok: true };
+}
+
+export type DemoMarcada =
+  | {
+      ok: true;
+      email: "enviado" | "falhou" | "sem_email";
+      para: string | null;
+      whatsapp: string | null;
+    }
+  | { ok: false; erro: string };
+
+/**
+ * Marca (ou remarca) a demonstração (D-211): o lead passa a «Demo marcada», recebe a confirmação
+ * por e-mail com o dia e a hora, e fica pronta a mensagem do WhatsApp (regra 7).
+ */
+export async function marcarDemonstracao(id: string, dados: DadosDemo): Promise<DemoMarcada> {
+  await exigirEquipaPlataforma();
+  const v = esquemaDemo.safeParse(dados);
+  if (!v.success) return { ok: false, erro: erroDe(v.error.issues) };
+  const bd = await criarClienteServidor();
+  const em = instanteLocal(v.data.data, v.data.hora);
+  const r = await marcarDemoLead(bd, id, em);
+  if (!r.ok) return r;
+  const lead = await obterLead(bd, id);
+  revalidar(id);
+  if (!lead) return { ok: true, email: "sem_email", para: null, whatsapp: null };
+  const t = textos.comercial.marcarDemo;
+  const nome = lead.nome_contacto.split(/\s+/)[0] ?? lead.nome_contacto;
+  const quando = quandoPorExtenso(em);
+  const whatsapp = ligacaoParaTelefone(lead.telefone, t.mensagemWhatsapp(nome, quando));
+  if (!lead.email) return { ok: true, email: "sem_email", para: null, whatsapp };
+  const para = lead.email;
+  const enviado = await enviarEmail(() => confirmacaoDemonstracao({ para, nome, quando }));
+  if (enviado) await registarEventoLead(bd, id, { tipo: "mensagem", texto: t.eventoEmail(para) });
+  return { ok: true, email: enviado ? "enviado" : "falhou", para, whatsapp };
 }
 
 export async function registarEvento(id: string, dados: DadosEvento): Promise<Resultado> {

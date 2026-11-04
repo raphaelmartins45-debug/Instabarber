@@ -1202,3 +1202,11 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Loja na página inicial:** os produtos nos cartões da montra (fotografia de ponta a ponta, nome e preço), cada um leva à loja; o botão passa a «Ver a loja».
 - **Avaliações por estrelas:** ficam de fora até o dono confirmar a frase junto da média e a entrada automática ao fim de 14 dias.
 - **Base de dados:** migração `20261104000030_perfil_publico_barbeiro.sql` (coluna `profissionais.apresentacao`, a vista `publico_profissionais` com a apresentação e as especialidades, o gatilho e a demonstração com a equipa já apresentada).
+
+## D-211 · 04/11/2026 · Funil novo, «Marcar demonstração» e o lembrete do dia com a hora — dono
+- **Funil (substitui o N.3 nos estados):** Novo → Em contacto (o antigo «Contactado») → Demo marcada → Demo feita → Proposta enviada → Ganho → Pós-venda; Perdido à parte. «Demo marcada» só chega ao marcar a demonstração com dia e hora (`marcar_demo_lead`); «Ganho» continua a chegar só ao assinar o contrato. **Pós-venda** é calculado (`colunaDoFunil` em `lib/regras/comercial.ts`): contrato mensal fica sempre em pós-venda; anual, nos primeiros 90 dias depois de ganho, e depois volta a «Ganho». O lead que estava em «Demonstração» passou a «Demo marcada».
+- **Marcar demonstração** na ficha do lead: dia e hora (Lisboa). O lead recebe por e-mail a confirmação com o dia e a hora e o aviso de que, umas horas antes, recebe a ligação e o código; fica pronta a mensagem do WhatsApp; tudo no histórico.
+- **No dia, «Gerar»:** a lista de leads do gerador mostra só os que têm demonstração marcada, pela hora. O e-mail passa a ser o lembrete: «a sua demonstração é hoje às HH:MM», como entrar (3 passos), o código e o botão; o WhatsApp leva a hora, a ligação, o código e as instruções.
+- **Compromissos:** «Demonstrações marcadas» (hoje e próximos 7 dias, as de hoje realçadas) no Funil do comercial e no painel geral do admin; a próxima ação «Demonstração» entra na agenda do dia.
+- **A seguir (pedido do dono):** o painel geral do admin com o resumo de tudo — financeiro (faturado, contratos do mês, clientes ativos, ponto de equilíbrio, custos) e comercial (agenda, taxa de conversão, barbearias em risco) —, com esboço para aprovação.
+- **Base de dados:** migração `20261104000031_funil_demo_marcada.sql`, no ensaio e na produção.

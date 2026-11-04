@@ -376,6 +376,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `marcar_comunicado_lido()`
 - `marcar_comunicado_lido_equipa()`
 - `marcar_contrato_enviado()`
+- `marcar_demo_lead()`
 - `marcar_falta()`
 - `marcar_proposta_enviada()`
 - `meu_cartao_selos()`

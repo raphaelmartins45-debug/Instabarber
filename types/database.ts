@@ -2672,6 +2672,7 @@ export type Database = {
           criado_em: string;
           criado_por: string | null;
           custo_atual: number | null;
+          demo_em: string | null;
           email: string | null;
           estado: string;
           fala_com_decisor: boolean | null;
@@ -2707,6 +2708,7 @@ export type Database = {
           criado_em?: string;
           criado_por?: string | null;
           custo_atual?: number | null;
+          demo_em?: string | null;
           email?: string | null;
           estado?: string;
           fala_com_decisor?: boolean | null;
@@ -2741,6 +2743,7 @@ export type Database = {
           criado_em?: string;
           criado_por?: string | null;
           custo_atual?: number | null;
+          demo_em?: string | null;
           email?: string | null;
           estado?: string;
           fala_com_decisor?: boolean | null;
@@ -5895,6 +5898,7 @@ export type Database = {
         Args: { p_inquilino: string; p_sim: boolean };
         Returns: undefined;
       };
+      marcar_demo_lead: { Args: { p_em: string; p_lead: string }; Returns: undefined };
       mudar_estado_lead: {
         Args: { p_estado: string; p_lead: string; p_motivo?: string };
         Returns: undefined;

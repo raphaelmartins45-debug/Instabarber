@@ -17,14 +17,29 @@ export const ORIGENS = [
 /** Origens em que é o comercial quem procura o contacto: pedem o consentimento (D-174). */
 export const ORIGENS_PROSPECAO: readonly string[] = ["visita", "instagram", "indicacao"];
 export const TEMPERATURAS = ["frio", "morno", "quente"] as const;
-export const ESTADOS_MANUAIS = [
+export const ESTADOS_MANUAIS = ["novo", "contactado", "demo_feita", "proposta", "perdido"] as const;
+/**
+ * As colunas do funil (D-211): «Demo marcada» chega ao marcar a demonstração; «Ganho» ao assinar
+ * o contrato; «Pós-venda» é calculado (anual: 90 dias depois do ganho; mensal: sem fim).
+ */
+export const ESTADOS_FUNIL = [
   "novo",
   "contactado",
-  "demonstracao",
+  "demo_marcada",
+  "demo_feita",
   "proposta",
+  "ganho",
+  "pos_venda",
   "perdido",
 ] as const;
 export const TIPOS_EVENTO = ["nota", "chamada", "mensagem"] as const;
+
+/** Marcar a demonstração (D-211): o dia e a hora, na hora de Lisboa. */
+export const esquemaDemo = z.object({
+  data: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "data"),
+  hora: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "hora"),
+});
+export type DadosDemo = z.input<typeof esquemaDemo>;
 
 const opcional = (maximo: number) => z.string().trim().max(maximo).optional().default("");
 const data = z.union([z.literal(""), z.string().regex(/^\d{4}-\d{2}-\d{2}$/)]).default("");

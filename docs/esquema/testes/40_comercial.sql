@@ -64,6 +64,7 @@ select teste.zero($$select 1 from convites_adesao$$, 'N: o dono não lê convite
 select teste.erro($$insert into leads (nome_contacto, telefone) values ('x', '1')$$, 'N: o dono não cria leads');
 select teste.zero($$update leads set nome_contacto = 'x'$$, 'N: o dono não altera leads');
 select teste.erro($$select mudar_estado_lead('c0000000-0000-0000-0000-000000000001', 'contactado')$$, 'N: o dono não muda o estado de um lead');
+select teste.erro($$select marcar_demo_lead('c0000000-0000-0000-0000-000000000001', now() + interval '1 day')$$, 'N: o dono não marca demonstrações');
 select teste.erro($$select criar_proposta('c0000000-0000-0000-0000-000000000001', '{}')$$, 'N: o dono não cria propostas');
 select teste.erro($$select apagar_leads_inativos(1)$$, 'N: o dono não apaga leads');
 select teste.erro($$insert into storage.objects (bucket_id, name) values ('comercial', 'leads/x.pdf')$$, 'N: o dono não escreve no bucket comercial');
@@ -98,6 +99,16 @@ select teste.erro($$select mudar_estado_lead('c0000000-0000-0000-0000-0000000000
 select teste.erro($$select mudar_estado_lead('c0000000-0000-0000-0000-000000000002', 'ganho')$$, 'N: «ganho» não se escolhe à mão');
 select mudar_estado_lead('c0000000-0000-0000-0000-000000000002', 'contactado');
 select teste.ok((select count(*) from lead_eventos where lead_id = 'c0000000-0000-0000-0000-000000000002' and tipo = 'estado') = 1, 'N: a mudança de estado fica no histórico');
+-- Demonstração marcada (D-211): com data e hora, nunca no passado nem à mão sem data.
+select teste.erro($$select mudar_estado_lead('c0000000-0000-0000-0000-000000000002', 'demo_marcada')$$, 'N: «Demo marcada» não se escolhe sem data');
+select teste.erro($$select marcar_demo_lead('c0000000-0000-0000-0000-000000000002', timestamptz '2026-01-01 10:00+00')$$, 'N: a demonstração não se marca no passado');
+select marcar_demo_lead('c0000000-0000-0000-0000-000000000002', timestamptz '2027-01-15 15:30+00');
+select teste.ok((select estado = 'demo_marcada' and demo_em = timestamptz '2027-01-15 15:30+00' and proxima_acao = 'Demonstração'
+                   from leads where id = 'c0000000-0000-0000-0000-000000000002'), 'N: marcar a demonstração muda o estado, guarda a hora e a próxima ação');
+select teste.ok((select count(*) from lead_eventos where lead_id = 'c0000000-0000-0000-0000-000000000002'
+                  and tipo = 'sistema' and texto like 'Demonstração marcada para %') = 1, 'N: a marcação fica no histórico');
+select mudar_estado_lead('c0000000-0000-0000-0000-000000000002', 'demo_feita');
+select teste.ok((select estado from leads where id = 'c0000000-0000-0000-0000-000000000002') = 'demo_feita', 'N: depois da reunião, «Demo feita»');
 
 select teste.erro($$select criar_proposta('c0000000-0000-0000-0000-000000000002',
   '{"plano":"basic","profissionais":3,"mensalidade_sem_iva":19.99,"valor_periodo_sem_iva":19.99,"valor_periodo_com_iva":24.59}')$$, 'N: Basic com 3 profissionais é recusado');

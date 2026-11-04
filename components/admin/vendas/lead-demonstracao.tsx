@@ -4,11 +4,19 @@ import { textos } from "@/lib/i18n/pt-PT";
 
 const t = textos.comercial.demonstracao;
 
-export type LeadOpcao = { id: string; barbearia: string; contacto: string; cidade: string | null };
+export type LeadOpcao = {
+  id: string;
+  barbearia: string;
+  contacto: string;
+  cidade: string | null;
+  /** A hora marcada, por extenso (D-211). */
+  quando: string;
+};
 
 /**
- * O lead da apresentação (D-209): ao escolher, o nome e a cidade da barbearia passam para o
- * formulário; ao gerar, o convite segue para o e-mail do lead.
+ * O lead da apresentação (D-209, D-211): só os que têm a demonstração marcada, pela hora. Ao
+ * escolher, o nome e a cidade da barbearia passam para o formulário; ao gerar, o lembrete com a
+ * hora, a ligação e o código segue para o e-mail do lead.
  */
 export function LeadDemonstracao({
   leads,
@@ -30,8 +38,7 @@ export function LeadDemonstracao({
         <option value="">{t.leadNenhum}</option>
         {leads.map((l) => (
           <option key={l.id} value={l.id}>
-            {l.barbearia} · {l.contacto}
-            {l.cidade ? ` · ${l.cidade}` : ""}
+            {l.quando} · {l.barbearia} · {l.contacto}
           </option>
         ))}
       </select>

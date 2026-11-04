@@ -1,4 +1,4 @@
-import { diaSemanaDe, diasEntreDatas, somarDias } from "@/lib/formatacao/datas";
+import { diaSemanaDe, diasEntreDatas, hojeIso, somarDias } from "@/lib/formatacao/datas";
 
 // Regras de apresentação do Comercial (N.3): o que fica realçado no funil e nos alertas do
 // painel geral. Sem tarefas agendadas (D-16): calcula-se ao ler.
@@ -38,3 +38,22 @@ export const propostaAExpirar = (validaAte: string, hoje: string, dias = 3) => {
 /** Lead do site sem o passo 2 do formulário (aba «Incompletos», D-50, D-150). */
 export const leadIncompleto = (lead: { origem: string; temPasso2: boolean }) =>
   lead.origem === "landing" && !lead.temPasso2;
+
+/** Quantos dias dura o pós-venda de um contrato anual (D-211). */
+export const DIAS_POS_VENDA_ANUAL = 90;
+
+/**
+ * A coluna do funil de um lead (D-211): um lead ganho fica em «Pós-venda» sempre que o contrato é
+ * mensal, e nos primeiros 90 dias quando é anual; depois volta a «Ganho».
+ */
+export function colunaDoFunil(
+  estado: string,
+  ganho: { assinadoEm: string; periodicidade: string } | undefined,
+  hoje: string,
+): string {
+  if (estado !== "ganho" || !ganho) return estado;
+  if (ganho.periodicidade !== "anual") return "pos_venda";
+  return diasEntreDatas(hojeIso(new Date(ganho.assinadoEm)), hoje) < DIAS_POS_VENDA_ANUAL
+    ? "pos_venda"
+    : "ganho";
+}

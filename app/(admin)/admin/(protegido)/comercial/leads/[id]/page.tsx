@@ -7,6 +7,7 @@ import { FormularioLead } from "@/components/admin/comercial/formulario-lead";
 import { HistoricoLead } from "@/components/admin/comercial/historico-lead";
 import { ListaPropostas } from "@/components/admin/comercial/lista-propostas";
 import { MensagensLead } from "@/components/admin/comercial/mensagens-lead";
+import { MarcarDemoLead } from "@/components/admin/comercial/marcar-demo-lead";
 import { MudarEstadoLead } from "@/components/admin/comercial/mudar-estado-lead";
 import { RegistarEventoLead } from "@/components/admin/comercial/registar-evento-lead";
 import { Etiqueta } from "@/components/nucleo/etiqueta";
@@ -14,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Secao } from "@/components/nucleo/secao";
 import { eAdministrador } from "@/lib/admin/acesso";
 import { exigirEquipaPlataforma } from "@/lib/admin/contexto";
-import { dataCurta, hojeIso } from "@/lib/formatacao/datas";
+import { dataCurta, hojeIso, quandoPorExtenso } from "@/lib/formatacao/datas";
 import { centimosDeNumeric, textoDeCentimos } from "@/lib/formatacao/dinheiro";
 import { textos } from "@/lib/i18n/pt-PT";
 import { listarComerciais } from "@/lib/repositorios/admin/equipa";
@@ -146,6 +147,21 @@ export default async function FichaLead({ params }: { params: Promise<{ id: stri
                 comerciais={comerciais}
               />
             </div>
+          ) : null}
+          {lead.estado !== "ganho" && lead.estado !== "perdido" ? (
+            <Secao id="lead-demo" titulo={t.marcarDemo.titulo}>
+              <div className="cartao rounded-2xl p-5">
+                <MarcarDemoLead
+                  id={lead.id}
+                  quando={
+                    lead.estado === "demo_marcada" && lead.demo_em
+                      ? quandoPorExtenso(lead.demo_em)
+                      : null
+                  }
+                  hoje={hojeIso()}
+                />
+              </div>
+            </Secao>
           ) : null}
           <Secao id="lead-estado" titulo={t.ficha.mudarEstado}>
             <div className="cartao rounded-2xl p-5">

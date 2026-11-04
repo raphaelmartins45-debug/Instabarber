@@ -1057,8 +1057,9 @@ create table leads (
   origem              text not null default 'landing'
                       check (origem in ('landing','whatsapp','email','indicacao','visita','instagram','outro')),
   estado              text not null default 'novo'
-                      check (estado in ('novo','contactado','demonstracao','proposta','ganho','perdido')),
+                      check (estado in ('novo','contactado','demo_marcada','demo_feita','proposta','ganho','perdido')),
   motivo_perda        text,
+  demo_em             timestamptz,                -- a demonstração marcada (D-211)
   proxima_acao        text,
   proxima_acao_em     date,
   ultimo_contacto_em  timestamptz not null default now(),

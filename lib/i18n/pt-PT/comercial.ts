@@ -16,12 +16,53 @@ export const comercial = {
   } as Record<string, string>,
   estados: {
     novo: "Novo",
-    contactado: "Contactado",
-    demonstracao: "Demonstração",
-    proposta: "Proposta",
+    contactado: "Em contacto",
+    demo_marcada: "Demo marcada",
+    demo_feita: "Demo feita",
+    proposta: "Proposta enviada",
     ganho: "Ganho",
+    pos_venda: "Pós-venda",
     perdido: "Perdido",
   } as Record<string, string>,
+  // Marcar a demonstração (D-211)
+  marcarDemo: {
+    titulo: "Demonstração",
+    marcada: (quando: string) => `Marcada para ${quando}.`,
+    data: "Dia",
+    hora: "Hora",
+    marcar: "Marcar demonstração",
+    remarcar: "Remarcar",
+    feito: "Demonstração marcada.",
+    emailEnviado: (email: string) => `Confirmação enviada para ${email}.`,
+    emailFalhou: "A confirmação por e-mail não seguiu. Envie pelo WhatsApp.",
+    semEmail: "O lead não tem e-mail: envie a confirmação pelo WhatsApp.",
+    whatsapp: "Confirmar pelo WhatsApp",
+    mensagemWhatsapp: (nome: string, quando: string) =>
+      `Olá ${nome}! Fica marcada a demonstração da InstaBarber para ${quando}. Umas horas antes envio-lhe a ligação e o código de acesso. Até lá! Comercial InstaBarber`,
+    eventoEmail: (email: string) => `Confirmação da demonstração enviada por e-mail para ${email}.`,
+    proximas: "Demonstrações marcadas",
+    proximasAjuda: "Hoje e nos próximos 7 dias.",
+    nenhuma: "Sem demonstrações marcadas.",
+    hoje: "Hoje",
+    erros: {
+      data: "Escolha o dia.",
+      hora: "Escolha a hora.",
+      demo_no_passado: "Escolha um dia e uma hora que ainda não passaram.",
+      lead_fechado: "Este lead está fechado.",
+      generico: "Não foi possível marcar. Tente outra vez.",
+    } as Record<string, string>,
+    email: {
+      assunto: "A sua demonstração da InstaBarber está marcada",
+      ola: (nome: string) => `Olá ${nome},`,
+      corpo: (quando: string) => [
+        `Obrigado pelo seu interesse na InstaBarber. A sua demonstração fica marcada para ${quando}.`,
+        "Umas horas antes, recebe outro e-mail com a ligação e o código de acesso ao portal da demonstração, onde vai ver o painel do gestor, o do barbeiro e a página da sua barbearia.",
+        "Se precisar de mudar a hora, basta responder a este e-mail.",
+      ],
+      quando: "Data e hora",
+      despedida: "Até breve,",
+    },
+  },
   origens: {
     landing: "Site",
     whatsapp: "WhatsApp",
@@ -767,26 +808,33 @@ export const comercial = {
     lead: "Lead desta apresentação",
     leadNenhum: "Sem lead (só para treinar)",
     leadAjuda:
-      "Escolha a barbearia da reunião: o nome e a cidade vêm do lead e, ao gerar, o convite segue para o e-mail dele.",
-    conviteEnviado: (email: string) => `Convite enviado para ${email}, com a ligação e o código.`,
+      "Só os leads com a demonstração marcada. O nome e a cidade vêm do lead e, ao gerar, o lembrete com a hora, a ligação e o código segue para o e-mail dele.",
+    conviteEnviado: (email: string) =>
+      `Lembrete enviado para ${email}, com a hora, a ligação e o código.`,
     conviteFalhou: "O e-mail do convite não seguiu. Tente «Reenviar convite».",
     conviteSemEmail: "O lead não tem e-mail: envie o convite pelo WhatsApp.",
     reenviarConvite: "Reenviar convite por e-mail",
-    whatsappLead: "Enviar convite pelo WhatsApp",
-    mensagemWhatsapp: (nome: string, ligacao: string, codigo: string) =>
-      `Olá ${nome}! Preparámos a demonstração da sua barbearia na InstaBarber. Abra ${ligacao} e escreva o código ${codigo}. Comercial InstaBarber`,
-    eventoConvite: (email: string) => `Convite da demonstração enviado por e-mail para ${email}.`,
+    whatsappLead: "Enviar lembrete pelo WhatsApp",
+    mensagemWhatsapp: (nome: string, quando: string, ligacao: string, codigo: string) =>
+      `Olá ${nome}! Lembrete: a sua demonstração da InstaBarber é ${quando}.\n\nComo entrar:\n1. Abra ${ligacao}\n2. Escreva o código ${codigo}\n3. Escolha a vista: o painel do gestor, o do barbeiro ou a página da sua barbearia (cada uma abre numa janela nova).\n\nAté já! Comercial InstaBarber`,
+    eventoConvite: (email: string) =>
+      `Lembrete da demonstração (ligação e código) enviado por e-mail para ${email}.`,
     convite: {
-      assunto: (barbearia: string) => `A demonstração da ${barbearia} está pronta`,
+      assunto: (quando: string) => `Lembrete: a sua demonstração da InstaBarber é ${quando}`,
       ola: (nome: string) => `Olá ${nome},`,
-      corpo: (barbearia: string) => [
-        `Preparámos a demonstração da ${barbearia} na InstaBarber: o painel do gestor, o do barbeiro e a página que os seus clientes vão ver, com o seu nome e o seu logótipo.`,
-        "Abra a ligação e escreva o código de acesso. Pode experimentar à vontade: são dados de exemplo.",
+      corpo: (barbearia: string, quando: string) => [
+        `A sua demonstração é ${quando}. Preparámos a ${barbearia} na InstaBarber: o painel do gestor, o do barbeiro e a página que os seus clientes vão ver, com o seu nome e o seu logótipo.`,
+      ],
+      comoTitulo: "Como entrar",
+      como: [
+        "Carregue em «Abrir a demonstração» (ou abra instabarber.pt/demo).",
+        "Escreva o código de acesso abaixo.",
+        "Escolha a vista: o painel do gestor, o do barbeiro ou a página da sua barbearia. Cada uma abre numa janela nova.",
       ],
       codigoNota: "Código de acesso",
       botao: "Abrir a demonstração",
-      nota: "O código vale até ao fim da apresentação.",
-      despedida: "Com os melhores cumprimentos,",
+      nota: "O código vale até ao fim da apresentação. Pode experimentar à vontade: são dados de exemplo.",
+      despedida: "Até já,",
     },
     // O código de acesso (D-208)
     codigo: "Código de acesso",

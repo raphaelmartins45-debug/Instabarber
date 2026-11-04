@@ -1,3 +1,4 @@
+import { DemosMarcadas } from "@/components/admin/comercial/demos-marcadas";
 import { ComunicadosEquipa } from "@/components/admin/painel/comunicados-equipa";
 import { ListaAlertas } from "@/components/admin/painel/lista-alertas";
 import { Indicador } from "@/components/nucleo/indicador";
@@ -131,6 +132,7 @@ export default async function PainelGeral() {
     <section className="grid gap-6">
       <h1 className="text-titulo font-extrabold tracking-tight">{t.titulo}</h1>
       <ComunicadosEquipa />
+      <DemosMarcadas leads={leads} />
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Indicador
           rotulo={t.ativas}

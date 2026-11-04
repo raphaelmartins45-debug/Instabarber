@@ -115,6 +115,19 @@ export function diaPorExtenso(dataIso: string): string {
   return format(meioDia(dataIso), "EEEE, d 'de' MMMM", { locale: pt });
 }
 
+/**
+ * Quando é uma reunião, dito por extenso (D-211): «hoje às 15:30», «amanhã às 10:00» ou
+ * «quinta-feira, 6 de novembro, às 15:30».
+ */
+export function quandoPorExtenso(instante: Date | string, agora: Date = new Date()): string {
+  const dia = hojeIso(new Date(instante));
+  const hora = horaCurta(instante);
+  const hoje = hojeIso(agora);
+  if (dia === hoje) return `hoje às ${hora}`;
+  if (dia === somarDias(hoje, 1)) return `amanhã às ${hora}`;
+  return `${diaPorExtenso(dia)}, às ${hora}`;
+}
+
 /** A mesma data no mês seguinte; dias 29 a 31 passam ao último dia do mês (F.4.2). */
 export function mesmoDiaMesSeguinte(dataIso: string): string {
   return format(addMonths(meioDia(dataIso), 1), "yyyy-MM-dd");

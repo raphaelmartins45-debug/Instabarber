@@ -171,6 +171,21 @@ export async function mudarEstadoLead(bd: ClienteBD, id: string, d: DadosEstado)
   return !error;
 }
 
+/** Marca (ou remarca) a demonstração do lead (D-211). Devolve o erro da base de dados, se houver. */
+export async function marcarDemoLead(
+  bd: ClienteBD,
+  id: string,
+  em: Date,
+): Promise<{ ok: true } | { ok: false; erro: string }> {
+  const { error } = await bd.rpc("marcar_demo_lead", {
+    p_lead: uuid.parse(id),
+    p_em: em.toISOString(),
+  });
+  if (!error) return { ok: true };
+  const conhecido = ["demo_no_passado", "lead_fechado"].find((c) => error.message.includes(c));
+  return { ok: false, erro: conhecido ?? "generico" };
+}
+
 export async function registarEventoLead(
   bd: ClienteBD,
   id: string,
