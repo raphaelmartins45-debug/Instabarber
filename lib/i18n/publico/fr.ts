@@ -48,8 +48,12 @@ export const fr = {
     clubeNota: "Abonnement mensuel, payé au comptoir.",
     porMes: (preco: string) => `${preco} par mois`,
     incluido: (n: number, servico: string) => `${n}× ${servico}`,
-    cartoes: "Cartes cadeaux",
-    cartoesNota: "Offrez une carte du montant de votre choix. En vente au comptoir.",
+    cartaoTitulo: (nome: string) => `Offrez un moment chez ${nome}`,
+    cartaoTexto:
+      "Une carte cadeau du montant de votre choix, valable pour toutes les prestations de la maison. Le cadeau idéal pour qui aime prendre soin de soi.",
+    falarConnosco: "Nous contacter",
+    cartaoMensagem: (nome: string) =>
+      `Bonjour ! J'aimerais savoir comment offrir une carte cadeau ${nome}.`,
     contactos: "Contacts",
     telefone: "Téléphone",
     whatsapp: "WhatsApp",

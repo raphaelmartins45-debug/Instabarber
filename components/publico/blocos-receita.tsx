@@ -2,7 +2,6 @@ import Link from "next/link";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import type { TextosPublicos } from "@/lib/i18n/publico";
 import {
-  funcionalidadesLigadas,
   listarClubesPublicos,
   listarProdutosPublicos,
 } from "@/lib/repositorios/barbearias-publicas";
@@ -10,7 +9,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { Bloco } from "./blocos";
 
 /**
- * Clube, loja e cartões oferta na página pública (F.4.2, F.4.4, F.4.9). Tudo se paga ao balcão;
+ * Clube e loja na página pública (F.4.2, F.4.4); o cartão oferta fica no fim (D-206). Tudo se paga ao balcão;
  * cada bloco só aparece com a funcionalidade ligada e com conteúdo.
  */
 export async function BlocosReceita({
@@ -23,10 +22,9 @@ export async function BlocosReceita({
   encomendar: string;
 }) {
   const bd = await criarClienteServidor();
-  const [produtos, clubes, ligadas] = await Promise.all([
+  const [produtos, clubes] = await Promise.all([
     listarProdutosPublicos(bd, inquilinoId),
     listarClubesPublicos(bd, inquilinoId),
-    funcionalidadesLigadas(bd, inquilinoId, ["cartoes_oferta"]),
   ]);
   const b = t.blocos;
   return (
@@ -80,11 +78,6 @@ export async function BlocosReceita({
               {b.encomendar}
             </Link>
           ) : null}
-        </Bloco>
-      ) : null}
-      {ligadas.has("cartoes_oferta") ? (
-        <Bloco id="cartoes" titulo={b.cartoes}>
-          <p className="text-sm text-muted-foreground">{b.cartoesNota}</p>
         </Bloco>
       ) : null}
     </>

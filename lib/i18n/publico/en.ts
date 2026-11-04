@@ -48,8 +48,11 @@ export const en = {
     clubeNota: "Monthly subscription, paid at the counter.",
     porMes: (preco: string) => `${preco} a month`,
     incluido: (n: number, servico: string) => `${n}× ${servico}`,
-    cartoes: "Gift cards",
-    cartoesNota: "Give a card with any amount. Sold at the counter.",
+    cartaoTitulo: (nome: string) => `Give an experience at ${nome}`,
+    cartaoTexto:
+      "A gift card with the amount you choose, for any service in the house. The right present for someone who likes to look after themselves.",
+    falarConnosco: "Contact us",
+    cartaoMensagem: (nome: string) => `Hello! I'd like to know how to give a ${nome} gift card.`,
     contactos: "Contact",
     telefone: "Phone",
     whatsapp: "WhatsApp",

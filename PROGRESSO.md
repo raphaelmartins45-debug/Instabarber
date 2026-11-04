@@ -128,6 +128,8 @@ O dono está ausente e autorizou avançar sem esperar (D-120). Tudo o que depend
 43. **Ciclo completo numa barbearia de ensaio em produção** (L.8, passo 11): formulário, pedido, aprovação, convite, marcação sem conta, código de acesso, conclusão, relatório. Depois, apagar a barbearia de ensaio (`eliminar_inquilino()`).
 44. **Restauro testado a partir da produção** (P-14), num projeto novo e vazio, antes da primeira barbearia real. A cópia externa precisa de um sítio cifrado fora do Supabase (indique qual: disco cifrado, Drive, etc.). Os ficheiros do Storage copiam-se à parte.
 
+45. **Cartão oferta comprado na página pública («Compre aqui»)** — ideia do dono, só documentada (D-206): escolher valor (mínimo o serviço mais barato), para quem e a cor; pedido por pagar com mensagem pronta para a barbearia no WhatsApp; o gestor aprova com «Pago» e envia a imagem do cartão (Para/De, código, logótipo, instruções). Também como produto na loja. Detalhe e sugestões em `docs/futuro/cartao-oferta-online.md`. Entra no lugar do «Fale connosco» do bloco do cartão oferta.
+
 ## Módulo pendente de ativação: fatura-recibo automática (D-170)
 
 **Estado:** construído, testado e publicado **desligado**. Enquanto estiver desligado, tudo funciona

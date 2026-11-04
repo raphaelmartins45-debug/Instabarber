@@ -1,4 +1,5 @@
 import { Barras } from "@/components/publico/barras";
+import { BlocoCartaoOferta } from "@/components/publico/bloco-cartao-oferta";
 import { BlocoEquipa, BlocoPromocoes, BlocoServicos } from "@/components/publico/blocos";
 import { BlocosReceita } from "@/components/publico/blocos-receita";
 import {
@@ -181,6 +182,7 @@ export async function PaginaPublica({
           </>
         }
       />
+      <BlocoCartaoOferta t={t} inquilinoId={b.id} nome={b.nome} whatsapp={b.whatsapp} />
       <Rodape
         t={t}
         lingua={lingua}

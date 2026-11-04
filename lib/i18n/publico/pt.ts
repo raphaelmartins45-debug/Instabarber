@@ -48,8 +48,12 @@ export const pt = {
     clubeNota: "Subscrição mensal, paga ao balcão.",
     porMes: (preco: string) => `${preco} por mês`,
     incluido: (n: number, servico: string) => `${n}× ${servico}`,
-    cartoes: "Cartões oferta",
-    cartoesNota: "Ofereça um cartão com o valor que quiser. À venda no balcão.",
+    cartaoTitulo: (nome: string) => `Ofereça uma experiência na ${nome}`,
+    cartaoTexto:
+      "Um cartão oferta com o valor que escolher, para usar em qualquer serviço da casa. A prenda certa para quem gosta de se cuidar.",
+    falarConnosco: "Fale connosco",
+    cartaoMensagem: (nome: string) =>
+      `Olá! Gostava de saber como oferecer um cartão oferta da ${nome}.`,
     contactos: "Contactos",
     telefone: "Telefone",
     whatsapp: "WhatsApp",
