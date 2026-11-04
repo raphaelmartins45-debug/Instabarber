@@ -1,3 +1,4 @@
+import { Package } from "lucide-react";
 import Link from "next/link";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import type { TextosPublicos } from "@/lib/i18n/publico";
@@ -6,7 +7,7 @@ import {
   listarProdutosPublicos,
 } from "@/lib/repositorios/barbearias-publicas";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
-import { Bloco } from "./blocos";
+import { Bloco, CARTAO } from "./blocos";
 
 /**
  * Clube e loja na página pública (F.4.2, F.4.4); o cartão oferta fica no fim (D-206). Tudo se paga ao balcão;
@@ -50,22 +51,39 @@ export async function BlocosReceita({
       {produtos.length ? (
         <Bloco id="loja" titulo={b.loja}>
           <p className="text-sm text-muted-foreground">{b.lojaNota}</p>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {produtos.map((p) => (
-              <li key={p.id} className="grid gap-2 rounded-[var(--raio)] border bg-card p-3">
-                {p.fotoUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
-                  <img
-                    src={p.fotoUrl}
-                    alt=""
-                    loading="lazy"
-                    className="aspect-square w-full rounded-md object-cover"
-                  />
-                ) : null}
-                <span className="font-semibold">{p.nome}</span>
-                <span className="text-sm">
-                  {p.esgotado ? b.esgotado : formatarDinheiro(p.precoCent)}
-                </span>
+              <li key={p.id} className={p.esgotado ? "opacity-60" : undefined}>
+                <Link
+                  href={encomendar}
+                  className={`${CARTAO} grid h-full content-start overflow-hidden transition-colors hover:border-primary/60`}
+                  data-testid="produto-inicio"
+                >
+                  <span className="relative grid aspect-square place-items-center bg-muted text-muted-foreground">
+                    {p.fotoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
+                      <img
+                        src={p.fotoUrl}
+                        alt=""
+                        loading="lazy"
+                        className="size-full object-cover"
+                      />
+                    ) : (
+                      <Package aria-hidden className="size-8" />
+                    )}
+                    {p.esgotado ? (
+                      <span className="absolute top-2 left-2 rounded-full bg-card px-2.5 py-1 text-xs font-bold text-card-foreground">
+                        {b.esgotado}
+                      </span>
+                    ) : null}
+                  </span>
+                  <span className="grid gap-0.5 p-3">
+                    <span className="truncate text-sm font-semibold">{p.nome}</span>
+                    <span className="numero text-base font-bold">
+                      {formatarDinheiro(p.precoCent)}
+                    </span>
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
@@ -75,7 +93,7 @@ export async function BlocosReceita({
               className="inline-flex h-12 items-center justify-center rounded-[var(--raio-botao)] bg-primary px-5 font-bold text-primary-foreground sm:justify-self-start"
               data-testid="encomendar"
             >
-              {b.encomendar}
+              {b.verLoja}
             </Link>
           ) : null}
         </Bloco>

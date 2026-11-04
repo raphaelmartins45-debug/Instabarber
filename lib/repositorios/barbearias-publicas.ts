@@ -51,6 +51,9 @@ export type ProfissionalPublico = {
   nome: string;
   fotoUrl: string | null;
   portfolio: string[];
+  /** A frase do perfil e as especialidades (D-210). */
+  apresentacao: string | null;
+  especialidades: string[];
 };
 
 /** A equipa ativa e, quando visível, o portfólio de cada um (F.4.6). */
@@ -61,7 +64,7 @@ export async function listarEquipaPublica(
   const [equipa, fotos] = await Promise.all([
     bd
       .from("publico_profissionais")
-      .select("id, nome_apresentado, foto_url, ordem")
+      .select("id, nome_apresentado, foto_url, ordem, apresentacao, especialidades")
       .eq("inquilino_id", inquilinoId)
       .order("ordem"),
     bd
@@ -79,6 +82,8 @@ export async function listarEquipaPublica(
             id: p.id,
             nome: p.nome_apresentado,
             fotoUrl: p.foto_url,
+            apresentacao: p.apresentacao,
+            especialidades: p.especialidades ?? [],
             portfolio: fotos.data
               .filter((f) => f.profissional_id === p.id && f.foto_url)
               .map((f) => f.foto_url!),

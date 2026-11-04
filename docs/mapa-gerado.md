@@ -92,6 +92,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(publico)/b/[slug]/barbeiro/page.tsx`
 - `app/(publico)/b/[slug]/cliente/page.tsx`
 - `app/(publico)/b/[slug]/entrar/page.tsx`
+- `app/(publico)/b/[slug]/equipa/[id]/page.tsx`
 - `app/(publico)/b/[slug]/fila/page.tsx`
 - `app/(publico)/b/[slug]/gestor/page.tsx`
 - `app/(publico)/b/[slug]/loja/page.tsx`

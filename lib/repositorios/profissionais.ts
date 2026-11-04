@@ -106,9 +106,11 @@ export type FichaProfissional = MembroEquipa & {
   renda_valor: number | null;
   renda_dia_vencimento: number | null;
   portfolio_visivel: boolean;
+  apresentacao: string | null;
+  especialidades: string[];
 };
 
-const COLUNAS_FICHA = `${COLUNAS}, nif, comissao_percent, modelo_caixa, renda_valor, renda_dia_vencimento, portfolio_visivel`;
+const COLUNAS_FICHA = `${COLUNAS}, nif, comissao_percent, modelo_caixa, renda_valor, renda_dia_vencimento, portfolio_visivel, apresentacao, especialidades`;
 
 /** A equipa com os dados da ficha (comissão, modelo de caixa, renda), para o gestor e os acertos. */
 export async function listarFichasEquipa(

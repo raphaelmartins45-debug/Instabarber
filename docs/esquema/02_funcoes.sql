@@ -168,7 +168,7 @@ begin
     if new.ativo is false and old.ativo is true then new.desativado_em := now(); end if;
     return new;
   end if;
-  if not (v_mudou <@ array['nome_apresentado','foto_url','portfolio_visivel']) then
+  if not (v_mudou <@ array['nome_apresentado','foto_url','portfolio_visivel','apresentacao','especialidades']) then
     raise exception 'campo_protegido' using errcode = '42501', detail = array_to_string(v_mudou, ',');
   end if;
   return new;
@@ -1195,7 +1195,8 @@ create view publico_servicos as
 
 create view publico_profissionais as
   select p.id, p.inquilino_id, p.nome_apresentado, p.foto_url, p.ordem,
-         (p.portfolio_visivel and public.funcionalidade_ativa(p.inquilino_id, 'portfolio_barbeiro')) as portfolio_visivel
+         (p.portfolio_visivel and public.funcionalidade_ativa(p.inquilino_id, 'portfolio_barbeiro')) as portfolio_visivel,
+         p.apresentacao, p.especialidades
     from profissionais p join inquilinos i on i.id = p.inquilino_id
    where p.ativo and i.estado = 'ativo';
 
@@ -2150,6 +2151,17 @@ begin
       (v_id, 'Tiago Demonstração', 'Tiago', 45, 2), (v_id, 'Marta Demonstração', 'Marta', 50, 3);
   end if;
   select array_agg(id order by ordem) into v_prof from public.profissionais where inquilino_id = v_id;
+  -- A apresentação e as especialidades da equipa (D-210): o cartão e o perfil na página pública.
+  update public.profissionais set
+    apresentacao = case ordem
+      when 1 then 'Especialista em degradês e barba à navalha. Gosto de conversa boa e de cortes que duram.'
+      when 2 then 'Cortes à tesoura e estilos clássicos, com tempo para cada detalhe.'
+      else 'Cortes de criança e estilos modernos, com paciência e boa disposição.' end,
+    especialidades = case ordem
+      when 1 then array['Degradês', 'Barba clássica']
+      when 2 then array['Cortes à tesoura', 'Clássicos']
+      else array['Cortes de criança', 'Estilos modernos'] end
+   where inquilino_id = v_id;
   insert into public.horarios_profissional (inquilino_id, profissional_id, dia_semana, inicio, fim)
   select v_id, p, d, '09:00', '19:30' from unnest(v_prof) p, generate_series(2, 6) d;
 

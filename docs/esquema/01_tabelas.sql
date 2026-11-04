@@ -175,6 +175,7 @@ create table profissionais (
   perfil_id             uuid unique references perfis(id) on delete set null,
   nome                  text not null,
   nome_apresentado      text not null,              -- o que aparece na agenda e na página pública
+  apresentacao          text check (apresentacao is null or char_length(apresentacao) <= 280), -- a frase do perfil público (D-210)
   email                 text,
   nif                   text check (nif ~ '^[0-9]{9}$'),
   foto_url              text,

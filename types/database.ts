@@ -4257,6 +4257,7 @@ export type Database = {
       };
       profissionais: {
         Row: {
+          apresentacao: string | null;
           ativo: boolean;
           comissao_percent: number;
           criado_em: string;
@@ -4280,6 +4281,7 @@ export type Database = {
         };
         ComputedFields: never;
         Insert: {
+          apresentacao?: string | null;
           ativo?: boolean;
           comissao_percent?: number;
           criado_em?: string;
@@ -4302,6 +4304,7 @@ export type Database = {
           renda_valor?: number | null;
         };
         Update: {
+          apresentacao?: string | null;
           ativo?: boolean;
           comissao_percent?: number;
           criado_em?: string;
@@ -5352,6 +5355,8 @@ export type Database = {
       publico_profissionais: {
         Row: {
           foto_url: string | null;
+          apresentacao: string | null;
+          especialidades: string[] | null;
           id: string | null;
           inquilino_id: string | null;
           nome_apresentado: string | null;

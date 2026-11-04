@@ -10,7 +10,8 @@ import { entradaEquipaAqui } from "@/lib/inquilino/endereco";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 
 // Perfil do barbeiro (E.3.1): o próprio ou o gestor. O gatilho proteger_profissional deixa o
-// barbeiro mudar só o nome apresentado, a fotografia e o «Tornar visível».
+// barbeiro mudar só o nome apresentado, a fotografia, o «Tornar visível», a apresentação e as
+// especialidades (D-210).
 
 export type Resultado = { ok: true } | { ok: false; erro: string };
 
@@ -33,6 +34,14 @@ export async function guardarPerfil(formulario: FormData): Promise<Resultado> {
   if (!contexto) return { ok: false, erro: "erro" };
   const nome = String(formulario.get("nome") ?? "").trim();
   if (!nome || nome.length > 40) return { ok: false, erro: "nome" };
+  const apresentacao = String(formulario.get("apresentacao") ?? "").trim();
+  if (apresentacao.length > 280) return { ok: false, erro: "apresentacao" };
+  const especialidades = String(formulario.get("especialidades") ?? "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+  if (especialidades.length > 3 || especialidades.some((e) => e.length > 30))
+    return { ok: false, erro: "especialidades" };
   const bd = await criarClienteServidor();
   const ficheiro = formulario.get("foto");
   let foto_url: string | undefined;
@@ -48,6 +57,8 @@ export async function guardarPerfil(formulario: FormData): Promise<Resultado> {
   const antes = await obterProfissional(bd, contexto.barbearia.id, id);
   const r = await alterarProfissional(bd, contexto.barbearia.id, id, {
     nome_apresentado: nome,
+    apresentacao: apresentacao || null,
+    especialidades,
     ...(foto_url ? { foto_url } : {}),
   });
   if (!r.ok) return { ok: false, erro: "erro" };

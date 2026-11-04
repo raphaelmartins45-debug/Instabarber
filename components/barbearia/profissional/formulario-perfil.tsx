@@ -17,10 +17,14 @@ export function FormularioPerfil({
   profissionalId,
   nome,
   fotoUrl,
+  apresentacao,
+  especialidades,
 }: {
   profissionalId: string;
   nome: string;
   fotoUrl: string | null;
+  apresentacao: string | null;
+  especialidades: string[];
 }) {
   const [aviso, setAviso] = useState<{ tipo: "erro" | "sucesso"; texto: string }>();
   const [aGuardar, iniciar] = useTransition();
@@ -43,6 +47,25 @@ export function FormularioPerfil({
         ajuda={t.nomeAjuda}
         defaultValue={nome}
         maxLength={40}
+      />
+      <label className="grid gap-1.5">
+        <span className="rotulo">{t.apresentacao}</span>
+        <textarea
+          name="apresentacao"
+          defaultValue={apresentacao ?? ""}
+          maxLength={280}
+          rows={3}
+          className="rounded-md border bg-card px-3 py-2 text-sm"
+        />
+        <span className="text-xs text-muted-foreground">{t.apresentacaoAjuda}</span>
+      </label>
+      <Campo
+        id="especialidades"
+        name="especialidades"
+        rotulo={t.especialidades}
+        ajuda={t.especialidadesAjuda}
+        defaultValue={especialidades.join(", ")}
+        maxLength={100}
       />
       <div className="flex items-center gap-3">
         {fotoUrl ? (

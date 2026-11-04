@@ -1194,3 +1194,11 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Feito:** no separador Demo, «Lead desta apresentação» (leads em aberto que a pessoa vê pelo RLS; o comercial só os seus). Ao escolher, o nome e a cidade da barbearia passam para o formulário. Ao «Gerar», com lead: o e-mail do convite segue de comercial@ (`lib/email/convite-demonstracao.ts`, assinatura «Comercial InstaBarber», D-101) com `instabarber.pt/demo` e o código; fica no histórico do lead («mensagem», sem o código) e o lead passa a «Demonstração» se estava em «Novo» ou «Contactado». O WhatsApp do lead fica pronto num botão (`wa.me`, regra 7: o envio confirma-se à mão). «Reenviar convite por e-mail» volta a mandar o código que está à vista.
 - **Verificado:** typecheck, lint, Vitest (o e-mail leva a ligação e o código, no texto e no HTML) e build.
 - **A seguir:** «Agendar demo» nos leads (data e hora, e-mail de confirmação, convite no dia, lembrete por WhatsApp e agenda das reuniões nos painéis).
+
+## D-210 · 04/11/2026 · Cartão compacto da equipa, perfil público do barbeiro e loja da página inicial com os cartões da montra — dono
+- **Pedido do dono:** a página pública (também a da demonstração) com os cartões novos da equipa e da loja, como no esboço aprovado da D-205.
+- **Equipa:** um cartão por barbeiro com a fotografia (ou a inicial), o nome, as especialidades, «Marcar» (já com o barbeiro escolhido) e «Ver perfil» (`components/publico/bloco-equipa.tsx`). O perfil fica em `<slug>.instabarber.pt/equipa/<id>`: fotografia, nome, especialidades, apresentação, «Marcar com …» e os trabalhos em grelha, com o modelo da página.
+- **Painel:** no «O meu perfil», a apresentação (até 280 caracteres) e até três especialidades; o próprio barbeiro pode mudá-las (gatilho `proteger_profissional`).
+- **Loja na página inicial:** os produtos nos cartões da montra (fotografia de ponta a ponta, nome e preço), cada um leva à loja; o botão passa a «Ver a loja».
+- **Avaliações por estrelas:** ficam de fora até o dono confirmar a frase junto da média e a entrada automática ao fim de 14 dias.
+- **Base de dados:** migração `20261104000030_perfil_publico_barbeiro.sql` (coluna `profissionais.apresentacao`, a vista `publico_profissionais` com a apresentação e as especialidades, o gatilho e a demonstração com a equipa já apresentada).

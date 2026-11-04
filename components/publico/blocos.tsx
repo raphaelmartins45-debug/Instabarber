@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { formatarDinheiro } from "@/lib/formatacao/dinheiro";
 import type { TextosPublicos } from "@/lib/i18n/publico";
 import type { Modelo } from "@/lib/publico/estilos";
-import type { ProfissionalPublico, PromocaoPublica } from "@/lib/repositorios/barbearias-publicas";
+import type { PromocaoPublica } from "@/lib/repositorios/barbearias-publicas";
 
 // Blocos por baixo do cabeçalho (E.6, D-200): cada um só aparece com conteúdo e com a
 // funcionalidade ativa. O conteúdo vai em cartões brancos sobre o fundo claro; o título é um
@@ -145,56 +145,6 @@ export function BlocoPromocoes({
           <li key={p.id} className={`${CARTAO} grid content-start gap-1 bg-accent p-5`}>
             <p className="text-lg font-semibold">{p.titulo}</p>
             {p.descricao ? <p className="text-muted-foreground">{p.descricao}</p> : null}
-          </li>
-        ))}
-      </ul>
-    </Bloco>
-  );
-}
-
-export function BlocoEquipa({ t, equipa }: { t: TextosPublicos; equipa: ProfissionalPublico[] }) {
-  if (equipa.length === 0) return null;
-  return (
-    <Bloco id="equipa" titulo={t.blocos.barbeiros}>
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {equipa.map((p) => (
-          <li key={p.id} className={`${CARTAO} grid content-start overflow-hidden`}>
-            {p.fotoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
-              <img
-                src={p.fotoUrl}
-                alt=""
-                loading="lazy"
-                className="aspect-square w-full object-cover"
-              />
-            ) : (
-              <span
-                aria-hidden
-                className="titulo-estilo grid aspect-[4/3] w-full place-items-center bg-muted text-4xl text-muted-foreground"
-              >
-                {p.nome[0]}
-              </span>
-            )}
-            <span className="px-4 py-3 font-semibold" translate="no">
-              {p.nome}
-            </span>
-            {p.portfolio.length ? (
-              <div
-                aria-label={t.blocos.trabalhos(p.nome)}
-                className="grid grid-cols-3 gap-1 px-4 pb-4"
-              >
-                {p.portfolio.slice(0, 6).map((f) => (
-                  // eslint-disable-next-line @next/next/no-img-element -- imagem pública do Storage
-                  <img
-                    key={f}
-                    src={f}
-                    alt=""
-                    loading="lazy"
-                    className="aspect-square w-full object-cover"
-                  />
-                ))}
-              </div>
-            ) : null}
           </li>
         ))}
       </ul>

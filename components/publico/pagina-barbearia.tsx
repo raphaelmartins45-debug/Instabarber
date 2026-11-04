@@ -1,6 +1,7 @@
 import { Barras } from "@/components/publico/barras";
 import { BlocoCartaoOferta } from "@/components/publico/bloco-cartao-oferta";
-import { BlocoEquipa, BlocoPromocoes, BlocoServicos } from "@/components/publico/blocos";
+import { BlocoEquipa } from "@/components/publico/bloco-equipa";
+import { BlocoPromocoes, BlocoServicos } from "@/components/publico/blocos";
 import { BlocosReceita } from "@/components/publico/blocos-receita";
 import {
   BlocoContactos,
@@ -154,7 +155,7 @@ export async function PaginaPublica({
               }))}
             />
             <BlocoPromocoes t={t} promocoes={promocoes} />
-            <BlocoEquipa t={t} equipa={equipa} />
+            <BlocoEquipa t={t} equipa={equipa} base={base} marcar={marcar} />
             <BlocoHistoria t={t} historia={b.historia} />
             <BlocosReceita t={t} inquilinoId={b.id} encomendar={`${base}/loja`} />
           </>

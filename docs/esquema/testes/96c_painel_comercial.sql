@@ -146,6 +146,9 @@ select teste.ok((select count(*) from visitas v join inquilinos i on i.id = v.in
 select teste.ok((select count(*) from marcacoes m join inquilinos i on i.id = m.inquilino_id
                   where i.demonstracao and m.estado = 'agendada') > 5,
   'DEMO: marcações agendadas para os próximos dias');
+select teste.ok((select count(*) from publico_profissionais v join inquilinos i on i.id = v.inquilino_id
+                  where i.demonstracao and v.apresentacao is not null and cardinality(v.especialidades) = 2) = 3,
+  'DEMO: a equipa tem apresentação e especialidades na página pública');
 select teste.ok((select bool_and(c.telefone like '+999%') from clientes c join inquilinos i on i.id = c.inquilino_id
                   where i.demonstracao), 'DEMO: telefones que não existem');
 -- Código de acesso (D-208): criado pela equipa, válido só para a demonstração atual.

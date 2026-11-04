@@ -13,7 +13,10 @@ import { vertical } from "@/lib/vertical/barbearia";
 const t = textos.profissional.perfil;
 export const metadata = { title: `${t.titulo} · ${vertical.camadas.equipa}` };
 
-/** Perfil do barbeiro (E.3.1): nome apresentado, fotografia, portfólio, palavra-passe e sessões. */
+/**
+ * Perfil do barbeiro (E.3.1): nome apresentado, fotografia, apresentação e especialidades
+ * (D-210), portfólio, palavra-passe e sessões.
+ */
 export default async function PerfilProfissional({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const area = await abrirAreaProfissional(id);
@@ -33,6 +36,8 @@ export default async function PerfilProfissional({ params }: { params: Promise<{
           profissionalId={id}
           nome={ficha.nome_apresentado}
           fotoUrl={ficha.foto_url}
+          apresentacao={ficha.apresentacao}
+          especialidades={ficha.especialidades}
         />
       ) : null}
       {portfolioAtivo && pode ? (
