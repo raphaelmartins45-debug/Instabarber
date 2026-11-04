@@ -63,6 +63,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(app)/app/(painel)/equipa/[id]/acertos/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/agenda/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/clientes/page.tsx`
+- `app/(app)/app/(painel)/equipa/[id]/disponibilidade/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/metas/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/page.tsx`
 - `app/(app)/app/(painel)/equipa/[id]/perfil/page.tsx`
@@ -291,6 +292,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 
 - `abrir_ciclo_clube()`
 - `abrir_lembrete_vencimento()`
+- `agora()`
 - `anonimizar_cliente()`
 - `apagar_auditoria_antiga()`
 - `apagar_leads_inativos()`
@@ -300,6 +302,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `auditar_inquilino()`
 - `auditar_interruptor()`
 - `auditar_modulo_plataforma()`
+- `ausencias_antes_gravar()`
 - `avisar_fila_espera()`
 - `barbearia_do_lead()`
 - `barbearia_suspensa()`
@@ -349,6 +352,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `gerar_contrato()`
 - `hoje_lisboa()`
 - `hora_local()`
+- `horarios_antes_gravar()`
 - `inquilinos_onde()`
 - `inscrever_clube()`
 - `instante_lisboa()`
