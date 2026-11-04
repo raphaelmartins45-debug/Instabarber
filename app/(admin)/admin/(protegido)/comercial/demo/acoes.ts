@@ -25,7 +25,7 @@ const esquema = z.object({
 });
 
 function revalidar() {
-  revalidatePath("/admin/vendas/demonstracao");
+  revalidatePath("/admin/comercial/demo");
   revalidatePath("/demo");
 }
 

@@ -14,6 +14,7 @@ const SEPARADORES = [
   { id: "propostas", href: "/admin/comercial/propostas", soAdmin: false },
   { id: "contratos", href: "/admin/comercial/contratos", soAdmin: false },
   { id: "desempenho", href: "/admin/comercial/desempenho", soAdmin: false },
+  { id: "demo", href: "/admin/comercial/demo", soAdmin: false },
   { id: "modelos", href: "/admin/comercial/modelos", soAdmin: true },
   { id: "condicoes", href: "/admin/comercial/condicoes", soAdmin: true },
   { id: "campanhas", href: "/admin/comercial/campanhas", soAdmin: true },

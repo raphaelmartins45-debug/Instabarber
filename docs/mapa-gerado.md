@@ -16,6 +16,7 @@ Gerado por `scripts/gerar-mapa.sh`. **Não editar.** O mapa escrito à mão é `
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/assinado/route.ts`
 - `app/(admin)/admin/(protegido)/comercial/contratos/[id]/pdf/route.ts`
 - `app/(admin)/admin/(protegido)/comercial/contratos/page.tsx`
+- `app/(admin)/admin/(protegido)/comercial/demo/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/desempenho/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/leads/[id]/briefing/page.tsx`
 - `app/(admin)/admin/(protegido)/comercial/leads/[id]/page.tsx`

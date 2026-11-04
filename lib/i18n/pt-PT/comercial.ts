@@ -10,6 +10,7 @@ export const comercial = {
     contratos: "Contratos",
     modelos: "Modelos",
     desempenho: "Desempenho",
+    demo: "Demo",
     condicoes: "Condições",
     campanhas: "Campanhas",
   } as Record<string, string>,

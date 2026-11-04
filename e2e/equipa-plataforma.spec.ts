@@ -222,7 +222,7 @@ test("comercial, gestor e dono: cada um só o que lhe pertence", async ({ browse
 
   // Barbearia de demonstração (D-162, D-207): uma só para todos, por isso só num dos projetos.
   if (projeto === "computador") {
-    await dono.goto("/admin/vendas/demonstracao");
+    await dono.goto("/admin/comercial/demo");
     await dono.getByRole("button", { name: "Reset" }).click();
     await expect(dono.getByText("Demonstração reposta: livre para a próxima reunião.")).toBeVisible();
     await dono.goto("/admin/equipa");

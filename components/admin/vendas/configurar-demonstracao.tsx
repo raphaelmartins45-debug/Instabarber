@@ -5,7 +5,7 @@ import { useRef, useState, useTransition } from "react";
 import {
   gerarDemonstracao,
   reporDemonstracao,
-} from "@/app/(admin)/admin/(protegido)/vendas/demonstracao/acoes";
+} from "@/app/(admin)/admin/(protegido)/comercial/demo/acoes";
 import { Aviso } from "@/components/nucleo/aviso";
 import { Campo } from "@/components/nucleo/campo";
 import { Button } from "@/components/ui/button";
