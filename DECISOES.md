@@ -1217,3 +1217,7 @@ A loja de demonstração da landing mostra uma foto por produto (`public/marca/l
 - **Financeiro** (`components/admin/painel/resumo-financeiro.tsx`): receita recorrente (com e sem IVA), recebido no mês, custos do mês (fixos e variáveis), lucro estimado e margem, barbearias ativas e adesões do mês, contratos assinados no mês, ponto de equilíbrio (quantas barbearias e quantas faltam) e mensalidades em atraso. As fórmulas são as das Finanças (`resumoDoMes`, `pontoDeEquilibrio`, O.5 e O.6), sem duplicar.
 - **Comercial** (`components/admin/painel/resumo-comercial.tsx`): leads em aberto e parados, demos nos próximos 7 dias (e hoje), taxa de conversão (`conversaoLeads`, só com 10 decididos), barbearias em risco, propostas a expirar, pedidos pendentes e o funil em barras pelas etapas novas (com o pós-venda calculado).
 - **Por verificar no ecrã:** o dono vê no próximo acesso; ajustes visuais depois.
+
+## D-213 · 04/11/2026 · Avaliações por estrelas dos barbeiros aprovadas; painel novo aprovado — dono
+- **Aprovado pelo dono, por fazer (pendente 47):** só 1 a 5 estrelas, sem texto; aparece só a média, com uma frase junto dela a explicar como é calculada. As de 4 e 5 entram logo. As abaixo de 4 vão primeiro ao gestor, com o botão para mandar mensagem ao cliente pelo WhatsApp, e só contam depois de ele aprovar; sem decisão, entram sozinhas ao fim de 14 dias. O gestor pede a avaliação pelo WhatsApp a partir da lista de serviços feitos. A avaliação do Google continua a ser da barbearia.
+- **Painel geral (D-212):** aprovado como está.
